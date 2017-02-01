@@ -12,4 +12,3 @@ def CreateEmpoyee(id,name,team_id,rect,des,inst,fab):
 			e.Skills.add(Skills[3])
 		if fab ==1:
 			e.Skills.add(Skills[4])			
-		
