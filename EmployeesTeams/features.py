@@ -1,7 +1,7 @@
 from pony.orm import *
 from models import Employees, Teams, Skills, Teams_Skills
 
-def CreateEmpoyee(id, name, team_id, rect, des, fab, inst):
+def CreateEmployee(id, name, team_id, rect, des, fab, inst):
 	with db_session:
 		e = Employees(id = id, name = name, team_id = team_id)
 		if rect == 1:
