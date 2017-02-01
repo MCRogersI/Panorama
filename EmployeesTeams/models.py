@@ -1,7 +1,7 @@
 from pony.orm import *
 
 db = Database()
-db.bind('postgres', user='postgres', password='hxq54ght3', host='localhost', database='panorama')
+db.bind('postgres', user='postgres', password='panorama', host='localhost', database='panorama')
 #se definen las clases (tablas en las bases de datos)
 
 class Employees(db.Entity):
@@ -22,7 +22,7 @@ class Teams(db.Entity):
 	zone = Required(int)
 	team_skills = Set('Teams_Skills')
 	Employees = Set(Employees)
-	
+
 
 class  Teams_Skills(db.Entity):
 	team = Required(Teams)
