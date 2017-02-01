@@ -14,15 +14,13 @@ class Skills (db.Entity):
 	id = PrimaryKey(int, auto=False)
 	name = Required(str)
 	employees = Set(Employees)
-	team_skill = Set('Teams_Skills')
-
+	teams = Set('Teams_Skills')
 
 class Teams(db.Entity):
 	id = PrimaryKey(int, auto=False)
 	zone = Required(int)
-	team_skills = Set('Teams_Skills')
+	skills = Set('Teams_Skills')
 	Employees = Set(Employees)
-
 
 class  Teams_Skills(db.Entity):
 	team = Required(Teams)
