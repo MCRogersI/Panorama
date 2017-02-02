@@ -1,5 +1,5 @@
 from pony.orm import *
-from ../EmployeesTeams import models
+# from ../EmployeesTeams import models
 from datetime import datetime
 
 db = Database()
@@ -36,6 +36,31 @@ class Activities(db.Entity):
 
     def __repr__(self):
         return self.description
+
+class Tasks(db.Entity):
+ 	id = PrimaryKey(int, auto=False)
+ 	id_skill = Required(Skill)
+ 	id_proyect = Required('Proyect')
+	original_initial_date = Required(datetime)
+
+	original_initial_date = Optional(datetime)
+	original_end_date = Optional(datetime)
+	efective_initial_date = Optional(datetime)
+	efective_end_date = Optional(datetime)
+	failed = Optional(Boolean)
+	fail_cost = Optional(int)
+	teams = Set('Tasks_Teams')
+    def __repr__(self):
+        return str(self.id)
+		
+class Tasks_Teams(db.Entity):
+	task = Required(Tasks)
+	team = Required(Teams)
+	PrimaryKey(task,team)
+	initial_date = Optional(datetime)
+	end_date = Optional(datetime)
+	
+	
 
 #clase intermedia entre Activities y Teams, con fechas iniciales y finales
 
