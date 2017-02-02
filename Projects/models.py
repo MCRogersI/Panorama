@@ -17,4 +17,8 @@ class Projects(db.Entity):
     def __repr__(self):
         return str(self.contract_number)
 
+#dificultades tipo "construcción en altura"
+class difficulties(db.Entity):
+
+
 db.generate_mapping(create_tables=True)
