@@ -1,5 +1,4 @@
 from pony.orm import *
-from datetime import datetime
 
 db = Database()
 db.bind('postgres', user='postgres', password='panorama', host='localhost', database='panorama')
@@ -14,18 +13,26 @@ class Projects(db.Entity):
     real_linear_meters = Required(float)
     estimated_cost = Required(int)
     real_cost = Required(int)
+    difficulties = Set('Difficulties')
+
     def __repr__(self):
         return str(self.contract_number)
 
-class Tasks(db.Entity):
-	id = PrimaryKey(int, auto=False)
-	id_skill = Required(Skill)
-	id_proyect = Required('Proyect')
-	original_initial_date = Required(datetime)
-
-
 #dificultades tipo "construcción en altura"
-class difficulties(db.Entity):
+class Difficulties(db.Entity):
+    id = PrimaryKey(int, auto=False)
+    description = Required(str)
+    projects = Set(Projects)
 
+    def __repr__(self):
+        return self.description
+
+#actividades tipo "licencia", "vacaciones", etc.
+class Activities(db.Entity):
+    id = PrimaryKey(int, auto=False)
+    description = Required(str)
+
+    def __repr__(self):
+        return self.description
 
 db.generate_mapping(create_tables=True)
