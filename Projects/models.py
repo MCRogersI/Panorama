@@ -14,7 +14,7 @@ class Projects(db.Entity):
     estimated_cost = Required(int)
     real_cost = Required(int)
     difficulties = Set('Difficulties')
-
+    
     def __repr__(self):
         return str(self.contract_number)
 
