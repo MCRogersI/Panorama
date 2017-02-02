@@ -15,34 +15,28 @@ class Projects(db.Entity):
     real_linear_meters = Required(float)
     estimated_cost = Required(int)
     real_cost = Required(int)
+    difficulties = Set('Difficulties')
+
     def __repr__(self):
         return str(self.contract_number)
 
-class Tasks(db.Entity):
-	id = PrimaryKey(int, auto=False)
-	id_skill = Required(Skill)
-	id_proyect = Required('Proyect')
-	original_initial_date = Optional(datetime)
-	original_end_date = Optional(datetime)
-	efective_initial_date = Optional(datetime)
-	efective_end_date = Optional(datetime)
-	failed = Optional(Boolean)
-	fail_cost = Optional(int)
-	teams = Set('Tasks_Teams')
-    def __repr__(self):
-        return str(self.id)
-		
-class Tasks_Teams(db.Entity):
-	task = Required(Tasks)
-	team = Required(Teams)
-	PrimaryKey(task,team)
-	initial_date = Optional(datetime)
-	end_date = Optional(datetime)
-	
-	
-
 #dificultades tipo "construcción en altura"
-class difficulties(db.Entity):
+class Difficulties(db.Entity):
+    id = PrimaryKey(int, auto=False)
+    description = Required(str)
+    projects = Set(Projects)
 
+    def __repr__(self):
+        return self.description
+
+#actividades tipo "licencia", "vacaciones", etc.
+class Activities(db.Entity):
+    id = PrimaryKey(int, auto=False)
+    description = Required(str)
+
+    def __repr__(self):
+        return self.description
+
+#clase intermedia entre Activities y Teams, con fechas iniciales y finales
 
 db.generate_mapping(create_tables=True)
