@@ -43,6 +43,9 @@ def EditEmployee(id,new_name = None, new_team_id = None, rect =None, des = None,
 
 
 
+def PrintTeams():
+	Teams.select().show()
+
 def EditTeam(id, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_inst = None):
 	with db_session:
 		t = Teams[id]
