@@ -1,7 +1,7 @@
 from features import *
 
 while True:
-    opt=input("Marque:\n 1 si desea crear empleados/equipos \n 2 si desea editar empleados/equipos \n 3 para ver empleados/equipos actuales \n 4 para salir \n")
+    opt=input("\n Marque una de las siguientes opciones:\n - 1: si desea crear empleados/equipos. \n - 2: si desea editar empleados/equipos. \n - 3: para ver empleados/equipos actuales \n - 4: para salir. \n Ingrese la alternativa elegida: ")
     if(opt=='1'):
         opt1=input("Marque \n 1 si desea crear empleado \n 2 si desea crear un equipo\n")
         if(opt1=='1'):
@@ -80,10 +80,10 @@ while True:
         if(opt2=='2'):
             idEquipo2=input("Ingrese el ID del equipo que desea editar: ")
             newZone=input("Ingrese la nueva zona del equipo, 0 si la mantiene: ")
-            newPerfRect=input("Ingrese 0 si el equipo no hace rectificación, en otro caso ingrese el rendimiento histórico: ")
-            newPerfDes=input("Ingrese 0 si el equipo no hace diseño, en otro caso ingrese el rendimiento histórico: ")
-            newPerfFab=input("Ingrese 0 si el equipo no hace fabricación, en otro caso ingrese el rendimiento histórico: ")
-            newPerfIns=input("Ingrese 0 si el equipo no hace instalación, en otro caso ingrese el rendimiento histórico: ")
+            newPerfRect=input("Ingrese el rendimiento histórico del equipo en rectificación, 0 si no realiza esta tarea: ")
+            newPerfDes=input("Ingrese el rendimiento histórico del equipo en diseño, 0 si no realiza esta tarea: ")
+            newPerfFab=input("Ingrese el rendimiento histórico del equipo en fabricación, 0 si no realiza esta tarea: ")
+            newPerfIns=input("Ingrese el rendimiento histórico del equipo en instalación, 0 si no realiza esta tarea: ")
             if(newZone=='0'):
                 newZone=None
             if(newPerfRect=='0'):
