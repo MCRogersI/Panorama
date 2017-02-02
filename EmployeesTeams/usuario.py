@@ -1,6 +1,5 @@
 from features import *
 
-
 opt=input("Marque:\n 1 si desea crear empleados/equipos \n 2 si desea editar empleados/equipos \n 3 para ver empleados/equipos actuales \n ")
 if(opt=='1'):
     opt1=input("Marque \n 1 si desea crear empleado \n 2 si desea crear un equipo\n")
@@ -18,5 +17,3 @@ if(opt=='3'):
     opt3=input("Marque \n 1 si desea ver empleados \n 2 si desea ver equipos")
     if(opt3=='1'):
         PrintEmployees()
-
-
