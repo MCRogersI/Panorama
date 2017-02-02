@@ -14,14 +14,15 @@ class Projects(db.Entity):
     real_linear_meters = Required(float)
     estimated_cost = Required(int)
     real_cost = Required(int)
+    def __repr__(self):
+        return str(self.contract_number)
 
 class Tasks(db.Entity):
 	id = PrimaryKey(int, auto=False)
 	id_skill = Required(Skill)
 	id_proyect = Required('Proyect')
 	original_initial_date = Required(datetime)
-    def __repr__(self):
-        return str(self.contract_number)
+
 
 #dificultades tipo "construcción en altura"
 class difficulties(db.Entity):
