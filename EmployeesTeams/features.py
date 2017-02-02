@@ -62,7 +62,6 @@ def PrintTeams():
 def PrintTeams_Skills():
 	with db_session:
 		Teams_Skills.select().show()
-		
 def EditTeam(id, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_inst = None):
 	with db_session:
 		t = Teams[id]
