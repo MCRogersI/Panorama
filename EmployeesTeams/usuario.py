@@ -1,7 +1,6 @@
 from features import *
 
 while True:
-<<<<<<< HEAD
     opt=input("\n Marque una de las siguientes opciones:\n - 1: si desea crear empleados/equipos. \n - 2: si desea editar empleados/equipos. \n - 3: para ver empleados/equipos actuales \n - 4: para salir. \n Ingrese la alternativa elegida: ")
     if(opt=='1'):
         opt1=input("Marque \n 1 si desea crear empleado \n 2 si desea crear un equipo\n")
@@ -107,5 +106,4 @@ while True:
 			
     if(opt == '4'):
         break
-
 
