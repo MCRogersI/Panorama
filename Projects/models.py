@@ -35,4 +35,6 @@ class Activities(db.Entity):
     def __repr__(self):
         return self.description
 
+#clase intermedia entre Activities y Teams, con fechas iniciales y finales
+
 db.generate_mapping(create_tables=True)

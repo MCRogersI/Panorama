@@ -23,7 +23,8 @@ class Teams(db.Entity):
 	id = PrimaryKey(int, auto=False)
 	zone = Required(int)
 	skills = Set('Teams_Skills')
-	Employees = Set(Employees)
+	employees = Set(Employees)
+	tasks = Set('Tasks_Teams')
 
 	def __repr__(self):
 		return str(self.id)
