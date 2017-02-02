@@ -40,6 +40,18 @@ def EditEmployee(id,new_name = None, new_team_id = None, rect =None, des = None,
 			e.skills.add(Skills[4])
 		if inst == False and Skills[4] in e.skills:
 			e.skills.remove(Skills[4])
+			
+def CreateTeam(id , zone, perf_rect= None , perf_des = None, perf_fab = None, perf_inst = None)
+	with db_session:
+		t = Teams(id = id, zone = zone)
+		if perf_rect != None:
+			Teams_Skills (team = id, skill = 1, performance = perf_rect)
+		if perf_des != None:
+			Teams_Skills (team = id, skill = 2, performance = perf_des)
+		if perf_fab != None:
+			Teams_Skills (team = id, skill = 3, performance = perf_fab)
+		if perf_inst != None:
+			Teams_Skills (team = id, skill = 4, performance = perf_inst)
 		
 		
 		
