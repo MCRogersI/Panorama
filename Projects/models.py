@@ -1,5 +1,5 @@
 from pony.orm import *
-from ../EmployeesTeams/models import Teams
+from ../EmployeesTeams import models
 from datetime import datetime
 
 db = Database()
