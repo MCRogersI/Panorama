@@ -42,11 +42,11 @@ def EditEmployee(id,new_name = None, new_team_id = None, rect =None, des = None,
 			e.skills.remove(Skills[4])
 
 			
-def CreateTeam(id , zone, perf_rect= None , perf_des = None, perf_fab = None, perf_inst = None)
+def CreateTeam(id , zone, perf_rect= None , perf_des = None, perf_fab = None, perf_inst = None):
 	with db_session:
 		t = Teams(id = id, zone = zone)
 		if perf_rect != None:
-			Teams_Skills (team = id, skill = 1, performance = perf_rect)
+			Teams_Skills (team = id, skill = Skills[1], performance = perf_rect)
 		if perf_des != None:
 			Teams_Skills (team = id, skill = 2, performance = perf_des)
 		if perf_fab != None:
@@ -56,8 +56,13 @@ def CreateTeam(id , zone, perf_rect= None , perf_des = None, perf_fab = None, pe
 		
 		
 def PrintTeams():
-	Teams.select().show()
+	with db_session:
+		Teams.select().show()
 
+def PrintTeams_Skills():
+	with db_session:
+		Teams_Skills.select().show()
+		
 def EditTeam(id, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_inst = None):
 	with db_session:
 		t = Teams[id]
