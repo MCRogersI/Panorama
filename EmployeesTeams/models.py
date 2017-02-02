@@ -16,13 +16,19 @@ class Skills (db.Entity):
 	employees = Set(Employees)
 	teams = Set('Teams_Skills')
 
+	def __repr__(self):
+		return self.name
+
 class Teams(db.Entity):
 	id = PrimaryKey(int, auto=False)
 	zone = Required(int)
 	skills = Set('Teams_Skills')
 	Employees = Set(Employees)
 
-class  Teams_Skills(db.Entity):
+	def __repr__(self):
+		return str(self.id)
+
+class Teams_Skills(db.Entity):
 	team = Required(Teams)
 	skill = Required(Skills)
 	PrimaryKey(team, skill)
