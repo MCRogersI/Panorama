@@ -15,7 +15,6 @@ class Projects(db.Entity):
     estimated_cost = Required(int)
     real_cost = Required(int)
 
-<<<<<<< HEAD
 class Tasks(db.Entity):
 	id = PrimaryKey(int, auto=False)
 	id_skill = Required(Skill)
