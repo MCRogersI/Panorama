@@ -2,7 +2,7 @@ from features import *
 
 while True:
 <<<<<<< HEAD
-    opt=input("Marque:\n 1 si desea crear empleados/equipos \n 2 si desea editar empleados/equipos \n 3 para ver empleados/equipos actuales \n 4 para salir \n")
+    opt=input("\n Marque una de las siguientes opciones:\n - 1: si desea crear empleados/equipos. \n - 2: si desea editar empleados/equipos. \n - 3: para ver empleados/equipos actuales \n - 4: para salir. \n Ingrese la alternativa elegida: ")
     if(opt=='1'):
         opt1=input("Marque \n 1 si desea crear empleado \n 2 si desea crear un equipo\n")
         if(opt1=='1'):
@@ -81,10 +81,10 @@ while True:
         if(opt2=='2'):
             idEquipo2=input("Ingrese el ID del equipo que desea editar: ")
             newZone=input("Ingrese la nueva zona del equipo, 0 si la mantiene: ")
-            newPerfRect=input("Ingrese 0 si el equipo no hace rectificación, en otro caso ingrese el rendimiento histórico: ")
-            newPerfDes=input("Ingrese 0 si el equipo no hace diseño, en otro caso ingrese el rendimiento histórico: ")
-            newPerfFab=input("Ingrese 0 si el equipo no hace fabricación, en otro caso ingrese el rendimiento histórico: ")
-            newPerfIns=input("Ingrese 0 si el equipo no hace instalación, en otro caso ingrese el rendimiento histórico: ")
+            newPerfRect=input("Ingrese el rendimiento histórico del equipo en rectificación, 0 si no realiza esta tarea: ")
+            newPerfDes=input("Ingrese el rendimiento histórico del equipo en diseño, 0 si no realiza esta tarea: ")
+            newPerfFab=input("Ingrese el rendimiento histórico del equipo en fabricación, 0 si no realiza esta tarea: ")
+            newPerfIns=input("Ingrese el rendimiento histórico del equipo en instalación, 0 si no realiza esta tarea: ")
             if(newZone=='0'):
                 newZone=None
             if(newPerfRect=='0'):
@@ -109,29 +109,3 @@ while True:
         break
 
 
-=======
-	opt=input("\n Marque una de las siguientes opciones:\n - 1: si desea crear empleados/equipos. \n - 2: si desea editar empleados/equipos. \n - 3: para ver empleados/equipos actuales \n - 4: para salir. \n Ingrese la alternativa elegida: ")
-	if(opt=='1'):
-		opt1=input("Marque \n 1 si desea crear empleado \n 2 si desea crear un equipo\n")
-		if(opt1=='1'):
-	#el usuario debe entregar siempre un string con id,nombre,teamid,True,False,True,True (ejemplo)
-			emp=input("Ingrese las características del empleado: ")
-			CreateEmployee(emp.split(",")[0],emp.split(",")[1],emp.split(",")[2],emp.split(",")[3],emp.split(",")[4],emp.split(",")[5],emp.split(",")[6])
-			#print(emp.split(",")[0],emp.split(",")[1],emp.split(",")[2],emp.split(",")[3])
-
-    if(opt=='2'):
-	#de esta forma deberia entregar siempre todas las características del usuario
-		opt2=input("Marque \n 1 si desea editar empleado \n 2 si desea editar un equipo")
-		if(opt2=='1'):
-			emp2=input("Ingrese las características nuevas del empleado")
-
-	if(opt=='3'):
-		opt3=input("Marque \n 1 si desea ver empleados \n 2 si desea ver equipos")
-		if(opt3=='1'):
-			PrintEmployees()
-		if(opt3=='2'):
-			PrintTeams()
-
-	if(opt == '4'):
-		break
->>>>>>> a4915c62d183476be47d55cd4eb434e2eaf28c24
