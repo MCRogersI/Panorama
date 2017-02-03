@@ -37,8 +37,8 @@ def define_models(db):
 	
 	class Teams_Activities(db.Entity):
 		team = Required('Teams')
-		activity = Required('Activities')
-		PrimaryKer(team, activity)
+		activity = Required(Activities)
+		PrimaryKey(team, activity)
 		initial_date = Optional(datetime)
 		end_date = Optional(datetime)
 
