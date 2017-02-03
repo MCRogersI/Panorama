@@ -1,7 +1,5 @@
 from pony.orm import *
 from database import db
-import EmployeesTeams.features as ETf
+import EmployeesTeams.features as ETf, EmployeesTeams.usuario as ETu
 
-
-ETf.CreateTeam(db,1 , 1, perf_rect= 1.2)
-# Etf.CreateEmployee(id, name, team_id, rect, des, fab, inst):
+ETu.employees_teams_console(db, ETf.CreateEmployee, ETf.PrintEmployees, ETf.EditEmployee, ETf.CreateTeam, ETf.PrintTeams, ETf.PrintTeamsSkills, ETf.EditTeam, ETf.PrintSkills)

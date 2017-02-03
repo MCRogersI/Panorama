@@ -1,6 +1,6 @@
 from pony.orm import *
 
-def CreateEmployee(id, name, team_id, rect, des, fab, inst):
+def CreateEmployee(db, id, name, team_id, rect, des, fab, inst):
 	with db_session:
 		e = db.Employees(id = id, name = name, team_id = team_id)
 		if rect:
@@ -12,7 +12,7 @@ def CreateEmployee(id, name, team_id, rect, des, fab, inst):
 		if inst:
 			e.skills.add(db.Skills[4])
 
-def PrintEmployees():
+def PrintEmployees(db):
     with db_session:
         db.Employees.select().show()
 
@@ -44,7 +44,7 @@ def CreateTeam(db, id , zone, perf_rect= None , perf_des = None, perf_fab = None
 	with db_session:
 		t = db.Teams(id = id, zone = zone)
 		if perf_rect != None:
-			db.Teams_Skills (team = id, skill = 1, performance = perf_rect)
+			db.Teams_Skills(team = id, skill = 1, performance = perf_rect)
 		if perf_des != None:
 			db.Teams_Skills(team = id, skill = 2, performance = perf_des)
 		if perf_fab != None:
@@ -56,7 +56,7 @@ def PrintTeams(db):
 	with db_session:
 		db.Teams.select().show()
 
-def PrintTeams_Skills(db):
+def PrintTeamsSkills(db):
 	with db_session:
 		db.Teams_Skills.select().show()
 
