@@ -53,6 +53,7 @@ def define_models(db):
 		failed = Optional(bool)
 		fail_cost = Optional(int)
 		teams = Set('Tasks_Teams')
+		restrictions = Set('Teams_Restrictions')
 
 		def __repr__(self):
 			return str(self.id)

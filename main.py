@@ -5,7 +5,8 @@ import EmployeesTeams.features as ETf, EmployeesTeams.usuario as ETu
 import Projects.features as Pf
 
 # ETf.CreateTeam(db,1 , 1, perf_rect= 1.2)
-# Pf.CreateProject(db, 1, 'El retiro 851', 'No mas clavos', '30.173.254-0', 20, estimated_cost = 400,)
+#Pf.CreateProject(db, 1, 'El retiro 851', 'No mas clavos', '30.173.254-0', 20, estimated_cost = 400,)
+#Pf.DeleteProject(db, 1)
 #Pf.CreateTask(db, 3, 1, 3, d.datetime(2014, 12, 1), d.datetime(2014,12,15))
 # Pf.CreateTask(db, 4, 2, 1, d.datetime(2014, 12, 16), d.datetime(2014,12,17))
 # Pf.CreateTask(db, 5, 3, 1, d.datetime(2014, 12, 18), d.datetime(2014,12,25))
@@ -13,4 +14,6 @@ import Projects.features as Pf
 # ETu.employees_teams_console(db, ETf.CreateEmployee, ETf.PrintEmployees, ETf.EditEmployee, ETf.CreateTeam, ETf.PrintTeams, ETf.PrintTeamsSkills, ETf.EditTeam, ETf.PrintSkills)
 # Pf.AssignTask(db, 1, 1)
 # Pf.DeleteTask(db,1)
+
 # Pf.DeleteProject(db, 1)
+

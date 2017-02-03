@@ -40,6 +40,10 @@ def EditEmployee(db, id, new_name = None, new_team_id = None, rect =None, des = 
 		if inst == False and db.Skills[4] in e.skills:
 			e.skills.remove(db.Skills[4])
 
+def DeleteEmployee(db, id):
+	with db_session:
+			db.Employees[id].delete()
+
 def CreateTeam(db, id , zone, perf_rect= None , perf_des = None, perf_fab = None, perf_inst = None):
 	with db_session:
 		t = db.Teams(id = id, zone = zone)
@@ -73,6 +77,10 @@ def EditTeam(db, id, new_zone = None, perf_rect = None, perf_des = None, perf_fa
 			db.Teams_Skills[(id, 3)].performance = perf_fab
 		if perf_inst != None:
 			db.Teams_Skills[(id, 4)].performance = perf_inst
+			
+def DeleteTeam(db, id):
+	with db_session:
+			db.Teams[id].delete()
 
 def PrintSkills(db):
 	with db_session:
