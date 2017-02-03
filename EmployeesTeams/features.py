@@ -1,57 +1,56 @@
 from pony.orm import *
-from models import Employees, Teams, Skills, Teams_Skills
 
 def CreateEmployee(id, name, team_id, rect, des, fab, inst):
 	with db_session:
-		e = Employees(id = id, name = name, team_id = team_id)
+		e = db.Employees(id = id, name = name, team_id = team_id)
 		if rect:
-			e.skills.add(Skills[1])
+			e.skills.add(db.Skills[1])
 		if des:
-			e.skills.add(Skills[2])
+			e.skills.add(db.Skills[2])
 		if fab:
-			e.skills.add(Skills[3])
+			e.skills.add(db.Skills[3])
 		if inst:
-			e.skills.add(Skills[4])
+			e.skills.add(db.Skills[4])
 
 def PrintEmployees():
     with db_session:
-        Employees.select().show()
+        db.Employees.select().show()
 
-def EditEmployee(id,new_name = None, new_team_id = None, rect =None, des = None, fab= None, inst = None):
+def EditEmployee(db, id, new_name = None, new_team_id = None, rect =None, des = None, fab= None, inst = None):
 	with db_session:
-		e = Employees[id]
+		e = db.Employees[id]
 		if new_name != None:
 			e.name = new_name
 		if new_team_id != None:
 			e.team_id = new_team_id
-		if rect and not Skills[1] in e.skills:
-			e.skills.add(Skills[1])
-		if rect == False and Skills[1] in e.skills:
-			e.skills.remove(Skills[1])
-		if des and not Skills[2] in e.skills:
-			e.skills.add(Skills[2])
-		if des == False and Skills[2] in e.skills:
-			e.skills.remove(Skills[2])
-		if fab and not Skills[3] in e.skills:
-			e.skills.add(Skills[3])
-		if fab == False and Skills[3] in e.skills:
-			e.skills.remove(Skills[3])
-		if inst and not Skills[4] in e.skills:
-			e.skills.add(Skills[4])
-		if inst == False and Skills[4] in e.skills:
-			e.skills.remove(Skills[4])
+		if rect and not db.Skills[1] in e.skills:
+			e.skills.add(db.Skills[1])
+		if rect == False and db.Skills[1] in e.skills:
+			e.skills.remove(db.Skills[1])
+		if des and not db.Skills[2] in e.skills:
+			e.skills.add(db.Skills[2])
+		if des == False and db.Skills[2] in e.skills:
+			e.skills.remove(db.Skills[2])
+		if fab and not db.Skills[3] in e.skills:
+			e.skills.add(db.Skills[3])
+		if fab == False and db.Skills[3] in e.skills:
+			e.skills.remove(db.Skills[3])
+		if inst and not db.Skills[4] in e.skills:
+			e.skills.add(db.Skills[4])
+		if inst == False and db.Skills[4] in e.skills:
+			e.skills.remove(db.Skills[4])
 
-def CreateTeam(id , zone, perf_rect= None , perf_des = None, perf_fab = None, perf_inst = None):
+def CreateTeam(db, id , zone, perf_rect= None , perf_des = None, perf_fab = None, perf_inst = None):
 	with db_session:
-		t = Teams(id = id, zone = zone)
+		t = db.Teams(id = id, zone = zone)
 		if perf_rect != None:
-			Teams_Skills (team = id, skill = Skills[1], performance = perf_rect)
+			db.Teams_Skills (team = id, skill = 1, performance = perf_rect)
 		if perf_des != None:
-			Teams_Skills(team = id, skill = 2, performance = perf_des)
+			db.Teams_Skills(team = id, skill = 2, performance = perf_des)
 		if perf_fab != None:
-			Teams_Skills(team = id, skill = 3, performance = perf_fab)
+			db.Teams_Skills(team = id, skill = 3, performance = perf_fab)
 		if perf_inst != None:
-			Teams_Skills(team = id, skill = 4, performance = perf_inst)
+			db.Teams_Skills(team = id, skill = 4, performance = perf_inst)
 
 def PrintTeams():
 	with db_session:
