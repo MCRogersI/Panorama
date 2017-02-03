@@ -52,32 +52,32 @@ def CreateTeam(db, id , zone, perf_rect= None , perf_des = None, perf_fab = None
 		if perf_inst != None:
 			db.Teams_Skills(team = id, skill = 4, performance = perf_inst)
 
-def PrintTeams():
+def PrintTeams(db):
 	with db_session:
-		Teams.select().show()
+		db.Teams.select().show()
 
-def PrintTeams_Skills():
+def PrintTeams_Skills(db):
 	with db_session:
-		Teams_Skills.select().show()
+		db.Teams_Skills.select().show()
 
-def EditTeam(id, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_inst = None):
+def EditTeam(db, id, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_inst = None):
 	with db_session:
-		t = Teams[id]
+		t = db.Teams[id]
 		if new_zone != None:
 			t.zone = new_zone
 		if perf_rect != None:
-			Teams_Skills(team = id, skill = 1, performance = perf_rect)
+			db.Teams_Skills(team = id, skill = 1, performance = perf_rect)
 		if perf_des != None:
-			Teams_Skills(team = id, skill = 2, performance = perf_des)
+			db.Teams_Skills(team = id, skill = 2, performance = perf_des)
 		if perf_fab != None:
-			Teams_Skills(team = id, skill = 3, performance = perf_fab)
+			db.Teams_Skills(team = id, skill = 3, performance = perf_fab)
 		if perf_inst != None:
-			Teams_Skills(team = id, skill = 4, performance = perf_inst)
+			db.Teams_Skills(team = id, skill = 4, performance = perf_inst)
 
-def PrintSkills():
+def PrintSkills(db):
 	with db_session:
-		Skills.select().show()
+		db.Skills.select().show()
 
-def PrintTeamsSkills():
+def PrintTeamsSkills(db):
 	with db_session:
-		Teams_Skills.select().show()
+		db.Teams_Skills.select().show()
