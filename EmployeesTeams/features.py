@@ -12,7 +12,7 @@ def CreateEmployee(db, id, name, team_id, rect, des, fab, inst):
 		if inst:
 			e.skills.add(db.Skills[4])
 
-def PrintEmployees():
+def PrintEmployees(db):
     with db_session:
         db.Employees.select().show()
 
@@ -44,7 +44,7 @@ def CreateTeam(db, id , zone, perf_rect= None , perf_des = None, perf_fab = None
 	with db_session:
 		t = db.Teams(id = id, zone = zone)
 		if perf_rect != None:
-			db.Teams_Skills (team = id, skill = 1, performance = perf_rect)
+			db.Teams_Skills(team = id, skill = 1, performance = perf_rect)
 		if perf_des != None:
 			db.Teams_Skills(team = id, skill = 2, performance = perf_des)
 		if perf_fab != None:
@@ -56,7 +56,7 @@ def PrintTeams(db):
 	with db_session:
 		db.Teams.select().show()
 
-def PrintTeams_Skills(db):
+def PrintTeamsSkills(db):
 	with db_session:
 		db.Teams_Skills.select().show()
 
@@ -66,13 +66,13 @@ def EditTeam(db, id, new_zone = None, perf_rect = None, perf_des = None, perf_fa
 		if new_zone != None:
 			t.zone = new_zone
 		if perf_rect != None:
-			db.Teams_Skills(team = id, skill = 1, performance = perf_rect)
+			db.Teams_Skills[(id, 1)].performance = perf_rect
 		if perf_des != None:
-			db.Teams_Skills(team = id, skill = 2, performance = perf_des)
+			db.Teams_Skills[(id, 2)].performance = perf_des
 		if perf_fab != None:
-			db.Teams_Skills(team = id, skill = 3, performance = perf_fab)
+			db.Teams_Skills[(id, 3)].performance = perf_fab
 		if perf_inst != None:
-			db.Teams_Skills(team = id, skill = 4, performance = perf_inst)
+			db.Teams_Skills[(id, 4)].performance = perf_inst
 
 def PrintSkills(db):
 	with db_session:
