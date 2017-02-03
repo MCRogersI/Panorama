@@ -2,7 +2,7 @@ def employees_teams_console(db, CreateEmployee, PrintEmployees, EditEmployee, Cr
 	while True:
 		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear empleados/equipos. \n - 2: si desea editar empleados/equipos. \n - 3: para ver empleados/equipos actuales \n - 4: para salir. \n Ingrese la alternativa elegida: ")
 		if(opt == '1'):
-			opt1 = input("Marque \n 1 si desea crear empleado \n 2 si desea crear un equipo\n")
+			opt1 = input("\n Marque \n 1 si desea crear empleado \n 2 si desea crear un equipo\n")
 			if(opt1 == '1'):
 				idEmpleado = input("Ingrese el ID del empleado: ")
 				nameEmpleado = input("Ingrese el nombre del empleado: ")
@@ -29,7 +29,7 @@ def employees_teams_console(db, CreateEmployee, PrintEmployees, EditEmployee, Cr
 					insB = False
 				CreateEmployee(db, idEmpleado,nameEmpleado,teamEmpleado,rectB,desB,fabB,insB)
 			if(opt1 == '2'):
-				id_team = input("Ingrese el ID del equipo: ")
+				id_team = input("\n Ingrese el ID del equipo: ")
 				zone = input("Ingrese la zona del equipo: ")
 				perf_rect = input("Ingrese 0 si el equipo no hace rectificación, en otro caso ingrese el rendimiento histórico: ")
 				perf_des = input("Ingrese 0 si el equipo no hace diseño, en otro caso ingrese el rendimiento histórico: ")
@@ -45,7 +45,7 @@ def employees_teams_console(db, CreateEmployee, PrintEmployees, EditEmployee, Cr
 					perf_ins = None
 				CreateTeam(db, id_team, zone, perf_rect, perf_des, perf_fab, perf_ins)			
 		if(opt == '2'):
-			opt2 = input("Marque \n 1 si desea editar empleado \n 2 si desea editar un equipo\n ")
+			opt2 = input("\n Marque \n 1 si desea editar empleado \n 2 si desea editar un equipo\n ")
 			if(opt2 == '1'):
 				idEmpleado2 = input("Ingrese el ID del empleado a editar: ")
 				newName = input("Ingrese el nuevo nombre del empleado, 0 si lo mantiene: ")
@@ -76,7 +76,7 @@ def employees_teams_console(db, CreateEmployee, PrintEmployees, EditEmployee, Cr
 					newIns = True
 				EditEmployee(db, idEmpleado2,newName,newTeamId,newRect,newDes,newFab,newIns)
 			if(opt2=='2'):
-				idEquipo2 = input("Ingrese el ID del equipo que desea editar: ")
+				idEquipo2 = input("\n Ingrese el ID del equipo que desea editar: ")
 				newZone = input("Ingrese la nueva zona del equipo, 0 si la mantiene: ")
 				newPerfRect = input("Ingrese el rendimiento histórico del equipo en rectificación, 0 si no realiza esta tarea: ")
 				newPerfDes = input("Ingrese el rendimiento histórico del equipo en diseño, 0 si no realiza esta tarea: ")
@@ -94,7 +94,7 @@ def employees_teams_console(db, CreateEmployee, PrintEmployees, EditEmployee, Cr
 					newPerfIns = None
 				EditTeam(db, idEquipo2,newZone,newPerfRect,newPerfDes,newPerfFab,newPerfIns)
 		if(opt == '3'):
-			opt3 = input("Marque \n 1 si desea ver empleados \n 2 si desea ver equipos")
+			opt3 = input("\n Marque \n 1 si desea ver empleados \n 2 si desea ver equipos")
 			if(opt3 == '1'):
 				PrintEmployees(db)
 			if(opt3 == '2'):
