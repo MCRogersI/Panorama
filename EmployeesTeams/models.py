@@ -26,7 +26,7 @@ def define_models(db):
 		employees = Set(Employees)
 		tasks = Set('Tasks_Teams')
 		activities = Set('Teams_Activities')
-
+		restrictions = Set('Teams_Restrictions')
 
 		def __repr__(self):
 			return str(self.id)
