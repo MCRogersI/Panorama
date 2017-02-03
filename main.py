@@ -1,7 +1,8 @@
 from pony.orm import *
 from database import db
 import EmployeesTeams.features as ETf
+import Projects.features as Pf
 
 
 # ETf.CreateTeam(db,1 , 1, perf_rect= 1.2)
-ETf.CreateEmployee(db, 1, 'Juan Avila', team_id, rect, des, fab, inst):
+Pf.PrintProjects(db)
