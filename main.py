@@ -13,4 +13,4 @@ import Projects.features as Pf
 # ETu.employees_teams_console(db, ETf.CreateEmployee, ETf.PrintEmployees, ETf.EditEmployee, ETf.CreateTeam, ETf.PrintTeams, ETf.PrintTeamsSkills, ETf.EditTeam, ETf.PrintSkills)
 # Pf.AssignTask(db, 1, 1)
 # Pf.DeleteTask(db,1)
-Pf.DeleteProject(db, 1)
+# Pf.DeleteProject(db, 1)
