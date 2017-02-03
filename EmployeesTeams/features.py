@@ -1,6 +1,6 @@
 from pony.orm import *
 
-def CreateEmployee(id, name, team_id, rect, des, fab, inst):
+def CreateEmployee(db, id, name, team_id, rect, des, fab, inst):
 	with db_session:
 		e = db.Employees(id = id, name = name, team_id = team_id)
 		if rect:
