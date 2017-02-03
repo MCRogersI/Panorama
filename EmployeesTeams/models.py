@@ -1,38 +1,36 @@
 from pony.orm import *
 
-db = Database()
-db.bind('postgres', user='postgres', password='panorama', host='localhost', database='panorama')
-#se definen las clases (tablas en las bases de datos)
 
-class Employees(db.Entity):
-	id = PrimaryKey(int, auto=False)
-	name = Required(str)
-	team_id = Optional('Teams')
-	skills = Set('Skills')
 
-class Skills (db.Entity):
-	id = PrimaryKey(int, auto=False)
-	name = Required(str)
-	employees = Set(Employees)
-	teams = Set('Teams_Skills')
+def define_models(db):
+	class Employees(db.Entity):
+		id = PrimaryKey(int, auto=False)
+		name = Required(str)
+		team_id = Optional('Teams')
+		skills = Set('Skills')
 
-	def __repr__(self):
-		return self.name
+	class Skills (db.Entity):
+		id = PrimaryKey(int, auto=False)
+		name = Required(str)
+		employees = Set(Employees)
+		teams = Set('Teams_Skills')
+		tasks =Set('Tasks')
 
-class Teams(db.Entity):
-	id = PrimaryKey(int, auto=False)
-	zone = Required(int)
-	skills = Set('Teams_Skills')
-	employees = Set(Employees)
-	tasks = Set('Tasks_Teams')
+		def __repr__(self):
+			return self.name
 
-	def __repr__(self):
-		return str(self.id)
+	class Teams(db.Entity):
+		id = PrimaryKey(int, auto=False)
+		zone = Required(int)
+		skills = Set('Teams_Skills')
+		employees = Set(Employees)
+		tasks = Set('Tasks_Teams')
 
-class Teams_Skills(db.Entity):
-	team = Required(Teams)
-	skill = Required(Skills)
-	PrimaryKey(team, skill)
-	performance = Required(float)
+		def __repr__(self):
+			return str(self.id)
 
-db.generate_mapping(create_tables=True)
+	class Teams_Skills(db.Entity):
+		team = Required(Teams)
+		skill = Required(Skills)
+		PrimaryKey(team, skill)
+		performance = Required(float)
