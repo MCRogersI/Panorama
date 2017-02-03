@@ -28,8 +28,11 @@ def EditProject(db, contract_number, new_client_address = None, new_client_name 
 		if new_estimated_cost != None:
 			p.estimated_cost = new_estimated_cost
 		if new_real_cost != None:
-			p.real_cost = new_real_cost	
-
+			p.real_cost = new_real_cost
+			
+def DeleteProject(db, contract_number):
+	with db_session:
+		db.Projects[contract_number].delete()
 
 def CreateTask(db, id, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None, failed = None, fail_cost = None):
 	with db_session:
@@ -56,7 +59,6 @@ def EditTask(db, id , id_skill = None, id_project = None, original_initial_date 
 			t.fail_cost = fail_cost
 			
 # def DeleteTask(db, id_task):
-	
 
 def PrintTasks(db):
 	with db_session:
