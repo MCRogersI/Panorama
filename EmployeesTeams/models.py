@@ -1,7 +1,6 @@
 from pony.orm import *
 
-
-
+#Definir tablas de empleados y equipos
 def define_models(db):
 	class Employees(db.Entity):
 		id = PrimaryKey(int, auto=False)
@@ -9,13 +8,14 @@ def define_models(db):
 		team_id = Optional('Teams')
 		skills = Set('Skills')
 
-	class Skills (db.Entity):
+
+	class Skills(db.Entity):
 		id = PrimaryKey(int, auto=False)
 		name = Required(str)
 		employees = Set(Employees)
 		teams = Set('Teams_Skills')
 		tasks =Set('Tasks')
-
+		
 		def __repr__(self):
 			return self.name
 
@@ -25,6 +25,8 @@ def define_models(db):
 		skills = Set('Teams_Skills')
 		employees = Set(Employees)
 		tasks = Set('Tasks_Teams')
+		activities = Set('Activities')
+
 
 		def __repr__(self):
 			return str(self.id)

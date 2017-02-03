@@ -30,6 +30,7 @@ def define_models(db):
 	class Activities(db.Entity):
 		id = PrimaryKey(int, auto=False)
 		description = Required(str)
+		teams = Set('Teams')
 
 		def __repr__(self):
 			return self.description
@@ -56,7 +57,3 @@ def define_models(db):
 		PrimaryKey(task,team)
 		initial_date = Optional(datetime)
 		end_date = Optional(datetime)
-		
-		
-		
-		
