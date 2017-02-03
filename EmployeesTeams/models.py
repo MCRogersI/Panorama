@@ -25,7 +25,7 @@ def define_models(db):
 		skills = Set('Teams_Skills')
 		employees = Set(Employees)
 		tasks = Set('Tasks_Teams')
-		activities = Set('Activities')
+		activities = Set('Teams_Activities')
 
 
 		def __repr__(self):
