@@ -24,7 +24,7 @@ def EditProject(db, contract_number, new_client_address = None, new_client_name 
 		if new_linear_meters != None:
 			p.linear_meters = new_linear_meters
 		if new_real_linear_meters != None:
-			p.real_linear_meters = real_linear_meters
+			p.real_linear_meters = new_real_linear_meters
 		if new_estimated_cost != None:
 			p.estimated_cost = new_estimated_cost
 		if new_real_cost != None:
@@ -34,7 +34,7 @@ def DeleteProject(db, contract_number):
 	with db_session:
 		db.Projects[contract_number].delete()
 
-def CreateTask(db, id, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None, failed = None, fail_cost = None):
+def CreateTask(db, id, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
 	with db_session:
 		t = db.Tasks(id = id, id_skill = id_skill, id_project = id_project, original_initial_date = original_initial_date, original_end_date = original_end_date)
 
@@ -73,5 +73,11 @@ def DeleteTask(db, id_task):
 def PrintTasks(db):
 	with db_session:
 		db.Tasks.select().show()
+
+def FailedTask(db, id_project, id_skill, fail_cost):
+	with db_session:
+		t = select(t for t in db.Tasks if t.id_skill == db.Skills[id_skill] and t.id_project == db.Projects[id_project])
+		t.failed = True
+		t.fail_cost = fail_cost
 
 
