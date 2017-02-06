@@ -76,8 +76,10 @@ def PrintTasks(db):
 
 def FailedTask(db, id_project, id_skill, fail_cost):
 	with db_session:
-		t = select(t for t in db.Tasks if t.id_skill == db.Skills[id_skill] and t.id_project == db.Projects[id_project])
-		t.failed = True
-		t.fail_cost = fail_cost
+		#t = select(t for t in db.Tasks if t.id_skill == db.Skills[id_skill] and t.id_project == db.Projects[id_project])
+		tasks = select(t for t in db.Tasks if t.id_skill == id_skill and t.id_project == db.Projects[id_project])
+		for t in tasks:
+			t.failed = True
+			t.fail_cost = fail_cost
 
 

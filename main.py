@@ -18,5 +18,5 @@ import Projects.features as Pf
 # Pf.EditProject(db, 2 ,new_real_linear_meters = 400, new_real_cost = 8000)
 # Pf.DeleteProject(db, 1)
 
-Pf.FailedTask(db, 2, 1, 9870)
+Pf.FailedTask(db, 1, 1, 1000)
 
