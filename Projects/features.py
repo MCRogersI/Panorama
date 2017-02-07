@@ -38,7 +38,7 @@ def CreateTask(db, id, id_skill, id_project, original_initial_date, original_end
 	with db_session:
 		t = db.Tasks(id = id, id_skill = id_skill, id_project = id_project, original_initial_date = original_initial_date, original_end_date = original_end_date)
 
-def EditTask(db, id , id_skill = None, id_project = None, original_initial_date = None, original_end_date = None, efective_initial_date = None, efective_end_date = None, failed = None, fail_cost = None):
+def EditTask(db, id , id_skill = None, id_project = None, original_initial_date = None, original_end_date = None, efective_initial_date = None, efective_end_date = None, fail_cost = None):
 	with db_session:
 		t = db.Tasks[id]
 		if id_skill != None:
@@ -53,8 +53,6 @@ def EditTask(db, id , id_skill = None, id_project = None, original_initial_date 
 			t.efective_initial_date = efective_initial_date
 		if efective_end_date != None:
 			t.efective_end_date = efective_end_date
-		if failed != None:
-			t.failed = failed
 		if fail_cost != None:
 			t.fail_cost = fail_cost
 
@@ -76,8 +74,7 @@ def PrintTasks(db):
 
 def FailedTask(db, id_project, id_skill, fail_cost):
 	with db_session:
-		#t = select(t for t in db.Tasks if t.id_skill == db.Skills[id_skill] and t.id_project == db.Projects[id_project])
-		tasks = select(t for t in db.Tasks if t.id_skill == id_skill and t.id_project == db.Projects[id_project])
+		tasks = select(t for t in db.Tasks if t.id_skill == db.Skills[id_skill] and t.id_project == db.Projects[id_project])
 		for t in tasks:
 			t.failed = True
 			t.fail_cost = fail_cost
