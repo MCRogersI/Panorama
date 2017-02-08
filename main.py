@@ -25,6 +25,6 @@ import Projects.features as Pf
 
 #Pf.FailedTask(db, 2, 1, 1000)
 
-ETu.employees_teams_console(db, ETf.CreateEmployee, ETf.PrintEmployees, ETf.EditEmployee, ETf.CreateTeam, ETf.PrintTeams, ETf.PrintTeamsSkills, ETf.EditTeam, ETf.PrintSkills)
-# ETf.PrintSelectSkill(db, 4)
+
+ETu.employees_teams_console(db, ETf.CreateEmployee, ETf.PrintEmployees, ETf.EditEmployee, ETf.CreateTeam, ETf.PrintTeams, ETf.PrintTeamsSkills, ETf.EditTeam, ETf.PrintSelectSkill)
 

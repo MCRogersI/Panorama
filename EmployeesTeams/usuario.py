@@ -1,4 +1,4 @@
-def employees_teams_console(db, CreateEmployee, PrintEmployees, EditEmployee, CreateTeam, PrintTeams, PrintTeamsSkills, EditTeam, PrintSkills):
+def employees_teams_console(db, CreateEmployee, PrintEmployees, EditEmployee, CreateTeam, PrintTeams, PrintTeamsSkills, EditTeam, PrintSelectSkill):
 	while True:
 		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear empleados/equipos. \n - 2: si desea editar empleados/equipos. \n - 3: para ver empleados/equipos actuales \n - 4: para salir. \n Ingrese la alternativa elegida: ")
 		if(opt == '1'):
@@ -94,11 +94,19 @@ def employees_teams_console(db, CreateEmployee, PrintEmployees, EditEmployee, Cr
 					newPerfIns = None
 				EditTeam(db, idEquipo2,newZone,newPerfRect,newPerfDes,newPerfFab,newPerfIns)
 		if(opt == '3'):
-			opt3 = input("\n Marque una de las siguientes opciones: \n - 1: si desea ver empleados. \n - 2: si desea ver equipos. \n Ingrese la alternativa elegida: ")
+			opt3 = input("\n Marque una de las siguientes opciones: \n - 1: si desea ver empleados. \n - 2: si desea ver equipos. \n - 3: si desea ver la lista de rectificadores. \n - 4: si desea ver la lista de disenadores. \n - 5: si desea ver la lista de fabricadores. \n - 6: si desea ver la lista de instaladores. \n Ingrese la alternativa elegida: ")
 			print('\n')
 			if(opt3 == '1'):
 				PrintEmployees(db)
 			if(opt3 == '2'):
 				PrintTeams(db)
+			if(opt3 == '3'):
+				PrintSelectSkill(db, 3)
+			if(opt3 == '4'):
+				PrintSelectSkill(db, 4)
+			if(opt3 == '5'):
+				PrintSelectSkill(db, 5)
+			if(opt3 == '6'):
+				PrintSelectSkill(db, 6)
 		if(opt == '4'):
 			break
