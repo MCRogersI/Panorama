@@ -1,6 +1,6 @@
 def employees_teams_console(db, CreateEmployee, PrintEmployees, EditEmployee, CreateTeam, PrintTeams, PrintTeamsSkills, EditTeam, PrintSelectSkill):
 	while True:
-		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear empleados/equipos. \n - 2: si desea editar empleados/equipos. \n - 3: para ver empleados/equipos actuales \n - 4: para salir. \n Ingrese la alternativa elegida: ")
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear empleados/equipos. \n - 2: si desea editar empleados/equipos. \n - 3: para ver empleados/equipos actuales. \n - 4: para salir. \n Ingrese la alternativa elegida: ")
 		if(opt == '1'):
 			opt1 = input("\n Marque una de las siguientes opciones: \n - 1: si desea crear empleado. \n - 2: si desea crear un equipo. \n Ingrese la alternativa elegida: ")
 			if(opt1 == '1'):
