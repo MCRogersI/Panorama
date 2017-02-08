@@ -30,9 +30,9 @@ while True:
 		if(opt == '1'):
 			ETu.employees_teams_console(db, ETf.CreateEmployee, ETf.PrintEmployees, ETf.EditEmployee, ETf.CreateTeam, ETf.PrintTeams, ETf.PrintTeamsSkills, ETf.EditTeam, ETf.PrintSelectSkill)
 		if(opt == '2'):
-			Pu.projects_console(db, Pu.CreateProject, Pu.PrintProjects,Pu.EditProject, Pu.DeleteProject, Pu.CreateTask, Pu.EditTask, Pu.AssignTask, Pu.DeleteTask, Pu.PrintTasks, Pu.FailedTask)
+			Pu.projects_console(db, Pf.CreateProject, Pf.PrintProjects, Pf.EditProject, Pf.DeleteProject)
 		else:
-			Print("Has salido de la consola")
+			print("Has salido de la consola")
 			break
 			
 
