@@ -101,12 +101,12 @@ def employees_teams_console(db, CreateEmployee, PrintEmployees, EditEmployee, Cr
 			if(opt3 == '2'):
 				PrintTeams(db)
 			if(opt3 == '3'):
-				PrintSelectSkill(db, 3)
+				PrintSelectSkill(db, 1)
 			if(opt3 == '4'):
-				PrintSelectSkill(db, 4)
+				PrintSelectSkill(db, 2)
 			if(opt3 == '5'):
-				PrintSelectSkill(db, 5)
+				PrintSelectSkill(db, 3)
 			if(opt3 == '6'):
-				PrintSelectSkill(db, 6)
+				PrintSelectSkill(db, 4)
 		if(opt == '4'):
 			break

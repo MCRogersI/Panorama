@@ -2,6 +2,7 @@ from pony.orm import *
 from database import db
 import datetime as d
 import EmployeesTeams.features as ETf, EmployeesTeams.usuario as ETu
+import Projects.usuario as Pu
 import Projects.features as Pf
 
 # ETf.CreateTeam(db,1 , 1, perf_rect= 1.2)
@@ -24,7 +25,14 @@ import Projects.features as Pf
 
 
 #Pf.FailedTask(db, 2, 1, 1000)
-
-ETu.employees_teams_console(db, ETf.CreateEmployee, ETf.PrintEmployees, ETf.EditEmployee, ETf.CreateTeam, ETf.PrintTeams, ETf.PrintTeamsSkills, ETf.EditTeam, ETf.PrintSelectSkill)
-
+while True:
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados/equipos. \n - 2: Proyectos. \n - 3: para salir. \n Ingrese la alternativa elegida: ")
+		if(opt == '1'):
+			ETu.employees_teams_console(db, ETf.CreateEmployee, ETf.PrintEmployees, ETf.EditEmployee, ETf.CreateTeam, ETf.PrintTeams, ETf.PrintTeamsSkills, ETf.EditTeam, ETf.PrintSelectSkill)
+		if(opt == '2'):
+			Pu.projects_console(db, Pu.CreateProject, Pu.PrintProjects,Pu.EditProject, Pu.DeleteProject, Pu.CreateTask, Pu.EditTask, Pu.AssignTask, Pu.DeleteTask, Pu.PrintTasks, Pu.FailedTask)
+		else:
+			Print("Has salido de la consola")
+			break
+			
 
