@@ -23,6 +23,8 @@ import Projects.features as Pf
 # Pf.DeleteProject(db, 1)
 
 
-Pf.FailedTask(db, 2, 1, 1000)
+#Pf.FailedTask(db, 2, 1, 1000)
+
+ETu.employees_teams_console(db, ETf.CreateEmployee, ETf.PrintEmployees, ETf.EditEmployee, ETf.CreateTeam, ETf.PrintTeams, ETf.PrintTeamsSkills, ETf.EditTeam, ETf.PrintSkills)
 
 
