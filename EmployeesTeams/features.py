@@ -90,8 +90,8 @@ def PrintTeamsSkills(db):
 	with db_session:
 		db.Teams_Skills.select().show()
 	
-def PrintSelect_Skill(db, skill_id):
+def PrintSelectSkill(db, skill_id):
 	with db_session:
-		select(e for e in db.Employees if db.Skills[skill_id] in e.Skills).show()
+		select(e for e in db.Employees if db.Skills[skill_id] in e.skills).show()
 		
 		
