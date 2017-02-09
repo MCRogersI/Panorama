@@ -26,13 +26,14 @@ import Projects.features as Pf
 
 #Pf.FailedTask(db, 2, 1, 1000)
 while True:
-		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados/equipos. \n - 2: Proyectos. \n - 3: para salir. \n Ingrese la alternativa elegida: ")
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados/equipos. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: para salir. \n Ingrese la alternativa elegida: ")
 		if(opt == '1'):
 			ETu.employees_teams_console(db, ETf.CreateEmployee, ETf.PrintEmployees, ETf.EditEmployee, ETf.CreateTeam, ETf.PrintTeams, ETf.PrintTeamsSkills, ETf.EditTeam, ETf.PrintSelectSkill)
 		if(opt == '2'):
 
 			Pu.projects_console(db, Pf.CreateProject, Pf.PrintProjects, Pf.EditProject, Pf.DeleteProject)
-
+		if( opt== '3'):
+			Pu.tasks_console(db, Pf.CreateTask, Pf.EditTask, Pf.AssignTask, Pf.PrintTasks, Pf.FailedTask)
 		else:
 			print("Has salido de la consola")
 			break

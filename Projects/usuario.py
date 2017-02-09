@@ -24,3 +24,80 @@ def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProjec
 			DeleteProject(db, contract_number)
 		if(opt == '5'):
 			break
+def tasks_console(db, CreateTask, EditTask, AssignTask, PrintTasks, FailedTask):
+	while True:
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear una tarea. \n - 2: si desea editar una tarea. \n - 3: si desea asignar una tarea a un empleado. \n - 4: si desea ingresar un fallo en una tarea. \n - 5: si desea fijar una tarea. \n - 6: si desea ver las tareas actuales. \n - 7: para salir. \n")
+		if(opt == '1'):
+			id = input("\n Ingrese el ID de la tarea: ")
+			id_skill = input("\n Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
+			id_project = input("\n Ingrese el ID del proyecto asociado: ")
+			original_initial_date = input("\n Ingrese la fecha estimada de inicio: ")
+			original_end_date = input("\n Ingrese la fecha estimada de término: ")
+			efective_initial_date = input("\n Ingrese la fecha efectiva de inicio, 0 si no ha comenzado: ")
+			if(efective_initial_date != 0):
+				efective_end_date = input("\n Ingrese la fecha efectiva de término, 0 si no ha terminado: ")
+			else: 
+				efective_initial_date=None
+				efective_end_date=None
+			CreateTask(db, id, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date, efective_end_date)
+		if(opt == '2'):
+			id_edit = input("\n Ingrese el ID de la tarea que desea editar: ")
+			new_id_skill = input("\n Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
+			new_id_project = input("\n Ingrese el ID del proyecto asociado: ")
+			new_original_initial_date = input("\n Ingrese la fecha estimada de inicio: ")
+			new_original_end_date = input("\n Ingrese la fecha estimada de término: ")
+			new_efective_initial_date= input("\n Ingrese la fecha efectiva de inicio, 0 si no ha comenzado: ")
+			if(new_efective_initial_date != 0):
+				new_efective_end_date = input("\n Ingrese la fecha efectiva de término, 0 si no ha terminado: ")
+			else: 
+				new_efective_initial_date=None
+				new_efective_end_date=None
+			EditTask(db, id_edit, new_id_skill, new_id_project, new_original_initial_date, new_original_end_date, new_efective_initial_date, new_efective_end_date)
+		if(opt=='3'):
+			id_task = input("\n Ingrese el ID de la tarea que desea asignar: ")
+			id_team = input("\n Ingrese el ID del empleado (equipo) que realizará la tarea: ")
+			initial_date = input("\n Ingrese la fecha estimada de inicio, 0 si no la hay: ")
+			if(initial_date != '0'):
+				end_date = input("\n Ingrese la fecha estimada de término: ")
+			else:
+				initial_date=None
+				end_date=None
+			AssignTask(db, id_task, id_team, initial_date, end_date)
+		if(opt == '4'):
+			id_project_fail = input("\n Ingrese el ID del proyecto en el que ha fallado una tarea: ")
+			id_skill_fail = input("\n Ingrese el ID de la habilidad asociada a la tarea (1: rect, 2: dis, 3: fab, 4: ins): ")
+			fail_cost = input("\n Ingrese el costo estimado de la falla: ")
+			FailedTask(db, id_project_fail, id_skill_fail, fail_cost)
+		if(opt == '5'):
+			id_fix = input("\n Ingrese el ID de la tarea que desea fijar: ")
+			efective_initial_date_fix = input("\n Ingrese la fecha efectiva de inicio de la tarea: ")
+			efective_end_date_fix = input("\n Ingrese la fecha efectiva de término de la tarea, 0 si no la hay: ")
+			if(efective_end_date_fix=='0'):
+				efective_end_date_fix=None
+			EditTask(db, id=id_fix, efective_initial_date=efective_initial_date_fix, efective_end_date=efective_end_date_fix)
+		if(opt == '6'):
+			PrintTasks(db)
+		if(opt == '7'):
+			break
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
