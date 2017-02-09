@@ -15,6 +15,8 @@ def define_models(db):
 		real_cost = Optional(int)
 		difficulties = Set('Difficulties')
 		tasks = Set('Tasks')
+		restrictions = Set('Deadlines_Restrictions')
+		activities = Set('Projects_Activities')
 		priority = Optional(int)
 		fixed_planning = Optional(bool)
 		fixed_priority = Optional(bool)
@@ -37,10 +39,18 @@ def define_models(db):
 	class Activities(db.Entity):
 		id = PrimaryKey(int, auto=False)
 		description = Required(str)
+		projects = Set('Projects_Activities')
 		employees = Set('Employees_Activities')
 
 		def __repr__(self):
 			return self.description
+	
+	class Projects_Activities(db.Entity):
+		project = Required(Projects)
+		activity = Required(Activities)
+		PrimaryKey(project, activity)
+		initial_date = Optional(date)
+		end_date = Optional(date)
 	
 	class Employees_Activities(db.Entity):
 		employee = Required('Employees')
@@ -61,7 +71,6 @@ def define_models(db):
 		fail_cost = Optional(int)
 		employees = Set('Employees_Tasks')
 		restrictions = Set('Employees_Restrictions')
-		deadline = Set('Deadlines_Restrictions')
 
 		def __repr__(self):
 			return str(self.id)

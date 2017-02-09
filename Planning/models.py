@@ -12,4 +12,4 @@ def define_models(db):
 		id = PrimaryKey(int, auto=False)
 		project_id = Required('Projects')
 		skill_id = Required('Skills')
-		deadline = Required(datetime)
+		deadline = Required(date)

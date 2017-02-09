@@ -7,6 +7,7 @@ def define_models(db):
 		name = Required(str)
 		employees = Set('Employees_Skills')
 		tasks = Set('Tasks')
+		restrictions = Set('Deadlines_Restrictions')
 		
 		def __repr__(self):
 			return self.name
