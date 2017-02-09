@@ -18,9 +18,9 @@ def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProjec
 			new_real_cost = input("Ingrese el costo real del proyecto: ")
 			EditProject(db, contract_number, new_client_address, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_real_cost=new_real_cost)
 		if(opt == '3'):
+			PrintProjects(db)
+		if(opt == '4'):
 			contract_number = input("\nIngrese el numero de contrato del proyecto a eliminar: ")
 			DeleteProject(db, contract_number)
-		if(opt == '4'):
-			PrintProjects(db)
 		if(opt == '5'):
 			break
