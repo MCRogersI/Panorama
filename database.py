@@ -1,10 +1,10 @@
 from pony.orm import *
-import Projects.models as Pr, EmployeesTeams.models as ET, Planning.models as Pl
+import Projects.models as Pr, Employees.models as E, Planning.models as Pl
 
 #genera la base de datos
 db = Database()
 
-ET.define_models(db)
+E.define_models(db)
 Pr.define_models(db)
 Pl.define_models(db)
 
