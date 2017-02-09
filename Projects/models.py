@@ -13,6 +13,9 @@ def define_models(db):
 		real_cost = Optional(int)
 		difficulties = Set('Difficulties')
 		tasks = Set('Tasks')
+		priority = Optional(int)
+		fixed_planning = Optional(bool)
+		fixed_priority = Optional(bool)
 
 		def __repr__(self):
 			return str(self.contract_number)
