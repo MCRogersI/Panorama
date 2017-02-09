@@ -17,7 +17,6 @@ def define_models(db):
 		tasks = Set('Tasks')
 		restrictions = Set('Deadlines_Restrictions')
 		activities = Set('Projects_Activities')
-		priority = Optional(int)
 		fixed_planning = Optional(bool)
 		fixed_priority = Optional(bool)
 		deadline = Required(date)
