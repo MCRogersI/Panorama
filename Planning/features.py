@@ -20,13 +20,46 @@ def AvailabilityUpdate(db):
 	with db_session:
 		select(et for et in db.Employees_Tasks if et.task.efective_initial_date == None and not db.Projects[et.tasks.id].fixed_planning ).delete()
 		
+def shiftDown(db, project, place, original_place):
+	with db_session:
+		projects = select(p for p in db.Projects order_by(asc(priority)) if p.priority >= place)
+		for p in projects:
+			if p.priority == original_place -1:
+				if p.fixed_priority:
+					project.priority = original_place
+				else:
+					project.priority = p.priority
+					p.priority = original_place
+			if not p.fixed_priority:
+				project.priority = p.priority
+				shiftDown(db, p, p.priority + 1, original_place)
+				break 
+				
+def shiftUp(db,upper, lower):
+	with db_session:
+		projects = select(p for p in db.Projects order_by(asc(priority)) if p.priority <= lower and p.priority > upper)
+		for p in projects:
+			p.priority = p.priority - 1
+				
 		
+def ChangePriority(db, id_project, new_priority):
+	with db_session:
+		old_priority = db.Projects[id_project].priority
+		if old_priority > new_priority:
+			projects = select(p for p in db.Projects order_by(asc(priority)) if p.priority >= new_priority and p.priority < db.Projects[id_project].priority)
+			for p in projects:
+				if p.fixed_priority:
+					p.priority = p.priority +1
+				else:
+					shiftDown(db,p, p.priority +1, old_priority)
+					break
+			db.Projects[id_project].priority = new_priority	
 		
-# def ChangePriority(db, id_project, new_priority):
-	# with db_session:
-		# if db.Projects[id_project].priority > new_priority:
-			# projects = select(p for p in db.Projects order_by(asc(priority)) if p.priority <= new_priority)
-			# for p in projects:
+		if old_priority < new_priority:
+			shiftUp(db, db.Projects[id_project].priority, new_priority)
+			db.Projects[id_project].priority = new_priority
+				
+					
 				
 			
 
