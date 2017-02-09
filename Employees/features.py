@@ -26,6 +26,7 @@ def EditEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, per
 		if perf_rect != None and db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[1]) != None:
 			db.Employees_Skills[(id, 1)].performance = perf_rect
 		if perf_rect != None and db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[1]) == None:
+			db.Employees_Skills(employee = id, skill = 1, performance = perf_rect)
 		if perf_des != None:
 			db.Employees_Skills[(id, 2)].performance = perf_des
 		if perf_fab != None:
