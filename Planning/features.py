@@ -9,5 +9,5 @@ def AssignTask(db, id_employee, id_task, initial_date = None, end_date = None):
 			et.end_date = end_date
 	
 def UnassignTask(db, task, employee):
-	db.Employees_Teams[employee, task].delete()
+	db.Employees_Teams[(employee, task)].delete()
 	# (task = id_task, team = id_team)
