@@ -1,5 +1,5 @@
 from pony.orm import *
-from datetime import datetime
+from datetime import date
 
 def define_models(db):
 	class Employees_Restrictions(db.Entity):
