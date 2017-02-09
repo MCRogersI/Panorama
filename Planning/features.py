@@ -16,6 +16,20 @@ def UnassignTask(db, id_employee, id_task):
 	db.Employees_Tasks[(id_employee, id_task)].delete()
 	# (task = id_task, team = id_team)
 	
-def AvailavilityUpdate(db)
+def AvailabilityUpdate(db):
 	with db_session:
-		select(et for et in db.Employees_Tasks if db.Tasks[et.task].efective_initial_date == None).delete()
+		select(et for et in db.Employees_Tasks if et.task.efective_initial_date == None and not db.Projects[et.tasks.id].fixed_planning ).delete()
+	
+def DeadlineUpdate(db):
+	with db_session:
+	
+		
+		
+# def ChangePriority(db, id_project, new_priority):
+	# with db_session:
+		# if db.Projects[id_project].priority > new_priority:
+			# projects = select(p for p in db.Projects order_by(asc(priority)) if p.priority <= new_priority)
+			# for p in projects:
+				
+			
+

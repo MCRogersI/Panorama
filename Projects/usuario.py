@@ -4,19 +4,21 @@ def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProjec
 		if(opt == '1'):
 			contract_number = input("\nIngrese el numero de contrato: ")
 			client_address = input("Ingrese la direccion del cliente: ")
+			client_comuna = input("Ingrese la comuna del cliente: ")
 			client_name = input("Ingrese el nombre del cliente: ")
 			client_rut = input("Ingrese el RUT del cliente: ")
 			linear_meters = input("Ingrese los metros lineales del proyecto: ")
-			CreateProject(db, contract_number, client_address, client_name, client_rut, linear_meters)
+			CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters)
 		if(opt == '2'):
 			contract_number = input("\nIngrese el numero de contrato del proyecto a editar: ")
 			new_client_address = input("Ingrese la direccion del cliente: ")
+			new_client_comuna = input("Ingrese la comuna del cliente: ")
 			new_client_name = input("Ingrese el nombre del cliente: ")
 			new_client_rut = input("Ingrese el RUT del cliente: ")
 			new_linear_meters = input("Ingrese los metros lineales del proyecto: ")
 			new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto: ")
 			new_real_cost = input("Ingrese el costo real del proyecto: ")
-			EditProject(db, contract_number, new_client_address, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_real_cost=new_real_cost)
+			EditProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_real_cost=new_real_cost)
 		if(opt == '3'):
 			PrintProjects(db)
 		if(opt == '4'):
@@ -26,7 +28,7 @@ def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProjec
 			break
 def tasks_console(db, CreateTask, EditTask, AssignTask, PrintTasks, FailedTask):
 	while True:
-		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear una tarea. \n - 2: si desea editar una tarea. \n - 3: si desea asignar una tarea a un empleado. \n - 4: si desea ingresar un fallo en una tarea. \n - 5: si desea fijar una tarea. \n - 6: si desea ver las tareas actuales. \n - 7: para volver atrás. \n")
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear una tarea. \n - 2: si desea editar una tarea. \n - 3: si desea asignar una tarea a un empleado. \n - 4: si desea ingresar un fallo en una tarea. \n - 5: si desea ver las tareas actuales. \n - 6: para volver atrás. \n")
 		if(opt == '1'):
 			id = input("\n Ingrese el ID de la tarea: ")
 			id_skill = input("\n Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
@@ -69,15 +71,8 @@ def tasks_console(db, CreateTask, EditTask, AssignTask, PrintTasks, FailedTask):
 			fail_cost = input("\n Ingrese el costo estimado de la falla: ")
 			FailedTask(db, id_project_fail, id_skill_fail, fail_cost)
 		if(opt == '5'):
-			id_fix = input("\n Ingrese el ID de la tarea que desea fijar: ")
-			efective_initial_date_fix = input("\n Ingrese la fecha efectiva de inicio de la tarea: ")
-			efective_end_date_fix = input("\n Ingrese la fecha efectiva de término de la tarea, 0 si no la hay: ")
-			if(efective_end_date_fix=='0'):
-				efective_end_date_fix=None
-			EditTask(db, id=id_fix, efective_initial_date=efective_initial_date_fix, efective_end_date=efective_end_date_fix)
-		if(opt == '6'):
 			PrintTasks(db)
-		if(opt == '7'):
+		if(opt == '6'):
 			break
 
 

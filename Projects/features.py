@@ -1,8 +1,8 @@
 from pony.orm import *
 
-def CreateProject(db, contract_number, client_address, client_name, client_rut, linear_meters, real_linear_meters = None, estimated_cost = None, real_cost = None):
+def CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, real_linear_meters = None, estimated_cost = None, real_cost = None):
 	with db_session:
-		p = db.Projects(contract_number = contract_number, client_address = client_address, client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, estimated_cost = estimated_cost)
+		p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, estimated_cost = estimated_cost)
 		if real_linear_meters != None:
 			p.real_linear_meters.add(real_linear_meters)
 		if real_cost != None:
@@ -12,11 +12,13 @@ def PrintProjects(db):
     with db_session:
         db.Projects.select().show()
 
-def EditProject(db, contract_number, new_client_address = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_estimated_cost = None, new_real_cost = None):
+def EditProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_estimated_cost = None, new_real_cost = None):
 	with db_session:
 		p = db.Projects[contract_number]
 		if new_client_address != None:
 			p.client_addres = new_client_address
+		if new_client_comuna != None:
+			p.client_comuna = new_client_comuna
 		if new_client_name != None:
 			p.client_name = new_client_name
 		if new_client_rut != None:
