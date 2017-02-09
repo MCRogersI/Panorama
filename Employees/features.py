@@ -46,7 +46,12 @@ def PrintSkills(db):
 	
 def PrintSelectSkill(db, id_skill):
 	with db_session:
-		select(e for e in db.Employees if db.Skills[id_skill] in e.skills).show()
+		ids = []
+		emps = select(e for e in db.Employees)
+		for e in emps:
+			if db.Employees_Skills[(e.id, id_skill)] != None and db.Employees_Skills[(e.id, id_skill)] > 0:
+				ids.append(e.id)
+		select(e for e in db.Employees if e.id in ids).show()
 
 		
 		

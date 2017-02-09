@@ -56,14 +56,6 @@ def EditTask(db, id , id_skill = None, id_project = None, original_initial_date 
 		if fail_cost != None:
 			t.fail_cost = fail_cost
 
-def AssignTask(db, id_task, id_team, initial_date = None, end_date = None):
-	with db_session:
-		tt =db.Tasks_Teams(task = id_task, team = id_team)
-		if initial_date != None:
-			tt.initial_date = initial_date
-		if end_date != None:
-			tt.end_date = end_date
-
 def DeleteTask(db, id_task):
 	with db_session:
 			db.Tasks[id_task].delete()
