@@ -14,7 +14,7 @@ def CreateEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_
 
 def PrintEmployees(db):
 	with db_session:
-		db.Employees.select().show()	
+		db.Employees.select().order_by(lambda e: e.id).show()
 
 def EditEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_inst = None):
 	with db_session:
@@ -38,20 +38,18 @@ def DeleteEmployee(db, id):
 
 def PrintEmployeesSkills(db):
 	with db_session:
-		db.Employees_Skills.select().show()
+		db.Employees_Skills.select().order_by(lambda es: es.employee).show()
 		
 def PrintSkills(db):
 	with db_session:
-		db.Skills.select().show()
+		db.Skills.select().order_by(lambda s: s.id).show()
 	
 def PrintSelectSkill(db, id_skill):
 	with db_session:
 		ids = []
 		emps = select(e for e in db.Employees)
 		for e in emps:
-			if db.Employees_Skills[(e.id, id_skill)] != None and db.Employees_Skills[(e.id, id_skill)] > 0:
+			es = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[id_skill])
+			if es != None and es.performance > 0:
 				ids.append(e.id)
-		select(e for e in db.Employees if e.id in ids).show()
-
-		
-		
+		select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id).show()		
