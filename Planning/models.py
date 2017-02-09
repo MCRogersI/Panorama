@@ -11,5 +11,5 @@ def define_models(db):
 	class Deadlines_Restrictions(db.Entity):
 		id = PrimaryKey(int, auto=False)
 		project_id = Required('Projects')
-		skill_id = Required('Skill')
+		skill_id = Required('Skills')
 		deadline = Required(datetime)
