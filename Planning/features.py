@@ -11,3 +11,7 @@ def AssignTask(db, id_employee, id_task, initial_date = None, end_date = None):
 def UnassignTask(db, id_employee, id_task):
 	db.Employees_Tasks[(id_employee, id_task)].delete()
 	# (task = id_task, team = id_team)
+	
+def AvailavilityUpdate(db)
+	with db_session:
+		select(et for et in db.Employees_Tasks if db.Tasks[et.task].efective_initial_date == None).delete()
