@@ -1,6 +1,7 @@
 from pony.orm import *
+import datetime as datetime
 
-def FindDateEmployees(db, id_task, num_workers):
+def FindDateEmployees(db, id_task, num_workers, current_date):
 	
 
 def AssignTask(db, id_employee, id_task, initial_date = None, end_date = None):
