@@ -30,15 +30,15 @@ def define_models(db):
 	class Activities(db.Entity):
 		id = PrimaryKey(int, auto=False)
 		description = Required(str)
-		teams = Set('Teams_Activities')
+		employees = Set('Employees_Activities')
 
 		def __repr__(self):
 			return self.description
 	
-	class Teams_Activities(db.Entity):
-		team = Required('Teams')
+	class Employees_Activities(db.Entity):
+		employee = Required('Employees')
 		activity = Required(Activities)
-		PrimaryKey(team, activity)
+		PrimaryKey(employee, activity)
 		initial_date = Optional(datetime)
 		end_date = Optional(datetime)
 
@@ -52,15 +52,15 @@ def define_models(db):
 		efective_end_date = Optional(datetime)
 		failed = Optional(bool)
 		fail_cost = Optional(int)
-		teams = Set('Tasks_Teams')
-		restrictions = Set('Teams_Restrictions')
+		employees = Set('Employees_Tasks')
+		restrictions = Set('Employees_Restrictions')
 
 		def __repr__(self):
 			return str(self.id)
 
-	class Tasks_Teams(db.Entity):
+	class Employees_Tasks(db.Entity):
 		task = Required(Tasks)
-		team = Required('Teams')
-		PrimaryKey(task,team)
+		employee = Required('Employees')
+		PrimaryKey(employee, task)
 		initial_date = Optional(datetime)
 		end_date = Optional(datetime)
