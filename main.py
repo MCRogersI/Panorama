@@ -5,18 +5,29 @@ import Employees.features as Ef, Employees.usuario as Eu
 import Projects.usuario as Pu
 import Projects.features as Pf
 
-##################
-# Tests de los features de Employees.features
-##################
+###############################################
+# Tests de los features de Employees.features #
+###############################################
 # Ef.CreateEmployee(db, 4, "Laura", 1, perf_fab = 8)
 # Ef.PrintEmployees(db)
 # Ef.DeleteEmployee(db, 4)
 # Ef.PrintEmployeesSkills(db)
 # Ef.PrintSkills(db)
-Ef.PrintSelectSkill(db, 1)
-Ef.PrintSelectSkill(db, 2)
-Ef.PrintSelectSkill(db, 3)
-Ef.PrintSelectSkill(db, 4)
+# Ef.PrintSelectSkill(db, 1)
+# Ef.PrintSelectSkill(db, 2)
+# Ef.PrintSelectSkill(db, 3)
+# Ef.PrintSelectSkill(db, 4)
+# Ef.EditEmployee(db, 1, new_zone = 2, perf_rect = 12)
+
+
+
+
+
+
+
+
+
+
 
 #Pf.CreateProject(db, 1, 'El retiro 851', 'No mas clavos', '30.173.254-0', 20, estimated_cost = 400,)
 #Pf.DeleteProject(db, 1)
