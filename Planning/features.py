@@ -1,5 +1,8 @@
 from pony.orm import *
 
+def FindDateEmployees(db, id_task, num_workers):
+	
+
 def AssignTask(db, id_employee, id_task, initial_date = None, end_date = None):
 	with db_session:
 		et = db.Employees_Tasks(employee = id_employee, task = id_task)
