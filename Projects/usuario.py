@@ -4,19 +4,21 @@ def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProjec
 		if(opt == '1'):
 			contract_number = input("\nIngrese el numero de contrato: ")
 			client_address = input("Ingrese la direccion del cliente: ")
+			client_comuna = input("Ingrese la comuna del cliente: ")
 			client_name = input("Ingrese el nombre del cliente: ")
 			client_rut = input("Ingrese el RUT del cliente: ")
 			linear_meters = input("Ingrese los metros lineales del proyecto: ")
-			CreateProject(db, contract_number, client_address, client_name, client_rut, linear_meters)
+			CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters)
 		if(opt == '2'):
 			contract_number = input("\nIngrese el numero de contrato del proyecto a editar: ")
 			new_client_address = input("Ingrese la direccion del cliente: ")
+			new_client_comuna = input("Ingrese la comuna del cliente: ")
 			new_client_name = input("Ingrese el nombre del cliente: ")
 			new_client_rut = input("Ingrese el RUT del cliente: ")
 			new_linear_meters = input("Ingrese los metros lineales del proyecto: ")
 			new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto: ")
 			new_real_cost = input("Ingrese el costo real del proyecto: ")
-			EditProject(db, contract_number, new_client_address, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_real_cost=new_real_cost)
+			EditProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_real_cost=new_real_cost)
 		if(opt == '3'):
 			PrintProjects(db)
 		if(opt == '4'):
