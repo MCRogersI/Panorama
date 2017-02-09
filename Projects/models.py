@@ -1,5 +1,5 @@
 from pony.orm import *
-from datetime import datetime
+from datetime import date
 
 def define_models(db):
 	class Projects(db.Entity):
@@ -18,6 +18,8 @@ def define_models(db):
 		priority = Optional(int)
 		fixed_planning = Optional(bool)
 		fixed_priority = Optional(bool)
+		deadline = Required(date)
+		
 
 		def __repr__(self):
 			return str(self.contract_number)
@@ -44,21 +46,22 @@ def define_models(db):
 		employee = Required('Employees')
 		activity = Required(Activities)
 		PrimaryKey(employee, activity)
-		initial_date = Optional(datetime)
-		end_date = Optional(datetime)
+		initial_date = Optional(date)
+		end_date = Optional(date)
 
 	class Tasks(db.Entity):
 		id = PrimaryKey(int, auto=False)
 		id_skill = Required('Skills')
 		id_project = Required(Projects)
-		original_initial_date = Required(datetime)
-		original_end_date = Optional(datetime)
-		efective_initial_date = Optional(datetime)
-		efective_end_date = Optional(datetime)
+		original_initial_date = Required(date)
+		original_end_date = Optional(date)
+		efective_initial_date = Optional(date)
+		efective_end_date = Optional(date)
 		failed = Optional(bool)
 		fail_cost = Optional(int)
 		employees = Set('Employees_Tasks')
 		restrictions = Set('Employees_Restrictions')
+		deadline = Set('Deadlines_Restrictions')
 
 		def __repr__(self):
 			return str(self.id)
@@ -67,5 +70,5 @@ def define_models(db):
 		task = Required(Tasks)
 		employee = Required('Employees')
 		PrimaryKey(employee, task)
-		initial_date = Optional(datetime)
-		end_date = Optional(datetime)
+		initial_date = Optional(date)
+		end_date = Optional(date)

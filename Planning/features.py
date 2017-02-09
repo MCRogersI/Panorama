@@ -18,10 +18,7 @@ def UnassignTask(db, id_employee, id_task):
 def AvailabilityUpdate(db):
 	with db_session:
 		select(et for et in db.Employees_Tasks if et.task.efective_initial_date == None and not db.Projects[et.tasks.id].fixed_planning ).delete()
-	
-def DeadlineUpdate(db):
-	with db_session:
-	
+		
 		
 		
 # def ChangePriority(db, id_project, new_priority):

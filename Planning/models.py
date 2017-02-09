@@ -1,5 +1,5 @@
 from pony.orm import *
-from datetime import datetime
+from datetime import date
 
 def define_models(db):
 	class Employees_Restrictions(db.Entity):
@@ -9,7 +9,5 @@ def define_models(db):
 		fixed = Required(bool)
 		
 	class Deadlines_Restrictions(db.Entity):
-		id = PrimaryKey(int, auto=False)
-		project_id = Required('Projects')
-		skill_id = Required('Skill')
-		deadline = Required(datetime)
+		task_id = PrimaryKey('Tasks')
+		deadline = Required(date)
