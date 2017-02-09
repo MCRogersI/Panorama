@@ -9,7 +9,12 @@ import Planning.features as PLf
 ###############################################
 # Tests de los features de Employees.features #
 ###############################################
-# Ef.CreateEmployee(db, 4, "Laura", 1, perf_fab = 8)
+# Ef.CreateEmployee(db, 1, "Juan", 1, perf_rect = 1)
+# Ef.CreateEmployee(db, 2, "Pedro", 1, perf_rect = 2)
+# Ef.CreateEmployee(db, 3, "Diego", 1, perf_rect = 3)
+# Ef.CreateEmployee(db, 4, "Lalo", 1, perf_rect = 4)
+# Ef.CreateEmployee(db, 5, "Mario", 1, perf_rect = 5)
+# Ef.CreateEmployee(db, 6, "Hector", 1, perf_rect = 6)
 # Ef.PrintEmployees(db)
 # Ef.DeleteEmployee(db, 4)
 # Ef.PrintEmployeesSkills(db)
@@ -25,8 +30,13 @@ import Planning.features as PLf
 # Tests de la parte de buscar fechas de Planning.features #
 ###########################################################
 
-dt = date(2017, 9, 18)
+# dt = date(2017, 9, 11)
+# print(PLf.SumDays(dt, 10))
 
+print(PLf.GetAveragePerformance(db, 1))
+print(PLf.GetAveragePerformance(db, 2))
+print(PLf.GetAveragePerformance(db, 3))
+print(PLf.GetAveragePerformance(db, 4))
 
 
 
