@@ -15,7 +15,7 @@ def UnassignTask(db, id_employee, id_task):
 	db.Employees_Tasks[(id_employee, id_task)].delete()
 	# (task = id_task, team = id_team)
 	
-def AvailavilityUpdate(db):
+def AvailabilityUpdate(db):
 	with db_session:
 		select(et for et in db.Employees_Tasks if et.task.efective_initial_date == None and not db.Projects[et.tasks.id].fixed_planning ).delete()
 	
