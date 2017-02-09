@@ -1,5 +1,8 @@
 from pony.orm import *
 
+def FindDateEmployees(db, id_task, num_workers):
+	
+
 def AssignTask(db, id_employee, id_task, initial_date = None, end_date = None):
 	with db_session:
 		et = db.Employees_Tasks(employee = id_employee, task = id_task)
@@ -8,8 +11,8 @@ def AssignTask(db, id_employee, id_task, initial_date = None, end_date = None):
 		if end_date != None:
 			et.end_date = end_date
 	
-def UnassignTask(db, task, employee):
-	db.Employees_Tasks[(employee, task)].delete()
+def UnassignTask(db, id_employee, id_task):
+	db.Employees_Tasks[(id_employee, id_task)].delete()
 	# (task = id_task, team = id_team)
 	
 def AvailavilityUpdate(db):
@@ -28,4 +31,4 @@ def DeadlineUpdate(db):
 			# for p in projects:
 				
 			
-		
+
