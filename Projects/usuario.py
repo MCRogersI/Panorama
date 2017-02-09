@@ -1,6 +1,6 @@
 def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProject):
 	while True:
-		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear un proyecto. \n - 2: si desea editar un proyecto. \n - 3: para ver proyectos actuales. \n - 4: eliminar un proyecto. \n - 5: para salir. \n Ingrese la alternativa elegida: ")
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear un proyecto. \n - 2: si desea editar un proyecto. \n - 3: para ver proyectos actuales. \n - 4: eliminar un proyecto. \n - 5: para volver atrás. \n Ingrese la alternativa elegida: ")
 		if(opt == '1'):
 			contract_number = input("\nIngrese el numero de contrato: ")
 			client_address = input("Ingrese la direccion del cliente: ")
@@ -26,7 +26,7 @@ def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProjec
 			break
 def tasks_console(db, CreateTask, EditTask, AssignTask, PrintTasks, FailedTask):
 	while True:
-		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear una tarea. \n - 2: si desea editar una tarea. \n - 3: si desea asignar una tarea a un empleado. \n - 4: si desea ingresar un fallo en una tarea. \n - 5: si desea fijar una tarea. \n - 6: si desea ver las tareas actuales. \n - 7: para salir. \n")
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear una tarea. \n - 2: si desea editar una tarea. \n - 3: si desea asignar una tarea a un empleado. \n - 4: si desea ingresar un fallo en una tarea. \n - 5: si desea fijar una tarea. \n - 6: si desea ver las tareas actuales. \n - 7: para volver atrás. \n")
 		if(opt == '1'):
 			id = input("\n Ingrese el ID de la tarea: ")
 			id_skill = input("\n Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
