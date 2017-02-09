@@ -5,9 +5,11 @@ def define_models(db):
 	class Projects(db.Entity):
 		contract_number = PrimaryKey(int, auto=False)
 		client_address = Required(str)
+		client_comuna = Required(str)
 		client_name = Required(str)
 		client_rut = Required(str)
 		linear_meters = Required(float)
+		priority = Optional(int)
 		real_linear_meters = Optional(float)
 		estimated_cost = Optional(int)
 		real_cost = Optional(int)

@@ -8,8 +8,8 @@ def AssignTask(db, id_employee, id_task, initial_date = None, end_date = None):
 		if end_date != None:
 			et.end_date = end_date
 	
-def UnassignTask(db, task, employee):
-	db.Employees_Tasks[(employee, task)].delete()
+def UnassignTask(db, id_employee, id_task):
+	db.Employees_Tasks[(id_employee, id_task)].delete()
 	# (task = id_task, team = id_team)
 	
 def AvailavilityUpdate(db)
