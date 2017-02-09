@@ -1,5 +1,18 @@
 from pony.orm import *
-import datetime as datetime
+from datetime import date
+
+# varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea
+
+def IsHoliday(dt):
+	holidays = [date(2017, 9, 18)]
+	if dt in holidays:
+		return True
+
+def IsNotWorkday(dt):
+	if dt.weekday() >= 5 or IsHoliday(dt):
+		return True
+
+
 
 def FindDateEmployees(db, id_task, num_workers, current_date):
 	

@@ -9,5 +9,7 @@ def define_models(db):
 		fixed = Required(bool)
 		
 	class Deadlines_Restrictions(db.Entity):
-		task_id = PrimaryKey('Tasks')
+		id = PrimaryKey(int, auto=False)
+		project_id = Required('Projects')
+		skill_id = Required('Skills')
 		deadline = Required(date)
