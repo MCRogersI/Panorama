@@ -18,3 +18,4 @@ def UnassignTask(db, id_employee, id_task):
 def AvailavilityUpdate(db)
 	with db_session:
 		select(et for et in db.Employees_Tasks if db.Tasks[et.task].efective_initial_date == None).delete()
+
