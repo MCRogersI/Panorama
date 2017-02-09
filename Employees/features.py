@@ -23,16 +23,26 @@ def EditEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, per
 			e.zone = new_zone
 		if new_name != None:
 			e.name = new_name
-		if perf_rect != None and db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[1]) != None:
-			db.Employees_Skills[(id, 1)].performance = perf_rect
-		if perf_rect != None and db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[1]) == None:
-			db.Employees_Skills(employee = id, skill = 1, performance = perf_rect)
+		if perf_rect != None: 
+			if db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[1]) != None:
+				db.Employees_Skills[(id, 1)].performance = perf_rect
+			else:
+				db.Employees_Skills(employee = id, skill = 1, performance = perf_rect)
 		if perf_des != None:
-			db.Employees_Skills[(id, 2)].performance = perf_des
+			if db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[2]) != None:
+				db.Employees_Skills[(id, 2)].performance = perf_des
+			else:
+				db.Employees_Skills(employee = id, skill = 2, performance = perf_des)
 		if perf_fab != None:
-			db.Employees_Skills[(id, 3)].performance = perf_fab
+			if db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[3]) != None:
+				db.Employees_Skills[(id, 3)].performance = perf_fab
+			else:
+				db.Employees_Skills(employee = id, skill = 3, performance = perf_fab)
 		if perf_inst != None:
-			db.Employees_Skills[(id, 4)].performance = perf_inst
+			if db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[4]) != None:
+				db.Employees_Skills[(id, 4)].performance = perf_inst
+			else:
+				db.Employees_Skills(employee = id, skill = 4, performance = perf_inst)
 			
 def DeleteEmployee(db, id):
 	with db_session:
