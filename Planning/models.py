@@ -4,12 +4,12 @@ from datetime import date
 def define_models(db):
 	class Employees_Restrictions(db.Entity):
 		employee = Required('Employees')
-		task = Required('Tasks')
-		PrimaryKey(employee, task)
+		project = Required('Projects')
+		PrimaryKey(employee, project)
 		fixed = Required(bool)
 		
 	class Deadlines_Restrictions(db.Entity):
 		id = PrimaryKey(int, auto=False)
-		project_id = Required('Projects')
-		skill_id = Required('Skills')
+		project = Required('Projects')
+		skill = Required('Skills')
 		deadline = Required(date)
