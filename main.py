@@ -107,5 +107,6 @@ import Planning.features as PLf
 # Tests de los features de Planning.features #
 ##############################################
 
-PLf.ChangePriority(db, 5, 1)
+# PLf.ChangePriority(db, 5, 1)
+# AvailabilityUpdate(db)
 
