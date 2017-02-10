@@ -73,28 +73,17 @@ def EmployeesBySkill(db, id_skill):
 				ids_employees.append(e.id)
 		return ids_employees
 
-#checked
-def EmployeesByStatus(db, contract_number, ids_employees, this_project, fixed):
+# ¿?
+def EmployeesByStatus(db, contract_number, this_project, fixed):
 	with db_session:
-		ids_status = []
-		for id in ids_employees:
-			emp_rests = select(er for er in db.Employees_Restrictions if er.employee == db.Employees[id])
-			for es in emp_rests:
-				if es != None and this_project and es.project == db.Projects[contract_number] and es.fixed == fixed:
-					ids_status.append(id)
-				elif es != None and (not this_project) and es.project != db.Projects[contract_number] and es.fixed == fixed:
-					ids_status.append(id)
-		return ids_status
+		ids_employees = []
+		emps = select(e for e in db.Employees)
+		for e in emps:
+			es = db.Employees_Restrictions.get(employee = db.Employees[e.id])
+			if es != None and this_project and es.contract_number = 
+				ids_employees.append(e.id)
+			return ids_employees
 
-#checked
-def EmployeesAvailable(db, ids_employees, initial_date, end_date):
-	with db_session:
-		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-		for ea in emp_acts:
-			if (ea.initial_date >= initial_date and ea.initial_date <= end_date) or (ea.end_date >= initial_date and ea.end_date <= end_date):
-				return False
-		return True
-		
 # ¿?
 def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date):
 	with db_session:		
@@ -117,8 +106,7 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		last = list(id for id in ids_employees if id in cluster4)
 		return ids_employees
 		
-		
-# ¿?
+
 def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date):
 	days_from_current = 1
 	task_days = GetDays(db, id_skill, contract_number, num_workers)
@@ -216,6 +204,25 @@ def ChangePriority(db, contract_number, new_priority):
 # La siguiente función es para asignar la prioridad al crear el proyecto.
 
 # def AssignPriority(db, contract_number):
+##########################
+# Hacer la planificación #
+##########################
+def DoPlanning(db)
+	projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
+	for p in projects:
+		d_t=date.today()
+		tasks = select(t for t in db.Tasks if t.id_project == p.contract_number).order_by(skill)
+	return tasks
+
+
+
+
+
+
+
+
+
+
 	# with db_session:
 		# today = date.today()
 		# projects = select(p for p in db.Projects).order_by(asc( GetDays(db, id_skill, contract_number, num_workers)))
