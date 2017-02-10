@@ -44,7 +44,15 @@ import Planning.features as PLf
 # print(PLf.GetDays(db, 1, 2, 4))
 # print(date(2010,2,4) <= date(2010,2,4))
 
-print(PLf.ClientAvailable(db, 1, date(2017, 2, 2), date(2017, 3, 9)))
+# print(PLf.ClientAvailable(db, 1, date(2017, 2, 2), date(2017, 3, 9)))
+
+# def foo():
+	# return 1, True, "lalala"
+	
+# a, b, c = foo()
+# print(a)
+# print(b)
+# print(c)
 
 
 
