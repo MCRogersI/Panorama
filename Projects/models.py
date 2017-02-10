@@ -20,7 +20,6 @@ def define_models(db):
 		fixed_planning = Optional(bool)
 		fixed_priority = Optional(bool)
 		deadline = Required(date)
-		
 
 		def __repr__(self):
 			return str(self.contract_number)
@@ -45,16 +44,16 @@ def define_models(db):
 			return self.description
 	
 	class Projects_Activities(db.Entity):
+		id = PrimaryKey(int, auto=False)
 		project = Required(Projects)
 		activity = Required(Activities)
-		PrimaryKey(project, activity)
 		initial_date = Optional(date)
 		end_date = Optional(date)
 	
 	class Employees_Activities(db.Entity):
+		id = PrimaryKey(int, auto=False)
 		employee = Required('Employees')
 		activity = Required(Activities)
-		PrimaryKey(employee, activity)
 		initial_date = Optional(date)
 		end_date = Optional(date)
 

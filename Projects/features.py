@@ -1,18 +1,18 @@
 from pony.orm import *
 
-def CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, real_linear_meters = None, estimated_cost = None, real_cost = None):
+def CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline, real_linear_meters = None, estimated_cost = None, real_cost = None):
 	with db_session:
-		p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, estimated_cost = estimated_cost)
+		p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline=deadline, estimated_cost = estimated_cost)
 		if real_linear_meters != None:
-			p.real_linear_meters.add(real_linear_meters)
+			p.real_linear_meters = real_linear_meters
 		if real_cost != None:
-			p.real_cost.add(real_cost)
+			p.real_cost = real_cost
 
 def PrintProjects(db):
     with db_session:
         db.Projects.select().show()
 
-def EditProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_estimated_cost = None, new_real_cost = None):
+def EditProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_deadline = None, new_real_linear_meters = None, new_estimated_cost = None, new_real_cost = None):
 	with db_session:
 		p = db.Projects[contract_number]
 		if new_client_address != None:
@@ -25,6 +25,8 @@ def EditProject(db, contract_number, new_client_address = None, new_client_comun
 			p.client_rut = new_client_rut
 		if new_linear_meters != None:
 			p.linear_meters = new_linear_meters
+		if new_deadline != None:
+			p.deadline = new_deadline
 		if new_real_linear_meters != None:
 			p.real_linear_meters = new_real_linear_meters
 		if new_estimated_cost != None:

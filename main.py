@@ -26,6 +26,9 @@ import Planning.features as PLf
 # Ef.EditEmployee(db, 1, new_zone = 2, perf_rect = 12)
 
 
+
+
+
 ###########################################################
 # Tests de la parte de buscar fechas de Planning.features #
 ###########################################################
@@ -33,24 +36,31 @@ import Planning.features as PLf
 # dt = date(2017, 9, 11)
 # print(PLf.SumDays(dt, 10))
 
-print(PLf.GetAveragePerformance(db, 1))
-print(PLf.GetAveragePerformance(db, 2))
-print(PLf.GetAveragePerformance(db, 3))
-print(PLf.GetAveragePerformance(db, 4))
+# print(PLf.GetAveragePerformance(db, 1))
+# print(PLf.GetAveragePerformance(db, 2))
+# print(PLf.GetAveragePerformance(db, 3))
+# print(PLf.GetAveragePerformance(db, 4))
+
+# print(PLf.GetDays(db, 1, 2, 4))
+# print(date(2010,2,4) <= date(2010,2,4))
+
+print(PLf.ClientAvailable(db, 1, date(2017, 2, 2), date(2017, 3, 9)))
 
 
 
+##############################################
+# Tests de los features de Projects.features #
+##############################################
 
+# Pf.CreateProject(db, 2, 'Piedra Roja 851', 'Las Condes', 'Zony', '18.024.322-0', 15, date(2017, 3, 15), estimated_cost = 300,)
+# Pf.PrintProjects(db)
+# Pf.EditProject(db, 1, new_linear_meters = 12, new_deadline = date(2017, 3, 18), new_real_cost = 315,)
+# Pf.DeleteProject(db, 2)
 
-
-
-
-#Pf.CreateProject(db, 1, 'El retiro 851', 'No mas clavos', '30.173.254-0', 20, estimated_cost = 400,)
-#Pf.DeleteProject(db, 1)
-# Pf.CreateTask(db, 1, 1, 2, d.datetime(2014, 12, 1), d.datetime(2014,12,15))
-# Pf.CreateTask(db, 2, 2, 2, d.datetime(2014, 12, 16), d.datetime(2014,12,17))
-# Pf.CreateTask(db, 3, 3, 2, d.datetime(2014, 12, 18), d.datetime(2014,12,25))
-# Pf.CreateTask(db, 4, 4, 2, d.datetime(2014, 12, 26), d.datetime(2014,12,31))
+# Pf.CreateTask(db, 1, 1, 1, date(2014, 12, 1), date(2014,12,15))
+# Pf.CreateTask(db, 2, 2, 2, date(2014, 12, 16), date(2014,12,17))
+# Pf.CreateTask(db, 3, 3, 2, date(2014, 12, 18), date(2014,12,25))
+# Pf.CreateTask(db, 4, 4, 2, date(2014, 12, 26), date(2014,12,31))
 
 # Pf.EditTask(db, 1, efective_initial_date = d.datetime(2014, 1, 1), efective_end_date = d.datetime(2014, 1, 10))
 # Pf.EditTask(db, 2, efective_initial_date = d.datetime(2014, 1, 11), efective_end_date = d.datetime(2014, 1, 15))
@@ -75,4 +85,3 @@ print(PLf.GetAveragePerformance(db, 4))
 		# else:
 			# print("Has salido de la consola")
 			# break
-

@@ -31,31 +31,43 @@ def SumDays(dt, days):
 #checked
 def GetAveragePerformance(db, id_skill):
 	with db_session:
-		empskills = select(es for es in db.Employees_Skills if es.skill == db.Skills[id_skill])
+		emp_skills = select(es for es in db.Employees_Skills if es.skill == db.Skills[id_skill])
 		perf = 0
-		if len(empskills) > 0:
-			for es in empskills:
+		if len(emp_skills) > 0:
+			for es in emp_skills:
 				perf = perf + es.performance
-			perf = perf/len(empskills)
+			perf = perf/len(emp_skills)
 		return perf
 
 #notar que asume que siempre perf > 0, si no, se cae: o sea, asume que para cada skill hay al menos un empleado capaz de realizarla 
-def GetProjectSkillDays(db, id_task, num_workers):
+#checked
+def GetDays(db, id_skill, contract_number, num_workers):
 	with db_session:
-		t = select(t for t in db.Tasks if t.id == id_task)
-		project = t.id_project
-		id_skill = t.id_skill.id
-		
+		project = db.Projects[contract_number]
 		linear_meters = project.linear_meters
 		if project.real_linear_meters != None:
 			linear_meters = project.real_linear_meters
 		
 		perf = GetAveragePerformance(db, id_skill)
 		days = linear_meters/(num_workers * perf)
-		return project.contract_number, id_skill, days
-		
-	
-#def FindDateEmployees(db, id_task, num_workers, current_date):
+		return days
+
+#checked with only one project_activity
+#checked with several project_activity
+def ClientAvailable(db, contract_number, initial_date, end_date):
+	with db_session:
+		proj_acts = select(pa for pa in db.Projects_Activities if pa.project == db.Projects[contract_number])
+		for pa in proj_acts:
+			# if pa.initial_date > client_initial_date:
+				# client_initial_date = pa.initial_date
+			# if pa.end_date < client_end_date:
+				# client_end_date = pa.end_date
+			if (pa.initial_date >= initial_date and pa.initial_date <= end_date) or (pa.end_date >= initial_date and pa.end_date <= end_date):
+				return False
+		return True
+
+
+#def FindDateEmployees(db, id_skill, contract_number, num_workers, current_date):
 
 # Acá termina: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
 #################################################################################################################
@@ -86,7 +98,7 @@ def AvailabilityUpdate(db):
 		
 def shiftDown(db, project, place, original_place):
 	with db_session:
-		projects = select(p for p in db.Projects order_by(asc(priority)) if p.priority >= place)
+		projects = select(p for p in db.Projects if p.priority >= place).order_by(lambda p: asc(p.priority))
 		for p in projects:
 			if p.priority == original_place -1:
 				if p.fixed_priority:
@@ -101,7 +113,7 @@ def shiftDown(db, project, place, original_place):
 				
 def shiftUp(db,upper, lower):
 	with db_session:
-		projects = select(p for p in db.Projects order_by(asc(priority)) if p.priority <= lower and p.priority > upper)
+		projects = select(p for p in db.Projects if p.priority <= lower and p.priority > upper).order_by(asc(priority))
 		for p in projects:
 			p.priority = p.priority - 1
 				
@@ -110,7 +122,7 @@ def ChangePriority(db, id_project, new_priority):
 	with db_session:
 		old_priority = db.Projects[id_project].priority
 		if old_priority > new_priority:
-			projects = select(p for p in db.Projects order_by(asc(priority)) if p.priority >= new_priority and p.priority < db.Projects[id_project].priority)
+			projects = select(p for p in db.Projects if p.priority >= new_priority and p.priority < db.Projects[id_project].priority).order_by(asc(priority))
 			for p in projects:
 				if p.fixed_priority:
 					p.priority = p.priority +1
