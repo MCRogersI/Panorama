@@ -45,6 +45,11 @@ import Planning.features as PLf
 # print(date(2010,2,4) <= date(2010,2,4))
 
 # print(PLf.ClientAvailable(db, 1, date(2017, 2, 2), date(2017, 3, 9)))
+# print(PLf.EmployeesAvailable(db, [1, 2], date(2017, 3, 26), date(2017, 3, 31)))
+
+# with db_session:
+	# print(PLf.FindEmployees(db, 1, 1, 1, date(2017, 2, 2), date(2017, 2, 15)).show())
+print(PLf.FindEmployees(db, 1, 1, 1, date(2017, 2, 2), date(2017, 2, 15)))
 
 # def foo():
 	# return 1, True, "lalala"
@@ -53,10 +58,10 @@ import Planning.features as PLf
 # print(b)
 # print(c)
 
-
-with db_session:
-	print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
 # print(PLf.EmployeesBySkill(db, 4))
+# print(PLf.EmployeesByStatus(db, 2, False, False))
+# with db_session:
+	# print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
 
 
 
