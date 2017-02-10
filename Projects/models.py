@@ -9,6 +9,7 @@ def define_models(db):
 		client_name = Required(str)
 		client_rut = Required(str)
 		linear_meters = Required(float)
+		deadline = Required(date)
 		priority = Optional(int)
 		real_linear_meters = Optional(float)
 		estimated_cost = Optional(int)
@@ -20,7 +21,7 @@ def define_models(db):
 		activities = Set('Projects_Activities')
 		fixed_planning = Optional(bool)
 		fixed_priority = Optional(bool)
-		deadline = Required(date)
+
 
 		def __repr__(self):
 			return str(self.contract_number)

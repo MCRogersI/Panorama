@@ -53,20 +53,33 @@ import Planning.features as PLf
 # print(b)
 # print(c)
 
+
 with db_session:
 	print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
 # print(PLf.EmployeesBySkill(db, 4))
 
 
 
+
+
 ##############################################
 # Tests de los features de Projects.features #
 ##############################################
+# Pf.CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline, real_linear_meters = None, estimated_cost = None, real_cost = None)
+# Pf.CreateProject(db, 5, 'frutillita', 'Las Condes', 'frambuesita', '20.024.322-0', 20, date(2017, 3, 15), estimated_cost = 300,)
+# with db_session:
+	# db.Projects[1].priority = 1
+	# db.Projects[2].priority = 2
+	# db.Projects[3].priority = 3
+	# db.Projects[4].priority = 4
+	# db.Projects[5].priority = 5
+	# db.Projects[5].fixed_priority = False
 
-# Pf.CreateProject(db, 2, 'Piedra Roja 851', 'Las Condes', 'Zony', '18.024.322-0', 15, date(2017, 3, 15), estimated_cost = 300,)
+# db.Projects[5].fixed_priority = True
 # Pf.PrintProjects(db)
 # Pf.EditProject(db, 1, new_linear_meters = 12, new_deadline = date(2017, 3, 18), new_real_cost = 315,)
 # Pf.DeleteProject(db, 2)
+
 
 # Pf.CreateTask(db, 1, 1, 1, date(2014, 12, 1), date(2014,12,15))
 # Pf.CreateTask(db, 2, 2, 2, date(2014, 12, 16), date(2014,12,17))
@@ -93,6 +106,14 @@ with db_session:
 			# Pu.projects_console(db, Pf.CreateProject, Pf.PrintProjects, Pf.EditProject, Pf.DeleteProject)
 		# if( opt== '3'):
 			# Pu.tasks_console(db, Pf.CreateTask, Pf.EditTask, Pf.AssignTask, Pf.PrintTasks, Pf.FailedTask)
-		# else:
+		# if(opt == '4'):
 			# print("Has salido de la consola")
 			# break
+			
+			
+##############################################
+# Tests de los features de Planning.features #
+##############################################
+
+PLf.ChangePriority(db, 5, 1)
+
