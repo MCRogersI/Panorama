@@ -5,10 +5,6 @@ import Employees.features as Ef, Employees.usuario as Eu
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
-PLf.DoPlanning(db)
-
-
-
 
 
 
@@ -71,11 +67,24 @@ PLf.DoPlanning(db)
 #with db_session:
 #	print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
 
-
 # print(PLf.EmployeesBySkill(db, 4))
 # print(PLf.EmployeesByStatus(db, 2, False, False))
 # with db_session:
 	# print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
+
+# print(PLf.HasNOnes('0001111111', 7))
+# print(PLf.Successor([1,1,1,1,0,0,0,0,0,0], 4))
+# print([1,8] + [0,4,5])
+# print(PLf.GetChosenIds([12, 13, 14], [0, 1, 1]))
+
+print(PLf.FindEmployees(db, 1, 1, 1, date(2010,1,1), date(2010,1,1)))	
+print(PLf.FindEmployees(db, 1, 1, 2, date(2010,1,1), date(2010,1,1)))
+print(PLf.FindEmployees(db, 1, 1, 3, date(2010,1,1), date(2010,1,1)))
+print(PLf.FindEmployees(db, 1, 1, 4, date(2010,1,1), date(2010,1,1)))
+print(PLf.FindEmployees(db, 1, 1, 5, date(2010,1,1), date(2010,1,1)))
+print(PLf.FindEmployees(db, 1, 1, 6, date(2010,1,1), date(2010,1,1)))
+print(PLf.FindEmployees(db, 1, 1, 7, date(2010,1,1), date(2010,1,1)))
+
 
 
 
