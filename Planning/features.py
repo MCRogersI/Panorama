@@ -200,7 +200,7 @@ def DoPlanning(db)
 	for p in projects:
 		d_t=date.today()
 		tasks = select(t for t in db.Tasks if t.id_project == p.contract_number).order_by(skill)
-
+	return tasks
 
 
 
