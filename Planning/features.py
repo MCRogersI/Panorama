@@ -210,16 +210,7 @@ def ChangePriority(db, contract_number, new_priority):
 			db.Projects.select().order_by(lambda p: p.contract_number)
 #Funcion para cambiar la prioridad de manera manual. Luego de cambiarla, la prioridad se marca como fijada por el usuario.
 #check
-############################################################
-# La siguiente función es para asignar la prioridad al crear el proyecto. por ahora se hará FIFO ya que no sabemos estimar la holgura, pero debe cambiar después.
 
-#DEBE CAMBIAR DESPUES
-
-
-#NO ES BROMA!!
-def AssignPriority(db, contract_number):
-	with db_session:
-		db.Projects[contract_number].priority = db.Projects.select().count()
 
 ##########################
 # Hacer la planificación #
