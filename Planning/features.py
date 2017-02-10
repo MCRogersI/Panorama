@@ -73,7 +73,7 @@ def EmployeesBySkill(db, id_skill):
 				ids_employees.append(e.id)
 		return ids_employees
 
-#checked
+# checked
 def EmployeesByStatus(db, contract_number, ids_employees, this_project, fixed):
 	with db_session:
 		ids_status = []
@@ -94,7 +94,7 @@ def EmployeesAvailable(db, ids_employees, initial_date, end_date):
 			if (ea.initial_date >= initial_date and ea.initial_date <= end_date) or (ea.end_date >= initial_date and ea.end_date <= end_date):
 				return False
 		return True
-		
+
 # ¿?
 def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date):
 	with db_session:		
@@ -105,20 +105,18 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		cluster3 = EmployeesByStatus(db, contract_number, ids_employees, False, True) # empleados fijos en otros proyectos
 		cluster4 = EmployeesByStatus(db, contract_number, ids_employees, False, True) # empleados vetados en otros proyectos
 		
-		ids_employees = list(id for id in ids_employees if id not in cluster2) # sacamos a todos los empleados vetados en este proyecto
+		ids_employees = list(id for id in ids_employees if id not in cluster1 and not in cluster2) # sacamos a todos los empleados vetados en este proyecto
 		ids_found = cluster1  # incluimos sí o sí a los empleados que están fijos en el proyecto
 		
 		num_workers = num_workers - len(ids_found)
 		if num_workers <= 0 and EmployeesAvailable(db, ids_found, initial_date, end_date): #revisamos si con los empleados fijos basta y si ellos están disponibles en las fechas necesarias
 			return ids_found
-		
-		priorities = list(id for id in ids_found if id in cluster4 and id not in cluster3) # priorizamos empleados vetados en otros proyectos y NO fijos en otros proyectos
-		
-		# preferable = list(id for id in EmployeesByStatus(db, contract_number, ids_employees, False, False)) # priorizamos empleados vetados en otros proyectos y...
+		priorities = list(id for id in ids_employees if id not in cluster3 and id in cluster4) # priorizamos empleados vetados en otros proyectos y NO fijos en otros proyectos
+		preferable = list(id for id in ids_employees if id not in cluster3 and id not in cluster4) # después, empleados ni fijos ni vetados en otros proyectos
+		last = list(id for id in ids_employees if id in cluster4)
 		return ids_employees
 		
-		
-# ¿?
+
 def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date):
 	days_from_current = 1
 	task_days = GetDays(db, id_skill, contract_number, num_workers)
@@ -216,6 +214,25 @@ def ChangePriority(db, contract_number, new_priority):
 # La siguiente función es para asignar la prioridad al crear el proyecto.
 
 # def AssignPriority(db, contract_number):
+##########################
+# Hacer la planificación #
+##########################
+def DoPlanning(db)
+	projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
+	for p in projects:
+		d_t=date.today()
+		tasks = select(t for t in db.Tasks if t.id_project == p.contract_number).order_by(skill)
+	return tasks
+
+
+
+
+
+
+
+
+
+
 	# with db_session:
 		# today = date.today()
 		# projects = select(p for p in db.Projects).order_by(asc( GetDays(db, id_skill, contract_number, num_workers)))

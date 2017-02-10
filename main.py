@@ -5,6 +5,14 @@ import Employees.features as Ef, Employees.usuario as Eu
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
+PLf.DoPlanning(db)
+
+
+
+
+
+
+
 
 ###############################################
 # Tests de los features de Employees.features #
@@ -49,7 +57,9 @@ import Planning.features as PLf
 
 # with db_session:
 	# print(PLf.FindEmployees(db, 1, 1, 1, date(2017, 2, 2), date(2017, 2, 15)).show())
+
 # print(PLf.FindEmployees(db, 1, 1, 1, date(2017, 2, 2), date(2017, 2, 15)))
+
 
 # def foo():
 	# return 1, True, "lalala"
@@ -58,8 +68,9 @@ import Planning.features as PLf
 # print(b)
 # print(c)
 
-# with db_session:
-	# print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
+#with db_session:
+#	print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
+
 
 # print(PLf.EmployeesBySkill(db, 4))
 # print(PLf.EmployeesByStatus(db, 2, False, False))
