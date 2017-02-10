@@ -105,7 +105,7 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		cluster3 = EmployeesByStatus(db, contract_number, ids_employees, False, True) # empleados fijos en otros proyectos
 		cluster4 = EmployeesByStatus(db, contract_number, ids_employees, False, True) # empleados vetados en otros proyectos
 		
-		ids_employees = list(id for id in ids_employees if id not in cluster1 and not in cluster2) # sacamos a todos los empleados vetados en este proyecto
+		ids_employees = list(id for id in ids_employees if id not in cluster1 and id not in cluster2) # sacamos a todos los empleados vetados en este proyecto
 		ids_found = cluster1  # incluimos sí o sí a los empleados que están fijos en el proyecto
 		
 		num_workers = num_workers - len(ids_found)
@@ -211,9 +211,16 @@ def ChangePriority(db, contract_number, new_priority):
 #Funcion para cambiar la prioridad de manera manual. Luego de cambiarla, la prioridad se marca como fijada por el usuario.
 #check
 ############################################################
-# La siguiente función es para asignar la prioridad al crear el proyecto.
+# La siguiente función es para asignar la prioridad al crear el proyecto. por ahora se hará FIFO ya que no sabemos estimar la holgura, pero debe cambiar después.
 
-# def AssignPriority(db, contract_number):
+#DEBE CAMBIAR DESPUES
+
+
+#NO ES BROMA!!
+def AssignPriority(db, contract_number):
+	with db_session:
+		db.Projects[contract_number].priority = db.Projects.select().count()
+
 ##########################
 # Hacer la planificación #
 ##########################
