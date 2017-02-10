@@ -45,6 +45,11 @@ import Planning.features as PLf
 # print(date(2010,2,4) <= date(2010,2,4))
 
 # print(PLf.ClientAvailable(db, 1, date(2017, 2, 2), date(2017, 3, 9)))
+# print(PLf.EmployeesAvailable(db, [1, 2], date(2017, 3, 26), date(2017, 3, 31)))
+
+# with db_session:
+	# print(PLf.FindEmployees(db, 1, 1, 1, date(2017, 2, 2), date(2017, 2, 15)).show())
+# print(PLf.FindEmployees(db, 1, 1, 1, date(2017, 2, 2), date(2017, 2, 15)))
 
 # def foo():
 	# return 1, True, "lalala"
@@ -53,10 +58,13 @@ import Planning.features as PLf
 # print(b)
 # print(c)
 
-
 # with db_session:
 	# print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
+
 # print(PLf.EmployeesBySkill(db, 4))
+# print(PLf.EmployeesByStatus(db, 2, False, False))
+# with db_session:
+	# print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
 
 
 
@@ -66,7 +74,8 @@ import Planning.features as PLf
 # Tests de los features de Projects.features #
 ##############################################
 # Pf.CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline, real_linear_meters = None, estimated_cost = None, real_cost = None)
-# Pf.CreateProject(db, 5, 'frutillita', 'Las Condes', 'frambuesita', '20.024.322-0', 20, date(2017, 3, 15), estimated_cost = 300,)
+# Pf.CreateProject(db, 1, 'frutillita', 'Las Condes', 'frambuesita', '20.024.322-0', 15, date(2017, 3, 14), estimated_cost = 200,)
+# Pf.CreateProject(db, 2, 'cebollita', 'Las Condes', 'sub-campeon', '21.024.322-0', 20, date(2017, 3, 15), estimated_cost = 300,)
 # with db_session:
 	# db.Projects[1].priority = 1
 	# db.Projects[2].priority = 2
@@ -81,10 +90,10 @@ import Planning.features as PLf
 # Pf.DeleteProject(db, 2)
 
 
-# Pf.CreateTask(db, 1, 1, 1, date(2014, 12, 1), date(2014,12,15))
-# Pf.CreateTask(db, 2, 2, 2, date(2014, 12, 16), date(2014,12,17))
-# Pf.CreateTask(db, 3, 3, 2, date(2014, 12, 18), date(2014,12,25))
-# Pf.CreateTask(db, 4, 4, 2, date(2014, 12, 26), date(2014,12,31))
+# Pf.CreateTask(db, 1, 1, 1, date(2014, 12, 1), date(2017,2,28))
+# Pf.CreateTask(db, 2, 2, 2, date(2014, 12, 16), date(2017,3,1))
+# Pf.CreateTask(db, 3, 3, 2, date(2014, 12, 18), date(2017,3,8))
+# Pf.CreateTask(db, 4, 4, 2, date(2014, 12, 26), date(2017,12,14))
 
 # Pf.EditTask(db, 1, efective_initial_date = d.datetime(2014, 1, 1), efective_end_date = d.datetime(2014, 1, 10))
 # Pf.EditTask(db, 2, efective_initial_date = d.datetime(2014, 1, 11), efective_end_date = d.datetime(2014, 1, 15))

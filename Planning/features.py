@@ -73,28 +73,52 @@ def EmployeesBySkill(db, id_skill):
 				ids_employees.append(e.id)
 		return ids_employees
 
-# ¿?
-def EmployeesByStatus(db, contract_number, this_project, fixed):
+#checked
+def EmployeesByStatus(db, contract_number, ids_employees, this_project, fixed):
 	with db_session:
-		ids_employees = []
-		emps = select(e for e in db.Employees)
-		for e in emps:
-			es = db.Employees_Restrictions.get(employee = db.Employees[e.id])
-			if es != None and this_project and es.contract_number = 
-				ids_employees.append(e.id)
-			return ids_employees
-# ¿?
-def FindEmployees(db, id_skill, num_workers, initial_date, end_date):
-	with db_session:
-		ids_employees = EmployeesBySkill(db, id_skill)
-		emps = select(e for e in db.Employees if e.id in ids_employees and db.Employees_Restrictions)
-		num_workers = num_workers - len(emps)
-		if num_workers <= 0:
-			return emps
-		
-		possible = 
-		
+		ids_status = []
+		for id in ids_employees:
+			emp_rests = select(er for er in db.Employees_Restrictions if er.employee == db.Employees[id])
+			for es in emp_rests:
+				if es != None and this_project and es.project == db.Projects[contract_number] and es.fixed == fixed:
+					ids_status.append(id)
+				elif es != None and (not this_project) and es.project != db.Projects[contract_number] and es.fixed == fixed:
+					ids_status.append(id)
+		return ids_status
 
+#checked
+def EmployeesAvailable(db, ids_employees, initial_date, end_date):
+	with db_session:
+		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
+		for ea in emp_acts:
+			if (ea.initial_date >= initial_date and ea.initial_date <= end_date) or (ea.end_date >= initial_date and ea.end_date <= end_date):
+				return False
+		return True
+		
+# ¿?
+def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date):
+	with db_session:		
+		ids_employees = EmployeesBySkill(db, id_skill) # elegimos a los empleados con el skill necesario
+		
+		cluster1 = EmployeesByStatus(db, contract_number, ids_employees, True, True) # empleados fijos en este proyecto
+		cluster2 = EmployeesByStatus(db, contract_number, ids_employees, True, False) # empleados vetados en este proyecto
+		cluster3 = EmployeesByStatus(db, contract_number, ids_employees, False, True) # empleados fijos en otros proyectos
+		cluster4 = EmployeesByStatus(db, contract_number, ids_employees, False, True) # empleados vetados en otros proyectos
+		
+		ids_employees = list(id for id in ids_employees if id not in cluster2) # sacamos a todos los empleados vetados en este proyecto
+		ids_found = cluster1  # incluimos sí o sí a los empleados que están fijos en el proyecto
+		
+		num_workers = num_workers - len(ids_found)
+		if num_workers <= 0 and EmployeesAvailable(db, ids_found, initial_date, end_date): #revisamos si con los empleados fijos basta y si ellos están disponibles en las fechas necesarias
+			return ids_found
+		
+		priorities = list(id for id in ids_found if id in cluster4 and id not in cluster3) # priorizamos empleados vetados en otros proyectos y NO fijos en otros proyectos
+		
+		# preferable = list(id for id in EmployeesByStatus(db, contract_number, ids_employees, False, False)) # priorizamos empleados vetados en otros proyectos y...
+		return ids_employees
+		
+		
+# ¿?
 def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date):
 	days_from_current = 1
 	task_days = GetDays(db, id_skill, contract_number, num_workers)
