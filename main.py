@@ -54,15 +54,15 @@ dt = date(2017, 9, 18)
 
 
 #Pf.FailedTask(db, 2, 1, 1000)
-# while True:
-		# opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: para salir. \n Ingrese la alternativa elegida: ")
-		# if(opt == '1'):
-			# Eu.employees_console(db, Ef.CreateEmployee, Ef.PrintEmployees, Ef.EditEmployee, Ef.PrintEmployeesSkills, Ef.PrintSelectSkill, Ef.DeleteEmployee)
-		# if(opt == '2'):
-			# Pu.projects_console(db, Pf.CreateProject, Pf.PrintProjects, Pf.EditProject, Pf.DeleteProject)
-		# if( opt== '3'):
-			# Pu.tasks_console(db, Pf.CreateTask, Pf.EditTask, Pf.AssignTask, Pf.PrintTasks, Pf.FailedTask)
-		# else:
-			# print("Has salido de la consola")
-			# break
+while True:
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: para salir. \n Ingrese la alternativa elegida: ")
+		if(opt == '1'):
+			Eu.employees_console(db, Ef.CreateEmployee, Ef.PrintEmployees, Ef.EditEmployee, Ef.PrintEmployeesSkills, Ef.PrintSelectSkill, Ef.DeleteEmployee)
+		if(opt == '2'):
+			Pu.projects_console(db, Pf.CreateProject, Pf.PrintProjects, Pf.EditProject, Pf.DeleteProject)
+		if( opt== '3'):
+			Pu.tasks_console(db, Pf.CreateTask, Pf.EditTask, Pf.AssignTask, Pf.PrintTasks, Pf.FailedTask)
+		else:
+			print("Has salido de la consola")
+			break
 
