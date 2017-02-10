@@ -9,6 +9,7 @@ def define_models(db):
 		client_name = Required(str)
 		client_rut = Required(str)
 		linear_meters = Required(float)
+		deadline = Required(date)
 		priority = Optional(int)
 		real_linear_meters = Optional(float)
 		estimated_cost = Optional(int)
@@ -19,8 +20,7 @@ def define_models(db):
 		activities = Set('Projects_Activities')
 		fixed_planning = Optional(bool)
 		fixed_priority = Optional(bool)
-		deadline = Required(date)
-		
+
 
 		def __repr__(self):
 			return str(self.contract_number)
@@ -45,16 +45,16 @@ def define_models(db):
 			return self.description
 	
 	class Projects_Activities(db.Entity):
+		id = PrimaryKey(int, auto=False)
 		project = Required(Projects)
 		activity = Required(Activities)
-		PrimaryKey(project, activity)
 		initial_date = Optional(date)
 		end_date = Optional(date)
 	
 	class Employees_Activities(db.Entity):
+		id = PrimaryKey(int, auto=False)
 		employee = Required('Employees')
 		activity = Required(Activities)
-		PrimaryKey(employee, activity)
 		initial_date = Optional(date)
 		end_date = Optional(date)
 
