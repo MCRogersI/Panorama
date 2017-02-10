@@ -58,16 +58,26 @@ def ClientAvailable(db, contract_number, initial_date, end_date):
 	with db_session:
 		proj_acts = select(pa for pa in db.Projects_Activities if pa.project == db.Projects[contract_number])
 		for pa in proj_acts:
-			# if pa.initial_date > client_initial_date:
-				# client_initial_date = pa.initial_date
-			# if pa.end_date < client_end_date:
-				# client_end_date = pa.end_date
 			if (pa.initial_date >= initial_date and pa.initial_date <= end_date) or (pa.end_date >= initial_date and pa.end_date <= end_date):
 				return False
 		return True
 
 
-#def FindDateEmployees(db, id_skill, contract_number, num_workers, current_date):
+def FindEmployees(db, id_skill, initial_date, end_date):
+	
+
+def FindDateEmployees(db, id_skill, contract_number, num_workers, current_date):
+	days_from_current = 1
+	task_days = GetDays(db, id_skill, contract_number, num_workers)
+	while(True):
+		initial_date = SumDays(initial_date, days_from_current)
+		initial_date = SumDays(initial_date, days_from_current + task_days)
+		if ClientAvailable(db, contract_number, initial_date, end_date):
+			emps = FindEmployees(db, id_skill, initial_date, end_date)
+			if len(emps) > 0:
+				return initial_date, end_date, emps
+			else:
+				days_from_current = days_from_current + 1
 
 # Acá termina: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
 #################################################################################################################

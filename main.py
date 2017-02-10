@@ -46,7 +46,13 @@ import Planning.features as PLf
 
 # print(PLf.ClientAvailable(db, 1, date(2017, 2, 2), date(2017, 3, 9)))
 
-
+# def foo():
+	# return 1, True, "lalala"
+	
+# a, b, c = foo()
+# print(a)
+# print(b)
+# print(c)
 
 ##############################################
 # Tests de los features de Projects.features #
