@@ -15,6 +15,7 @@ def define_models(db):
 		real_cost = Optional(int)
 		difficulties = Set('Difficulties')
 		tasks = Set('Tasks')
+		employees = Set('Employees_Restrictions')
 		restrictions = Set('Deadlines_Restrictions')
 		activities = Set('Projects_Activities')
 		fixed_planning = Optional(bool)
@@ -68,7 +69,6 @@ def define_models(db):
 		failed = Optional(bool)
 		fail_cost = Optional(int)
 		employees = Set('Employees_Tasks')
-		restrictions = Set('Employees_Restrictions')
 
 		def __repr__(self):
 			return str(self.id)

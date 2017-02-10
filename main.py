@@ -48,11 +48,14 @@ import Planning.features as PLf
 
 # def foo():
 	# return 1, True, "lalala"
-	
 # a, b, c = foo()
 # print(a)
 # print(b)
 # print(c)
+
+with db_session:
+	print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
+# print(PLf.EmployeesBySkill(db, 4))
 
 
 

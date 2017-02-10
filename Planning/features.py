@@ -62,11 +62,40 @@ def ClientAvailable(db, contract_number, initial_date, end_date):
 				return False
 		return True
 
+#checked
+def EmployeesBySkill(db, id_skill):
+	with db_session:
+		ids_employees = []
+		emps = select(e for e in db.Employees)
+		for e in emps:
+			es = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[id_skill])
+			if es != None and es.performance > 0:
+				ids_employees.append(e.id)
+		return ids_employees
 
-def FindEmployees(db, id_skill, initial_date, end_date):
-	
+# ¿?
+def EmployeesByStatus(db, contract_number, this_project, fixed):
+	with db_session:
+		ids_employees = []
+		emps = select(e for e in db.Employees)
+		for e in emps:
+			es = db.Employees_Restrictions.get(employee = db.Employees[e.id])
+			if es != None and this_project and es.contract_number = 
+				ids_employees.append(e.id)
+			return ids_employees
+# ¿?
+def FindEmployees(db, id_skill, num_workers, initial_date, end_date):
+	with db_session:
+		ids_employees = EmployeesBySkill(db, id_skill)
+		emps = select(e for e in db.Employees if e.id in ids_employees and db.Employees_Restrictions)
+		num_workers = num_workers - len(emps)
+		if num_workers <= 0:
+			return emps
+		
+		possible = 
+		
 
-def FindDateEmployees(db, id_skill, contract_number, num_workers, current_date):
+def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date):
 	days_from_current = 1
 	task_days = GetDays(db, id_skill, contract_number, num_workers)
 	while(True):
@@ -87,12 +116,11 @@ def FindDateEmployees(db, id_skill, contract_number, num_workers, current_date):
 #####################################################################
 # Acá empieza: funciones para asignar/desasignar tareas a empleados #
 
-def AssignTask(db, id_employee, id_task, initial_date = None, end_date = None):
+def AssignTask(db, ids_employees, id_task, initial_date = None, end_date = None):
 	with db_session:
-		et = db.Employees_Tasks(employee = id_employee, task = id_task)
-		if initial_date != None:
+		for id_employee in ids_employees:
+			et = db.Employees_Tasks(employee = id_employee, task = id_task)
 			et.initial_date = initial_date
-		if end_date != None:
 			et.end_date = end_date
 	
 def UnassignTask(db, id_employee, id_task):
