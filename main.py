@@ -54,8 +54,8 @@ import Planning.features as PLf
 # print(c)
 
 
-with db_session:
-	print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
+#with db_session:
+#	print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
 # print(PLf.EmployeesBySkill(db, 4))
 
 
