@@ -105,7 +105,7 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		cluster3 = EmployeesByStatus(db, contract_number, ids_employees, False, True) # empleados fijos en otros proyectos
 		cluster4 = EmployeesByStatus(db, contract_number, ids_employees, False, True) # empleados vetados en otros proyectos
 		
-		ids_employees = list(id for id in ids_employees if id not in cluster1 and not in cluster2) # sacamos a todos los empleados vetados en este proyecto
+		ids_employees = list(id for id in ids_employees if id not in cluster1 and id not in cluster2) # sacamos a todos los empleados vetados en este proyecto
 		ids_found = cluster1  # incluimos sí o sí a los empleados que están fijos en el proyecto
 		
 		num_workers = num_workers - len(ids_found)
@@ -122,7 +122,7 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 	task_days = GetDays(db, id_skill, contract_number, num_workers)
 	while(True):
 		initial_date = SumDays(initial_date, days_from_current)
-		initial_date = SumDays(initial_date, days_from_current + task_days)
+		end_date = SumDays(current_date, days_from_current + task_days)
 		if ClientAvailable(db, contract_number, initial_date, end_date):
 			emps = FindEmployees(db, id_skill, initial_date, end_date)
 			if len(emps) > 0:
@@ -217,21 +217,36 @@ def ChangePriority(db, contract_number, new_priority):
 ##########################
 # Hacer la planificación #
 ##########################
-def DoPlanning(db)
-	projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
-	for p in projects:
-		d_t=date.today()
-		tasks = select(t for t in db.Tasks if t.id_project == p.contract_number).order_by(skill)
-	return tasks
-
-
-
-
-
-
-
-
-
+def DoPlanning(db):
+	with db_session:
+		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
+		for p in projects:
+			d_t=date.today()+timedelta(date(2017,2,18).day-date.today().day)			
+			print(d_t)
+			tasks = select(t for t in db.Tasks if t.id_project.contract_number == p.contract_number).order_by(lambda t : t.id_skill)
+			#for t in tasks:
+				#if(t.id_skill.id<4 and t.efective_initial_date == None):
+					#(initial, ending, emps) = FindDatesEmployees(db, t.id_skill.id, p.contract_number,1, d_t)
+					#ending.day-initial.day=days
+					#AssingTask(db,emps,t.id_skill.id,initial,ending)
+					#d_t=d_t+timedelta(days)
+					#if(d_t+timedelta(days)>p.deadline):
+					#	AvailabilityUpdate(db)
+					#	ShowDelayed(db)
+						
+				#if(t.id_skill.id == 4 and t.efective.initial.date == None):
+					#w=1
+					#while (w<=4):
+						#(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, w, d_t)
+						#ending.day-initial.day=days
+						#AssignTask(db, emps, t.id_skill.id, initial, ending)
+						#if(w==4 and d_t+timedelta(days)>p.deadline):
+							#AvailabilityUpdate(db)
+							#ShowDelayed(db)
+							#break
+						#if(w < 4 and d_t+timedelta(days)>p.deadline):
+							#w=w+1
+						
 
 	# with db_session:
 		# today = date.today()
