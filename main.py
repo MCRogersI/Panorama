@@ -92,13 +92,13 @@ PLf.DoPlanning(db)
 # print([1,8] + [0,4,5])
 # print(PLf.GetChosenIds([12, 13, 14], [0, 1, 1]))
 
-print(PLf.FindEmployees(db, 1, 1, 1, date(2010,1,1), date(2010,1,1)))	
-print(PLf.FindEmployees(db, 1, 1, 2, date(2010,1,1), date(2010,1,1)))
-print(PLf.FindEmployees(db, 1, 1, 3, date(2010,1,1), date(2010,1,1)))
-print(PLf.FindEmployees(db, 1, 1, 4, date(2010,1,1), date(2010,1,1)))
-print(PLf.FindEmployees(db, 1, 1, 5, date(2010,1,1), date(2010,1,1)))
-print(PLf.FindEmployees(db, 1, 1, 6, date(2010,1,1), date(2010,1,1)))
-print(PLf.FindEmployees(db, 1, 1, 7, date(2010,1,1), date(2010,1,1)))
+#print(PLf.FindEmployees(db, 1, 1, 1, date(2010,1,1), date(2010,1,1)))	
+#print(PLf.FindEmployees(db, 1, 1, 2, date(2010,1,1), date(2010,1,1)))
+#print(PLf.FindEmployees(db, 1, 1, 3, date(2010,1,1), date(2010,1,1)))
+#print(PLf.FindEmployees(db, 1, 1, 4, date(2010,1,1), date(2010,1,1)))
+#print(PLf.FindEmployees(db, 1, 1, 5, date(2010,1,1), date(2010,1,1)))
+#print(PLf.FindEmployees(db, 1, 1, 6, date(2010,1,1), date(2010,1,1)))
+#print(PLf.FindEmployees(db, 1, 1, 7, date(2010,1,1), date(2010,1,1)))
 
 
 

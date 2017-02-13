@@ -1,3 +1,4 @@
+from datetime import *
 def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProject):
 	while True:
 		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear un proyecto. \n - 2: si desea editar un proyecto. \n - 3: para ver proyectos actuales. \n - 4: eliminar un proyecto. \n - 5: para volver atrás. \n Ingrese la alternativa elegida: ")
@@ -37,7 +38,7 @@ def tasks_console(db, CreateTask, EditTask, PrintTasks, FailedTask):
 			original_initial_date = input("\n Ingrese la fecha estimada de inicio: ")
 			original_end_date = input("\n Ingrese la fecha estimada de término: ")
 			efective_initial_date = input("\n Ingrese la fecha efectiva de inicio, 0 si no ha comenzado: ")
-			if(efective_initial_date != 0):
+			if(efective_initial_date != '0'):
 				efective_end_date = input("\n Ingrese la fecha efectiva de término, 0 si no ha terminado: ")
 			else: 
 				efective_initial_date=None
@@ -50,11 +51,13 @@ def tasks_console(db, CreateTask, EditTask, PrintTasks, FailedTask):
 			new_original_initial_date = input("\n Ingrese la fecha estimada de inicio: ")
 			new_original_end_date = input("\n Ingrese la fecha estimada de término: ")
 			new_efective_initial_date= input("\n Ingrese la fecha efectiva de inicio, 0 si no ha comenzado: ")
-			if(new_efective_initial_date != 0):
+			if(new_efective_initial_date != '0'):
 				new_efective_end_date = input("\n Ingrese la fecha efectiva de término, 0 si no ha terminado: ")
 			else: 
 				new_efective_initial_date=None
 				new_efective_end_date=None
+			new_original_initial_date=datetime.strptime(new_original_initial_date, '%Y-%m-%d')
+			new_original_end_date=datetime.strptime(new_original_end_date, '%Y-%m-%d')
 			EditTask(db, id_edit, new_id_skill, new_id_project, new_original_initial_date, new_original_end_date, new_efective_initial_date, new_efective_end_date)
 		if(opt == '3'):
 			id_project_fail = input("\n Ingrese el ID del proyecto en el que ha fallado una tarea: ")

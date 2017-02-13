@@ -191,7 +191,7 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 		initial_date = SumDays(current_date, days_from_current)
 		end_date = SumDays(current_date, days_from_current + task_days)
 		if ClientAvailable(db, contract_number, initial_date, end_date):
-			ids_found = FindEmployees(db, id_skill, initial_date, end_date)
+			ids_found = FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date)
 			if len(ids_found) > 0:
 				return initial_date, end_date, ids_found
 			else:
@@ -289,28 +289,27 @@ def DoPlanning(db):
 			d_t=date.today()+timedelta(date(2017,2,18).day-date.today().day)			
 			print(d_t)
 			tasks = select(t for t in db.Tasks if t.id_project.contract_number == p.contract_number).order_by(lambda t : t.id_skill)
-			#for t in tasks:
-				#if(t.id_skill.id<4 and t.efective_initial_date == None):
-					#(initial, ending, emps) = FindDatesEmployees(db, t.id_skill.id, p.contract_number,1, d_t)
-					#ending.day-initial.day=days
-					#AssingTask(db,emps,t.id_skill.id,initial,ending)
-					#d_t=d_t+timedelta(days)
-					#if(d_t+timedelta(days)>p.deadline):
-					#	AvailabilityUpdate(db)
-					#	ShowDelayed(db)
-						
-				#if(t.id_skill.id == 4 and t.efective.initial.date == None):
-					#w=1
-					#while (w<=4):
-						#(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, w, d_t)
-						#ending.day-initial.day=days
-						#AssignTask(db, emps, t.id_skill.id, initial, ending)
-						#if(w==4 and d_t+timedelta(days)>p.deadline):
-							#AvailabilityUpdate(db)
+			for t in tasks:q
+				if(t.id_skill.id<4 and t.efective_initial_date == None):
+					(initial, ending, emps) = FindDatesEmployees(db, t.id_skill.id, p.contract_number,1, d_t)
+					days=ending.day-initial.day
+					AssignTask(db,emps,t.id_skill.id,initial,ending)
+					d_t=d_t+timedelta(days)
+					if(d_t+timedelta(days)>p.deadline):
+						AvailabilityUpdate(db)
+						#ShowDelayed(db)
+				if(t.id_skill.id == 4 and t.efective_initial_date == None):
+					w=1
+					while (w<=4):
+						(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, w, d_t)
+						days=ending.day-initial.day
+						AssignTask(db, emps, t.id_skill.id, initial, ending)
+						if(w==4 and d_t+timedelta(days)>p.deadline):
+							AvailabilityUpdate(db)
 							#ShowDelayed(db)
-							#break
-						#if(w < 4 and d_t+timedelta(days)>p.deadline):
-							#w=w+1
+							break
+						if(w < 4 and d_t+timedelta(days)>p.deadline):
+							w=w+1
 						
 
 
