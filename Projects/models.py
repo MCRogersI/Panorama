@@ -64,8 +64,10 @@ def define_models(db):
 		skill = Required('Skills') #Arreglar la discrepancia de nombre
 		# 'id_skill'
 		id_project = Required(Projects)
-		original_initial_date = Required(date)
-		original_end_date = Optional(date)
+		original_initial_date = Required(date) #Esto debería ser optional,
+		# dejarse vacío y luego ser llenado automáticamente por el programa.
+		original_end_date = Optional(date)#Esto debería ser optional,
+		# dejarse vacío y luego ser llenado automáticamente por el programa.
 		efective_initial_date = Optional(date)
 		efective_end_date = Optional(date)
 		failed = Optional(bool)

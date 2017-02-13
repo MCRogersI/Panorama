@@ -5,6 +5,7 @@ import Employees.features as Ef, Employees.usuario as Eu
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
+
 def console():
 	while True:
 		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: para salir. \n Ingrese la alternativa elegida: ")
@@ -19,7 +20,6 @@ def console():
 			break
 # console()
 # PLf.DoPlanning(db)
-
 
 
 
