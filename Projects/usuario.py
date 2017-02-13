@@ -12,15 +12,33 @@ def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProjec
 			deadline = input("ingrese la fecha de entrega pactada del proyecto")
 			CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline)
 		if(opt == '2'):
-			contract_number = input("\nIngrese el numero de contrato del proyecto a editar: ")
-			new_client_address = input("Ingrese la direccion del cliente: ")
-			new_client_comuna = input("Ingrese la comuna del cliente: ")
-			new_client_name = input("Ingrese el nombre del cliente: ")
-			new_client_rut = input("Ingrese el RUT del cliente: ")
-			new_linear_meters = input("Ingrese los metros lineales del proyecto: ")
-			new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto: ")
-			new_real_cost = input("Ingrese el costo real del proyecto: ")
-			EditProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_real_cost=new_real_cost)
+			new_contract_number = input("\nIngrese el numero de contrato del proyecto a editar: ")
+			new_client_address = input("Ingrese la nueva direccion del cliente, 0 si la mantiene: ")
+			if new_client_address == '0':
+				new_client_address = None
+			new_client_comuna = input("Ingrese la nueva comuna del cliente, 0 si la mantiene: ")
+			if new_client_comuna == '0':
+				new_client_comuna = None
+			new_client_name = input("Ingrese el nuevo nombre del cliente, 0 si lo mantiene: ")
+			if new_client_name == '0':
+				new_client_name = None
+			new_client_rut = input("Ingrese el nuevo RUT del cliente, 0 si lo mantiene: ")
+			if new_client_rut == '0':
+				new_client_rut = None
+			new_linear_meters = input("Ingrese los metros lineales del proyecto, 0 si se mantienen: ")
+			if new_linear_meters == '0':
+				new_linear_meters = None
+			new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto, 0 si no se conocen: ")
+			if new_real_linear_meters == '0':
+				new_real_linear_meters = None
+			new_deadline = input("Ingrese la nueva feche de entrega pactada del proyecto, 0 si se mantiene: ")
+			if new_deadline == '0':
+				new_deadline = None
+			new_estimated_cost = input("Ingrese el costo estimado del proyecto: ")
+			new_real_cost = input("Ingrese el costo real del proyecto, 0 si no se conoce: ")
+			if new_real_cost == '0':
+				new_real_cost = None
+			EditProject(db, new_contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost)
 		if(opt == '3'):
 			PrintProjects(db)
 		if(opt == '4'):
@@ -43,6 +61,8 @@ def tasks_console(db, CreateTask, EditTask, PrintTasks, FailedTask):
 			else: 
 				efective_initial_date=None
 				efective_end_date=None
+			original_initial_date=datetime.strptime(original_initial_date, '%Y-%m-%d')
+			original_end_date=datetime.strptime(original_end_date, '%Y-%m-%d')
 			CreateTask(db, id, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date, efective_end_date)
 		if(opt == '2'):
 			id_edit = input("\n Ingrese el ID de la tarea que desea editar: ")
