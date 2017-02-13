@@ -1,5 +1,7 @@
 from pony.orm import *
 from datetime import date, timedelta
+import pandas as pd
+import numpy as np
 
 #################################################################################################################
 # Acá empieza: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
@@ -288,6 +290,13 @@ def ChangePriority(db, contract_number, new_priority):
 ##########################
 # Hacer la planificación #
 ##########################
+def addDelayed(db, contract_number, id_task, initial, ending, deadline):
+	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 'id task', 'initial date', 'ending date', 'deadline'])
+	Delayed =  Delayed.append({'contract number': contract_number, 'id task': id_task, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
+	return Delayed
+
+
+
 def DoPlanning(db):
 	with db_session:
 		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
@@ -296,13 +305,11 @@ def DoPlanning(db):
 			
 			tasks = select(t for t in db.Tasks if t.id_project.contract_number == p.contract_number).order_by(lambda t : t.id_skill)
 			for t in tasks:
-				if(t.skill.id<4 and t.efective_initial_date ==
-					None):#obtiene el id del skill correspondiente a esa
+				if(t.skill.id<4 and t.efective_initial_date == None):#obtiene el id del skill correspondiente a esa
 					# tarea y revisa que no corresponda a una 'Instalación'.
 					#  También revisa que la realización de la tarea aún no
 					# haya comenzado (que sea 'planificable').
-					(initial, ending, emps) = FindDatesEmployees(db,
-																  t.id_skill.id, p.contract_number,1, d_t)
+					(initial, ending, emps) = FindDatesEmployees(db, t.id_skill.id, p.contract_number,1, d_t)
 					days=ending.day-initial.day
 					AssignTask(db,emps,t.id,initial,ending)
 					d_t=d_t+timedelta(days)

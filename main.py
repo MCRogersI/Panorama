@@ -18,8 +18,10 @@ def console():
 			print("Has salido de la consola")
 			break
 #console()
-PLf.DoPlanning(db)
-
+#PLf.DoPlanning(db)
+PLf.addDelayed(db, 1,1,1,1,1)
+PLf.addDelayed(db, 10, 2, 2017-2-12, 2017-3-1, 2017-2-28)
+print(PLf.addDelayed(db, 5, 3 , '2017-3-1', '2017-3-10', '2017-3-30'))
 
 
 
@@ -152,4 +154,3 @@ PLf.DoPlanning(db)
 # PLf.ChangePriority(db, 5, 1)
 
 # AvailabilityUpdate(db)
-
