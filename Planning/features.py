@@ -325,7 +325,7 @@ def DoPlanning(db):
 			
 			tasks = select(t for t in db.Tasks if t.id_project.contract_number == p.contract_number).order_by(lambda t : t.id_skill)
 			for t in tasks:
-				if(t.skill.id<4 and t.efective_initial_date == None):#obtiene el id del skill correspondiente a esa
+				if(t.id_skill.id < 4 and t.efective_initial_date == None):#obtiene el id del skill correspondiente a esa
 					# tarea y revisa que no corresponda a una 'Instalación'.
 					#  También revisa que la realización de la tarea aún no
 					# haya comenzado (que sea 'planificable').
@@ -336,8 +336,8 @@ def DoPlanning(db):
 					
 					if(d_t > p.deadline):
 						AvailabilityUpdate(db)
-						Delayed = addDelayed(db, Delayed, p.contract_number, t.id_skill, initial, ending, p.deadline)
-						print(Delayed)
+						#Delayed = addDelayed(db, Delayed, p.contract_number, t.id_skill, initial, ending, p.deadline)
+						#print(Delayed)
 				if(t.id_skill.id == 4 and t.efective_initial_date == None):
 					num_workers=1
 					while (num_workers<=4):
