@@ -18,9 +18,12 @@ def console():
 		if(opt == '4'):
 			print("Has salido de la consola")
 			break
+
 # console()
 # PLf.DoPlanning(db)
-
+# PLf.addDelayed(db, 1,1,1,1,1)
+# PLf.addDelayed(db, 10, 2, 2017-2-12, 2017-3-1, 2017-2-28)
+# print(PLf.addDelayed(db, 5, 3 , '2017-3-1', '2017-3-10', '2017-3-30'))
 
 
 
@@ -72,6 +75,7 @@ def console():
 # print(PLf.FindEmployees(db, 1, 1, 1, date(2017, 2, 2), date(2017, 2, 15)))
 
 
+
 # def foo():
 	# return 1, True, "lalala"
 # a, b, c = foo()
@@ -92,7 +96,7 @@ def console():
 # print([1,8] + [0,4,5])
 # print(PLf.GetChosenIds([12, 13, 14], [0, 1, 1]))
 
-# print(PLf.FindEmployees(db, 1, 1, 1, date(2010,1,1), date(2010,1,1)))	
+# print(PLf.FindEmployees(db, 1, 1, 1, date(2017,3,13), date(2010,3,17)))	
 # print(PLf.FindEmployees(db, 1, 1, 2, date(2010,1,1), date(2010,1,1)))
 # print(PLf.FindEmployees(db, 1, 1, 3, date(2010,1,1), date(2010,1,1)))
 # print(PLf.FindEmployees(db, 1, 1, 4, date(2010,1,1), date(2010,1,1)))
@@ -107,9 +111,23 @@ def console():
 # print(PLf.FindEmployees(db, 1, 2, 5, date(2017,3,7), date(2017,3,15)))
 # print(PLf.FindEmployees(db, 1, 2, 6, date(2017,3,7), date(2017,3,15)))
 
-print(PLf.FindEmployees(db, 1, 2, 3, date(2017,3,7), date(2017,3,17)))
+# print(PLf.FindEmployees(db, 1, 2, 3, date(2017,3,7), date(2017,3,17)))
 # print(PLf.Successor([0,1,0,1], 2))
 
+
+
+# print(PLf.FindDatesEmployees(db, 1, 1, 1, date(2017, 2, 13)))
+# print(PLf.FindDatesEmployees(db, 1, 1, 2, date(2017, 2, 13)))
+# print(PLf.FindDatesEmployees(db, 1, 1, 3, date(2017, 2, 13)))
+# print(PLf.FindDatesEmployees(db, 1, 1, 4, date(2017, 2, 13)))
+# print(PLf.FindDatesEmployees(db, 1, 1, 5, date(2017, 2, 13)))
+
+# print(PLf.FindDatesEmployees(db, 1, 2, 1, date(2017, 3, 9)))
+# print(PLf.FindDatesEmployees(db, 1, 2, 2, date(2017, 3, 9)))
+# print(PLf.FindDatesEmployees(db, 1, 2, 3, date(2017, 3, 9)))
+# print(PLf.FindDatesEmployees(db, 1, 2, 4, date(2017, 3, 9)))
+# print(PLf.FindDatesEmployees(db, 1, 2, 5, date(2017, 3, 9)))
+# print(PLf.FindDatesEmployees(db, 1, 2, 6, date(2017, 3, 9)))
 
 
 ##############################################
@@ -160,4 +178,3 @@ print(PLf.FindEmployees(db, 1, 2, 3, date(2017,3,7), date(2017,3,17)))
 # PLf.ChangePriority(db, 5, 1)
 
 # AvailabilityUpdate(db)
-

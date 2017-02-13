@@ -1,5 +1,7 @@
 from pony.orm import *
 from datetime import date, timedelta
+# import pandas as pd
+import numpy as np
 
 #################################################################################################################
 # Acá empieza: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
@@ -90,8 +92,12 @@ def EmployeesByStatus(db, contract_number, ids_employees, this_project, fixed):
 def EmployeesAvailable(db, ids_employees, initial_date, end_date):
 	with db_session:
 		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
+		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
 		for ea in emp_acts:
-			if (ea.initial_date >= initial_date and ea.initial_date <= end_date) or (ea.end_date >= initial_date and ea.end_date <= end_date):
+			if (initial_date >= ea.initial_date and initial_date <= ea.end_date) or (end_date >= ea.initial_date and end_date <= ea.end_date):
+				return False
+		for et in emp_tasks:
+			if (initial_date >= et.initial_date and initial_date <= et.end_date) or (end_date >= et.initial_date and end_date <= et.end_date):
 				return False
 		return True		
 
@@ -175,8 +181,8 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		for id in priority2: possibilities.append(id)
 		for id in priority1: possibilities.append(id)
 		
-		if num_workers > len(possibilities): # si no hay suficientes trabajadores no vetados para el trabajo, se devuelve lista vacía
-			return []
+		if num_workers > len(possibilities): # si no hay suficientes trabajadores no vetados para el trabajo, se devuelve el código False
+			return False
 		
 		chosen = [] # elegimos (marcamos con 1) por defecto a los más prioritarios, si no tienen disponibilidad, vamos considerando a los menos prioritarios
 		for _ in range(0, len(possibilities) - num_workers): chosen.append(0)
@@ -190,7 +196,7 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 			if chosen == last:
 				return []
 			chosen = Successor(chosen, num_workers)
-
+			
 		return ids_found + GetChosenIds(possibilities, chosen)
 		
 
@@ -199,15 +205,17 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 	task_days = GetDays(db, id_skill, contract_number, num_workers)
 	while(True):
 		initial_date = SumDays(current_date, days_from_current)
-		end_date = SumDays(current_date, days_from_current + task_days)
+		end_date = SumDays(current_date, days_from_current + task_days - 1)
 		if ClientAvailable(db, contract_number, initial_date, end_date):
 			ids_found = FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date)
-			if len(ids_found) > 0:
+			if ids_found == False:
+				return None, None, None
+			elif len(ids_found) > 0:
 				return initial_date, end_date, ids_found
 			else:
 				days_from_current = days_from_current + 1
 		else:
-			days_from_current = days_from_current + 1
+			days_from_current+=1
 		# else:
 		# 	task_days = GetDays(db, id_skill, contract_number,
 		# num_workers+1) #Esta opción debe estudiarse en la heurística que
@@ -235,13 +243,12 @@ def UnassignTask(db, id_employee, id_task):
 # Acá termina: funciones para asignar/desasignar tareas a empleados	#
 #####################################################################	
 	
-def AvailabilityUpdate(db,contract_number):
+def AvailabilityUpdate(db):
 	with db_session:
 		select(et for et in db.Employees_Tasks if
 			   et.task.efective_initial_date == None and db.Tasks[
 				   et.task.id].id_project == contract_number
-			   and
-			   not
+			   and not 
 			   db.Projects[et.tasks.id].fixed_planning ).delete()
 		
 # Esta funcion borra las actividades que no están fijas y que no han empezado
@@ -303,7 +310,14 @@ def ChangePriority(db, contract_number, new_priority):
 ##########################
 # Hacer la planificación #
 ##########################
+def addDelayed(db, Delayed, contract_number, id_task, initial, ending, deadline):
+	Delayed =  Delayed.append({'contract number': contract_number, 'id task': id_task, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
+	return Delayed
+
+
+
 def DoPlanning(db):
+	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 'id task', 'initial date', 'ending date', 'deadline'])
 	with db_session:
 		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
 		for p in projects:
@@ -311,20 +325,19 @@ def DoPlanning(db):
 			
 			tasks = select(t for t in db.Tasks if t.id_project.contract_number == p.contract_number).order_by(lambda t : t.id_skill)
 			for t in tasks:
-				if(t.skill.id<4 and t.efective_initial_date ==
-					None):#obtiene el id del skill correspondiente a esa
+				if(t.skill.id<4 and t.efective_initial_date == None):#obtiene el id del skill correspondiente a esa
 					# tarea y revisa que no corresponda a una 'Instalación'.
 					#  También revisa que la realización de la tarea aún no
 					# haya comenzado (que sea 'planificable').
-					(initial, ending, emps) = FindDatesEmployees(db,
-																  t.id_skill.id, p.contract_number,1, d_t) #emps: lista de id de los empleados buscados.
+					(initial, ending, emps) = FindDatesEmployees(db, t.id_skill.id, p.contract_number,1, d_t)
 					days=ending.day-initial.day
 					AssignTask(db,emps,t.id,initial,ending)
 					d_t=d_t+timedelta(days)
 					
 					if(d_t > p.deadline):
-						AvailabilityUpdate(db, p.contract_number)
-						#ShowDelayed(db)
+						AvailabilityUpdate(db)
+						Delayed = addDelayed(db, Delayed, p.contract_number, t.id_skill, initial, ending, p.deadline)
+						print(Delayed)
 				if(t.id_skill.id == 4 and t.efective_initial_date == None):
 					num_workers=1
 					while (num_workers<=4):
