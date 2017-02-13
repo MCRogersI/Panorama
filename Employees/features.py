@@ -64,4 +64,4 @@ def PrintSelectSkill(db, id_skill):
 			es = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[id_skill])
 			if es != None and es.performance > 0:
 				ids.append(e.id)
-		select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id).show()		
+		select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id).show()

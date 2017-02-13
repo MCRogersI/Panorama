@@ -290,14 +290,14 @@ def ChangePriority(db, contract_number, new_priority):
 ##########################
 # Hacer la planificación #
 ##########################
-def addDelayed(db, contract_number, id_task, initial, ending, deadline):
-	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 'id task', 'initial date', 'ending date', 'deadline'])
+def addDelayed(db, Delayed, contract_number, id_task, initial, ending, deadline):
 	Delayed =  Delayed.append({'contract number': contract_number, 'id task': id_task, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
 	return Delayed
 
 
 
 def DoPlanning(db):
+	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 'id task', 'initial date', 'ending date', 'deadline'])
 	with db_session:
 		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
 		for p in projects:
@@ -316,7 +316,8 @@ def DoPlanning(db):
 					
 					if(d_t > p.deadline):
 						AvailabilityUpdate(db)
-						#ShowDelayed(db)
+						Delayed = addDelayed(db, Delayed, p.contract_number, t.id_skill, initial, ending, p.deadline)
+						print(Delayed)
 				if(t.id_skill.id == 4 and t.efective_initial_date == None):
 					num_workers=1
 					while (num_workers<=4):

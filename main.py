@@ -17,11 +17,17 @@ def console():
 		if(opt == '4'):
 			print("Has salido de la consola")
 			break
+<<<<<<< HEAD
 #console()
 #PLf.DoPlanning(db)
 PLf.addDelayed(db, 1,1,1,1,1)
 PLf.addDelayed(db, 10, 2, 2017-2-12, 2017-3-1, 2017-2-28)
 print(PLf.addDelayed(db, 5, 3 , '2017-3-1', '2017-3-10', '2017-3-30'))
+=======
+# console()
+# PLf.DoPlanning(db)
+
+>>>>>>> 70fc010d451fe46650440f032be1c57b61955e72
 
 
 
@@ -94,16 +100,23 @@ print(PLf.addDelayed(db, 5, 3 , '2017-3-1', '2017-3-10', '2017-3-30'))
 # print([1,8] + [0,4,5])
 # print(PLf.GetChosenIds([12, 13, 14], [0, 1, 1]))
 
-#print(PLf.FindEmployees(db, 1, 1, 1, date(2010,1,1), date(2010,1,1)))	
-#print(PLf.FindEmployees(db, 1, 1, 2, date(2010,1,1), date(2010,1,1)))
-#print(PLf.FindEmployees(db, 1, 1, 3, date(2010,1,1), date(2010,1,1)))
-#print(PLf.FindEmployees(db, 1, 1, 4, date(2010,1,1), date(2010,1,1)))
-#print(PLf.FindEmployees(db, 1, 1, 5, date(2010,1,1), date(2010,1,1)))
-#print(PLf.FindEmployees(db, 1, 1, 6, date(2010,1,1), date(2010,1,1)))
-#print(PLf.FindEmployees(db, 1, 1, 7, date(2010,1,1), date(2010,1,1)))
+# print(PLf.FindEmployees(db, 1, 1, 1, date(2010,1,1), date(2010,1,1)))	
+# print(PLf.FindEmployees(db, 1, 1, 2, date(2010,1,1), date(2010,1,1)))
+# print(PLf.FindEmployees(db, 1, 1, 3, date(2010,1,1), date(2010,1,1)))
+# print(PLf.FindEmployees(db, 1, 1, 4, date(2010,1,1), date(2010,1,1)))
+# print(PLf.FindEmployees(db, 1, 1, 5, date(2010,1,1), date(2010,1,1)))
+# print(PLf.FindEmployees(db, 1, 1, 6, date(2010,1,1), date(2010,1,1)))
+# print(PLf.FindEmployees(db, 1, 1, 7, date(2010,1,1), date(2010,1,1)))
 
+# print(PLf.FindEmployees(db, 1, 2, 1, date(2017,3,7), date(2017,3,15)))
+# print(PLf.FindEmployees(db, 1, 2, 2, date(2017,3,7), date(2017,3,15)))
+# print(PLf.FindEmployees(db, 1, 2, 3, date(2017,3,7), date(2017,3,15)))
+# print(PLf.FindEmployees(db, 1, 2, 4, date(2017,3,7), date(2017,3,15)))
+# print(PLf.FindEmployees(db, 1, 2, 5, date(2017,3,7), date(2017,3,15)))
+# print(PLf.FindEmployees(db, 1, 2, 6, date(2017,3,7), date(2017,3,15)))
 
-
+print(PLf.FindEmployees(db, 1, 2, 3, date(2017,3,7), date(2017,3,17)))
+# print(PLf.Successor([0,1,0,1], 2))
 
 
 
@@ -113,6 +126,7 @@ print(PLf.addDelayed(db, 5, 3 , '2017-3-1', '2017-3-10', '2017-3-30'))
 # Pf.CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline, real_linear_meters = None, estimated_cost = None, real_cost = None)
 # Pf.CreateProject(db, 1, 'frutillita', 'Las Condes', 'frambuesita', '20.024.322-0', 15, date(2017, 3, 14), estimated_cost = 200,)
 # Pf.CreateProject(db, 2, 'cebollita', 'Las Condes', 'sub-campeon', '21.024.322-0', 20, date(2017, 3, 15), estimated_cost = 300,)
+# Pf.CreateProject(db, 3, 'lalala', 'Las Condes', 'sisisi', '22.024.322-0', 20, date(2017, 4, 30), estimated_cost = 150,)
 # with db_session:
 	# db.Projects[1].priority = 1
 	# db.Projects[2].priority = 2
