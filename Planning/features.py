@@ -1,6 +1,6 @@
 from pony.orm import *
 from datetime import date, timedelta
-import pandas as pd
+# import pandas as pd
 import numpy as np
 
 #################################################################################################################
@@ -127,16 +127,19 @@ def Successor(chosen, num_workers):
 	for _ in range(0, num_workers): last.append(1)
 	for _ in range(0, len(chosen) - num_workers): last.append(0)
 	
+	if chosen == last:
+		return chosen
+	
 	for c in chosen:
 		if c == 0: as_string = as_string + '0'
 		if c == 1: as_string = as_string + '1'
 	
-	chosen = StringToList(as_string, chosen)
 	as_string = str(bin(int(as_string,2) + int('1',2)))
+	chosen = StringToList(as_string, chosen)
 	
 	while not HasNOnes(chosen, num_workers) and chosen != last:
-		chosen = StringToList(as_string, chosen)
 		as_string = str(bin(int(as_string,2) + int('1',2)))
+		chosen = StringToList(as_string, chosen)
 	return chosen
 
 #checked
@@ -161,8 +164,11 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		ids_found = cluster1  # incluimos sí o sí a los empleados que están fijos en el proyecto
 		
 		num_workers = num_workers - len(ids_found)
-		if num_workers <= 0 and EmployeesAvailable(db, ids_found, initial_date, end_date): #revisamos si con los empleados fijos basta y si ellos están disponibles en las fechas necesarias
-			return ids_found
+		if num_workers <= 0: #revisamos si con los empleados fijos basta y si ellos están disponibles en las fechas necesarias
+			if EmployeesAvailable(db, ids_found, initial_date, end_date):
+				return ids_found
+			else:
+				return []
 		
 		priority1 = list(id for id in ids_employees if id not in cluster3 and id in cluster4) # priorizamos empleados vetados en otros proyectos y NO fijos en otros proyectos
 		priority2 = list(id for id in ids_employees if id not in cluster3 and id not in cluster4) # después, empleados ni fijos ni vetados en otros proyectos
@@ -182,10 +188,14 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		for _ in range(0, len(possibilities) - num_workers): chosen.append(0)
 		for _ in range(0, num_workers): chosen.append(1)
 		
+		last = [] # definimos la última combinación posible de elegidos para saber cuando parar
+		for _ in range(0, num_workers): last.append(1)
+		for _ in range(0, len(chosen) - num_workers): last.append(0)
+		
 		while(not EmployeesAvailable(db, ids_found + GetChosenIds(possibilities, chosen), initial_date, end_date)):
-			if chosen == Succesor(chosen):
+			if chosen == last:
 				return []
-			chosen = Succesor(chosen)
+			chosen = Successor(chosen, num_workers)
 			
 		return ids_found + GetChosenIds(possibilities, chosen)
 		

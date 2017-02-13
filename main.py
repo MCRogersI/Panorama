@@ -122,11 +122,12 @@ def console():
 # print(PLf.FindDatesEmployees(db, 1, 1, 4, date(2017, 2, 13)))
 # print(PLf.FindDatesEmployees(db, 1, 1, 5, date(2017, 2, 13)))
 
-print(PLf.FindDatesEmployees(db, 1, 1, 1, date(2017, 3, 7)))
-print(PLf.FindDatesEmployees(db, 1, 1, 2, date(2017, 3, 7)))
-print(PLf.FindDatesEmployees(db, 1, 1, 3, date(2017, 3, 7)))
-print(PLf.FindDatesEmployees(db, 1, 1, 4, date(2017, 3, 7)))
-print(PLf.FindDatesEmployees(db, 1, 1, 5, date(2017, 3, 7)))
+print(PLf.FindDatesEmployees(db, 1, 2, 1, date(2017, 3, 9)))
+print(PLf.FindDatesEmployees(db, 1, 2, 2, date(2017, 3, 9)))
+print(PLf.FindDatesEmployees(db, 1, 2, 3, date(2017, 3, 9)))
+print(PLf.FindDatesEmployees(db, 1, 2, 4, date(2017, 3, 9)))
+print(PLf.FindDatesEmployees(db, 1, 2, 5, date(2017, 3, 9)))
+print(PLf.FindDatesEmployees(db, 1, 2, 6, date(2017, 3, 9)))
 
 
 ##############################################
