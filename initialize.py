@@ -33,17 +33,17 @@ with db_session:
 # ###############################################
 
 Ef.CreateEmployee(db, 1, "Juan", 1, perf_rect = 1)
-Ef.CreateEmployee(db, 2, "Pedro", 2, perf_rect = 2)
-Ef.CreateEmployee(db, 3, "Diego", 2, perf_rect = 3)
-Ef.CreateEmployee(db, 4, "Miguel", 1, perf_rect = 4)
+Ef.CreateEmployee(db, 2, "Pedro", 2, perf_des = 2)
+Ef.CreateEmployee(db, 3, "Diego", 2, perf_fab = 3)
+Ef.CreateEmployee(db, 4, "Miguel", 1, perf_inst = 4)
 Ef.CreateEmployee(db, 5, "Mario", 1, perf_rect = 5)
-Ef.CreateEmployee(db, 6, "Felipe", 2, perf_rect = 6)
-Ef.CreateEmployee(db, 7, "Miguel", 1, perf_rect = 4)
-Ef.CreateEmployee(db, 8, "Mario", 1, perf_rect = 5)
+Ef.CreateEmployee(db, 6, "Felipe", 2, perf_des = 6)
+Ef.CreateEmployee(db, 7, "Miguel", 1, perf_fab = 4)
+Ef.CreateEmployee(db, 8, "Mario", 1, perf_inst = 5)
 Ef.CreateEmployee(db, 9, "Felipe", 2, perf_rect = 6)
-Ef.CreateEmployee(db, 10, "Miguel", 1, perf_rect = 4)
-Ef.CreateEmployee(db, 11, "Mario", 1, perf_rect = 5)
-Ef.CreateEmployee(db, 12, "Felipe", 1, perf_rect = 6)
+Ef.CreateEmployee(db, 10, "Miguel", 1, perf_des = 4)
+Ef.CreateEmployee(db, 11, "Mario", 1, perf_fab = 5)
+Ef.CreateEmployee(db, 12, "Felipe", 1, perf_inst = 6)
 
 
 ###########################################################
