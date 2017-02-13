@@ -196,6 +196,12 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 				return initial_date, end_date, ids_found
 			else:
 				days_from_current = days_from_current + 1
+		else:
+			days_from_current+=1
+		# else:
+		# 	task_days = GetDays(db, id_skill, contract_number,
+		# num_workers+1) #Esta opción debe estudiarse en la heurística que
+		# se encuentra en el método "DoPlanning".
 
 # Acá termina: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
 #################################################################################################################
@@ -290,8 +296,13 @@ def DoPlanning(db):
 			
 			tasks = select(t for t in db.Tasks if t.id_project.contract_number == p.contract_number).order_by(lambda t : t.id_skill)
 			for t in tasks:
-				if(t.id_skill.id<4 and t.efective_initial_date == None):
-					(initial, ending, emps) = FindDatesEmployees(db, t.id_skill.id, p.contract_number,1, d_t)
+				if(t.skill.id<4 and t.efective_initial_date ==
+					None):#obtiene el id del skill correspondiente a esa
+					# tarea y revisa que no corresponda a una 'Instalación'.
+					#  También revisa que la realización de la tarea aún no
+					# haya comenzado (que sea 'planificable').
+					(initial, ending, emps) = FindDatesEmployees(db,
+																  t.id_skill.id, p.contract_number,1, d_t)
 					days=ending.day-initial.day
 					AssignTask(db,emps,t.id,initial,ending)
 					d_t=d_t+timedelta(days)
