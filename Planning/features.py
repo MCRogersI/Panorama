@@ -246,8 +246,7 @@ def AvailabilityUpdate(db,contract_number):
 		select(et for et in db.Employees_Tasks if
 			   et.task.efective_initial_date == None and db.Tasks[
 				   et.task.id].id_project == contract_number
-			   and
-			   not
+			   and not 
 			   db.Projects[et.tasks.id].fixed_planning ).delete()
 		
 # Esta funcion borra las actividades que no están fijas y que no han empezado
