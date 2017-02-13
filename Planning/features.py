@@ -121,16 +121,19 @@ def Successor(chosen, num_workers):
 	for _ in range(0, num_workers): last.append(1)
 	for _ in range(0, len(chosen) - num_workers): last.append(0)
 	
+	if chosen == last:
+		return chosen
+	
 	for c in chosen:
 		if c == 0: as_string = as_string + '0'
 		if c == 1: as_string = as_string + '1'
 	
-	chosen = StringToList(as_string, chosen)
 	as_string = str(bin(int(as_string,2) + int('1',2)))
+	chosen = StringToList(as_string, chosen)
 	
 	while not HasNOnes(chosen, num_workers) and chosen != last:
-		chosen = StringToList(as_string, chosen)
 		as_string = str(bin(int(as_string,2) + int('1',2)))
+		chosen = StringToList(as_string, chosen)
 	return chosen
 
 #checked
@@ -155,8 +158,11 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		ids_found = cluster1  # incluimos sí o sí a los empleados que están fijos en el proyecto
 		
 		num_workers = num_workers - len(ids_found)
-		if num_workers <= 0 and EmployeesAvailable(db, ids_found, initial_date, end_date): #revisamos si con los empleados fijos basta y si ellos están disponibles en las fechas necesarias
-			return ids_found
+		if num_workers <= 0: #revisamos si con los empleados fijos basta y si ellos están disponibles en las fechas necesarias
+			if EmployeesAvailable(db, ids_found, initial_date, end_date):
+				return ids_found
+			else:
+				return []
 		
 		priority1 = list(id for id in ids_employees if id not in cluster3 and id in cluster4) # priorizamos empleados vetados en otros proyectos y NO fijos en otros proyectos
 		priority2 = list(id for id in ids_employees if id not in cluster3 and id not in cluster4) # después, empleados ni fijos ni vetados en otros proyectos
@@ -169,18 +175,22 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		for id in priority2: possibilities.append(id)
 		for id in priority1: possibilities.append(id)
 		
-		if num_workers > len(possibilities): # si no hay suficientes trabajadores nov etados para el trabajo, se devuelve lista vacía
+		if num_workers > len(possibilities): # si no hay suficientes trabajadores no vetados para el trabajo, se devuelve lista vacía
 			return []
 		
 		chosen = [] # elegimos (marcamos con 1) por defecto a los más prioritarios, si no tienen disponibilidad, vamos considerando a los menos prioritarios
 		for _ in range(0, len(possibilities) - num_workers): chosen.append(0)
 		for _ in range(0, num_workers): chosen.append(1)
 		
+		last = [] # definimos la última combinación posible de elegidos para saber cuando parar
+		for _ in range(0, num_workers): last.append(1)
+		for _ in range(0, len(chosen) - num_workers): last.append(0)
+		
 		while(not EmployeesAvailable(db, ids_found + GetChosenIds(possibilities, chosen), initial_date, end_date)):
-			if chosen == Succesor(chosen):
+			if chosen == last:
 				return []
-			chosen = Succesor(chosen)
-			
+			chosen = Successor(chosen, num_workers)
+
 		return ids_found + GetChosenIds(possibilities, chosen)
 		
 
@@ -197,7 +207,7 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 			else:
 				days_from_current = days_from_current + 1
 		else:
-			days_from_current+=1
+			days_from_current = days_from_current + 1
 		# else:
 		# 	task_days = GetDays(db, id_skill, contract_number,
 		# num_workers+1) #Esta opción debe estudiarse en la heurística que
@@ -306,22 +316,22 @@ def DoPlanning(db):
 					days=ending.day-initial.day
 					AssignTask(db,emps,t.id,initial,ending)
 					d_t=d_t+timedelta(days)
-					# print(d_t)
-					#if(d_t>p.deadline):
-						#AvailabilityUpdate(db)
+					
+					if(d_t > p.deadline):
+						AvailabilityUpdate(db)
 						#ShowDelayed(db)
-				#if(t.id_skill.id == 4 and t.efective_initial_date == None):
-					#w=1
-					#while (w<=4):
-						#(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, w, d_t)
-						#days=ending.day-initial.day
-						#AssignTask(db, emps, t.id_skill.id, initial, ending)
-						#if(w==4 and d_t+timedelta(days)>p.deadline):
-							#AvailabilityUpdate(db)
+				if(t.id_skill.id == 4 and t.efective_initial_date == None):
+					num_workers=1
+					while (num_workers<=4):
+						(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, num_workers, d_t)
+						days=ending.day-initial.day
+						AssignTask(db, emps, t.id, initial, ending)
+						if(num_workers==4 and d_t+timedelta(days)>p.deadline):
+							AvailabilityUpdate(db)
 							#ShowDelayed(db)
-							#break
-						#if(w < 4 and d_t+timedelta(days)>p.deadline):
-							#w=w+1
+							break
+						if(num_workers < 4 and d_t+timedelta(days)>p.deadline):
+							num_workers=num_workers+1
 						
 
 
