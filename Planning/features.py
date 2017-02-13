@@ -90,8 +90,12 @@ def EmployeesByStatus(db, contract_number, ids_employees, this_project, fixed):
 def EmployeesAvailable(db, ids_employees, initial_date, end_date):
 	with db_session:
 		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
+		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
 		for ea in emp_acts:
-			if (ea.initial_date >= initial_date and ea.initial_date <= end_date) or (ea.end_date >= initial_date and ea.end_date <= end_date):
+			if (initial_date >= ea.initial_date and initial_date <= ea.end_date) or (end_date >= ea.initial_date and end_date <= ea.end_date):
+				return False
+		for et in emp_tasks:
+			if (initial_date >= et.initial_date and initial_date <= et.end_date) or (end_date >= et.initial_date and end_date <= et.end_date):
 				return False
 		return True		
 
@@ -176,7 +180,7 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		for id in priority1: possibilities.append(id)
 		
 		if num_workers > len(possibilities): # si no hay suficientes trabajadores no vetados para el trabajo, se devuelve lista vacía
-			return []
+			return False
 		
 		chosen = [] # elegimos (marcamos con 1) por defecto a los más prioritarios, si no tienen disponibilidad, vamos considerando a los menos prioritarios
 		for _ in range(0, len(possibilities) - num_workers): chosen.append(0)
@@ -199,10 +203,12 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 	task_days = GetDays(db, id_skill, contract_number, num_workers)
 	while(True):
 		initial_date = SumDays(current_date, days_from_current)
-		end_date = SumDays(current_date, days_from_current + task_days)
+		end_date = SumDays(current_date, days_from_current + task_days - 1)
 		if ClientAvailable(db, contract_number, initial_date, end_date):
 			ids_found = FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date)
-			if len(ids_found) > 0:
+			if ids_found == False:
+				return None, None, None
+			elif len(ids_found) > 0:
 				return initial_date, end_date, ids_found
 			else:
 				days_from_current = days_from_current + 1
