@@ -316,22 +316,22 @@ def DoPlanning(db):
 					days=ending.day-initial.day
 					AssignTask(db,emps,t.id,initial,ending)
 					d_t=d_t+timedelta(days)
-					print(d_t)
-					#if(d_t+timedelta(days)>p.deadline):
-						#AvailabilityUpdate(db)
+					
+					if(d_t > p.deadline):
+						AvailabilityUpdate(db)
 						#ShowDelayed(db)
-				#if(t.id_skill.id == 4 and t.efective_initial_date == None):
-					#w=1
-					#while (w<=4):
-						#(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, w, d_t)
-						#days=ending.day-initial.day
-						#AssignTask(db, emps, t.id_skill.id, initial, ending)
-						#if(w==4 and d_t+timedelta(days)>p.deadline):
-							#AvailabilityUpdate(db)
+				if(t.id_skill.id == 4 and t.efective_initial_date == None):
+					num_workers=1
+					while (num_workers<=4):
+						(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, num_workers, d_t)
+						days=ending.day-initial.day
+						AssignTask(db, emps, t.id, initial, ending)
+						if(num_workers==4 and d_t+timedelta(days)>p.deadline):
+							AvailabilityUpdate(db)
 							#ShowDelayed(db)
-							#break
-						#if(w < 4 and d_t+timedelta(days)>p.deadline):
-							#w=w+1
+							break
+						if(num_workers < 4 and d_t+timedelta(days)>p.deadline):
+							num_workers=num_workers+1
 						
 
 
