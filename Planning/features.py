@@ -302,12 +302,12 @@ def DoPlanning(db):
 					#  También revisa que la realización de la tarea aún no
 					# haya comenzado (que sea 'planificable').
 					(initial, ending, emps) = FindDatesEmployees(db,
-																  t.id_skill.id, p.contract_number,1, d_t)
+																  t.id_skill.id, p.contract_number,1, d_t) #emps: lista de id de los empleados buscados.
 					days=ending.day-initial.day
 					AssignTask(db,emps,t.id,initial,ending)
 					d_t=d_t+timedelta(days)
-					print(d_t)
-					#if(d_t+timedelta(days)>p.deadline):
+					# print(d_t)
+					#if(d_t>p.deadline):
 						#AvailabilityUpdate(db)
 						#ShowDelayed(db)
 				#if(t.id_skill.id == 4 and t.efective_initial_date == None):
