@@ -286,30 +286,31 @@ def DoPlanning(db):
 	with db_session:
 		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
 		for p in projects:
-			d_t=date.today()+timedelta(date(2017,2,18).day-date.today().day)			
-			print(d_t)
+			d_t=date.today()#+timedelta(date(2017,2,18).day-date.today().day)			
+			
 			tasks = select(t for t in db.Tasks if t.id_project.contract_number == p.contract_number).order_by(lambda t : t.id_skill)
-			for t in tasks:q
+			for t in tasks:
 				if(t.id_skill.id<4 and t.efective_initial_date == None):
 					(initial, ending, emps) = FindDatesEmployees(db, t.id_skill.id, p.contract_number,1, d_t)
 					days=ending.day-initial.day
-					AssignTask(db,emps,t.id_skill.id,initial,ending)
+					AssignTask(db,emps,t.id,initial,ending)
 					d_t=d_t+timedelta(days)
-					if(d_t+timedelta(days)>p.deadline):
-						AvailabilityUpdate(db)
+					print(d_t)
+					#if(d_t+timedelta(days)>p.deadline):
+						#AvailabilityUpdate(db)
 						#ShowDelayed(db)
-				if(t.id_skill.id == 4 and t.efective_initial_date == None):
-					w=1
-					while (w<=4):
-						(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, w, d_t)
-						days=ending.day-initial.day
-						AssignTask(db, emps, t.id_skill.id, initial, ending)
-						if(w==4 and d_t+timedelta(days)>p.deadline):
-							AvailabilityUpdate(db)
+				#if(t.id_skill.id == 4 and t.efective_initial_date == None):
+					#w=1
+					#while (w<=4):
+						#(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, w, d_t)
+						#days=ending.day-initial.day
+						#AssignTask(db, emps, t.id_skill.id, initial, ending)
+						#if(w==4 and d_t+timedelta(days)>p.deadline):
+							#AvailabilityUpdate(db)
 							#ShowDelayed(db)
-							break
-						if(w < 4 and d_t+timedelta(days)>p.deadline):
-							w=w+1
+							#break
+						#if(w < 4 and d_t+timedelta(days)>p.deadline):
+							#w=w+1
 						
 
 

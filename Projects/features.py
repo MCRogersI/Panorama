@@ -25,7 +25,7 @@ def PrintProjects(db):
     with db_session:
         db.Projects.select().show()
 
-def EditProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_deadline = None, new_real_linear_meters = None, new_estimated_cost = None, new_real_cost = None):
+def EditProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None):
 	with db_session:
 		p = db.Projects[contract_number]
 		if new_client_address != None:
