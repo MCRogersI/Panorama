@@ -182,11 +182,14 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		for _ in range(0, len(possibilities) - num_workers): chosen.append(0)
 		for _ in range(0, num_workers): chosen.append(1)
 		
+		last = [] # definimos la última combinación posible de elegidos para saber cuando parar
+		for _ in range(0, num_workers): last.append(1)
+		for _ in range(0, len(chosen) - num_workers): last.append(0)
+		
 		while(not EmployeesAvailable(db, ids_found + GetChosenIds(possibilities, chosen), initial_date, end_date)):
-			new_chosen = Successor(chosen, num_workers)
-			if chosen == new_chosen:
+			if chosen == last:
 				return []
-			chosen = new_chosen
+			chosen = Successor(chosen, num_workers)
 
 		return ids_found + GetChosenIds(possibilities, chosen)
 		
@@ -198,11 +201,17 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 		initial_date = SumDays(current_date, days_from_current)
 		end_date = SumDays(current_date, days_from_current + task_days)
 		if ClientAvailable(db, contract_number, initial_date, end_date):
-			ids_found = FindEmployees(db, id_skill, initial_date, end_date)
+			ids_found = FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date)
 			if len(ids_found) > 0:
 				return initial_date, end_date, ids_found
 			else:
 				days_from_current = days_from_current + 1
+		else:
+			days_from_current = days_from_current + 1
+		# else:
+		# 	task_days = GetDays(db, id_skill, contract_number,
+		# num_workers+1) #Esta opción debe estudiarse en la heurística que
+		# se encuentra en el método "DoPlanning".
 
 # Acá termina: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
 #################################################################################################################
@@ -290,26 +299,42 @@ def ChangePriority(db, contract_number, new_priority):
 # Hacer la planificación #
 ##########################
 def DoPlanning(db):
-	projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
-	for p in projects:
-		d_t=date.today()
-		tasks = select(t for t in db.Tasks if t.id_project == p.contract_number).order_by(skill)
-	return tasks
+	with db_session:
+		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
+		for p in projects:
+			d_t=date.today()#+timedelta(date(2017,2,18).day-date.today().day)			
+			
+			tasks = select(t for t in db.Tasks if t.id_project.contract_number == p.contract_number).order_by(lambda t : t.id_skill)
+			for t in tasks:
+				if(t.skill.id<4 and t.efective_initial_date ==
+					None):#obtiene el id del skill correspondiente a esa
+					# tarea y revisa que no corresponda a una 'Instalación'.
+					#  También revisa que la realización de la tarea aún no
+					# haya comenzado (que sea 'planificable').
+					(initial, ending, emps) = FindDatesEmployees(db,
+																  t.id_skill.id, p.contract_number,1, d_t)
+					days=ending.day-initial.day
+					AssignTask(db,emps,t.id,initial,ending)
+					d_t=d_t+timedelta(days)
+					print(d_t)
+					#if(d_t+timedelta(days)>p.deadline):
+						#AvailabilityUpdate(db)
+						#ShowDelayed(db)
+				#if(t.id_skill.id == 4 and t.efective_initial_date == None):
+					#w=1
+					#while (w<=4):
+						#(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, w, d_t)
+						#days=ending.day-initial.day
+						#AssignTask(db, emps, t.id_skill.id, initial, ending)
+						#if(w==4 and d_t+timedelta(days)>p.deadline):
+							#AvailabilityUpdate(db)
+							#ShowDelayed(db)
+							#break
+						#if(w < 4 and d_t+timedelta(days)>p.deadline):
+							#w=w+1
+						
 
 
 
-
-
-
-
-
-
-
-	# with db_session:
-		# today = date.today()
-		# projects = select(p for p in db.Projects).order_by(asc( GetDays(db, id_skill, contract_number, num_workers)))
-		
-					
-				
 			
 
