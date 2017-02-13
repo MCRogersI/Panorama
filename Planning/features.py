@@ -235,9 +235,14 @@ def UnassignTask(db, id_employee, id_task):
 # Acá termina: funciones para asignar/desasignar tareas a empleados	#
 #####################################################################	
 	
-def AvailabilityUpdate(db):
+def AvailabilityUpdate(db,contract_number):
 	with db_session:
-		select(et for et in db.Employees_Tasks if et.task.efective_initial_date == None and not db.Projects[et.tasks.id].fixed_planning ).delete()
+		select(et for et in db.Employees_Tasks if
+			   et.task.efective_initial_date == None and db.Tasks[
+				   et.task.id].id_project == contract_number
+			   and
+			   not
+			   db.Projects[et.tasks.id].fixed_planning ).delete()
 		
 # Esta funcion borra las actividades que no están fijas y que no han empezado
 #####################################################################
@@ -318,7 +323,7 @@ def DoPlanning(db):
 					d_t=d_t+timedelta(days)
 					
 					if(d_t > p.deadline):
-						AvailabilityUpdate(db)
+						AvailabilityUpdate(db, p.contract_number)
 						#ShowDelayed(db)
 				if(t.id_skill.id == 4 and t.efective_initial_date == None):
 					num_workers=1
