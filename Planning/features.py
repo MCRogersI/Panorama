@@ -217,7 +217,7 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 			else:
 				days_from_current = days_from_current + 1
 		else:
-			days_from_current+=1
+			days_from_current = days_from_current + 1
 		# else:
 		# 	task_days = GetDays(db, id_skill, contract_number,
 		# num_workers+1) #Esta opción debe estudiarse en la heurística que
@@ -253,13 +253,13 @@ def UnassignTask(db, id_employee, id_task):
 
 def eraseTasks(db):
 	with db_session:
-		tasks_to_delete = select(task for task in db.Tasks if
-			   task.effective_initial_date == None)
-		for task_to_delete in tasks_to_delete:
+		employees_tasks_to_delete = select(employee_task for employee_task in db.Employees_Tasks)
+		for employee_task in employees_tasks_to_delete:
+			task = employee_task.task
 			#Este 'if', para verificar si el proyecto está fijo, está fuera del 'select' porque
 			# pony parece no aceptar esa expresión como condición adicional.
-			if (not task_to_delete.id_project.fixed_planning):
-				task_to_delete.delete()
+			if (task.effective_initial_date == None and not task.id_project.fixed_planning):
+				employee_task.delete()
 
 def cleanTasks(db):
 	with db_session:
@@ -337,8 +337,6 @@ def addDelayed(db, Delayed, contract_number, id_task, initial, ending, deadline)
 	Delayed =  Delayed.append({'contract number': contract_number, 'id task': id_task, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
 	return Delayed
 
-
-
 def DoPlanning(db):
 	# Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number',
 	#  'id task', 'initial date', 'ending date', 'deadline'])#Esto debería
@@ -351,8 +349,9 @@ def DoPlanning(db):
 		for p in projects:
 			last_release_date = date.today()
 			if not p.fixed_planning:
-
+				last_release_date = date.today()
 				skills = select(s for s in db.Skills).order_by(lambda s : s.id)
+				num_workers = 1
 				for s in skills:
 					if (s.id < 4):
 						# obtiene el id del
@@ -364,16 +363,41 @@ def DoPlanning(db):
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 
 						if len(employees_tasks)==0:
-							print("SFA3333333333333333333333333sf")
+							pass
 						else:
+							pass
 
-							print("SFAsf")
-
-
-
-
-
-
+					# if s.id < 4:
+					# 	task = db.Tasks.get(id_skill = s, id_project = p)
+					# 	employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+					#
+					# 	if len(employees_tasks) == 0:
+					# 		initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+					# 		AssignTask(db, emps, task, initial, ending)
+					# 		last_release_date = ending
+					# 	else:
+					# 		for et in employees_tasks:
+					# 			if et.planned_end_date > last_release_date:
+					# 				last_release_date = et.planned_end_date
+					#
+					# elif s.id == 4:
+					# 	task = db.Tasks.get(id_skill = s, id_project = p)
+					# 	employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+					#
+					# 	if len(employees_tasks) == 0:
+					# 		initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+					# 		AssignTask(db, emps, task, initial, ending)
+					# 		last_release_date = ending
+					#
+					# 		while(last_release_date > p.deadline and num_workers < 4):
+					# 			numworkers = numworkers + 1
+					# 			initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+					# 			AssignTask(db, emps, task, initial, ending)
+					# 			last_release_date = ending
+					# 	else:
+					# 		for et in employees_tasks:
+					# 			if et.planned_end_date > last_release_date:
+					# 				last_release_date = et.planned_end_date
 
 
 
@@ -411,8 +435,3 @@ def DoPlanning(db):
 				# 		if(num_workers < 4 and d_t+timedelta(days)>p.deadline):
 				# 			num_workers=num_workers+1
                 #
-
-
-
-			
-
