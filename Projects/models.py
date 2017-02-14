@@ -61,7 +61,7 @@ def define_models(db):
 
 	class Tasks(db.Entity):
 		id = PrimaryKey(int, auto=False)
-		skill = Required('Skills') #Arreglar la discrepancia de nombre
+		id_skill = Required('Skills') #Arreglar la discrepancia de nombre
 		# 'id_skill'
 		id_project = Required(Projects)
 		original_initial_date = Required(date) #Esto debería ser optional,

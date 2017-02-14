@@ -24,7 +24,17 @@ with db_session:
 	db.Activities(id=2, description='Vacaciones')
 	db.Activities(id=3, description='Cliente ocupado')
 
-
+Pf.CreateProject(db, 2, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
+				 '17.094.362-0', 15, date(2017, 5, 27), estimated_cost = 200,)
+Pf.CreateProject(db, 3, 'Suecia 86', 'Las Condes', 'Franco Soto',
+				 '16.224.112-0', 20, date(2017, 6, 6), estimated_cost = 300,)
+Pf.CreateProject(db, 1, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
+				 '15.114.992-0',
+				 30, date(2017, 6, 2), estimated_cost = 150,)
+with db_session:
+	db.Projects[3].priority = 1
+	db.Projects[1].priority = 2
+	db.Projects[2].priority = 3
 
 
 
@@ -67,6 +77,7 @@ with db_session:
 	db.Projects[3].priority = 1
 	db.Projects[1].priority = 2
 	db.Projects[2].priority = 3
+
 	# db.Projects[2].fixed_priority = False
 
 ##############################################
@@ -77,18 +88,18 @@ with db_session:
 # de forma automática inicializandolas como None con la relación de tabla
 # 'Optional' y no 'Required'.
 
-Pf.CreateTask(db, 1, 1, 1, date(2017, 4, 8), date(2017,2,28))
-Pf.CreateTask(db, 2, 2, 1, date(2017, 4, 15), date(2017,3,1))
-Pf.CreateTask(db, 3, 3, 1, date(2017, 4, 20), date(2017,3,8))
-Pf.CreateTask(db, 4, 4, 1, date(2017, 4, 28), date(2017,12,14))
-Pf.CreateTask(db, 5, 1, 2, date(2017, 4, 3), date(2017,2,28))
-Pf.CreateTask(db, 6, 2, 2, date(2017, 4, 12), date(2017,3,1))
-Pf.CreateTask(db, 7, 3, 2, date(2017, 4, 16), date(2017,3,8))
-Pf.CreateTask(db, 8, 4, 2, date(2017, 4, 26), date(2017,12,14))
-Pf.CreateTask(db, 9, 1, 3, date(2017, 4, 20), date(2017,2,28))
-Pf.CreateTask(db, 10, 2, 3, date(2017, 5, 10), date(2017,3,1))
-Pf.CreateTask(db, 11, 3, 3, date(2017, 5, 15), date(2017,3,8))
-Pf.CreateTask(db, 12, 4, 3, date(2017, 5, 20), date(2017,12,14))
+Pf.CreateTask(db, 1, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,2,28))
+Pf.CreateTask(db, 2, 2, 1, original_initial_date=date(2017, 4, 15), original_end_date=date(2017,3,1))
+Pf.CreateTask(db, 3, 3, 1, original_initial_date=date(2017, 4, 20), original_end_date=date(2017,3,8))
+Pf.CreateTask(db, 4, 4, 1, original_initial_date=date(2017, 4, 28), original_end_date=date(2017,12,14))
+Pf.CreateTask(db, 5, 1, 2, original_initial_date=date(2017, 4, 3), original_end_date=date(2017,2,28))
+Pf.CreateTask(db, 6, 2, 2, original_initial_date=date(2017, 4, 12), original_end_date=date(2017,3,1))
+Pf.CreateTask(db, 7, 3, 2, original_initial_date=date(2017, 4, 16), original_end_date=date(2017,3,8))
+Pf.CreateTask(db, 8, 4, 2, original_initial_date=date(2017, 4, 26), original_end_date=date(2017,12,14))
+Pf.CreateTask(db, 9, 1, 3, original_initial_date=date(2017, 4, 20), original_end_date=date(2017,2,28))
+Pf.CreateTask(db, 10, 2, 3, original_initial_date=date(2017, 5, 10), original_end_date=date(2017,3,1))
+Pf.CreateTask(db, 11, 3, 3, original_initial_date=date(2017, 5, 15), original_end_date=date(2017,3,8))
+Pf.CreateTask(db, 12, 4, 3, original_initial_date=date(2017, 5, 20), original_end_date=date(2017,12,14))
 
 
 
