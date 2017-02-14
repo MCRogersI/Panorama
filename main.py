@@ -129,6 +129,9 @@ def console():
 # print(PLf.FindDatesEmployees(db, 1, 2, 5, date(2017, 3, 9)))
 # print(PLf.FindDatesEmployees(db, 1, 2, 6, date(2017, 3, 9)))
 
+Pf.CreateTask(db, 1, 1, date(2017, 3, 9), date(2017, 3, 9))
+print(Pf.PrintTasks(db))
+
 
 ##############################################
 # Tests de los features de Projects.features #
