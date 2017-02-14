@@ -215,7 +215,7 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 			else:
 				days_from_current = days_from_current + 1
 		else:
-			days_from_current+=1
+			days_from_current = days_from_current + 1
 		# else:
 		# 	task_days = GetDays(db, id_skill, contract_number,
 		# num_workers+1) #Esta opción debe estudiarse en la heurística que
@@ -314,14 +314,12 @@ def addDelayed(db, Delayed, contract_number, id_task, initial, ending, deadline)
 	Delayed =  Delayed.append({'contract number': contract_number, 'id task': id_task, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
 	return Delayed
 
-
-
 def DoPlanning(db):
 	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 'id task', 'initial date', 'ending date', 'deadline'])
 	with db_session:
-		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
-		for p in projects:
-			d_t=date.today()#+timedelta(date(2017,2,18).day-date.today().day)			
+		projects = select(p for p in db.Projects if p.fixed_planning != True).order_by(lambda p : p.priority) # revisar que el proyecto no esté fijo
+		for p in projects: 
+			d_t = date.today() # +timedelta(date(2017,2,18).day-date.today().day)
 			
 			tasks = select(t for t in db.Tasks if t.id_project.contract_number == p.contract_number).order_by(lambda t : t.id_skill)
 			for t in tasks:
@@ -353,6 +351,33 @@ def DoPlanning(db):
 						
 
 
-
+def DoPlanning(db):
+	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 'id task', 'initial date', 'ending date', 'deadline'])
+	with db_session:
+		projects = select(p for p in db.Projects if not p.fixed_planning).order_by(lambda p : p.priority) # revisar que el proyecto no esté fijo
+		for p in projects: 
+			d_t = date.today()
+			
+			skills = select(s for s in db.Skills).order_by(lambda s: s.id)
+			for s in skills:
+				if(t.id_skill.id < 4 and t.efective_initial_date == None):
+					(initial, ending, emps) = FindDatesEmployees(db, t.id_skill.id, p.contract_number,1, d_t)
+					days=ending.day-initial.day
+					AssignTask(db,emps,t.id,initial,ending)
+					d_t=d_t+timedelta(days)
+					
+					if(d_t > p.deadline):
+						AvailabilityUpdate(db)
+				if(t.id_skill.id == 4 and t.efective_initial_date == None):
+					num_workers=1
+					while (num_workers<=4):
+						(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, num_workers, d_t)
+						days=ending.day-initial.day
+						AssignTask(db, emps, t.id, initial, ending)
+						if(num_workers==4 and d_t+timedelta(days)>p.deadline):
+							AvailabilityUpdate(db)
+							break
+						if(num_workers < 4 and d_t+timedelta(days)>p.deadline):
+							num_workers=num_workers+1
 			
 
