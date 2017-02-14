@@ -357,7 +357,7 @@ def DoPlanning(db, CreateTask):
 						task = db.Tasks.get(id_skill = s, id_project = p)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 						
-						if len(employees_tasks) == 0:
+						if len(employees_tasks) == 0 and (task == None or (task != None and task.effective_initial_date == None)):
 							initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 							if task == None:
 								task = CreateTask(db, s.id, p.contract_number, initial, ending)
@@ -370,20 +370,23 @@ def DoPlanning(db, CreateTask):
 					elif s.id == 4:
 						task = db.Tasks.get(id_skill = s, id_project = p)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
-						ending = [0, 0, 0, 0]
+						ending = [None, None, None, None]
 						
-						if len(employees_tasks) == 0:
+						if len(employees_tasks) == 0 and (task == None or (task != None and task.effective_initial_date == None)):
 							initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 					
 							while(ending[num_workers-1] > p.deadline and num_workers < 4):
 								num_workers = num_workers + 1
 								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+								if ending[num_workers] == None:
+									num_workers = num_workers - 1
+									break
 	
 							if(ending[num_workers-1] > p.deadline):
 								num_workers = 1 # nos quedamos con la menor fecha
-								for d in range(2, 4):
-									if ending[d-1] < ending[num_workers-1]:
-										num_workers = d
+								for n in range(2, 4):
+									if ending[n-1] != None and ending[n-1] < ending[num_workers-1]:
+										num_workers = n
 								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 								if task == None:
 									task = CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
