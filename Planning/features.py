@@ -376,7 +376,7 @@ def DoPlanning(db, CreateTask):
 							initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 					
 							while(ending[num_workers-1] > p.deadline and num_workers < 4):
-								numworkers = numworkers + 1
+								num_workers = num_workers + 1
 								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 	
 							if(ending[num_workers-1] > p.deadline):
