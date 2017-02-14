@@ -54,9 +54,9 @@ def DeleteProject(db, contract_number):
 	with db_session:
 		db.Projects[contract_number].delete()
 
-def CreateTask(db, id, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
+def CreateTask(db, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
 	with db_session:
-		t = db.Tasks(id = id, id_skill = id_skill, id_project = id_project, original_initial_date = original_initial_date, original_end_date = original_end_date)
+		t = db.Tasks(id_skill = id_skill, id_project = id_project, original_initial_date = original_initial_date, original_end_date = original_end_date)
 
 def EditTask(db, id , id_skill = None, id_project = None, original_initial_date = None, original_end_date = None, efective_initial_date = None, efective_end_date = None, fail_cost = None):
 	with db_session:

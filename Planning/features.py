@@ -355,9 +355,14 @@ def DoPlanning(db):
 					if s.id < 4:
 						# obtiene el id del skill correspondiente a esa tarea y revisa que no corresponda a una 'Instalación'.
 						task = db.Tasks.get(id_skill = s, id_project = p)
-						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
-
-						if len(employees_tasks) == 0:
+						
+						if task == None:
+							initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+							task = CreateTask(db, s.id, p.contract_number, initial, ending)
+							AssignTask(db, emps, task, initial, ending)
+							last_release_date = ending
+						elif len(employees_tasks) == 0:
+							employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 							initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 							AssignTask(db, emps, task, initial, ending)
 							last_release_date = ending
@@ -366,23 +371,45 @@ def DoPlanning(db):
 								last_release_date = et.planned_end_date
 					
 					elif s.id == 4:
-					# 	task = db.Tasks.get(id_skill = s, id_project = p)
-					# 	employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
-					#
-					# 	if len(employees_tasks) == 0:
-					# 		initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
-					# 		AssignTask(db, emps, task, initial, ending)
-					# 		last_release_date = ending
-					#
-					# 		while(last_release_date > p.deadline and num_workers < 4):
-					# 			numworkers = numworkers + 1
-					# 			initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
-					# 			AssignTask(db, emps, task, initial, ending)
-					# 			last_release_date = ending
-					# 	else:
-					# 		for et in employees_tasks:
-					# 			if et.planned_end_date > last_release_date:
-					# 				last_release_date = et.planned_end_date
+						task = db.Tasks.get(id_skill = s, id_project = p)
+						ending = np.zeros(4)
+						
+						if task == None:
+							initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+					
+							while(ending[num_workers-1] > p.deadline and num_workers < 4):
+								numworkers = numworkers + 1
+								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+	
+							if(ending[num_workers-1] > p.deadline)
+								num_workers = 1 # nos quedamos con la menor fecha
+								for d in range(2, 4):
+									if ending[d-1] < ending[num_workers-1]:
+										num_workers = d
+								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+								AssignTask(db, emps, task, initial, ending[num_workers-1])
+							else:
+								AssignTask(db, emps, task, initial, ending[num_workers-1])
+						
+						elif len(employees_tasks) == 0:
+							employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+							initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+					
+							while(ending[num_workers-1] > p.deadline and num_workers < 4):
+								numworkers = numworkers + 1
+								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+	
+							if(ending[num_workers-1] > p.deadline)
+								num_workers = 1 # nos quedamos con la menor fecha
+								for d in range(2, 4):
+									if ending[d-1] < ending[num_workers-1]:
+										num_workers = d
+								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+								task = CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
+								AssignTask(db, emps, task, initial, ending[num_workers-1])
+							else:
+								task = CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
+								AssignTask(db, emps, task, initial, ending[num_workers-1])
 
 
 
