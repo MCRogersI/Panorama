@@ -349,38 +349,23 @@ def DoPlanning(db):
 		for p in projects:
 			last_release_date = date.today()
 			if not p.fixed_planning:
-				last_release_date = date.today()
 				skills = select(s for s in db.Skills).order_by(lambda s : s.id)
 				num_workers = 1
 				for s in skills:
-					if (s.id < 4):
-						# obtiene el id del
-						# skill correspondiente a esa
-						# tarea y revisa que no corresponda a una 'Instalación'.
-						# task = select(task for task in db.Tasks if task.id_skill == s and
-						# 			  task.id_project == p)
+					if s.id < 4:
+						# obtiene el id del skill correspondiente a esa tarea y revisa que no corresponda a una 'Instalación'.
 						task = db.Tasks.get(id_skill = s, id_project = p)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 
-						if len(employees_tasks)==0:
-							pass
+						if len(employees_tasks) == 0:
+							initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+							AssignTask(db, emps, task, initial, ending)
+							last_release_date = ending
 						else:
-							pass
-
-					# if s.id < 4:
-					# 	task = db.Tasks.get(id_skill = s, id_project = p)
-					# 	employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
-					#
-					# 	if len(employees_tasks) == 0:
-					# 		initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
-					# 		AssignTask(db, emps, task, initial, ending)
-					# 		last_release_date = ending
-					# 	else:
-					# 		for et in employees_tasks:
-					# 			if et.planned_end_date > last_release_date:
-					# 				last_release_date = et.planned_end_date
-					#
-					# elif s.id == 4:
+							for et in employees_tasks:
+								last_release_date = et.planned_end_date
+					
+					elif s.id == 4:
 					# 	task = db.Tasks.get(id_skill = s, id_project = p)
 					# 	employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 					#
