@@ -94,10 +94,12 @@ def EmployeesAvailable(db, ids_employees, initial_date, end_date):
 		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
 		for ea in emp_acts:
-			if (initial_date >= ea.initial_date and initial_date <= ea.end_date) or (end_date >= ea.initial_date and end_date <= ea.end_date):
+			if (initial_date >= ea.initial_date and initial_date <= ea.end_date) or (
+							end_date >= ea.initial_date and end_date <= ea.end_date):
 				return False
 		for et in emp_tasks:
-			if (initial_date >= et.initial_date and initial_date <= et.end_date) or (end_date >= et.initial_date and end_date <= et.end_date):
+			if (initial_date >= et.planned_initial_date and initial_date <= et.planned_end_date)\
+					or (end_date >= et.planned_initial_date and end_date <= et.planned_end_date):
 				return False
 		return True		
 
@@ -231,27 +233,25 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 
 def AssignTask(db, ids_employees, id_task, initial_date = None, end_date = None):
 	with db_session:
-		for id_employee in ids_employees:
-			et = db.Employees_Tasks(employee = id_employee, task = id_task)
-			et.initial_date = initial_date
-			et.end_date = end_date
+		if (type(ids_employees) != int):
+			for id_employee in ids_employees:
+				et = db.Employees_Tasks(employee = id_employee, task = id_task)
+				et.planned_initial_date = initial_date
+				et.planned_end_date = end_date
+		else:
+			et = db.Employees_Tasks(employee=ids_employees, task=id_task)
+			et.planned_initial_date = initial_date
+			et.planned_end_date = end_date
+
 	
 def UnassignTask(db, id_employee, id_task):
 	with db_session:
 		db.Employees_Tasks[(id_employee, id_task)].delete()
 	
 # Acá termina: funciones para asignar/desasignar tareas a empleados	#
-#####################################################################	
-	
-def AvailabilityUpdate(db,contract_number):
-	with db_session:
-		select(et for et in db.Employees_Tasks if
-			   et.task.effective_initial_date == None and db.Tasks[
-				   et.task.id].id_project == contract_number
-			   and not 
-			   db.Projects[et.tasks.id].fixed_planning ).delete()
+#####################################################################
 
-def cleanTasks(db):
+def eraseTasks(db):
 	with db_session:
 		tasks_to_delete = select(task for task in db.Tasks if
 			   task.effective_initial_date == None)
@@ -261,8 +261,18 @@ def cleanTasks(db):
 			if (not task_to_delete.id_project.fixed_planning):
 				task_to_delete.delete()
 
+def cleanTasks(db):
+	with db_session:
+		employees_tasks_to_delete = select(employee_task for employee_task in db.Employees_Tasks)
+		for employee_task in employees_tasks_to_delete:
+			task= employee_task.task
+			if (task.effective_initial_date == None and  not task.id_project.fixed_planning):
+				employee_task.delete()
 
+###################################################################################
 		#Cambiar en las tablas id_skill y id_project por skill y project !!!
+				# !!!!
+				###############################
 		# task.id_project.contract_number
 # Esta funcion borra las actividades que no están fijas y que no han empezado
 #####################################################################
@@ -339,18 +349,29 @@ def DoPlanning(db):
 		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
 
 		for p in projects:
+			last_release_date = date.today()
 			if not p.fixed_planning:
-			# d_t=date.today()#+timedelta(date(2017,2,18).day-date.today().day)
+
 				skills = select(s for s in db.Skills).order_by(lambda s : s.id)
 				for s in skills:
 					if (s.id < 4):
 						# obtiene el id del
 						# skill correspondiente a esa
 						# tarea y revisa que no corresponda a una 'Instalación'.
-						task = select(task for task in db.Tasks if task.id_skill == s and
-									  task.id_project == p)
-						# if task.is_empty:
-						if len(task)>0:
+						# task = select(task for task in db.Tasks if task.id_skill == s and
+						# 			  task.id_project == p)
+						task = db.Tasks.get(id_skill = s, id_project = p)
+						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+
+						if len(employees_tasks)==0:
+							print("SFA3333333333333333333333333sf")
+						else:
+
+							print("SFAsf")
+
+
+
+
 
 
 

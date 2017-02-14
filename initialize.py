@@ -81,6 +81,19 @@ Pf.CreateTask(db, 10, 2, 3, original_initial_date=date(2017, 5, 10), original_en
 Pf.CreateTask(db, 11, 3, 3, original_initial_date=date(2017, 5, 15), original_end_date=date(2017,3,8))
 Pf.CreateTask(db, 12, 4, 3, original_initial_date=date(2017, 5, 20), original_end_date=date(2017,12,14))
 
+PLf.AssignTask(db, 1, 1, initial_date=date(2017, 4, 8), end_date=date(2017,2,28))
+PLf.AssignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,3,1))
+PLf.AssignTask(db, 9, 9,  initial_date=date(2017, 4, 20), end_date=date(2017,3,8))
+PLf.AssignTask(db, 2, 2,  initial_date=date(2017, 4, 28), end_date=date(2017,12,14))
+PLf.AssignTask(db, 6, 6,  initial_date=date(2017, 4, 3), end_date=date(2017,2,28))
+PLf.AssignTask(db, 10, 10,  initial_date=date(2017, 4, 12), end_date=date(2017,3,1))
+PLf.AssignTask(db, 3, 3,  initial_date=date(2017, 4, 16), end_date=date(2017,3,8))
+PLf.AssignTask(db, 7, 7,  initial_date=date(2017, 4, 26), end_date=date(2017,12,14))
+PLf.AssignTask(db, 11, 11,  initial_date=date(2017, 4, 20), end_date=date(2017,2,28))
+PLf.AssignTask(db, [4,8], 4,  initial_date=date(2017, 5, 10), end_date=date(2017,3,1))
+PLf.AssignTask(db, [4,8,12], 8, initial_date=date(2017, 5, 15), end_date=date(2017,3,8))
+PLf.AssignTask(db, 12, 12,  initial_date=date(2017, 5, 20), end_date=date(2017,12,14))
+
 with db_session:
 	#Definición de fechas de inicio efectivas para algunas tareas
 	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
