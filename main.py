@@ -5,6 +5,7 @@ import Employees.features as Ef, Employees.usuario as Eu
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
+
 def console():
 	while True:
 		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: para salir. \n Ingrese la alternativa elegida: ")
@@ -23,7 +24,6 @@ def console():
 # PLf.addDelayed(db, 1,1,1,1,1)
 # PLf.addDelayed(db, 10, 2, 2017-2-12, 2017-3-1, 2017-2-28)
 # print(PLf.addDelayed(db, 5, 3 , '2017-3-1', '2017-3-10', '2017-3-30'))
-
 
 
 
