@@ -81,5 +81,5 @@ def define_models(db):
 		task = Required(Tasks)
 		employee = Required('Employees')
 		PrimaryKey(employee, task)
-		initial_date = Optional(date)
-		end_date = Optional(date)
+		initial_date = Optional(date) # cambiar a planned_initial_date
+		end_date = Optional(date) # cambiar a planned_end_date
