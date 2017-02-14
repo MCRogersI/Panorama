@@ -56,11 +56,11 @@ dt = date(2017, 2, 13)
 # Lista de prueba de proyectos test case 1 #
 ##############################################
 
-Pf.CreateProject(db, 2, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
+Pf.CreateProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
 				 '17.094.362-0', 15, date(2017, 5, 27), estimated_cost = 200,)
-Pf.CreateProject(db, 3, 'Suecia 86', 'Las Condes', 'Franco Soto',
+Pf.CreateProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
 				 '16.224.112-0', 20, date(2017, 6, 6), estimated_cost = 300,)
-Pf.CreateProject(db, 4, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
+Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
 				 30, date(2017, 6, 2), estimated_cost = 150,)
 with db_session:

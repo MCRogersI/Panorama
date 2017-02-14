@@ -317,7 +317,9 @@ def addDelayed(db, Delayed, contract_number, id_task, initial, ending, deadline)
 
 
 def DoPlanning(db):
-	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 'id task', 'initial date', 'ending date', 'deadline'])
+	# Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number',
+	#  'id task', 'initial date', 'ending date', 'deadline'])#Esto debería
+	# estar encapsulado en otro método.
 	with db_session:
 		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
 		for p in projects:
