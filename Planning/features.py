@@ -337,7 +337,7 @@ def addDelayed(db, Delayed, contract_number, id_task, initial, ending, deadline)
 	Delayed =  Delayed.append({'contract number': contract_number, 'id task': id_task, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
 	return Delayed
 
-def DoPlanning(db):
+def DoPlanning(db, CreateTask):
 	# Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number',
 	#  'id task', 'initial date', 'ending date', 'deadline'])#Esto debería
 	# estar encapsulado en otro método.
@@ -355,6 +355,7 @@ def DoPlanning(db):
 					if s.id < 4:
 						# obtiene el id del skill correspondiente a esa tarea y revisa que no corresponda a una 'Instalación'.
 						task = db.Tasks.get(id_skill = s, id_project = p)
+						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 						
 						if task == None:
 							initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
@@ -362,7 +363,6 @@ def DoPlanning(db):
 							AssignTask(db, emps, task, initial, ending)
 							last_release_date = ending
 						elif len(employees_tasks) == 0:
-							employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 							initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 							AssignTask(db, emps, task, initial, ending)
 							last_release_date = ending
@@ -372,7 +372,8 @@ def DoPlanning(db):
 					
 					elif s.id == 4:
 						task = db.Tasks.get(id_skill = s, id_project = p)
-						ending = np.zeros(4)
+						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+						ending = [0, 0, 0, 0]
 						
 						if task == None:
 							initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
@@ -381,34 +382,33 @@ def DoPlanning(db):
 								numworkers = numworkers + 1
 								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 	
-							if(ending[num_workers-1] > p.deadline)
+							if(ending[num_workers-1] > p.deadline):
 								num_workers = 1 # nos quedamos con la menor fecha
 								for d in range(2, 4):
 									if ending[d-1] < ending[num_workers-1]:
 										num_workers = d
 								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+								task = CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
 								AssignTask(db, emps, task, initial, ending[num_workers-1])
 							else:
+								task = CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
 								AssignTask(db, emps, task, initial, ending[num_workers-1])
 						
 						elif len(employees_tasks) == 0:
-							employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 							initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 					
 							while(ending[num_workers-1] > p.deadline and num_workers < 4):
 								numworkers = numworkers + 1
 								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 	
-							if(ending[num_workers-1] > p.deadline)
+							if(ending[num_workers-1] > p.deadline):
 								num_workers = 1 # nos quedamos con la menor fecha
 								for d in range(2, 4):
 									if ending[d-1] < ending[num_workers-1]:
 										num_workers = d
 								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
-								task = CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
 								AssignTask(db, emps, task, initial, ending[num_workers-1])
 							else:
-								task = CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
 								AssignTask(db, emps, task, initial, ending[num_workers-1])
 
 
