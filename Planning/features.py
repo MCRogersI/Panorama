@@ -199,7 +199,7 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 			
 		return ids_found + GetChosenIds(possibilities, chosen)
 		
-
+#checked (kind of)
 def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date):
 	days_from_current = 1
 	task_days = GetDays(db, id_skill, contract_number, num_workers)
