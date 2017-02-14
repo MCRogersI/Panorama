@@ -66,10 +66,10 @@ def define_models(db):
 		id_project = Required(Projects)
 		original_initial_date = Required(date) #Esto debería ser optional,
 		# dejarse vacío y luego ser llenado automáticamente por el programa.
-		original_end_date = Optional(date)#Esto debería ser optional,
+		original_end_date = Required(date)#Esto debería ser optional,
 		# dejarse vacío y luego ser llenado automáticamente por el programa.
-		efective_initial_date = Optional(date)
-		efective_end_date = Optional(date)
+		effective_initial_date = Optional(date)
+		effective_end_date = Optional(date)
 		failed = Optional(bool)
 		fail_cost = Optional(int)
 		employees = Set('Employees_Tasks')

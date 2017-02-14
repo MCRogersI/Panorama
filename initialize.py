@@ -24,17 +24,25 @@ with db_session:
 	db.Activities(id=2, description='Vacaciones')
 	db.Activities(id=3, description='Cliente ocupado')
 
-Pf.CreateProject(db, 2, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
-				 '17.094.362-0', 15, date(2017, 5, 27), estimated_cost = 200,)
-Pf.CreateProject(db, 3, 'Suecia 86', 'Las Condes', 'Franco Soto',
-				 '16.224.112-0', 20, date(2017, 6, 6), estimated_cost = 300,)
-Pf.CreateProject(db, 1, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
+##############################################
+# Lista de prueba de proyectos test case 1 #
+##############################################
+
+Pf.CreateProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
+				 '17.094.362-0', 15, date(2017, 5, 27), estimated_cost = 200)
+Pf.CreateProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
+				 '16.224.112-0', 20, date(2017, 6, 6), estimated_cost = 300)
+Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
-				 30, date(2017, 6, 2), estimated_cost = 150,)
+				 30, date(2017, 6, 2), estimated_cost = 150)
+
 with db_session:
+	#Definición de las prioridades de los distintos proyectos
 	db.Projects[3].priority = 1
 	db.Projects[1].priority = 2
 	db.Projects[2].priority = 3
+	#Fijación de proyectos
+	db.Projects[2].fixed_planning = True
 
 
 
@@ -56,37 +64,9 @@ Ef.CreateEmployee(db, 11, "Mario", 1, perf_fab = 5)
 Ef.CreateEmployee(db, 12, "Felipe", 1, perf_inst = 6)
 
 
-###########################################################
-# Tests de la parte de buscar fechas de Planning.features #
-###########################################################
-
-dt = date(2017, 2, 13)
-
-##############################################
-# Lista de prueba de proyectos test case 1 #
-##############################################
-
-Pf.CreateProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
-				 '17.094.362-0', 15, date(2017, 5, 27), estimated_cost = 200,)
-Pf.CreateProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
-				 '16.224.112-0', 20, date(2017, 6, 6), estimated_cost = 300,)
-Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
-				 '15.114.992-0',
-				 30, date(2017, 6, 2), estimated_cost = 150,)
-with db_session:
-	db.Projects[3].priority = 1
-	db.Projects[1].priority = 2
-	db.Projects[2].priority = 3
-
-	# db.Projects[2].fixed_priority = False
-
 ##############################################
 # Lista de prueba de tasks test case 1 		 #
 ##############################################
-
-# Estas fechas fueron completadas manualmente. El programa debería hacerlo
-# de forma automática inicializandolas como None con la relación de tabla
-# 'Optional' y no 'Required'.
 
 Pf.CreateTask(db, 1, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,2,28))
 Pf.CreateTask(db, 2, 2, 1, original_initial_date=date(2017, 4, 15), original_end_date=date(2017,3,1))
@@ -100,6 +80,14 @@ Pf.CreateTask(db, 9, 1, 3, original_initial_date=date(2017, 4, 20), original_end
 Pf.CreateTask(db, 10, 2, 3, original_initial_date=date(2017, 5, 10), original_end_date=date(2017,3,1))
 Pf.CreateTask(db, 11, 3, 3, original_initial_date=date(2017, 5, 15), original_end_date=date(2017,3,8))
 Pf.CreateTask(db, 12, 4, 3, original_initial_date=date(2017, 5, 20), original_end_date=date(2017,12,14))
+
+with db_session:
+	#Definición de fechas de inicio efectivas para algunas tareas
+	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
+	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
+	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
+
+PLf.DoPlanning(db)
 
 
 
