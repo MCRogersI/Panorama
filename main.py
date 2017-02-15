@@ -8,8 +8,10 @@ import Planning.features as PLf
 
 def console():
 	while True:
-		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: para salir. \n Ingrese la alternativa elegida: ")
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Para salir. \n Ingrese la alternativa elegida: ")
 		if(opt == '1'):
+			# Los ids deberían ser creados automáticamente y no ingresados (para asegurarse de que sean únicos).
+			# Para el caso particular de los proyectos el contract_number puede ser ingresado porque tiene la propiedad de ser único.
 			Eu.employees_console(db, Ef.CreateEmployee, Ef.PrintEmployees, Ef.EditEmployee, Ef.PrintEmployeesSkills, Ef.PrintSelectSkill, Ef.DeleteEmployee)
 		if(opt == '2'):
 			Pu.projects_console(db, Pf.CreateProject, Pf.PrintProjects, Pf.EditProject, Pf.DeleteProject)
@@ -19,7 +21,10 @@ def console():
 			print("Has salido de la consola")
 			break
 
-# console()
+console()
+
+
+
 # PLf.DoPlanning(db)
 # PLf.addDelayed(db, 1,1,1,1,1)
 # PLf.addDelayed(db, 10, 2, 2017-2-12, 2017-3-1, 2017-2-28)
@@ -129,8 +134,8 @@ def console():
 # print(PLf.FindDatesEmployees(db, 1, 2, 5, date(2017, 3, 9)))
 # print(PLf.FindDatesEmployees(db, 1, 2, 6, date(2017, 3, 9)))
 
-Pf.CreateTask(db, 1, 1, date(2017, 3, 9), date(2017, 3, 9))
-print(Pf.PrintTasks(db))
+# Pf.CreateTask(db, 1, 1, date(2017, 3, 9), date(2017, 3, 9))
+# print(Pf.PrintTasks(db))
 
 
 ##############################################
