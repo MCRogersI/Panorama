@@ -13,10 +13,10 @@ import Planning.features as PLf
 
 
 with db_session:
-	db.Skills(id=1, name='Rectifier')
-	db.Skills(id=2, name='Designer')
-	db.Skills(id=3, name='Fabricator')
-	db.Skills(id=4, name='Installer')
+	db.Skills(id=1, name='Rectification')
+	db.Skills(id=2, name='Design')
+	db.Skills(id=3, name='Fabrication')
+	db.Skills(id=4, name='Installation')
 
 	db.Difficulties(id=1, description='Construccion en altura')
 
@@ -34,7 +34,7 @@ Pf.CreateProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
 				 '16.224.112-0', 200, date(2017, 6, 30), estimated_cost = 300)
 Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
-				 300, date(2017, 6, 30), estimated_cost = 150)
+				 320, date(2017, 6, 30), estimated_cost = 150)
 
 with db_session:
 	#Definición de las prioridades de los distintos proyectos
@@ -50,19 +50,19 @@ with db_session:
 #        Lista de empleados test case 1 		#
 # ###############################################
 
-Ef.CreateEmployee(db, 1, "Juan", 1, perf_rect = 1)
-Ef.CreateEmployee(db, 2, "Pedro", 2, perf_des = 2)
-Ef.CreateEmployee(db, 3, "Diego", 2, perf_fab = 3)
-Ef.CreateEmployee(db, 4, "Miguel", 1, perf_inst = 4)
-Ef.CreateEmployee(db, 5, "Mario", 1, perf_rect = 5)
-Ef.CreateEmployee(db, 6, "Felipe", 2, perf_des = 6)
-Ef.CreateEmployee(db, 7, "Miguel", 1, perf_fab = 4)
-Ef.CreateEmployee(db, 8, "Mario", 1, perf_inst = 5)
-Ef.CreateEmployee(db, 9, "Felipe", 2, perf_rect = 6)
-Ef.CreateEmployee(db, 10, "Miguel", 1, perf_des = 4)
-Ef.CreateEmployee(db, 11, "Mario", 1, perf_fab = 5)
-Ef.CreateEmployee(db, 12, "Felipe", 1, perf_inst = 6)
-Ef.CreateEmployee(db, 13, "Iker", 1, perf_inst = 7)
+Ef.CreateEmployee(db, 1, "Juan", 1, perf_rect = 10)
+Ef.CreateEmployee(db, 2, "Pedro", 2, perf_des = 20)
+Ef.CreateEmployee(db, 3, "Diego", 2, perf_fab = 30)
+Ef.CreateEmployee(db, 4, "Miguel", 1, perf_inst = 40)
+Ef.CreateEmployee(db, 5, "Mario", 1, perf_rect = 50)
+Ef.CreateEmployee(db, 6, "Felipe", 2, perf_des = 60)
+Ef.CreateEmployee(db, 7, "Miguel", 1, perf_fab = 40)
+Ef.CreateEmployee(db, 8, "Mario", 1, perf_inst = 50)
+Ef.CreateEmployee(db, 9, "Felipe", 2, perf_rect = 60)
+Ef.CreateEmployee(db, 10, "Miguel", 1, perf_des = 40)
+Ef.CreateEmployee(db, 11, "Mario", 1, perf_fab = 50)
+Ef.CreateEmployee(db, 12, "Felipe", 1, perf_inst = 60)
+Ef.CreateEmployee(db, 13, "Iker", 1, perf_inst = 70)
 
 
 ##############################################
