@@ -1,6 +1,6 @@
 from pony.orm import *
 from datetime import date, timedelta
-# import pandas as pd
+import pandas as pd
 import numpy as np
 
 #################################################################################################################
@@ -333,13 +333,13 @@ def ChangePriority(db, contract_number, new_priority):
 ##########################
 # Hacer la planificación #
 ##########################
-def addDelayed(db, Delayed, contract_number, id_task, initial, ending, deadline):
-	Delayed =  Delayed.append({'contract number': contract_number, 'id task': id_task, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
+def addDelayed(db, Delayed, contract_number, task, num_workers, initial, ending, deadline):
+	Delayed =  Delayed.append({'contract number': contract_number, 'task': task, 'num workers': num_workers, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
 	return Delayed
 
 def DoPlanning(db, CreateTask):
-	# Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number',
-	#  'id task', 'initial date', 'ending date', 'deadline'])#Esto debería
+	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 
+'task', 'num workers', 'initial date', 'ending date', 'deadline'])#Esto debería
 	# estar encapsulado en otro método.
 	cleanTasks(db) #Aquí se borran todas las tasks de planificaciones anteriores (las 'borrables')
 
@@ -363,13 +363,18 @@ def DoPlanning(db, CreateTask):
 							if task == None:
 								CreateTask(db, s.id, p.contract_number, initial, ending)
 								task = db.Tasks.get(id_skill = s, id_project = p)
+							if ending > p.deadline :
+#								print("Se pasó la tarea  " +str(s) +" del proyecto "+str(p.contract_number))
+								#aquí se podría o no avisar que el proyecto estaría fuera de plazo
+								Delayed = addDelayed(db, Delayed, p.contract_number, s, num_workers, initial, ending, p.deadline)
+							
 							AssignTask(db, emps, task, initial, ending)
 							last_release_date = ending
 						else: 	# asume que el et.planned_end_date está bien actualizado, si no, habría que calcular el last_release_days como
 								# task.effective_initial_date + los días que se demora el trabajo según la cantidad de trabajadores
 							for et in employees_tasks:
 								last_release_date = et.planned_end_date
-					
+						
 					elif s.id == 4:
 						task = db.Tasks.get(id_skill = s, id_project = p)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
@@ -386,11 +391,15 @@ def DoPlanning(db, CreateTask):
 									break
 	
 							if(ending[num_workers-1] > p.deadline):
+								#print("Se pasó el proyecto " +str(p.contract_number) +" con "+str(num_workers)+" trabajadores y fecha de término "+str(ending[num_workers-1]))
 								num_workers = 1 # nos quedamos con la menor fecha
-								for n in range(2, 4):
+								for n in range(2, 5):#ahora si revisa 2,3 y 4
 									if ending[n-1] != None and ending[n-1] < ending[num_workers-1]:
 										num_workers = n
+								
 								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+								#aquí ya no hay nada que hacer y se le debería mostrar la tabla Delayed
+								Delayed = addDelayed(db, Delayed, p.contract_number, s, num_workers, initial, ending[num_workers-1], p.deadline)
 								if task == None:
 									CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
 									task = db.Tasks.get(id_skill = s, id_project = p)
@@ -400,7 +409,7 @@ def DoPlanning(db, CreateTask):
 									CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
 									task = db.Tasks.get(id_skill = s, id_project = p)
 								AssignTask(db, emps, task, initial, ending[num_workers-1])
-
+		print(Delayed)		
 
 
 

@@ -29,12 +29,12 @@ with db_session:
 ##############################################
 
 Pf.CreateProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
-				 '17.094.362-0', 150, date(2017, 5, 27), estimated_cost = 200)
+				 '17.094.362-0', 150, date(2017, 12, 30), estimated_cost = 200)
 Pf.CreateProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
-				 '16.224.112-0', 200, date(2017, 6, 6), estimated_cost = 300)
+				 '16.224.112-0', 200, date(2017, 6, 30), estimated_cost = 300)
 Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
-				 300, date(2017, 6, 2), estimated_cost = 150)
+				 300, date(2017, 6, 30), estimated_cost = 150)
 
 with db_session:
 	#Definición de las prioridades de los distintos proyectos
@@ -62,6 +62,7 @@ Ef.CreateEmployee(db, 9, "Felipe", 2, perf_rect = 6)
 Ef.CreateEmployee(db, 10, "Miguel", 1, perf_des = 4)
 Ef.CreateEmployee(db, 11, "Mario", 1, perf_fab = 5)
 Ef.CreateEmployee(db, 12, "Felipe", 1, perf_inst = 6)
+Ef.CreateEmployee(db, 13, "Iker", 1, perf_inst = 7)
 
 
 ##############################################
@@ -69,21 +70,21 @@ Ef.CreateEmployee(db, 12, "Felipe", 1, perf_inst = 6)
 ##############################################
 
 Pf.CreateTask(db, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,4,28))
-Pf.CreateTask(db, 2, 1, original_initial_date=date(2017, 4, 15), original_end_date=date(2017,4,20))
-Pf.CreateTask(db, 3, 1, original_initial_date=date(2017, 4, 20), original_end_date=date(2017,4,30))
-Pf.CreateTask(db, 4, 1, original_initial_date=date(2017, 4, 28), original_end_date=date(2017,5,14))
+Pf.CreateTask(db, 2, 1, original_initial_date=date(2017, 4, 29), original_end_date=date(2017,5,10))
+Pf.CreateTask(db, 3, 1, original_initial_date=date(2017, 5, 11), original_end_date=date(2017,5,30))
+Pf.CreateTask(db, 4, 1, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,14))
 Pf.CreateTask(db, 1, 2, original_initial_date=date(2017, 4, 3), original_end_date=date(2017,5,18))
-Pf.CreateTask(db, 2, 2, original_initial_date=date(2017, 4, 12), original_end_date=date(2017,5,1))
-Pf.CreateTask(db, 3, 2, original_initial_date=date(2017, 4, 16), original_end_date=date(2017,5,8))
-Pf.CreateTask(db, 4, 2, original_initial_date=date(2017, 4, 26), original_end_date=date(2017,6,14))
-Pf.CreateTask(db, 1, 3, original_initial_date=date(2017, 4, 20), original_end_date=date(2017,6,30))
-Pf.CreateTask(db, 2, 3, original_initial_date=date(2017, 5, 10), original_end_date=date(2017,6,1))
-Pf.CreateTask(db, 3, 3, original_initial_date=date(2017, 5, 15), original_end_date=date(2017,6,8))
-Pf.CreateTask(db, 4, 3, original_initial_date=date(2017, 5, 20), original_end_date=date(2017,6,14))
+Pf.CreateTask(db, 2, 2, original_initial_date=date(2017, 5, 19), original_end_date=date(2017,5,29))
+Pf.CreateTask(db, 3, 2, original_initial_date=date(2017, 5, 30), original_end_date=date(2017,6,1))
+Pf.CreateTask(db, 4, 2, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,15))
+Pf.CreateTask(db, 1, 3, original_initial_date=date(2017, 6, 3), original_end_date=date(2017,6,10))
+Pf.CreateTask(db, 2, 3, original_initial_date=date(2017, 6, 11), original_end_date=date(2017,6,20))
+Pf.CreateTask(db, 3, 3, original_initial_date=date(2017, 6, 21), original_end_date=date(2017,7,8))
+Pf.CreateTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_date=date(2017,7,19))
 
 PLf.AssignTask(db, 1, 1, initial_date=date(2017, 4, 8), end_date=date(2017,4,28))
 PLf.AssignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
-PLf.AssignTask(db, 9, 9,  initial_date=date(2017, 4, 20), end_date=date(2017,5,8))
+PLf.AssignTask(db, 9, 9,  initial_date=date(2017, 6, 1), end_date=date(2017,6,12))
 #PLf.AssignTask(db, 2, 2,  initial_date=date(2017, 4, 28), end_date=date(2017,5,20))
 #PLf.AssignTask(db, 6, 6,  initial_date=date(2017, 4, 3), end_date=date(2017,4,18))
 #PLf.AssignTask(db, 10, 10,  initial_date=date(2017, 4, 12), end_date=date(2017,5,1))
