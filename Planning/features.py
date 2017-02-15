@@ -356,8 +356,8 @@ def DoPlanning(db, CreateTask):
 						# obtiene el id del skill correspondiente a esa tarea y revisa que no corresponda a una 'Instalación'.
 						task = db.Tasks.get(id_skill = s, id_project = p)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
-						
-						if len(employees_tasks) == 0 and (task == None or (task != None and task.effective_initial_date == None)):
+
+						if task == None or (task != None and task.effective_initial_date == None):
 							# arriba revisamos que la effective_initial_date sea None, si no, no la cambiamos
 							initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 							if task == None:
