@@ -13,10 +13,10 @@ import Planning.features as PLf
 
 
 with db_session:
-	db.Skills(id=1, name='Rectifier')
-	db.Skills(id=2, name='Designer')
-	db.Skills(id=3, name='Fabricator')
-	db.Skills(id=4, name='Installer')
+	db.Skills(id=1, name='Rectification')
+	db.Skills(id=2, name='Design')
+	db.Skills(id=3, name='Fabrication')
+	db.Skills(id=4, name='Installation')
 
 	db.Difficulties(id=1, description='Construccion en altura')
 
@@ -35,6 +35,7 @@ Pf.CreateProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
 Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
 				 300, date(2017, 6, 30), estimated_cost = 150)
+Pf.CreateProject(db, 4, 'Perre 3', 'San Telmo', 
 
 with db_session:
 	#Definición de las prioridades de los distintos proyectos
@@ -100,7 +101,7 @@ with db_session:
 	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
 	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
 	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
-
+# recordar que una vez corrimos el mismo método croque y mai y nos daban resultados distintos
 PLf.DoPlanning(db, Pf.CreateTask)
 
 
