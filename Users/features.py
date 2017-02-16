@@ -1,8 +1,10 @@
-from pony.orm import * #Luego deberíamos arreglar esto para que no se importe todo (mala práctica)
+from pony.orm import *
+#Luego deberíamos cambiar la importación de pony para que no se importen todas las cosas con * (mala práctica).
 import os
 import hashlib
 
 def createUser(db,name, level,password):
+    ''' Este método crea una nueva entrada en la tabla de Usuarios de la base de datos'''
     salt,hashed_pass = createSaltHash(password)
 
     with db_session:
@@ -10,17 +12,44 @@ def createUser(db,name, level,password):
 
 
 
-def checkPass(self, name_request, password):
-    pass
-    # if self.user[name_request] == hashlib.sha256(
-    #                 self.clientes_sals[name_request] + contrasena.encode('utf-8')):
-    #     return True
-    # else:
-    #     return False
+def checkPassEntry(db,name_request, password):
+    ''' Este método revisa que los datos ingresados para el sign-up sean correctos
+    Retorna True si lo son y False en el caso contrario '''
+    with db_session:
+        user = db.Users.get(user_name = name_request)
+        if user == None:
+            return False
+        else:
+            if hashComparison(password,user.salt,user.hashed_password):
+                return True
+            else:
+                return False
+
+def getUserLevel(db,user_name):
+    ''' Este método entrega el nivel del usuario correspondiente al nombre de usuario entregado.'''
+    with db_session:
+        user = db.Users.get(user_name = user_name)
+        return user.user_level
 
 
 def createSaltHash(password):
+    ''' Este método produce un salt y luego una 'hashed password' a partir de la contraseña ingresa.
+     Retorna ambos valores en una tupla '''
     salt = os.urandom(64)
+    #Es muy importante notar que aquí no se verifica si la salt ya fue usada para el hash de otro usuario
+    #Lo ideal es que los salt sean únicos, pero dado el tamaño de usuarios de la empresa, la probabilidad de que una salt se repita
+    #es muy baja (y aunque se repitiera no debería ser un problema).
+    #Decidimos hacerlo así por simplicidad
     encoded_pass = password.encode('utf-8')
-    hashed_pass = hashlib.sha256(salt + encoded_pass)
+    hashed_pass = hashlib.sha256(salt + encoded_pass).digest()
     return (salt, hashed_pass)
+
+def hashComparison(password,salt,hashed_password):
+    ''' Este método verifica si la contraseña entrega (sometida al algoritmo de hash) produce el valor esperado para el hashed_pass
+     Retorna True si el valor coincide y False si no'''
+    encoded_pass = password.encode('utf-8')
+    hashed_pass = hashlib.sha256(salt + encoded_pass).digest()
+    if hashed_password == hashed_pass:
+        return True
+    else:
+        return False
