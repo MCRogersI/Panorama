@@ -55,19 +55,19 @@ with db_session:
 #        Lista de empleados test case 1 		#
 # ###############################################
 
-Ef.CreateEmployee(db, 1, "Juan", 1, perf_rect = 10)
-Ef.CreateEmployee(db, 2, "Pedro", 2, perf_des = 20)
-Ef.CreateEmployee(db, 3, "Diego", 2, perf_fab = 30)
-Ef.CreateEmployee(db, 4, "Miguel", 1, perf_inst = 40)
-Ef.CreateEmployee(db, 5, "Mario", 1, perf_rect = 50)
-Ef.CreateEmployee(db, 6, "Felipe", 2, perf_des = 60)
-Ef.CreateEmployee(db, 7, "Miguel", 1, perf_fab = 40)
-Ef.CreateEmployee(db, 8, "Mario", 1, perf_inst = 50)
-Ef.CreateEmployee(db, 9, "Felipe", 2, perf_rect = 60)
-Ef.CreateEmployee(db, 10, "Miguel", 1, perf_des = 40)
-Ef.CreateEmployee(db, 11, "Mario", 1, perf_fab = 50)
-Ef.CreateEmployee(db, 12, "Felipe", 1, perf_inst = 60)
-Ef.CreateEmployee(db, 13, "Iker", 1, perf_inst = 70)
+Ef.CreateEmployee(db,  "Juan", 1, perf_rect = 10)
+Ef.CreateEmployee(db,  "Pedro", 2, perf_des = 20)
+Ef.CreateEmployee(db,  "Diego", 2, perf_fab = 30)
+Ef.CreateEmployee(db,  "Miguel", 1, perf_inst = 40)
+Ef.CreateEmployee(db,  "Mario", 1, perf_rect = 50)
+Ef.CreateEmployee(db,  "Felipe", 2, perf_des = 60)
+Ef.CreateEmployee(db,  "Miguel", 1, perf_fab = 40)
+Ef.CreateEmployee(db,  "Mario", 1, perf_inst = 50)
+Ef.CreateEmployee(db,  "Felipe", 2, perf_rect = 60)
+Ef.CreateEmployee(db,  "Miguel", 1, perf_des = 40)
+Ef.CreateEmployee(db,  "Mario", 1, perf_fab = 50)
+Ef.CreateEmployee(db,  "Felipe", 1, perf_inst = 60)
+Ef.CreateEmployee(db,  "Iker", 1, perf_inst = 70)
 
 
 ##############################################
