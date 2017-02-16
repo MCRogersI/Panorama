@@ -21,13 +21,15 @@ def console(level):
 		if(opt == '4'):
 			print("Has salido de la consola")
 			break
-def signIn()
+def signIn():
 	while True:
 		user = input("Ingrese su usuario: ")
 		password = input("Ingrese su contraseña: ")
-		if Uf.checkPassEntry(user, password):
-			level=getUserLevel(user)
-			console(level)
+		if Uf.checkPassEntry(db, user, password):
+			with db_session:
+				level=Uf.getUserLevel(db, user)
+				console(level)
+				
 		else:
 			print("Usuario y/o Contraseña incorrecto(s))")
 		break

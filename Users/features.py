@@ -5,10 +5,10 @@ import hashlib
 
 def createUser(db,name, level,password):
     ''' Este método crea una nueva entrada en la tabla de Usuarios de la base de datos'''
-    salt,hashed_pass = createSaltHash(password)
+    salt,hashed_password = createSaltHash(password)
 
     with db_session:
-        u = db.Users(user_name = name, user_level = level,salt = salt, hashed_pass = hashed_pass)
+        u = db.Users(user_name = name, user_level = level,salt = salt, hashed_password = hashed_password)
 
 
 
@@ -41,15 +41,15 @@ def createSaltHash(password):
     #es muy baja (y aunque se repitiera no debería ser un problema).
     #Decidimos hacerlo así por simplicidad
     encoded_pass = password.encode('utf-8')
-    hashed_pass = hashlib.sha256(salt + encoded_pass).digest()
-    return (salt, hashed_pass)
+    hashed_password = hashlib.sha256(salt + encoded_pass).digest()
+    return (salt, hashed_password)
 
 def hashComparison(password,salt,hashed_password):
     ''' Este método verifica si la contraseña entrega (sometida al algoritmo de hash) produce el valor esperado para el hashed_pass
      Retorna True si el valor coincide y False si no'''
     encoded_pass = password.encode('utf-8')
-    hashed_pass = hashlib.sha256(salt + encoded_pass).digest()
-    if hashed_password == hashed_pass:
+    auxiliar_hashed_password = hashlib.sha256(salt + encoded_pass).digest()
+    if auxiliar_hashed_password == hashed_password:
         return True
     else:
         return False

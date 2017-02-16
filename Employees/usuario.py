@@ -25,7 +25,7 @@ def employees_console(db, CreateEmployee, PrintEmployees, EditEmployee, PrintEmp
 			if(perf_ins == '0'):
 				perf_ins=None	
 			CreateEmployee(db, idEmpleado, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins)						
-		if(opt == '2' and (level == 1 or level == 2):
+		if(opt == '2' and (level == 1 or level == 2)):
 			idEmpleado2 = input("\nIngrese el ID del empleado a editar: ")
 			newName = input("\nIngrese el nuevo nombre del empleado, ingrese 0 si lo mantiene: ")
 			newZone = input("\nIngrese el código de la nueva zona del empleado, ingrese 0 si la mantiene : ")
@@ -62,5 +62,5 @@ def employees_console(db, CreateEmployee, PrintEmployees, EditEmployee, PrintEmp
 				PrintSelectSkill(db, 3)
 			if(opt3 == '5'):
 				PrintSelectSkill(db, 4)
-		if(opt == '5' and level == 1) or (opt == '4' and level == 2) or (opt = '2' and level ==3):
+		if(opt == '5' and level == 1) or (opt == '4' and level == 2) or (opt == '2' and level ==3):
 			break
