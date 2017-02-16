@@ -5,11 +5,16 @@ from datetime import date
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
+import Users.features as Uf
 
 #POR AHORA EJECUTAR LOS SIGUIENTES COMANDOS EN LA CONSOLA HABIENDO ACCEDIDO
 # A LA BASE DE DATOS:
 #'drop schema public cascade'
 # 'create schema public'
+
+Uf.createUser(db,'Alberto',1,'123')
+Uf.createUser(db,'Juan',2,'456')
+Uf.createUser(db,'Felipe',3,'789')
 
 
 with db_session:

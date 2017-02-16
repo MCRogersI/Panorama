@@ -5,23 +5,33 @@ import Employees.features as Ef, Employees.usuario as Eu
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
+import Users.features as Uf
 
-def console():
+def console(level):
 	while True:
 		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Para salir. \n Ingrese la alternativa elegida: ")
 		if(opt == '1'):
 			# Los ids deberían ser creados automáticamente y no ingresados (para asegurarse de que sean únicos).
 			# Para el caso particular de los proyectos el contract_number puede ser ingresado porque tiene la propiedad de ser único.
-			Eu.employees_console(db, Ef.CreateEmployee, Ef.PrintEmployees, Ef.EditEmployee, Ef.PrintEmployeesSkills, Ef.PrintSelectSkill, Ef.DeleteEmployee)
+			Eu.employees_console(db, Ef.CreateEmployee, Ef.PrintEmployees, Ef.EditEmployee, Ef.PrintEmployeesSkills, Ef.PrintSelectSkill, Ef.DeleteEmployee, level)
 		if(opt == '2'):
-			Pu.projects_console(db, Pf.CreateProject, Pf.PrintProjects, Pf.EditProject, Pf.DeleteProject)
+			Pu.projects_console(db, Pf.CreateProject, Pf.PrintProjects, Pf.EditProject, Pf.DeleteProject, level)
 		if( opt== '3'):
-			Pu.tasks_console(db, Pf.CreateTask, Pf.EditTask, Pf.PrintTasks, Pf.FailedTask)
+			Pu.tasks_console(db, Pf.CreateTask, Pf.EditTask, Pf.PrintTasks, Pf.FailedTask, level)
 		if(opt == '4'):
 			print("Has salido de la consola")
 			break
-
-console()
+def signIn()
+	while True:
+		user = input("Ingrese su usuario: ")
+		password = input("Ingrese su contraseña: ")
+		if Uf.checkPassEntry(user, password):
+			level=getUserLevel(user)
+			console(level)
+		else:
+			print("Usuario y/o Contraseña incorrecto(s))")
+		break
+signIn()
 
 
 

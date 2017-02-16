@@ -5,7 +5,7 @@ def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProjec
 			opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear un proyecto. \n - 2: si desea editar un proyecto.  \n - 3: eliminar un proyecto. \n - 4: para ver proyectos actuales. \n - 5: para volver atrás. \n Ingrese la alternativa elegida: ")
 		if level == 2:
 			opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear un proyecto. \n - 2: si desea editar un proyecto. \n - 3: eliminar un proyecto. \n - 4: para ver proyectos actuales. \n - 5: para volver atrás. \n Ingrese la alternativa elegida: ")
-		if level == 3:
+		if level == 3:t pull
 
 		if(opt == '1'):
 			contract_number = input("\nIngrese el numero de contrato: ")

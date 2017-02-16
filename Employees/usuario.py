@@ -1,4 +1,6 @@
 def employees_console(db, CreateEmployee, PrintEmployees, EditEmployee, PrintEmployeesSkills, PrintSelectSkill, DeleteEmployee, level):
+#Es mejor importar las funciones en lugar de entregarsélas como parámetro a la función. Cambiar más adelante.
+
 	while True:
 		if level == 1:
 			opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear empleados. \n - 2: si desea editar empleados. \n - 3: si desea eliminar empleados \n - 4: para ver empleados actuales. \n - 5: para volver atrás. \n Ingrese la alternativa elegida: ")
