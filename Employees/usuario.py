@@ -24,7 +24,7 @@ def employees_console(db, CreateEmployee, PrintEmployees, EditEmployee, PrintEmp
 			perf_ins = input("Ingrese el rendimiento histórico en instalación del empleado, ingrese 0 si no realiza esta labor: ")
 			if(perf_ins == '0'):
 				perf_ins=None	
-			CreateEmployee(db, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins)						
+			CreateEmployee(db, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins)
 		if(opt == '2' and (level == 1 or level == 2)):
 			idEmpleado2 = input("\nIngrese el ID del empleado a editar: ")
 			newName = input("\nIngrese el nuevo nombre del empleado, ingrese 0 si lo mantiene: ")
