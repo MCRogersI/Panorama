@@ -1,7 +1,12 @@
 from datetime import *
-def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProject):
+def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProject, level):
 	while True:
-		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear un proyecto. \n - 2: si desea editar un proyecto. \n - 3: para ver proyectos actuales. \n - 4: eliminar un proyecto. \n - 5: para volver atrás. \n Ingrese la alternativa elegida: ")
+		if level == 1:
+			opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear un proyecto. \n - 2: si desea editar un proyecto.  \n - 3: eliminar un proyecto. \n - 4: para ver proyectos actuales. \n - 5: para volver atrás. \n Ingrese la alternativa elegida: ")
+		if level == 2:
+			opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear un proyecto. \n - 2: si desea editar un proyecto. \n - 3: eliminar un proyecto. \n - 4: para ver proyectos actuales. \n - 5: para volver atrás. \n Ingrese la alternativa elegida: ")
+		if level == 3:
+
 		if(opt == '1'):
 			contract_number = input("\nIngrese el numero de contrato: ")
 			client_address = input("Ingrese la direccion del cliente: ")
@@ -39,9 +44,9 @@ def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProjec
 			if new_real_cost == '0':
 				new_real_cost = None
 			EditProject(db, new_contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost)
-		if(opt == '3'):
-			PrintProjects(db)
 		if(opt == '4'):
+			PrintProjects(db)
+		if(opt == '3'):
 			contract_number = input("\nIngrese el numero de contrato del proyecto a eliminar: ")
 			DeleteProject(db, contract_number)
 		if(opt == '5'):
@@ -50,7 +55,7 @@ def tasks_console(db, CreateTask, EditTask, PrintTasks, FailedTask):
 	while True:
 		opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear una tarea. \n - 2: si desea editar una tarea. \n - 3: si desea ingresar un fallo en una tarea. \n - 4: si desea ver las tareas actuales. \n - 5: para volver atrás. \n")
 		if(opt == '1'):
-			id = input("\n Ingrese el ID de la tarea: ")
+			#id = input("\n Ingrese el ID de la tarea: ")
 			id_skill = input("\n Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
 			id_project = input("\n Ingrese el ID del proyecto asociado: ")
 			original_initial_date = input("\n Ingrese la fecha estimada de inicio: ")
@@ -63,7 +68,7 @@ def tasks_console(db, CreateTask, EditTask, PrintTasks, FailedTask):
 				efective_end_date=None
 			original_initial_date=datetime.strptime(original_initial_date, '%Y-%m-%d')
 			original_end_date=datetime.strptime(original_end_date, '%Y-%m-%d')
-			CreateTask(db, id, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date, efective_end_date)
+			CreateTask(db, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date, efective_end_date)
 		if(opt == '2'):
 			id_edit = input("\n Ingrese el ID de la tarea que desea editar: ")
 			new_id_skill = input("\n Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
