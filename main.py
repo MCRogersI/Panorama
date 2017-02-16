@@ -13,11 +13,11 @@ def console(level):
 		if(opt == '1'):
 			# Los ids deberían ser creados automáticamente y no ingresados (para asegurarse de que sean únicos).
 			# Para el caso particular de los proyectos el contract_number puede ser ingresado porque tiene la propiedad de ser único.
-			Eu.employees_console(db, Ef.CreateEmployee, Ef.PrintEmployees, Ef.EditEmployee, Ef.PrintEmployeesSkills, Ef.PrintSelectSkill, Ef.DeleteEmployee, level)
+			Eu.employees_console(db, level)
 		if(opt == '2'):
-			Pu.projects_console(db, Pf.CreateProject, Pf.PrintProjects, Pf.EditProject, Pf.DeleteProject, level)
+			Pu.projects_console(db, level)
 		if( opt== '3'):
-			Pu.tasks_console(db, Pf.CreateTask, Pf.EditTask, Pf.PrintTasks, Pf.FailedTask, level)
+			Pu.tasks_console(db, level)
 		if(opt == '4'):
 			print("Has salido de la consola")
 			break

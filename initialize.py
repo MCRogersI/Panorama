@@ -17,6 +17,9 @@ Uf.createUser(db,'Juan',2,'456')
 Uf.createUser(db,'Felipe',3,'789')
 
 
+#Aquí las Skills, las Difficulties y las Activities se crean de forma directa. Esto no se hace a través de métodos "createSkill",
+#createActivity" o "create Difficulty" dado que esas relaciones son
+# constantes en las base de datos y no es necesario volver a crearlas en el futuro.
 with db_session:
 	db.Skills(id=1, name='Rectification')
 	db.Skills(id=2, name='Design')
