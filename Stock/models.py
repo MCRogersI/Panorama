@@ -2,7 +2,7 @@ from pony.orm import *
 from datetime import date
 
 def define_models(db):
-	class SKU(db.Entity):
+	class Stock(db.Entity):
 		id = PrimaryKey(int, auto = True)
 		name = Required(str)
 		price = Required(float)
