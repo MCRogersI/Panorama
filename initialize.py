@@ -67,7 +67,7 @@ Ef.CreateEmployee(db,  "Felipe", 2, perf_rect = 60)
 Ef.CreateEmployee(db,  "Miguel", 1, perf_des = 40)
 Ef.CreateEmployee(db,  "Mario", 1, perf_fab = 50)
 Ef.CreateEmployee(db,  "Felipe", 1, perf_inst = 60)
-Ef.CreateEmployee(db,  "Iker", 1, perf_inst = 70)
+#Ef.CreateEmployee(db,  "Iker", 1, perf_inst = 70)
 
 
 ##############################################
