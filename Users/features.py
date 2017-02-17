@@ -4,7 +4,10 @@ import os
 import hashlib
 
 def createUser(db,name, level,password):
-    ''' Este método crea una nueva entrada en la tabla de Usuarios de la base de datos'''
+    ''' Este método crea una nueva entrada en la tabla de Usuarios de la base de datos
+    Si es que en el futuro un administrador (usuario con level = 1) desea crear un nuevo usuario,
+    este puede crearlo con una contraseña por defecto (0000 por ejemplo como para los codigos PIN de las tarjetas SIM)
+    y notificar al usuario respectivo para que él cambie su contraseña'''
     salt,hashed_password = createSaltHash(password)
 
     with db_session:
@@ -43,6 +46,14 @@ def createSaltHash(password):
     encoded_pass = password.encode('utf-8')
     hashed_password = hashlib.sha256(salt + encoded_pass).digest()
     return (salt, hashed_password)
+
+def changePassword(db,user_name, password):
+    ''' Este método modifica la contraseña del usuario correspondiente '''
+    with db_session:
+        user = db.Users.get(user_name = user_name)
+        salt, hashed_password = createSaltHash(password)
+        user.salt = salt
+        user.hashed_password = hashed_password
 
 def hashComparison(password,salt,hashed_password):
     ''' Este método verifica si la contraseña entrega (sometida al algoritmo de hash) produce el valor esperado para el hashed_pass

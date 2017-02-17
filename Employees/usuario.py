@@ -1,5 +1,5 @@
-from pony.orm import *
 from Employees.features import CreateEmployee, PrintEmployees, EditEmployee, PrintEmployeesSkills, PrintSelectSkill, DeleteEmployee
+
 def employees_console(db, level):
 #Es mejor importar las funciones en lugar de entregarsélas como parámetro a la función. Cambiar más adelante.
 
@@ -7,9 +7,9 @@ def employees_console(db, level):
 		
 		if level == 1:
 			opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear empleados. \n - 2: si desea editar empleados. \n - 3: si desea eliminar empleados \n - 4: para ver empleados actuales. \n - 5: para volver atrás. \n Ingrese la alternativa elegida: ")
-		if level == 2:
+		elif level == 2:
 			opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear empleados. \n - 2: si desea editar empleados.  \n - 3: para ver empleados actuales. \n - 4: para volver atrás. \n Ingrese la alternativa elegida: ")
-		if level == 3:
+		elif level == 3:
 			opt = input("\n Marque una de las siguientes opciones: \n - 1: para ver empleados actuales. \n - 2: para volver atrás. \n Ingrese la alternativa elegida: ")
 		if(opt == '1' and (level == 1 or level == 2)):
 			#idEmpleado = input("\nIngrese el ID del empleado: ")

@@ -1,5 +1,6 @@
-from datetime import *
-def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProject, level):
+from datetime import datetime
+from Projects.features import CreateProject, PrintProjects, EditProject, DeleteProject ,CreateTask, EditTask, PrintTasks, FailedTask
+def projects_console(db, level):
 	while True:
 		if level == 1:
 			opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear un proyecto. \n - 2: si desea editar un proyecto.  \n - 3: eliminar un proyecto. \n - 4: para ver proyectos actuales. \n - 5: para volver atrás. \n Ingrese la alternativa elegida: ")
@@ -54,7 +55,7 @@ def projects_console(db, CreateProject, PrintProjects, EditProject, DeleteProjec
 		
 		if(opt == '5' and level == 1) or (opt == '4' and level == 2) or (opt == '2' and level == 3):
 			break
-def tasks_console(db, CreateTask, EditTask, PrintTasks, FailedTask, level):
+def tasks_console(db, level):
 	while True:
 		if level == 1:
 			opt = input("\n Marque una de las siguientes opciones:\n - 1: si desea crear una tarea. \n - 2: si desea editar una tarea. \n - 3: si desea ingresar un fallo en una tarea. \n - 4: si desea ver las tareas actuales. \n - 5: para volver atrás. \n")
