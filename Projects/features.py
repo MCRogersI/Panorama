@@ -1,7 +1,6 @@
 from pony.orm import *
 
 
-
 def CreateProject(db, contract_number, client_address, client_comuna,
 				  client_name, client_rut, linear_meters, deadline,
 				  real_linear_meters = None, estimated_cost = None,

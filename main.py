@@ -6,23 +6,22 @@ import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
 import Users.features as Uf
+import Stock.usuario as Sf
 
 def console(level):
 	while True:
-		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Para salir. \n Ingrese la alternativa elegida: ")
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Stock. \n - 5: Para salir. \n Ingrese la alternativa elegida: ")
 		if(opt == '1'):
 			# Los ids deberían ser creados automáticamente y no ingresados (para asegurarse de que sean únicos).
 			# Para el caso particular de los proyectos el contract_number puede ser ingresado porque tiene la propiedad de ser único.
-<<<<<<< HEAD
-			
-=======
->>>>>>> c363bc5c0ca68dfd59e5f856e058342bdff9c7dc
 			Eu.employees_console(db, level)
 		if(opt == '2'):
 			Pu.projects_console(db, level)
 		if( opt== '3'):
 			Pu.tasks_console(db, level)
-		if(opt == '4'):
+		if (opt == '4'):
+			Sf.stock_console(db, level)
+		if(opt == '5'):
 			print("Has salido de la consola")
 			break
 def signIn():

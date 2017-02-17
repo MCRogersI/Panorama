@@ -1,5 +1,7 @@
 from datetime import datetime
 from Projects.features import CreateProject, PrintProjects, EditProject, DeleteProject ,CreateTask, EditTask, PrintTasks, FailedTask
+
+
 def projects_console(db, level):
 	while True:
 		if level == 1:
@@ -19,33 +21,33 @@ def projects_console(db, level):
 			deadline = input("ingrese la fecha de entrega pactada del proyecto: ")
 			CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline)
 		if(opt == '2' and (level == 1 or level == 2)):
-			new_contract_number = input("\nIngrese el numero de contrato del proyecto a editar: ")
-			new_client_address = input("Ingrese la nueva direccion del cliente, 0 si la mantiene: ")
-			if new_client_address == '0':
+			contract_number = input("\nIngrese el numero de contrato del proyecto a editar: ")
+			new_client_address = input("Ingrese la nueva direccion del cliente, solo presione enter si la mantiene: ")
+			if new_client_address == '':
 				new_client_address = None
-			new_client_comuna = input("Ingrese la nueva comuna del cliente, 0 si la mantiene: ")
-			if new_client_comuna == '0':
+			new_client_comuna = input("Ingrese la nueva comuna del cliente, solo presione enter si la mantiene: ")
+			if new_client_comuna == '':
 				new_client_comuna = None
-			new_client_name = input("Ingrese el nuevo nombre del cliente, 0 si lo mantiene: ")
-			if new_client_name == '0':
+			new_client_name = input("Ingrese el nuevo nombre del cliente, solo presione enter si lo mantiene: ")
+			if new_client_name == '':
 				new_client_name = None
-			new_client_rut = input("Ingrese el nuevo RUT del cliente, 0 si lo mantiene: ")
-			if new_client_rut == '0':
+			new_client_rut = input("Ingrese el nuevo RUT del cliente, solo presione enter si lo mantiene: ")
+			if new_client_rut == '':
 				new_client_rut = None
-			new_linear_meters = input("Ingrese los metros lineales del proyecto, 0 si se mantienen: ")
-			if new_linear_meters == '0':
+			new_linear_meters = input("Ingrese los metros lineales del proyecto, solo presione enter si se mantienen: ")
+			if new_linear_meters == '':
 				new_linear_meters = None
-			new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto, 0 si no se conocen: ")
-			if new_real_linear_meters == '0':
+			new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto, solo presione enter si no se conocen: ")
+			if new_real_linear_meters == '':
 				new_real_linear_meters = None
-			new_deadline = input("Ingrese la nueva feche de entrega pactada del proyecto, 0 si se mantiene: ")
-			if new_deadline == '0':
+			new_deadline = input("Ingrese la nueva feche de entrega pactada del proyecto, solo presione enter si se mantiene: ")
+			if new_deadline == '':
 				new_deadline = None
 			new_estimated_cost = input("Ingrese el costo estimado del proyecto: ")
-			new_real_cost = input("Ingrese el costo real del proyecto, 0 si no se conoce: ")
-			if new_real_cost == '0':
+			new_real_cost = input("Ingrese el costo real del proyecto, solo presione enter si no se conoce: ")
+			if new_real_cost == '':
 				new_real_cost = None
-			EditProject(db, new_contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost)
+			EditProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost)
 		if(opt == '3' and level == 1):
 			contract_number = input("\nIngrese el numero de contrato del proyecto a eliminar: ")
 			DeleteProject(db, contract_number)		
@@ -69,9 +71,9 @@ def tasks_console(db, level):
 			id_project = input("\n Ingrese el ID del proyecto asociado: ")
 			original_initial_date = input("\n Ingrese la fecha estimada de inicio: ")
 			original_end_date = input("\n Ingrese la fecha estimada de término: ")
-			efective_initial_date = input("\n Ingrese la fecha efectiva de inicio, 0 si no ha comenzado: ")
-			if(efective_initial_date != '0'):
-				efective_end_date = input("\n Ingrese la fecha efectiva de término, 0 si no ha terminado: ")
+			efective_initial_date = input("\n Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
+			if(efective_initial_date != ''):
+				efective_end_date = input("\n Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
 			else: 
 				efective_initial_date=None
 				efective_end_date=None
@@ -84,9 +86,9 @@ def tasks_console(db, level):
 			new_id_project = input("\n Ingrese el ID del proyecto asociado: ")
 			new_original_initial_date = input("\n Ingrese la fecha estimada de inicio: ")
 			new_original_end_date = input("\n Ingrese la fecha estimada de término: ")
-			new_efective_initial_date= input("\n Ingrese la fecha efectiva de inicio, 0 si no ha comenzado: ")
-			if(new_efective_initial_date != '0'):
-				new_efective_end_date = input("\n Ingrese la fecha efectiva de término, 0 si no ha terminado: ")
+			new_efective_initial_date= input("\n Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
+			if(new_efective_initial_date != ''):
+				new_efective_end_date = input("\n Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
 			else: 
 				new_efective_initial_date=None
 				new_efective_end_date=None
