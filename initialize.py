@@ -15,7 +15,13 @@ import Stock.features as Sf
 Uf.createUser(db,'Alberto',1,'123')
 Uf.createUser(db,'Juan',2,'456')
 Uf.createUser(db,'Felipe',3,'789')
-Sf.createSKU(db, 'Lasivedim', 6.43, 100)
+Sf.createSKU(db, 'Telescopic', 2.01, 100)
+Sf.createSKU(db, 'Glass Pane Knob', 6.43, 200)
+Sf.createSKU(db, 'Lower chamber-9', 4.77, 150)
+Sf.createSKU(db, 'Upper chamber-9', 3.07, 150)
+Sf.createSKU(db, 'Lock for latch', 12.03, 1000)
+Sf.createSKU(db, 'Profile joint unit plastic bag', 4.93, 180)
+
 
 #Aquí las Skills, las Difficulties y las Activities se crean de forma directa. Esto no se hace a través de métodos "createSkill",
 #createActivity" o "create Difficulty" dado que esas relaciones son

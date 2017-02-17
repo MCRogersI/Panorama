@@ -25,4 +25,6 @@ def editSKU(db, id, name = None, price = None, critical_level = None, real_quant
 			s.real_quantity = real_quantity
 		if estimated_quantity != None:
 			s.estimated_quantity = estimated_quantity
-
+def printStock(db)
+	with db_session:
+		db.SKU.select().show()

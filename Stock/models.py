@@ -10,14 +10,14 @@ def define_models(db):
 		real_quantity = Optional(float)
 		estimated_quantity = Optional(float)
 		def __repr__(self):
-			return str(self.id)
+			return str(self.name)
 
 	class Engagement(db.Entity):
 		id = PrimaryKey(int, auto = True)
 		id_project = Required(int)
 		id_SKU = Required(int)
 		quantity = Required(float)
-		withdrawal_date = Required(date)
+		withdrawal_date = Optional(date)
 		def __repr__(self):
 			return str(self.id)
 
