@@ -6,11 +6,12 @@ def define_models(db):
 		id = PrimaryKey(int, auto = True)
 		name = Required(str)
 		price = Required(float)
-		critical_level = Required(float)
+		critical_level = Required(float)#En el futuro este valor podría calcularse pero inicialmente debe ser fijado
 		real_quantity = Optional(float)
 		estimated_quantity = Optional(float)
 		def __repr__(self):
 			return str(self.id)
+
 	class Engagement(db.Entity):
 		id = PrimaryKey(int, auto = True)
 		id_project = Required(int)
@@ -19,6 +20,7 @@ def define_models(db):
 		withdrawal_date = Required(date)
 		def __repr__(self):
 			return str(self.id)
+
 	class Purchase(db.Entity):
 		id = PrimaryKey(int, auto = True)
 		id_SKU = Required(int)
