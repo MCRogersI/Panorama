@@ -15,6 +15,8 @@ import Stock.features as Sf
 Uf.createUser(db,'Alberto',1,'123')
 Uf.createUser(db,'Juan',2,'456')
 Uf.createUser(db,'Felipe',3,'789')
+
+
 Sf.createSKU(db, 'Telescopic', 2.01, 100)
 Sf.createSKU(db, 'Glass Pane Knob', 6.43, 200)
 Sf.createSKU(db, 'Lower chamber-9', 4.77, 150)

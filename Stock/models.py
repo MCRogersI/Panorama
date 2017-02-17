@@ -10,6 +10,7 @@ def define_models(db):
 		real_quantity = Optional(float)
 		estimated_quantity = Optional(float)
 		engagements = Set('Engagements')
+		purchases = Set('Purchases')
 		def __repr__(self):
 			return str(self.name)
 
