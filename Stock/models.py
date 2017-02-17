@@ -18,7 +18,6 @@ def define_models(db):
 		id = PrimaryKey(int, auto = True)
 		project = Required('Projects')
 		SKU = Required('Stock')
-
 		quantity = Required(float)
 		withdrawal_date = Optional(date)
 		def __repr__(self):

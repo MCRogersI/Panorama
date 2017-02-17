@@ -7,6 +7,7 @@ import Projects.features as Pf
 import Planning.features as PLf
 import Users.features as Uf
 import Stock.features as Sf
+
 #POR AHORA EJECUTAR LOS SIGUIENTES COMANDOS EN LA CONSOLA HABIENDO ACCEDIDO
 # A LA BASE DE DATOS:
 #'drop schema public cascade'
