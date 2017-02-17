@@ -14,7 +14,8 @@ def define_models(db):
 		def __repr__(self):
 			return str(self.name)
 
-	class Engagements(db.Entity):
+	class Engagements(db.Entity):#si en alguna otra tarea distinta a instalación se usa stock, quizás conviene asociar a 
+#cada engagement una task
 		id = PrimaryKey(int, auto = True)
 		project = Required('Projects')
 		SKU = Required('Stock')
