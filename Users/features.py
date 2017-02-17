@@ -13,7 +13,7 @@ def createUser(db,name, level,password):
     with db_session:
         u = db.Users(user_name = name, user_level = level,salt = salt, hashed_password = hashed_password)
 
-
+#falta un editUser o no?
 
 def checkPassEntry(db,name_request, password):
     ''' Este método revisa que los datos ingresados para el sign-up sean correctos

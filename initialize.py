@@ -6,7 +6,7 @@ import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
 import Users.features as Uf
-
+import Stock.features as Sf
 #POR AHORA EJECUTAR LOS SIGUIENTES COMANDOS EN LA CONSOLA HABIENDO ACCEDIDO
 # A LA BASE DE DATOS:
 #'drop schema public cascade'
@@ -15,7 +15,7 @@ import Users.features as Uf
 Uf.createUser(db,'Alberto',1,'123')
 Uf.createUser(db,'Juan',2,'456')
 Uf.createUser(db,'Felipe',3,'789')
-
+Sf.createSKU(db, 'Lasivedim', 6.43, 100)
 
 #Aquí las Skills, las Difficulties y las Activities se crean de forma directa. Esto no se hace a través de métodos "createSkill",
 #createActivity" o "create Difficulty" dado que esas relaciones son
