@@ -1,5 +1,5 @@
 from pony.orm import *
-import Projects.models as Pr, Employees.models as E, Planning.models as Pl, Users.models as U, Stock.models as C
+import Projects.models as Pr, Employees.models as E, Planning.models as Pl, Users.models as U, Stock.models as S
 
 
 
@@ -20,7 +20,7 @@ E.define_models(db)
 Pr.define_models(db)
 Pl.define_models(db)
 U.define_models(db)
-C.define_models(db)
+S.define_models(db)
 
 db.bind('postgres', user='postgres', password='panorama', host='localhost', database='panorama') # estamos usando el puerto por defecto: 5432
 db.generate_mapping(create_tables=True)
