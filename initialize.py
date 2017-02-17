@@ -44,6 +44,7 @@ Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
  320, date(2017, 6, 30), estimated_cost = 150)
 
+
 with db_session:
 	#Definición de las prioridades de los distintos proyectos
 	db.Projects[3].priority = 1

@@ -1,7 +1,9 @@
 from pony.orm import *
 from datetime import date
 
+
 def define_models(db):
+
     class Users(db.Entity):
         user_id = PrimaryKey(int, auto=True)
         user_name = Required(str)
