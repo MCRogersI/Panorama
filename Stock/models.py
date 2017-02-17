@@ -15,8 +15,9 @@ def define_models(db):
 
 	class Engagements(db.Entity):
 		id = PrimaryKey(int, auto = True)
-		id_project = Required('Projects')
-		id_SKU = Required('Stock')
+		project = Required('Projects')
+		SKU = Required('Stock')
+
 		quantity = Required(float)
 		withdrawal_date = Optional(date)
 		def __repr__(self):

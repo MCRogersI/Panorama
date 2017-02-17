@@ -22,7 +22,7 @@ def define_models(db):
 		fixed_planning = Optional(bool)
 		fixed_priority = Optional(bool)
 		engagements = Set('Engagements')
-
+		
 
 		def __repr__(self):
 			return str(self.contract_number)
