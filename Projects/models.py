@@ -21,8 +21,8 @@ def define_models(db):
 		activities = Set('Projects_Activities')
 		fixed_planning = Optional(bool)
 		fixed_priority = Optional(bool)
-		#engagements = Set('Engagements')
-
+		engagements = Set('Engagements')
+		
 
 		def __repr__(self):
 			return str(self.contract_number)
