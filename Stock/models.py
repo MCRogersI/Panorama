@@ -10,6 +10,7 @@ def define_models(db):
 		real_quantity = Optional(float)
 		estimated_quantity = Optional(float)
 		engagements = Set('Engagements')
+		purchases = Set('Purchases')
 		def __repr__(self):
 			return str(self.name)
 
@@ -25,7 +26,7 @@ def define_models(db):
 
 	class Purchases(db.Entity):
 		id = PrimaryKey(int, auto = True)
-		id_SKU = Required(int)
+		SKU = Required('Stock')
 		quantity = Required(float)
 		arrival_date = Required(date)	
 		def __repr__(self):
