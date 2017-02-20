@@ -1,5 +1,6 @@
 from pony.orm import *
-from datetime import date
+from datetime import date, timedelta
+import matplotlib.pyplot as plt
 
 def createSKU(db, name, price, critical_level, real_quantity = None, estimated_quantity = None):
 
@@ -119,6 +120,19 @@ def calculateStock(db,id_SKU):
 			print('Value error: {}'.format(e))
 
 
-
+def printStock(db, id_SKU):
+	with db_session:
+		movements = calculateStock(db, id_SKU)
+		quantities = []
+		dates = []
+		for l in movements:
+			quantities.append(l[0])
+			dates.append(l[1])
+		plt.step(dates, quantities, where = 'post')
+		plt.xlim((date.today(), dates[len(dates)-1]+timedelta(1)))
+		plt.ylabel('Quantity')
+		plt.xlabel('Date')
+		plt.suptitle('Inventory prediction of unit '+str(id_SKU))
+		plt.show()
 
 
