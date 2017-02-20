@@ -121,7 +121,7 @@ with db_session:
 	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
 	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
 # recordar que una vez corrimos el mismo método croque y mai y nos daban resultados distintos
-PLf.DoPlanning(db, Pf.CreateTask)
+#PLf.DoPlanning(db, Pf.CreateTask)
 
 
 

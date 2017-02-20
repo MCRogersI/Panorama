@@ -54,6 +54,13 @@ def DeleteProject(db, contract_number):
 	with db_session:
 		db.Projects[contract_number].delete()
 
+def getCostProject(db, contract_number, fixed_cost, variable_cost):
+	engagements = select(e for e in db.Projects[contract_number].engagements)
+	cost=fixed_cost+variable_cost*db.Projects[contract_number].linear_meters
+	for e in engagements:
+		cost=cost + e.SKU.price*e.quantity
+	return cost
+
 def CreateTask(db, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
 	with db_session:
 		t = db.Tasks(id_skill = id_skill, id_project = id_project, original_initial_date = original_initial_date, original_end_date = original_end_date)
