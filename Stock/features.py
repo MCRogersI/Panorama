@@ -42,8 +42,9 @@ def printStock(db):
 	with db_session:
 		db.Stock.select().show()
 
-def createEngagement(db, id_project, SKUs_list,  withdrawal_date = None): #SKUs_list es una lista de tuplas con el id del SKU y la cantidad correspondiente.
+def createEngagement(db, id_project, SKUs_list,  withdrawal_date = None):
 	''' Este método crea una nueva entrada en la tabla de engagements a partir de los datos ingresados  '''
+	# SKUs_list es una lista de tuplas con el id del SKU y la cantidad correspondiente.
 	with db_session:
 		if len(SKUs_list) > 1: #Caso en el que se ingresa un lista de tuplas.
 			for sku_row in SKUs_list:
@@ -67,3 +68,25 @@ def createEngagement(db, id_project, SKUs_list,  withdrawal_date = None): #SKUs_
 			except ValueError as e:
 				print('Value error: {}'.format(e))
 
+def createPurchases(db,SKUs_list,  arrival_date):
+	''' Este método crea una nueva entrada en la tabla de purchases a partir de los datos ingresados  '''
+	# SKUs_list es una lista de tuplas con el id del SKU y la cantidad correspondiente. Se DEBE ingresar la fecha de entrega.
+	with db_session:
+		if len(SKUs_list) > 1: #Caso en el que se ingresa un lista de tuplas.
+			for sku_row in SKUs_list:
+				try:
+					sku = db.Stock[sku_row[0]]
+					db.Purchases(SKU = sku, quantity = sku_row[1], arrival_date = arrival_date)
+				except ObjectNotFound as e:
+					print('Object not found: {}'.format(e))
+				except ValueError as e:
+					print('Value error: {}'.format(e))
+		else:
+			try:
+				sku = db.Stock[SKUs_list[0]]
+				db.Engagements(SKU=sku, quantity=SKUs_list[1],arrival_date=arrival_date)
+
+			except ObjectNotFound as e:
+				print('Object not found: {}'.format(e))
+			except ValueError as e:
+				print('Value error: {}'.format(e))
