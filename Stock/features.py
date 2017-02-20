@@ -1,5 +1,5 @@
 from pony.orm import *
-
+from datetime import date
 
 def createSKU(db, name, price, critical_level, real_quantity = None, estimated_quantity = None):
 
@@ -90,4 +90,24 @@ def createPurchases(db,SKUs_list,  arrival_date):
 				print('Object not found: {}'.format(e))
 			except ValueError as e:
 				print('Value error: {}'.format(e))
+
+def calculateStock(db):
+	''' Este método retorna una tupla con los flujos (fecha,cantidad) de stock  '''
+	engagements = select(en for en in db.Engagements).order_by(lambda en: en.withdrawal_date)
+	purchases = select(pur for pur in db.Engagements).order_by(lambda pur: pur.arrival_date)
+	for en in engagements:
+		en = (en.quantity, en.withdrawal_date)
+	for pur in engagements:
+		pur = (pur.quantity, pur.withdrawal_date)
+	fluxes = engagements + purchases
+	fluxes.sort(key=lambda f: f[1])
+	beginning_date = date.today()
+	days_with_flux = []
+	fluxes = [(0,beginning_date)]+fluxes
+	for f in fluxes:
+		days_with_flux.append(f[1])
+	return (days_with_flux,fluxes)
+
+
+
 
