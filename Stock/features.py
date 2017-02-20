@@ -99,7 +99,7 @@ def calculateStock(db):
 		aux_engagements = []
 		aux_purchases = []
 		for en in engagements:
-			aux_engagements.append((en.quantity, en.withdrawal_date))
+			aux_engagements.append((-en.quantity, en.withdrawal_date))
 		for pur in purchases:
 			aux_purchases.append((pur.quantity, pur.arrival_date))
 		fluxes = aux_engagements + aux_purchases
