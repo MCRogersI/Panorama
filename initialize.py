@@ -54,7 +54,7 @@ Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
  320, date(2017, 6, 30), estimated_cost = 150)
 
-Sf.createEngagement(db,2,[(1,10),(5,2),(3,20),(5,16),(6,38)])
+Sf.createEngagement(db, 2, [(1,10),(5,2),(3,20),(5,16),(6,38)])
 
 with db_session:
 	#Definición de las prioridades de los distintos proyectos
@@ -122,6 +122,7 @@ with db_session:
 	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
 # recordar que una vez corrimos el mismo método croque y mai y nos daban resultados distintos
 #PLf.DoPlanning(db, Pf.CreateTask)
+print(Pf.getCostProject(db, 2, 10, 0.1))
 
 
 
