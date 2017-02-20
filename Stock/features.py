@@ -93,20 +93,20 @@ def createPurchases(db,SKUs_list,  arrival_date):
 
 def calculateStock(db):
 	''' Este método retorna una tupla con los flujos (fecha,cantidad) de stock  '''
-	engagements = select(en for en in db.Engagements).order_by(lambda en: en.withdrawal_date)
-	purchases = select(pur for pur in db.Engagements).order_by(lambda pur: pur.arrival_date)
-	for en in engagements:
-		en = (en.quantity, en.withdrawal_date)
-	for pur in engagements:
-		pur = (pur.quantity, pur.withdrawal_date)
-	fluxes = engagements + purchases
-	fluxes.sort(key=lambda f: f[1])
-	beginning_date = date.today()
-	days_with_flux = []
-	fluxes = [(0,beginning_date)]+fluxes
-	for f in fluxes:
-		days_with_flux.append(f[1])
-	return (days_with_flux,fluxes)
+	with db_session:
+		engagements = select(en for en in db.Engagements).order_by(lambda en: en.withdrawal_date)
+		purchases = select(pur for pur in db.Purchases).order_by(lambda pur: pur.arrival_date)
+		aux_engagements = []
+		aux_purchases = []
+		for en in engagements:
+			aux_engagements.append((en.quantity, en.withdrawal_date))
+		for pur in purchases:
+			aux_purchases.append((pur.quantity, pur.arrival_date))
+		fluxes = aux_engagements + aux_purchases
+		fluxes = sorted(fluxes, key=lambda date: fluxes[1])
+		beginning_date = date.today()
+		fluxes = [(0,beginning_date)]+fluxes
+		return fluxes
 
 
 

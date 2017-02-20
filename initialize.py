@@ -54,8 +54,10 @@ Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
  320, date(2017, 6, 30), estimated_cost = 150)
 
-Sf.createEngagement(db, 2, [(1,10),(5,2),(3,20),(5,16),(6,38)])
-
+Sf.createEngagement(db, 2, [(1,10),(5,2),(3,20),(5,16),(6,38)],date(2017, 2, 24))
+Sf.createEngagement(db, 2, [(1,99),(4,999)],date(2017, 2, 27))
+auxaa = Sf.calculateStock(db)
+print(auxaa)
 with db_session:
 	#Definición de las prioridades de los distintos proyectos
 	db.Projects[3].priority = 1
