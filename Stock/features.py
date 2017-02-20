@@ -111,7 +111,6 @@ def calculateStock(db,id_SKU):
 				aux_purchases.append((pur.quantity, pur.arrival_date))
 			fluxes = aux_engagements + aux_purchases
 			fluxes = sorted(fluxes, key=itemgetter(1))
-			print(fluxes)
 			beginning_date = date.today()
 			beginning_quantity = db.Stock[id_SKU].real_quantity
 			fluxes = [(0,beginning_date)]+fluxes
