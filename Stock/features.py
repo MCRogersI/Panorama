@@ -14,22 +14,56 @@ def editSKU(db, id, name = None, price = None, critical_level = None, real_quant
 	''' Este método edita la unidad de stock, en cualquiera de sus características '''
 
 	with db_session:
-		s = db.Stock[id]
-		if name != None:
-			s.name = name
-		if price != None:
-			s.price = price
-		if critical_level != None:
-			s.critical_level = critical_level
-		if real_quantity != None:
-			s.real_quantity = real_quantity
-		if estimated_quantity != None:
-			s.estimated_quantity = estimated_quantity
+		try:
+			s = db.Stock[id]
+			if name != None:
+				s.name = name
+			if price != None:
+				s.price = price
+			if critical_level != None:
+				s.critical_level = critical_level
+			if real_quantity != None:
+				s.real_quantity = real_quantity
+			if estimated_quantity != None:
+				s.estimated_quantity = estimated_quantity
+
+		except ObjectNotFound as e:
+			print('Object not found: {}'.format(e))
+		except ValueError as e:
+			print('Value error: {}'.format(e))
 
 def deleteSKU(db, id):
+	''' Este método elimina una de las entradas de SKU de la tabla de Stock'''
 	with db_session:
 		db.Stock[id].delete()
 
 def printStock(db):
-    with db_session:
-        db.Stock.select().show()
+	''' Este método elimina una de las entradas de SKU de la tabla de Stock '''
+	with db_session:
+		db.Stock.select().show()
+
+def createEngagement(db, id_project, SKUs_list,  withdrawal_date = None): #SKUs_list es una lista de tuplas con el id del SKU y la cantidad correspondiente.
+	''' Este método crea una nueva entrada en la tabla de engagements a partir de los datos ingresados  '''
+	with db_session:
+		if len(SKUs_list) > 1: #Caso en el que se ingresa un lista de tuplas.
+			for sku_row in SKUs_list:
+				try:
+					sku = db.Stock[sku_row[0]]
+					#IMPORTANTE: En 'project' se podría haber guardado simplemente el id del proyecto (contrac_number),
+					# pero de esta forma el proyecto puede ser accedido de forma directa a través del engagement.
+					# Deberíamos instaurar una convención al respecto.
+					db.Engagements(project = db.Projects[id_project], SKU = sku, quantity = sku_row[1], withdrawal_date = withdrawal_date)
+				except ObjectNotFound as e:
+					print('Object not found: {}'.format(e))
+				except ValueError as e:
+					print('Value error: {}'.format(e))
+		else:
+			try:
+				sku = db.Stock[SKUs_list[0]]
+				db.Engagements(project=db.Projects[id_project], SKU=sku, quantity=SKUs_list[1],withdrawal_date=withdrawal_date)
+
+			except ObjectNotFound as e:
+				print('Object not found: {}'.format(e))
+			except ValueError as e:
+				print('Value error: {}'.format(e))
+

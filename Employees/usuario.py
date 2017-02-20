@@ -16,7 +16,7 @@ def employees_console(db, level):
 			#idEmpleado = input("\nIngrese el ID del empleado: ")
 			nameEmpleado = input("Ingrese el nombre del empleado: ")
 			zoneEmpleado = input("Ingrese el código de la zona del empleado: ")
-			perf_rect = input("Ingrese el rendimiento histórico en rectificación del empleado, ingrese 0 si no realiza esta labor: ")
+			perf_rect = input("Ingrese el rendimiento histórico en rectificación del empleado, solo presione enter si no realiza esta labor: ")
 			if(perf_rect == ''):
 				perf_rect=None
 			perf_des = input("Ingrese el rendimiento histórico en diseño del empleado, solo presione enter si no realiza esta labor: ")
@@ -32,7 +32,7 @@ def employees_console(db, level):
 
 		if(opt == '2' and (level == 1 or level == 2)):
 			idEmpleado = input("\nIngrese el ID del empleado a editar: ")
-			newName = input("\nIngrese el nuevo nombre del empleado, ingrese 0 si lo mantiene: ")
+			newName = input("\nIngrese el nuevo nombre del empleado, solo presione enter si lo mantiene: ")
 			newZone = input("\nIngrese el código de la nueva zona del empleado, solo presione enter si la mantiene : ")
 			newPerf_rect = input("\nIngrese el rendimiento histórico en rectificación del empleado, solo presione enter si mantiene la información actual: ")
 			newPerf_des = input("\nIngrese el rendimiento histórico en diseño del empleado, solo presione enter mantiene la información actual: ")

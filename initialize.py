@@ -26,6 +26,7 @@ Sf.createSKU(db, 'Lock for latch', 12.03, 1000)
 Sf.createSKU(db, 'Profile joint unit plastic bag', 4.93, 180)
 
 
+
 #Aquí las Skills, las Difficulties y las Activities se crean de forma directa. Esto no se hace a través de métodos "createSkill",
 #createActivity" o "create Difficulty" dado que esas relaciones son
 # constantes en las base de datos y no es necesario volver a crearlas en el futuro.
@@ -53,6 +54,7 @@ Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
  320, date(2017, 6, 30), estimated_cost = 150)
 
+Sf.createEngagement(db,2,[(1,10),(5,2),(3,20),(5,16),(6,38)])
 
 with db_session:
 	#Definición de las prioridades de los distintos proyectos

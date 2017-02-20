@@ -24,7 +24,7 @@ def stock_console(db, level):
 
         if (opt == '2' and level == 1):
             id = input("\nIngrese el id del producto: ")
-            name = input("\nIngrese el nuevo nombre del producto:,solo presione enter si lo mantiene:")
+            name = input("\nIngrese el nuevo nombre del producto, solo presione enter si lo mantiene:")
             if name == '':
                 name = None
             price = input(
@@ -40,7 +40,7 @@ def stock_console(db, level):
             if real_quantity == '':
                 real_quantity = None
 
-            editSKU(db, name=name, price=price, critical_level=critical_level,
+            editSKU(db,id = id, name=name, price=price, critical_level=critical_level,
                       real_quantity=real_quantity)
 
         if (opt == '3' and level == 1):
