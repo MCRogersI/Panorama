@@ -125,7 +125,7 @@ with db_session:
 	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
 # recordar que una vez corrimos el mismo método croque y mai y nos daban resultados distintos
 #PLf.DoPlanning(db, Pf.CreateTask)
-print(Pf.getCostProject(db, 2, 10, 0.1))
+#print(Pf.getCostProject(db, 2, 10, 0.1))
 
 
 
