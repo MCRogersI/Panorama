@@ -110,7 +110,6 @@ def calculateStock(db,id_SKU):
 			for pur in purchases:
 				aux_purchases.append((pur.quantity, pur.arrival_date))
 			fluxes = aux_engagements + aux_purchases
-			# fluxes = sorted(fluxes, key= lambda date: fluxes[1])
 			fluxes = sorted(fluxes, key=itemgetter(1))
 			print(fluxes)
 			beginning_date = date.today()
