@@ -61,7 +61,9 @@ Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 2, 27))
 Sf.createPurchases(db,(1,1550),date(2017, 2, 21))
 
 aux_check_debug_variable_stock_calculation = Sf.calculateStock(db,1)
-print(aux_check_debug_variable_stock_calculation)
+Sf.printStock(db, 1)
+#print(aux_check_debug_variable_stock_calculation)
+
 
 with db_session:
 	#Definición de las prioridades de los distintos proyectos
@@ -129,7 +131,7 @@ with db_session:
 	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
 # recordar que una vez corrimos el mismo método croque y mai y nos daban resultados distintos
 #PLf.DoPlanning(db, Pf.CreateTask)
-print(Pf.getCostProject(db, 2, 10, 0.1))
+#print(Pf.getCostProject(db, 2, 10, 0.1))
 
 
 
