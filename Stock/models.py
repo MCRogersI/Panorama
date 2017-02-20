@@ -31,3 +31,4 @@ def define_models(db):
 		arrival_date = Required(date)	
 		def __repr__(self):
 			return str(self.id)
+
