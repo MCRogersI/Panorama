@@ -1,6 +1,7 @@
 from pony.orm import *
 from datetime import date, timedelta
 import matplotlib.pyplot as plt
+from operator import itemgetter
 
 def createSKU(db, name, price, critical_level, real_quantity = None, estimated_quantity = None):
 
@@ -47,7 +48,7 @@ def createEngagement(db, id_project, SKUs_list,  withdrawal_date = None):
 	''' Este método crea una nueva entrada en la tabla de engagements a partir de los datos ingresados  '''
 	# SKUs_list es una lista de tuplas con el id del SKU y la cantidad correspondiente.
 	with db_session:
-		if len(SKUs_list) > 1: #Caso en el que se ingresa un lista de tuplas.
+		if type(SKUs_list)==list: #Caso en el que se ingresa un lista de tuplas.
 			for sku_row in SKUs_list:
 				try:
 					sku = db.Stock[sku_row[0]]
@@ -68,12 +69,14 @@ def createEngagement(db, id_project, SKUs_list,  withdrawal_date = None):
 				print('Object not found: {}'.format(e))
 			except ValueError as e:
 				print('Value error: {}'.format(e))
+			except TypeError as e:
+				print('Type error: {}'.format(e))
 
 def createPurchases(db,SKUs_list,  arrival_date):
 	''' Este método crea una nueva entrada en la tabla de purchases a partir de los datos ingresados  '''
 	# SKUs_list es una lista de tuplas con el id del SKU y la cantidad correspondiente. Se DEBE ingresar la fecha de entrega.
 	with db_session:
-		if len(SKUs_list) > 1: #Caso en el que se ingresa un lista de tuplas.
+		if type(SKUs_list)==list: #Caso en el que se ingresa un lista de tuplas.
 			for sku_row in SKUs_list:
 				try:
 					sku = db.Stock[sku_row[0]]
@@ -85,12 +88,14 @@ def createPurchases(db,SKUs_list,  arrival_date):
 		else:
 			try:
 				sku = db.Stock[SKUs_list[0]]
-				db.Engagements(SKU=sku, quantity=SKUs_list[1],arrival_date=arrival_date)
+				db.Purchases(SKU=sku, quantity=SKUs_list[1],arrival_date=arrival_date)
 
 			except ObjectNotFound as e:
 				print('Object not found: {}'.format(e))
 			except ValueError as e:
 				print('Value error: {}'.format(e))
+			except TypeError as e:
+				print('Type error: {}'.format(e))
 
 def calculateStock(db,id_SKU):
 	''' Este método retorna una tupla con los valores (fecha,cantidad) de stock (considerando las fechas en las que se presentan cambios)'''
@@ -105,7 +110,9 @@ def calculateStock(db,id_SKU):
 			for pur in purchases:
 				aux_purchases.append((pur.quantity, pur.arrival_date))
 			fluxes = aux_engagements + aux_purchases
-			fluxes = sorted(fluxes, key=lambda date: fluxes[1])
+			# fluxes = sorted(fluxes, key= lambda date: fluxes[1])
+			fluxes = sorted(fluxes, key=itemgetter(1))
+			print(fluxes)
 			beginning_date = date.today()
 			beginning_quantity = db.Stock[id_SKU].real_quantity
 			fluxes = [(0,beginning_date)]+fluxes
