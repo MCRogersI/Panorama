@@ -91,22 +91,33 @@ def createPurchases(db,SKUs_list,  arrival_date):
 			except ValueError as e:
 				print('Value error: {}'.format(e))
 
-def calculateStock(db):
-	''' Este método retorna una tupla con los flujos (fecha,cantidad) de stock  '''
+def calculateStock(db,id_SKU):
+	''' Este método retorna una tupla con los valores (fecha,cantidad) de stock (considerando las fechas en las que se presentan cambios)'''
 	with db_session:
-		engagements = select(en for en in db.Engagements).order_by(lambda en: en.withdrawal_date)
-		purchases = select(pur for pur in db.Purchases).order_by(lambda pur: pur.arrival_date)
-		aux_engagements = []
-		aux_purchases = []
-		for en in engagements:
-			aux_engagements.append((-en.quantity, en.withdrawal_date))
-		for pur in purchases:
-			aux_purchases.append((pur.quantity, pur.arrival_date))
-		fluxes = aux_engagements + aux_purchases
-		fluxes = sorted(fluxes, key=lambda date: fluxes[1])
-		beginning_date = date.today()
-		fluxes = [(0,beginning_date)]+fluxes
-		return fluxes
+		try:
+			engagements = select(en for en in db.Engagements if en.SKU.id == id_SKU).order_by(lambda en: en.withdrawal_date)
+			purchases = select(pur for pur in db.Purchases if pur.SKU.id == id_SKU).order_by(lambda pur: pur.arrival_date)
+			aux_engagements = []
+			aux_purchases = []
+			for en in engagements:
+				aux_engagements.append((-en.quantity, en.withdrawal_date))
+			for pur in purchases:
+				aux_purchases.append((pur.quantity, pur.arrival_date))
+			fluxes = aux_engagements + aux_purchases
+			fluxes = sorted(fluxes, key=lambda date: fluxes[1])
+			beginning_date = date.today()
+			beginning_quantity = db.Stock[id_SKU].real_quantity
+			fluxes = [(0,beginning_date)]+fluxes
+			values = [(beginning_quantity,beginning_date)]
+			for i in range(1,len(fluxes)):
+				values.append((values[i-1][0]+fluxes[i][0],fluxes[i][1]))
+			return values
+
+		except ObjectNotFound as e:
+			print('Object not found: {}'.format(e))
+		except ValueError as e:
+			print('Value error: {}'.format(e))
+
 
 
 
