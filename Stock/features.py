@@ -139,7 +139,7 @@ def printStock(db, id_SKU):
 		plt.xlim((date.today(), dates[len(dates)-1]+timedelta(1)))
 		plt.ylabel('Quantity')
 		plt.xlabel('Date')
-		plt.suptitle('Inventory prediction of unit '+str(id_SKU))
+		plt.suptitle('Inventory prediction of unit '+str(db.Stock[id_SKU]))
 		plt.show()
 
 
