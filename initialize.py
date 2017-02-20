@@ -58,6 +58,7 @@ Sf.createEngagement(db, 2, [(1,10),(5,2),(3,20),(5,16),(6,38)],date(2017, 2, 24)
 Sf.createEngagement(db, 2, [(1,99),(4,999)],date(2017, 2, 27))
 auxaa = Sf.calculateStock(db)
 print(auxaa)
+
 with db_session:
 	#Definición de las prioridades de los distintos proyectos
 	db.Projects[3].priority = 1
