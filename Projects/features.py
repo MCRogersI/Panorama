@@ -55,12 +55,20 @@ def DeleteProject(db, contract_number):
 		db.Projects[contract_number].delete()
 
 def getCostProject(db, contract_number, fixed_cost, variable_cost):
-	with db_session:	
-		engagements = select(e for e in db.Engagements if e.project == db.Projects[contract_number])
-		cost=fixed_cost+variable_cost*db.Projects[contract_number].linear_meters
-		for e in engagements:
-			cost=cost + e.SKU.price*e.quantity
-		return cost
+	''' Este método entrega el costo de un proyecto considerando que hay un costo fijo y además 
+		un costo variable que depende de los metros lineales del proyecto, hasta el momento 
+		estos parámetros se ingresan cada vez que se quiera calcular el costo de un proyecto'''
+	with db_session:
+		try:	
+			engagements = select(e for e in db.Engagements if e.project == db.Projects[contract_number])
+			cost=fixed_cost+variable_cost*db.Projects[contract_number].linear_meters
+			for e in engagements:
+				cost=cost + e.SKU.price*e.quantity
+			return cost
+		except ObjectNotFound as e:
+			print('Object not found: {}'.format(e))
+		except ValueError as e:
+			print('Value error: {}'.format(e))
 
 def CreateTask(db, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
 	with db_session:

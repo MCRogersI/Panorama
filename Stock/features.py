@@ -90,3 +90,4 @@ def createPurchases(db,SKUs_list,  arrival_date):
 				print('Object not found: {}'.format(e))
 			except ValueError as e:
 				print('Value error: {}'.format(e))
+
