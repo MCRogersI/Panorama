@@ -22,7 +22,7 @@ Sf.createSKU(db, 'Telescopic', 2.01, 100,real_quantity=219)
 Sf.createSKU(db, 'Glass Pane Knob', 6.43, 200,real_quantity=220)
 Sf.createSKU(db, 'Lower chamber-9', 4.77, 150,real_quantity=234)
 Sf.createSKU(db, 'Upper chamber-9', 3.07, 150,real_quantity=243)
-Sf.createSKU(db, 'Lock for latch', 12.03, 1000,real_quantity=251)
+Sf.createSKU(db, 'Lock for latch', 12.03, 100,real_quantity=251)
 Sf.createSKU(db, 'Profile joint unit plastic bag', 4.93, 180,real_quantity=268)
 
 
@@ -52,26 +52,31 @@ Pf.CreateProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
 				 '16.224.112-0', 200, date(2017, 6, 30), estimated_cost = 300)
 Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
- 320, date(2017, 6, 30), estimated_cost = 150)
+ 320, date(2017, 6, 3), estimated_cost = 150)
+Pf.CreateProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
+				 '14.214.392-K',
+ 220, date(2017, 8, 30), estimated_cost = 250)
 
-Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 25))
-Sf.createEngagement(db, 2, [(1,99),(4,999)],date(2017, 2, 23))
-Sf.createEngagement(db, 2, (1,55),date(2017, 2, 24))
-Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 3, 27))
-Sf.createPurchases(db,(1,1550),date(2017, 2, 22))
+
+Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 27))
+Sf.createEngagement(db, 2, [(1,99),(4,100),(2,30)],date(2017, 2, 25))
+Sf.createEngagement(db, 2, [(1,55),(2,200)],date(2017, 3, 2))
+Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 3, 2))
+Sf.createPurchases(db,(1,155),date(2017, 3, 4))
+
 
 aux_check_debug_variable_stock_calculation = Sf.calculateStock(db,1)
-Sf.printStock(db, 1)
+
 #print(aux_check_debug_variable_stock_calculation)
 
 
 with db_session:
 	#Definición de las prioridades de los distintos proyectos
-	db.Projects[3].priority = 1
+	db.Projects[3].priority = 3
 	db.Projects[1].priority = 2
-	db.Projects[2].priority = 3
+	db.Projects[2].priority = 1
 	#Fijación de proyectos
-	db.Projects[2].fixed_planning = True
+	db.Projects[4].fixed_planning = True
 
 
 
@@ -91,7 +96,7 @@ Ef.CreateEmployee(db,  "Felipe", 2, perf_rect = 60)
 Ef.CreateEmployee(db,  "Miguel", 1, perf_des = 40)
 Ef.CreateEmployee(db,  "Mario", 1, perf_fab = 50)
 Ef.CreateEmployee(db,  "Felipe", 1, perf_inst = 60)
-#Ef.CreateEmployee(db,  "Iker", 1, perf_inst = 70)
+Ef.CreateEmployee(db,  "Iker", 1, perf_inst = 70)
 
 
 ##############################################
@@ -113,7 +118,7 @@ Pf.CreateTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_dat
 
 PLf.AssignTask(db, 1, 1, initial_date=date(2017, 4, 8), end_date=date(2017,4,28))
 PLf.AssignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
-PLf.AssignTask(db, 9, 9,  initial_date=date(2017, 6, 1), end_date=date(2017,6,12))
+PLf.AssignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
 #PLf.AssignTask(db, 2, 2,  initial_date=date(2017, 4, 28), end_date=date(2017,5,20))
 #PLf.AssignTask(db, 6, 6,  initial_date=date(2017, 4, 3), end_date=date(2017,4,18))
 #PLf.AssignTask(db, 10, 10,  initial_date=date(2017, 4, 12), end_date=date(2017,5,1))
@@ -130,11 +135,11 @@ with db_session:
 	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
 	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
 # recordar que una vez corrimos el mismo método croque y mai y nos daban resultados distintos
-#PLf.DoPlanning(db, Pf.CreateTask)
 #print(Pf.getCostProject(db, 2, 10, 0.1))
 
-
-
+PLf.DoPlanning(db, Pf.CreateTask)
+#Sf.printStock(db, 2)
+Sf.updateEngagements(db, 2)
 
 
 

@@ -409,6 +409,7 @@ def DoPlanning(db, CreateTask):
 									CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
 									task = db.Tasks.get(id_skill = s, id_project = p)
 								AssignTask(db, emps, task, initial, ending[num_workers-1])
+		#aquí debería hacerse el update de los stock, db.Projects.engagements
 		print(Delayed)		
 #tenemos un problema con los metros lineales (310) de un proyecto que 3 rectificadores con promedio 150 m/dia lo hacen en dos días
 

@@ -126,6 +126,7 @@ def calculateStock(db,id_SKU):
 
 
 def printStock(db, id_SKU):
+	'''Este método imprime el comportamiento de un SKU hasta el último de los movimientos registrados '''
 	with db_session:
 		movements = calculateStock(db, id_SKU)
 		quantities = []
@@ -140,3 +141,16 @@ def printStock(db, id_SKU):
 		plt.suptitle('Inventory prediction of unit '+str(db.Stock[id_SKU])+', code '+str(id_SKU))
 		plt.axhline(y=db.Stock[id_SKU].critical_level, color='r', linestyle='-')
 		plt.show()
+def updateEngagements(db, id_SKU):
+	'''Este método actualiza los engagements una vez que se ha hecho una planificación, asignando la fecha de inicio
+		de la instalación '''
+	with db_session:
+		#installations = select(t for t in db.Tasks if t.id_skill.id == 4)
+		assigned_inst = select( at for at in db.Employees_Tasks if at.task.id_skill.id == 4)
+		engagements = select(e for e in db.Engagements if e.SKU == db.Stock[id_SKU])
+		for e in engagements:
+			for at in assigned_inst:
+				if at.task.id_project == e.project:
+					e.withdrawal_date =  at.planned_initial_date
+		
+
