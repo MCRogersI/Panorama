@@ -140,5 +140,3 @@ def printStock(db, id_SKU):
 		plt.suptitle('Inventory prediction of unit '+str(db.Stock[id_SKU])+', code '+str(id_SKU))
 		plt.axhline(y=db.Stock[id_SKU].critical_level, color='r', linestyle='-')
 		plt.show()
-
-

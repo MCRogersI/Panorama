@@ -54,11 +54,11 @@ Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
  320, date(2017, 6, 30), estimated_cost = 150)
 
-Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 24))
-Sf.createEngagement(db, 2, [(1,99),(4,999)],date(2017, 2, 22))
-Sf.createEngagement(db, 2, (1,55),date(2017, 2, 23))
-Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 2, 27))
-Sf.createPurchases(db,(1,1550),date(2017, 2, 21))
+Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 25))
+Sf.createEngagement(db, 2, [(1,99),(4,999)],date(2017, 2, 23))
+Sf.createEngagement(db, 2, (1,55),date(2017, 2, 24))
+Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 3, 27))
+Sf.createPurchases(db,(1,1550),date(2017, 2, 22))
 
 aux_check_debug_variable_stock_calculation = Sf.calculateStock(db,1)
 Sf.printStock(db, 1)
