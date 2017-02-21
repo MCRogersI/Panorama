@@ -136,6 +136,7 @@ def printStock(db, id_SKU):
 			dates.append(l[1])
 		plt.step(dates, quantities, where = 'post')
 		plt.xlim((date.today(), dates[len(dates)-1]+timedelta(1)))
+		plt.xticks( dates, dates, rotation = 'vertical')
 		plt.ylabel('Quantity')
 		plt.xlabel('Date')
 		plt.suptitle('Inventory prediction of unit '+str(db.Stock[id_SKU])+', code '+str(id_SKU))
