@@ -138,8 +138,11 @@ with db_session:
 #print(Pf.getCostProject(db, 2, 10, 0.1))
 
 PLf.DoPlanning(db, Pf.CreateTask)
-#Sf.printStock(db, 2)
+# Sf.printStock(db, 2)
 Sf.updateEngagements(db, 2)
+print('------')
+print(Sf.checkStockAlarms(db))
+Sf.printStock(db, 2)
 
 
 

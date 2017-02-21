@@ -152,5 +152,18 @@ def updateEngagements(db, id_SKU):
 			for at in assigned_inst:
 				if at.task.id_project == e.project:
 					e.withdrawal_date =  at.planned_initial_date
-		
 
+def checkStockAlarms(db):
+	'''Este método revisa los niveles de stock para cada sku en el futuro y verifica si están bajo el nivel crítico.
+	Retorna en una lista de tuplas, las cantidades bajo el nivel crítico detectadas y sus respectivas fechas.  '''
+	alarms = []
+	with db_session:
+		skus = select(sku for sku in db.Stock)
+		for sku in skus:
+			sku_levels = calculateStock(db,sku.id)
+			critical_level = sku.critical_level
+			for sku_level in sku_levels:
+				if sku_level[0]<=critical_level:
+					alarms.append(sku_level)
+					print('SKU (id = {0}) quantity below critical level {1}, on the date {2}'.format(sku.id,sku_level[0],sku_level[1]))
+	return alarms
