@@ -187,7 +187,7 @@ def displayStock(db, id_SKU):
         sku = db.Stock.get(id=id_SKU)
         critical_level = sku.critical_level
         values = calculateStock(db, id_SKU)
-        quantities, dates = zip(*values)
+        quantities, dates = zip(*values)##<-- woooowoowow
 
         def plot_graph(quantities, dates):
             plt.figure()
