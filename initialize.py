@@ -61,6 +61,9 @@ Pf.CreateProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
 Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 27))
 Sf.createEngagement(db, 2, [(1,99),(4,100),(2,30)],date(2017, 2, 25))
 Sf.createEngagement(db, 2, [(1,55),(2,200)],date(2017, 3, 2))
+Sf.createEngagement(db, 1, [(1,60),(2,20),(3,40)],date(2017, 3, 3))
+Sf.createEngagement(db, 1, [(4,100),(5,25),(6,60)],date(2017, 3, 7))
+Sf.createEngagement(db, 3, [(5,55),(6,30)],date(2017, 3, 2))
 Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 3, 2))
 Sf.createPurchases(db,(1,155),date(2017, 3, 4))
 
@@ -137,13 +140,12 @@ with db_session:
 # recordar que una vez corrimos el mismo método croque y mai y nos daban resultados distintos
 #print(Pf.getCostProject(db, 2, 10, 0.1))
 
-PLf.DoPlanning(db, Pf.CreateTask)
+PLf.DoPlanning(db, Pf.CreateTask, Sf.updateEngagements)
 # Sf.printStock(db, 2)
 #Sf.updateEngagements(db, 2)
 print('------')
 print(Sf.checkStockAlarms(db))
-# Sf.printStock(db, 2)
-Sf.displayStock(db,2)
+Sf.printStock(db, 2)
 
 
 
