@@ -145,8 +145,8 @@ PLf.DoPlanning(db, Pf.CreateTask, Sf.updateEngagements)
 #Sf.updateEngagements(db, 2)
 print('------')
 print(Sf.checkStockAlarms(db))
-Sf.printStock(db, 2)
-
+Sf.printStock(db, 1)
+Sf.displayStock(db,1)
 
 
 
