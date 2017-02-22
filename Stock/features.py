@@ -201,7 +201,7 @@ def displayStock(db, id_SKU):
 			aux_dates = []
 
 			c = 0
-			for i in range(0, delta):
+			for i in range(0, delta+1):
 				if (min_date + timedelta(days=i) > dates[c]):
 					c += 1
 				aux_quantity.append(quantities[c])
@@ -220,7 +220,8 @@ def displayStock(db, id_SKU):
 			# print(aux_dates)
 			plt.grid()
 			plt.xlim(min_date, max_date + timedelta(days=1))
-			plt.ylim(min_quantity - span_quantities / 10, max_quantity + span_quantities / 10)
+			# plt.ylim(min_quantity - (span_quantities / 10), max_quantity + (span_quantities / 10))
+			plt.ylim(0, max_quantity + (span_quantities / 10))
 			plt.tight_layout()
 			plt.show(block=True)
 		p = Thread(target=plot_graph(quantities=quantities, dates=dates))
