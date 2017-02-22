@@ -159,8 +159,10 @@ def printStock(db, id_SKU):
 		for l in movements:
 			quantities.append(l[0])
 			dates.append(l[1])
-		quantities = quantities + quantities[-7:]
-		dates = dates + dates[-7:]
+
+		#Lo siguiente le agrega 7 días de stock constante después del último movimiento (agrega un fecha 7 días después con el mismo valor)
+		dates.append(dates[len(dates)-1]+timedelta(days = 7))
+		quantities.append(quantities[len(quantities) - 1])
 
 		def plot_graph(quantities, dates):
 			plt.figure()
@@ -178,8 +180,7 @@ def printStock(db, id_SKU):
 		p = Thread(target=plot_graph(quantities=quantities, dates=dates))
 		p.start()
 		p.join()
-
-
+		
 def displayStock(db, id_SKU):
     '''Este método grafica el comportamiento de un SKU hasta el último de los movimientos registrados '''
     with db_session:
