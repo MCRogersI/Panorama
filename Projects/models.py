@@ -54,7 +54,7 @@ def define_models(db):
 		end_date = Optional(date)
 	
 	class Employees_Activities(db.Entity):
-		id = PrimaryKey(int, auto=False)
+		id = PrimaryKey(int, auto=True)
 		employee = Required('Employees')
 		activity = Required(Activities)
 		initial_date = Optional(date)

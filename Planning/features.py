@@ -308,7 +308,7 @@ def shiftUp(db,upper, lower):
 #Función auxiliar. Empuja hacia arriba las prioridades. En este caso la prioridad de todos cambia ya que mejora.
 #check		
 		
-def ChangePriority(db, contract_number, new_priority):
+def changePriority(db, contract_number, new_priority):
 	with db_session:
 		old_priority = db.Projects[contract_number].priority
 		if old_priority > new_priority:
