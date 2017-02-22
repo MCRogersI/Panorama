@@ -159,6 +159,8 @@ def printStock(db, id_SKU):
 		for l in movements:
 			quantities.append(l[0])
 			dates.append(l[1])
+		quantities = quantities + quantities[-7:]
+		dates = dates + dates[-7:]
 
 		def plot_graph(quantities, dates):
 			plt.figure()
