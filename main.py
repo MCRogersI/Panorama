@@ -5,11 +5,45 @@ import Employees.features as Ef, Employees.usuario as Eu
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
-PLf.DoPlanning(db)
+import Users.features as Uf
+import Stock.usuario as Sf
+
+def console(level):
+	while True:
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Stock. \n - 5: Para salir. \n Ingrese la alternativa elegida: ")
+		if(opt == '1'):
+			# Los ids deberían ser creados automáticamente y no ingresados (para asegurarse de que sean únicos).
+			# Para el caso particular de los proyectos el contract_number puede ser ingresado porque tiene la propiedad de ser único.
+			Eu.employees_console(db, level)
+		if(opt == '2'):
+			Pu.projects_console(db, level)
+		if( opt== '3'):
+			Pu.tasks_console(db, level)
+		if (opt == '4'):
+			Sf.stock_console(db, level)
+		if(opt == '5'):
+			print("Has salido de la consola")
+			break
+def signIn():
+	while True:
+		user = input("Ingrese su usuario: ")
+		password = input("Ingrese su contraseña: ")
+		if Uf.checkPassEntry(db, user, password):
+			with db_session:
+				level=Uf.getUserLevel(db, user)
+				console(level)
+				
+		else:
+			print("Usuario y/o Contraseña incorrecto(s))")
+		break
+signIn()
 
 
 
-
+# PLf.DoPlanning(db)
+# PLf.addDelayed(db, 1,1,1,1,1)
+# PLf.addDelayed(db, 10, 2, 2017-2-12, 2017-3-1, 2017-2-28)
+# print(PLf.addDelayed(db, 5, 3 , '2017-3-1', '2017-3-10', '2017-3-30'))
 
 
 
@@ -61,6 +95,7 @@ Ef.CreateEmployee(db, 6, "Hector", 1, perf_rect = 6)
 # print(PLf.FindEmployees(db, 1, 1, 1, date(2017, 2, 2), date(2017, 2, 15)))
 
 
+
 # def foo():
 	# return 1, True, "lalala"
 # a, b, c = foo()
@@ -71,14 +106,51 @@ Ef.CreateEmployee(db, 6, "Hector", 1, perf_rect = 6)
 #with db_session:
 #	print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
 
-
 # print(PLf.EmployeesBySkill(db, 4))
 # print(PLf.EmployeesByStatus(db, 2, False, False))
 # with db_session:
 	# print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
 
+# print(PLf.HasNOnes('0001111111', 7))
+# print(PLf.Successor([1,1,1,1,0,0,0,0,0,0], 4))
+# print([1,8] + [0,4,5])
+# print(PLf.GetChosenIds([12, 13, 14], [0, 1, 1]))
+
+# print(PLf.FindEmployees(db, 1, 1, 1, date(2017,3,13), date(2010,3,17)))	
+# print(PLf.FindEmployees(db, 1, 1, 2, date(2010,1,1), date(2010,1,1)))
+# print(PLf.FindEmployees(db, 1, 1, 3, date(2010,1,1), date(2010,1,1)))
+# print(PLf.FindEmployees(db, 1, 1, 4, date(2010,1,1), date(2010,1,1)))
+# print(PLf.FindEmployees(db, 1, 1, 5, date(2010,1,1), date(2010,1,1)))
+# print(PLf.FindEmployees(db, 1, 1, 6, date(2010,1,1), date(2010,1,1)))
+# print(PLf.FindEmployees(db, 1, 1, 7, date(2010,1,1), date(2010,1,1)))
+
+# print(PLf.FindEmployees(db, 1, 2, 1, date(2017,3,7), date(2017,3,15)))
+# print(PLf.FindEmployees(db, 1, 2, 2, date(2017,3,7), date(2017,3,15)))
+# print(PLf.FindEmployees(db, 1, 2, 3, date(2017,3,7), date(2017,3,15)))
+# print(PLf.FindEmployees(db, 1, 2, 4, date(2017,3,7), date(2017,3,15)))
+# print(PLf.FindEmployees(db, 1, 2, 5, date(2017,3,7), date(2017,3,15)))
+# print(PLf.FindEmployees(db, 1, 2, 6, date(2017,3,7), date(2017,3,15)))
+
+# print(PLf.FindEmployees(db, 1, 2, 3, date(2017,3,7), date(2017,3,17)))
+# print(PLf.Successor([0,1,0,1], 2))
 
 
+
+# print(PLf.FindDatesEmployees(db, 1, 1, 1, date(2017, 2, 13)))
+# print(PLf.FindDatesEmployees(db, 1, 1, 2, date(2017, 2, 13)))
+# print(PLf.FindDatesEmployees(db, 1, 1, 3, date(2017, 2, 13)))
+# print(PLf.FindDatesEmployees(db, 1, 1, 4, date(2017, 2, 13)))
+# print(PLf.FindDatesEmployees(db, 1, 1, 5, date(2017, 2, 13)))
+
+# print(PLf.FindDatesEmployees(db, 1, 2, 1, date(2017, 3, 9)))
+# print(PLf.FindDatesEmployees(db, 1, 2, 2, date(2017, 3, 9)))
+# print(PLf.FindDatesEmployees(db, 1, 2, 3, date(2017, 3, 9)))
+# print(PLf.FindDatesEmployees(db, 1, 2, 4, date(2017, 3, 9)))
+# print(PLf.FindDatesEmployees(db, 1, 2, 5, date(2017, 3, 9)))
+# print(PLf.FindDatesEmployees(db, 1, 2, 6, date(2017, 3, 9)))
+
+# Pf.CreateTask(db, 1, 1, date(2017, 3, 9), date(2017, 3, 9))
+# print(Pf.PrintTasks(db))
 
 
 ##############################################
@@ -87,6 +159,7 @@ Ef.CreateEmployee(db, 6, "Hector", 1, perf_rect = 6)
 # Pf.CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline, real_linear_meters = None, estimated_cost = None, real_cost = None)
 # Pf.CreateProject(db, 1, 'frutillita', 'Las Condes', 'frambuesita', '20.024.322-0', 15, date(2017, 3, 14), estimated_cost = 200,)
 # Pf.CreateProject(db, 2, 'cebollita', 'Las Condes', 'sub-campeon', '21.024.322-0', 20, date(2017, 3, 15), estimated_cost = 300,)
+# Pf.CreateProject(db, 3, 'lalala', 'Las Condes', 'sisisi', '22.024.322-0', 20, date(2017, 4, 30), estimated_cost = 150,)
 # with db_session:
 	# db.Projects[1].priority = 1
 	# db.Projects[2].priority = 2
@@ -118,17 +191,7 @@ Ef.CreateEmployee(db, 6, "Hector", 1, perf_rect = 6)
 
 
 #Pf.FailedTask(db, 2, 1, 1000)
-# while True:
-		# opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: para salir. \n Ingrese la alternativa elegida: ")
-		# if(opt == '1'):
-			# Eu.employees_console(db, Ef.CreateEmployee, Ef.PrintEmployees, Ef.EditEmployee, Ef.PrintEmployeesSkills, Ef.PrintSelectSkill, Ef.DeleteEmployee)
-		# if(opt == '2'):
-			# Pu.projects_console(db, Pf.CreateProject, Pf.PrintProjects, Pf.EditProject, Pf.DeleteProject)
-		# if( opt== '3'):
-			# Pu.tasks_console(db, Pf.CreateTask, Pf.EditTask, Pf.AssignTask, Pf.PrintTasks, Pf.FailedTask)
-		# if(opt == '4'):
-			# print("Has salido de la consola")
-			# break
+
 			
 			
 ##############################################
@@ -138,4 +201,3 @@ Ef.CreateEmployee(db, 6, "Hector", 1, perf_rect = 6)
 # PLf.ChangePriority(db, 5, 1)
 
 # AvailabilityUpdate(db)
-

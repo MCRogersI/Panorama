@@ -13,7 +13,7 @@ def define_models(db):
 			return self.name
 
 	class Employees(db.Entity):
-		id = PrimaryKey(int, auto=False)
+		id = PrimaryKey(int, auto=True)
 		name = Required(str)
 		zone = Required(int)
 		skills = Set('Employees_Skills')

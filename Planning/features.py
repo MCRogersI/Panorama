@@ -1,5 +1,7 @@
 from pony.orm import *
 from datetime import date, timedelta
+import pandas as pd
+import numpy as np
 
 #################################################################################################################
 # Acá empieza: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
@@ -90,12 +92,67 @@ def EmployeesByStatus(db, contract_number, ids_employees, this_project, fixed):
 def EmployeesAvailable(db, ids_employees, initial_date, end_date):
 	with db_session:
 		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
+		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
 		for ea in emp_acts:
-			if (ea.initial_date >= initial_date and ea.initial_date <= end_date) or (ea.end_date >= initial_date and ea.end_date <= end_date):
+			if (initial_date >= ea.initial_date and initial_date <= ea.end_date) or (
+							end_date >= ea.initial_date and end_date <= ea.end_date):
 				return False
-		return True
+		for et in emp_tasks:
+			if (initial_date >= et.planned_initial_date and initial_date <= et.planned_end_date)\
+					or (end_date >= et.planned_initial_date and end_date <= et.planned_end_date):
+				return False
+		return True		
 
-# ¿?
+#checked
+def HasNOnes(chosen, n):
+	ones = 0
+	for c in chosen:
+		if c == 1:
+			ones = ones + 1
+	if ones == n:
+		return True
+	return False
+
+#checked
+def StringToList(as_string, chosen):
+	for i in range(1, len(as_string) - 1):
+		if as_string[-i] == '0':
+			chosen[-i] = 0
+		if as_string[-i] == '1':
+			chosen[-i] = 1
+	return chosen
+
+#checked
+def Successor(chosen, num_workers):
+	as_string = ''
+	last = [] # definimos la última combinación posible de elegidos para saber cuando parar
+	for _ in range(0, num_workers): last.append(1)
+	for _ in range(0, len(chosen) - num_workers): last.append(0)
+	
+	if chosen == last:
+		return chosen
+	
+	for c in chosen:
+		if c == 0: as_string = as_string + '0'
+		if c == 1: as_string = as_string + '1'
+	
+	as_string = str(bin(int(as_string,2) + int('1',2)))
+	chosen = StringToList(as_string, chosen)
+	
+	while not HasNOnes(chosen, num_workers) and chosen != last:
+		as_string = str(bin(int(as_string,2) + int('1',2)))
+		chosen = StringToList(as_string, chosen)
+	return chosen
+
+#checked
+def GetChosenIds(possibilities, chosen):
+	ids = []
+	for i in range(0, len(possibilities)):
+		if chosen[i] == 1:
+			ids.append(possibilities[i])
+	return ids
+	
+#checked (kind of)
 def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date):
 	with db_session:		
 		ids_employees = EmployeesBySkill(db, id_skill) # elegimos a los empleados con el skill necesario
@@ -103,32 +160,68 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		cluster1 = EmployeesByStatus(db, contract_number, ids_employees, True, True) # empleados fijos en este proyecto
 		cluster2 = EmployeesByStatus(db, contract_number, ids_employees, True, False) # empleados vetados en este proyecto
 		cluster3 = EmployeesByStatus(db, contract_number, ids_employees, False, True) # empleados fijos en otros proyectos
-		cluster4 = EmployeesByStatus(db, contract_number, ids_employees, False, True) # empleados vetados en otros proyectos
+		cluster4 = EmployeesByStatus(db, contract_number, ids_employees, False, False) # empleados vetados en otros proyectos
 		
 		ids_employees = list(id for id in ids_employees if id not in cluster1 and id not in cluster2) # sacamos a todos los empleados vetados en este proyecto
 		ids_found = cluster1  # incluimos sí o sí a los empleados que están fijos en el proyecto
 		
 		num_workers = num_workers - len(ids_found)
-		if num_workers <= 0 and EmployeesAvailable(db, ids_found, initial_date, end_date): #revisamos si con los empleados fijos basta y si ellos están disponibles en las fechas necesarias
-			return ids_found
-		priorities = list(id for id in ids_employees if id not in cluster3 and id in cluster4) # priorizamos empleados vetados en otros proyectos y NO fijos en otros proyectos
-		preferable = list(id for id in ids_employees if id not in cluster3 and id not in cluster4) # después, empleados ni fijos ni vetados en otros proyectos
-		last = list(id for id in ids_employees if id in cluster4)
-		return ids_employees
+		if num_workers <= 0: #revisamos si con los empleados fijos basta y si ellos están disponibles en las fechas necesarias
+			if EmployeesAvailable(db, ids_found, initial_date, end_date):
+				return ids_found
+			else:
+				return []
 		
-
+		priority1 = list(id for id in ids_employees if id not in cluster3 and id in cluster4) # priorizamos empleados vetados en otros proyectos y NO fijos en otros proyectos
+		priority2 = list(id for id in ids_employees if id not in cluster3 and id not in cluster4) # después, empleados ni fijos ni vetados en otros proyectos
+		priority3 = list(id for id in ids_employees if id in cluster3 and id in cluster4) # después, empleados fijos en unos proyectos y vetados en otros
+		priority4 = list(id for id in ids_employees if id in cluster3 and id not in cluster4) # por último, empleados fijos en otros proyectos y no vetados en ninguno
+		
+		possibilities = [] # ahora listamos todas las posibilidades, en orden de menos prioritario a más prioritario
+		for id in priority4: possibilities.append(id)
+		for id in priority3: possibilities.append(id)
+		for id in priority2: possibilities.append(id)
+		for id in priority1: possibilities.append(id)
+		
+		if num_workers > len(possibilities): # si no hay suficientes trabajadores no vetados para el trabajo, se devuelve el código False
+			return False
+		
+		chosen = [] # elegimos (marcamos con 1) por defecto a los más prioritarios, si no tienen disponibilidad, vamos considerando a los menos prioritarios
+		for _ in range(0, len(possibilities) - num_workers): chosen.append(0)
+		for _ in range(0, num_workers): chosen.append(1)
+		
+		last = [] # definimos la última combinación posible de elegidos para saber cuando parar
+		for _ in range(0, num_workers): last.append(1)
+		for _ in range(0, len(chosen) - num_workers): last.append(0)
+		
+		while(not EmployeesAvailable(db, ids_found + GetChosenIds(possibilities, chosen), initial_date, end_date)):
+			if chosen == last:
+				return []
+			chosen = Successor(chosen, num_workers)
+			
+		return ids_found + GetChosenIds(possibilities, chosen)
+		
+#checked (kind of)
 def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date):
 	days_from_current = 1
 	task_days = GetDays(db, id_skill, contract_number, num_workers)
 	while(True):
-		initial_date = SumDays(initial_date, days_from_current)
-		initial_date = SumDays(initial_date, days_from_current + task_days)
+		initial_date = SumDays(current_date, days_from_current)
+		end_date = SumDays(current_date, days_from_current + task_days - 1)
 		if ClientAvailable(db, contract_number, initial_date, end_date):
-			emps = FindEmployees(db, id_skill, initial_date, end_date)
-			if len(emps) > 0:
-				return initial_date, end_date, emps
+			ids_found = FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date)
+			if ids_found == False:
+				return None, None, None
+			elif len(ids_found) > 0:
+				return initial_date, end_date, ids_found
 			else:
 				days_from_current = days_from_current + 1
+		else:
+			days_from_current = days_from_current + 1
+		# else:
+		# 	task_days = GetDays(db, id_skill, contract_number,
+		# num_workers+1) #Esta opción debe estudiarse en la heurística que
+		# se encuentra en el método "DoPlanning".
 
 # Acá termina: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
 #################################################################################################################
@@ -140,22 +233,47 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 
 def AssignTask(db, ids_employees, id_task, initial_date = None, end_date = None):
 	with db_session:
-		for id_employee in ids_employees:
-			et = db.Employees_Tasks(employee = id_employee, task = id_task)
-			et.initial_date = initial_date
-			et.end_date = end_date
+		if (type(ids_employees) != int):
+			for id_employee in ids_employees:
+				et = db.Employees_Tasks(employee = id_employee, task = id_task)
+				et.planned_initial_date = initial_date
+				et.planned_end_date = end_date
+		else:
+			et = db.Employees_Tasks(employee=ids_employees, task=id_task)
+			et.planned_initial_date = initial_date
+			et.planned_end_date = end_date
+
 	
 def UnassignTask(db, id_employee, id_task):
 	with db_session:
 		db.Employees_Tasks[(id_employee, id_task)].delete()
 	
 # Acá termina: funciones para asignar/desasignar tareas a empleados	#
-#####################################################################	
-	
-def AvailabilityUpdate(db):
+#####################################################################
+
+def eraseTasks(db):
 	with db_session:
-		select(et for et in db.Employees_Tasks if et.task.efective_initial_date == None and not db.Projects[et.tasks.id].fixed_planning ).delete()
-		
+		employees_tasks_to_delete = select(employee_task for employee_task in db.Employees_Tasks)
+		for employee_task in employees_tasks_to_delete:
+			task = employee_task.task
+			#Este 'if', para verificar si el proyecto está fijo, está fuera del 'select' porque
+			# pony parece no aceptar esa expresión como condición adicional.
+			if (task.effective_initial_date == None and not task.id_project.fixed_planning):
+				employee_task.delete()
+
+def cleanTasks(db):
+	with db_session:
+		employees_tasks_to_delete = select(employee_task for employee_task in db.Employees_Tasks)
+		for employee_task in employees_tasks_to_delete:
+			task= employee_task.task
+			if (task.effective_initial_date == None and  not task.id_project.fixed_planning):
+				employee_task.delete()
+
+###################################################################################
+		#Cambiar en las tablas id_skill y id_project por skill y project !!!
+				# !!!!
+				###############################
+		# task.id_project.contract_number
 # Esta funcion borra las actividades que no están fijas y que no han empezado
 #####################################################################
 # Las siguientes funciones son para cambiar la prioridad
@@ -214,27 +332,117 @@ def ChangePriority(db, contract_number, new_priority):
 ##########################
 # Hacer la planificación #
 ##########################
-def DoPlanning(db)
-	projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
-	for p in projects:
-		d_t=date.today()
-		tasks = select(t for t in db.Tasks if t.id_project == p.contract_number).order_by(skill)
-	return tasks
+def addDelayed(db, Delayed, contract_number, task, num_workers, initial, ending, deadline):
+	Delayed =  Delayed.append({'contract number': contract_number, 'task': task, 'num workers': num_workers, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
+	return Delayed
 
+def DoPlanning(db, CreateTask):
+	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 
+'task', 'num workers', 'initial date', 'ending date', 'deadline'])#Esto debería
+	# estar encapsulado en otro método.
+	cleanTasks(db) #Aquí se borran todas las tasks de planificaciones anteriores (las 'borrables')
 
+	with db_session:
+		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
 
+		for p in projects:
+			last_release_date = date.today()
+			if not p.fixed_planning:
+				skills = select(s for s in db.Skills).order_by(lambda s : s.id)
+				num_workers = 1
+				for s in skills:
+					if s.id < 4:
+						# obtiene el id del skill correspondiente a esa tarea y revisa que no corresponda a una 'Instalación'.
+						task = db.Tasks.get(id_skill = s, id_project = p)
+						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 
-
-
-
-
-
-
-	# with db_session:
-		# today = date.today()
-		# projects = select(p for p in db.Projects).order_by(asc( GetDays(db, id_skill, contract_number, num_workers)))
-		
+						if task == None or (task != None and task.effective_initial_date == None):
+							# arriba revisamos que la effective_initial_date sea None, si no, no la cambiamos
+							initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+							if task == None:
+								CreateTask(db, s.id, p.contract_number, initial, ending)
+								task = db.Tasks.get(id_skill = s, id_project = p)
+							if ending > p.deadline :
+#								print("Se pasó la tarea  " +str(s) +" del proyecto "+str(p.contract_number))
+								#aquí se podría o no avisar que el proyecto estaría fuera de plazo
+								Delayed = addDelayed(db, Delayed, p.contract_number, s, num_workers, initial, ending, p.deadline)
+							
+							AssignTask(db, emps, task, initial, ending)
+							last_release_date = ending
+						else: 	# asume que el et.planned_end_date está bien actualizado, si no, habría que calcular el last_release_days como
+								# task.effective_initial_date + los días que se demora el trabajo según la cantidad de trabajadores
+							for et in employees_tasks:
+								last_release_date = et.planned_end_date
+						
+					elif s.id == 4:
+						task = db.Tasks.get(id_skill = s, id_project = p)
+						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+						ending = [None, None, None, None]
+						
+						if len(employees_tasks) == 0 and (task == None or (task != None and task.effective_initial_date == None)):
+							initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 					
-				
-			
+							while(ending[num_workers-1] > p.deadline and num_workers < 4):
+								num_workers = num_workers + 1
+								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+								if ending[num_workers-1] == None:
+									num_workers = num_workers - 1
+									break
+	
+							if(ending[num_workers-1] > p.deadline):
+								#print("Se pasó el proyecto " +str(p.contract_number) +" con "+str(num_workers)+" trabajadores y fecha de término "+str(ending[num_workers-1]))
+								num_workers = 1 # nos quedamos con la menor fecha
+								for n in range(2, 5):#ahora si revisa 2,3 y 4
+									if ending[n-1] != None and ending[n-1] < ending[num_workers-1]:
+										num_workers = n
+								
+								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+								#aquí ya no hay nada que hacer y se le debería mostrar la tabla Delayed
+								Delayed = addDelayed(db, Delayed, p.contract_number, s, num_workers, initial, ending[num_workers-1], p.deadline)
+								if task == None:
+									CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
+									task = db.Tasks.get(id_skill = s, id_project = p)
+								AssignTask(db, emps, task, initial, ending[num_workers-1])
+							else:
+								if task == None:
+									CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
+									task = db.Tasks.get(id_skill = s, id_project = p)
+								AssignTask(db, emps, task, initial, ending[num_workers-1])
+		#aquí debería hacerse el update de los stock, db.Projects.engagements
+		print(Delayed)		
+#tenemos un problema con los metros lineales (310) de un proyecto que 3 rectificadores con promedio 150 m/dia lo hacen en dos días
 
+
+
+
+
+
+
+
+				# if(s.id < 4 and t.effective_initial_date == None):#obtiene el id del
+				# 	# skill correspondiente a esa
+				# 	# tarea y revisa que no corresponda a una 'Instalación'.
+				# 	#  También revisa que la realización de la tarea aún no
+				# 	# haya comenzado (que sea 'planificable').
+				# 	(initial, ending, emps) = FindDatesEmployees(db, t.id_skill.id, p.contract_number,1, d_t)
+				# 	days=ending.day-initial.day
+				# 	AssignTask(db,emps,t.id,initial,ending)
+				# 	d_t=d_t+timedelta(days)
+                #
+				# 	if(d_t > p.deadline):
+				# 		AvailabilityUpdate(db, p.contract_number)
+				# 		#Delayed = addDelayed(db, Delayed, p.contract_number, t.id_skill, initial, ending, p.deadline)
+				# 		#print(Delayed)
+				# if(t.id_skill.id == 4 and t.effective_initial_date == None):
+				# 	num_workers=1
+				# 	while (num_workers<=4):
+				# 		(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, num_workers, d_t)
+				# 		days=ending.day-initial.day
+				# 		AssignTask(db, emps, t.id, initial, ending)
+				# 		if(num_workers==4 and d_t+timedelta(days)>p.deadline):
+				# 			AvailabilityUpdate(db)
+				# 			#ShowDelayed(db)
+				# 			break
+				# 		if(num_workers < 4 and d_t+timedelta(days)>p.deadline):
+				# 			num_workers=num_workers+1
+                #

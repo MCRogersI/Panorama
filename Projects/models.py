@@ -21,6 +21,7 @@ def define_models(db):
 		activities = Set('Projects_Activities')
 		fixed_planning = Optional(bool)
 		fixed_priority = Optional(bool)
+		engagements = Set('Engagements')
 
 
 		def __repr__(self):
@@ -60,13 +61,16 @@ def define_models(db):
 		end_date = Optional(date)
 
 	class Tasks(db.Entity):
-		id = PrimaryKey(int, auto=False)
-		id_skill = Required('Skills')
+		id = PrimaryKey(int, auto=True)
+		id_skill = Required('Skills') #Arreglar la discrepancia de nombre
+		# 'id_skill'
 		id_project = Required(Projects)
-		original_initial_date = Required(date)
-		original_end_date = Optional(date)
-		efective_initial_date = Optional(date)
-		efective_end_date = Optional(date)
+		original_initial_date = Required(date) #Esto debería ser optional,
+		# dejarse vacío y luego ser llenado automáticamente por el programa.
+		original_end_date = Required(date)#Esto debería ser optional,
+		# dejarse vacío y luego ser llenado automáticamente por el programa.
+		effective_initial_date = Optional(date)
+		effective_end_date = Optional(date)
 		failed = Optional(bool)
 		fail_cost = Optional(int)
 		employees = Set('Employees_Tasks')
@@ -78,5 +82,5 @@ def define_models(db):
 		task = Required(Tasks)
 		employee = Required('Employees')
 		PrimaryKey(employee, task)
-		initial_date = Optional(date)
-		end_date = Optional(date)
+		planned_initial_date = Optional(date)
+		planned_end_date = Optional(date)

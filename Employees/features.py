@@ -1,16 +1,16 @@
 from pony.orm import *
 
-def CreateEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_inst = None):
+def CreateEmployee(db,  name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_inst = None):
 	with db_session:
-		db.Employees(id = id, name = name, zone = zone, )
+		e = db.Employees(name = name, zone = zone )
 		if perf_rect != None:
-			db.Employees_Skills(employee = id, skill = 1, performance = perf_rect)
+			db.Employees_Skills(employee = e, skill = 1, performance = perf_rect)
 		if perf_des != None:
-			db.Employees_Skills(employee = id, skill = 2, performance = perf_des)
+			db.Employees_Skills(employee = e, skill = 2, performance = perf_des)
 		if perf_fab != None:
-			db.Employees_Skills(employee = id, skill = 3, performance = perf_fab)
+			db.Employees_Skills(employee = e, skill = 3, performance = perf_fab)
 		if perf_inst != None:
-			db.Employees_Skills(employee = id, skill = 4, performance = perf_inst)
+			db.Employees_Skills(employee = e, skill = 4, performance = perf_inst)
 
 def PrintEmployees(db):
 	with db_session:
@@ -64,4 +64,4 @@ def PrintSelectSkill(db, id_skill):
 			es = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[id_skill])
 			if es != None and es.performance > 0:
 				ids.append(e.id)
-		select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id).show()		
+		select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id).show()

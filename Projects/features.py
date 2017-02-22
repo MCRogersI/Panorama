@@ -1,8 +1,10 @@
 from pony.orm import *
 
 
-
-def CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline, real_linear_meters = None, estimated_cost = None, real_cost = None):
+def CreateProject(db, contract_number, client_address, client_comuna,
+				  client_name, client_rut, linear_meters, deadline,
+				  real_linear_meters = None, estimated_cost = None,
+				  real_cost = None):
 	with db_session:
 		p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline=deadline, estimated_cost = estimated_cost)
 		if real_linear_meters != None:
@@ -17,6 +19,7 @@ def CreateProject(db, contract_number, client_address, client_comuna, client_nam
 
 		db.Projects[contract_number].priority = db.Projects.select().count()
 		#NO ES BROMA!!
+	#?????????????????????????????
 
 				
 		#############################################################
@@ -25,7 +28,7 @@ def PrintProjects(db):
     with db_session:
         db.Projects.select().show()
 
-def EditProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_deadline = None, new_real_linear_meters = None, new_estimated_cost = None, new_real_cost = None):
+def EditProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None):
 	with db_session:
 		p = db.Projects[contract_number]
 		if new_client_address != None:
@@ -51,9 +54,25 @@ def DeleteProject(db, contract_number):
 	with db_session:
 		db.Projects[contract_number].delete()
 
-def CreateTask(db, id, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
+def getCostProject(db, contract_number, fixed_cost, variable_cost):
+	''' Este método entrega el costo de un proyecto considerando que hay un costo fijo y además 
+		un costo variable que depende de los metros lineales del proyecto, hasta el momento 
+		estos parámetros se ingresan cada vez que se quiera calcular el costo de un proyecto'''
 	with db_session:
-		t = db.Tasks(id = id, id_skill = id_skill, id_project = id_project, original_initial_date = original_initial_date, original_end_date = original_end_date)
+		try:	
+			engagements = select(e for e in db.Engagements if e.project == db.Projects[contract_number])
+			cost=fixed_cost+variable_cost*db.Projects[contract_number].linear_meters
+			for e in engagements:
+				cost=cost + e.SKU.price*e.quantity
+			return cost
+		except ObjectNotFound as e:
+			print('Object not found: {}'.format(e))
+		except ValueError as e:
+			print('Value error: {}'.format(e))
+
+def CreateTask(db, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
+	with db_session:
+		t = db.Tasks(id_skill = id_skill, id_project = id_project, original_initial_date = original_initial_date, original_end_date = original_end_date)
 
 def EditTask(db, id , id_skill = None, id_project = None, original_initial_date = None, original_end_date = None, efective_initial_date = None, efective_end_date = None, fail_cost = None):
 	with db_session:
