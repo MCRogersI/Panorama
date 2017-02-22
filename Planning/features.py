@@ -180,7 +180,6 @@ def shiftDown(db, project, place, original_place):
 # preferí hacerlo recursivo y empujar de uno en uno
 #check
 
-				
 def shiftUp(db,upper, lower):
 	with db_session:
 		projects = select(p for p in db.Projects if p.priority <= lower and p.priority > upper).order_by(lambda p: p.priority)

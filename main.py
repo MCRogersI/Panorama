@@ -17,12 +17,12 @@ PLf.DoPlanning(db)
 ###############################################
 # Tests de los features de Employees.features #
 ###############################################
-# Ef.CreateEmployee(db, 1, "Juan", 1, perf_rect = 1)
-# Ef.CreateEmployee(db, 2, "Pedro", 1, perf_rect = 2)
-# Ef.CreateEmployee(db, 3, "Diego", 1, perf_rect = 3)
-# Ef.CreateEmployee(db, 4, "Lalo", 1, perf_rect = 4)
-# Ef.CreateEmployee(db, 5, "Mario", 1, perf_rect = 5)
-# Ef.CreateEmployee(db, 6, "Hector", 1, perf_rect = 6)
+Ef.CreateEmployee(db, 1, "Juan", 1, perf_rect = 1)
+Ef.CreateEmployee(db, 2, "Pedro", 1, perf_rect = 2)
+Ef.CreateEmployee(db, 3, "Diego", 1, perf_rect = 3)
+Ef.CreateEmployee(db, 4, "Lalo", 1, perf_rect = 4)
+Ef.CreateEmployee(db, 5, "Mario", 1, perf_rect = 5)
+Ef.CreateEmployee(db, 6, "Hector", 1, perf_rect = 6)
 # Ef.PrintEmployees(db)
 # Ef.DeleteEmployee(db, 4)
 # Ef.PrintEmployeesSkills(db)
