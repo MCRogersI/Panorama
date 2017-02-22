@@ -1,3 +1,7 @@
+#Caso de prueba 1
+#Se inicializan las siguientes entidades (tablas) : XXX, XXX, XXX, ...
+#Se prueban la(s) siguiente(s) funcionalidad(es): XXX, XXX, XXX, ...
+
 from pony.orm import *
 from database import db
 import Employees.features as Ef, Employees.usuario as Eu
@@ -147,6 +151,3 @@ print('------')
 print(Sf.checkStockAlarms(db))
 Sf.printStock(db, 1)
 Sf.displayStock(db,1)
-
-
-
