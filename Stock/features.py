@@ -202,7 +202,7 @@ def displayStock(db, id_SKU):
             aux_dates = []
 
             c = 1
-            for i in range(0,delta + 4):  # Se agregan 4 días 'extras/ficticios' para un mejor display
+            for i in range(0,delta + 7):  # Se agregan 7 días 'extras/ficticios' para un mejor display
                 if c < len(dates)-1:
                     if (min_date + timedelta(days=i) >= dates[c]):
                         c += 1
@@ -238,7 +238,7 @@ def displayStock(db, id_SKU):
                         linewidth=2.5)
             plt.axvline(x=max_date, color='k', linestyle='dashed', linewidth=1.5)
             plt.xlim(min_date, max_date + timedelta(
-                days=4))  # Se agregan 4 días 'extras/ficticios' para un mejor display
+                days=7))  # Se agregan 7 días 'extras/ficticios' para un mejor display
             # plt.ylim(min_quantity - (span_quantities / 10), max_quantity + (span_quantities / 10))
             plt.ylim(0, max_quantity + (span_quantities / 10))
             plt.tight_layout()
