@@ -18,11 +18,11 @@ Uf.createUser(db,'Juan',2,'456')
 Uf.createUser(db,'Felipe',3,'789')
 
 
-Sf.createSKU(db, 'Telescopic', 2.01, 100,real_quantity=219)
+Sf.createSKU(db, 'Telescopic', 2.01, 100,real_quantity=200)
 Sf.createSKU(db, 'Glass Pane Knob', 6.43, 200,real_quantity=220)
 Sf.createSKU(db, 'Lower chamber-9', 4.77, 150,real_quantity=234)
 Sf.createSKU(db, 'Upper chamber-9', 3.07, 150,real_quantity=243)
-Sf.createSKU(db, 'Lock for latch', 12.03, 100,real_quantity=251)
+Sf.createSKU(db, 'Lock for latch', 12.03, 100,real_quantity=200)
 Sf.createSKU(db, 'Profile joint unit plastic bag', 4.93, 180,real_quantity=268)
 
 
@@ -58,14 +58,14 @@ Pf.CreateProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
  220, date(2017, 8, 30), estimated_cost = 250)
 
 
-Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 27))
-Sf.createEngagement(db, 2, [(1,99),(4,100),(2,30)],date(2017, 2, 25))
+Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,100),(6,38)],date(2017, 2, 25))
+Sf.createEngagement(db, 2, [(1,99),(4,100),(5,50)],date(2017, 2, 28))
 Sf.createEngagement(db, 2, [(1,55),(2,200)],date(2017, 3, 2))
-Sf.createEngagement(db, 1, [(1,60),(2,20),(3,40)],date(2017, 3, 3))
-Sf.createEngagement(db, 1, [(4,100),(5,25),(6,60)],date(2017, 3, 7))
-Sf.createEngagement(db, 3, [(5,55),(6,30)],date(2017, 3, 2))
-Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 3, 2))
-Sf.createPurchases(db,(1,155),date(2017, 3, 4))
+Sf.createEngagement(db, 1, [(1,60),(2,20),(5,25)],date(2017, 3, 4))
+Sf.createEngagement(db, 1, [(4,100),(1,25),(6,60)],date(2017, 3, 7))
+Sf.createEngagement(db, 3, [(1,55),(6,30)],date(2017, 3, 2))
+Sf.createPurchases(db,[(3,18),(5,100)],date(2017, 3, 8))
+Sf.createPurchases(db,(5,300),date(2017, 3, 14))
 
 
 aux_check_debug_variable_stock_calculation = Sf.calculateStock(db,1)
@@ -140,13 +140,13 @@ with db_session:
 # recordar que una vez corrimos el mismo método croque y mai y nos daban resultados distintos
 #print(Pf.getCostProject(db, 2, 10, 0.1))
 
-PLf.DoPlanning(db, Pf.CreateTask, Sf.updateEngagements)
+# PLf.DoPlanning(db, Pf.CreateTask, Sf.updateEngagements)
 # Sf.printStock(db, 2)
 #Sf.updateEngagements(db, 2)
 print('------')
-print(Sf.checkStockAlarms(db))
-Sf.printStock(db, 1)
-Sf.displayStock(db,1)
+# print(Sf.checkStockAlarms(db))
+Sf.printStock(db, 5)
+Sf.displayStock(db,5)
 
 
 

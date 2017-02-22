@@ -179,54 +179,74 @@ def printStock(db, id_SKU):
 
 
 def displayStock(db, id_SKU):
-	'''Este método grafica el comportamiento de un SKU hasta el último de los movimientos registrados '''
-	with db_session:
-		critical_level = db.Stock.get(id=id_SKU)
-		values = calculateStock(db, id_SKU)
-		quantities, dates = zip(*values)
+    '''Este método grafica el comportamiento de un SKU hasta el último de los movimientos registrados '''
+    with db_session:
+        sku = db.Stock.get(id=id_SKU)
+        critical_level = sku.critical_level
+        values = calculateStock(db, id_SKU)
+        quantities, dates = zip(*values)
 
-		def plot_graph(quantities, dates):
-			plt.figure()
-			plt.ylabel('Quantity')
-			plt.xlabel('Date')
-			plt.title('SKU (id = {}) quantities by date'.format(id_SKU))
-			min_date = min(dates)
-			max_date = max(dates)
-			min_quantity = min(quantities)
-			max_quantity = max(quantities)
-			span_quantities = max_quantity - min_quantity
-			delta = max_date - min_date
-			delta = delta.days
-			aux_quantity = []
-			aux_dates = []
+        def plot_graph(quantities, dates):
+            plt.figure()
+            plt.ylabel('Quantity')
+            plt.xlabel('Date')
+            plt.title('SKU (id = {}) quantities by date'.format(id_SKU))
+            min_date = min(dates)
+            max_date = max(dates)
+            min_quantity = min(quantities)
+            max_quantity = max(quantities)
+            span_quantities = max_quantity - min_quantity
+            delta = max_date - min_date
+            delta = delta.days
+            aux_quantity = []
+            aux_dates = []
 
-			c = 0
-			for i in range(0, delta+1):
-				if (min_date + timedelta(days=i) > dates[c]):
-					c += 1
-				aux_quantity.append(quantities[c])
-				aux_dates.append(min_date + timedelta(days=i))
-			width = 1
-			# offset = 0
+            c = 1
+            for i in range(0,delta + 4):  # Se agregan 4 días 'extras/ficticios' para un mejor display
+                if c < len(dates)-1:
+                    if (min_date + timedelta(days=i) >= dates[c]):
+                        c += 1
+                    aux_dates.append(min_date + timedelta(days=i))
+                    aux_quantity.append(quantities[c - 1])
+                else:
+                    if (min_date + timedelta(days=i) < dates[c]):
+                        aux_dates.append(min_date + timedelta(days=i))
+                        aux_quantity.append(quantities[c-1])
+                    else:
+                        aux_dates.append(min_date + timedelta(days=i))
+                        aux_quantity.append(quantities[c])
 
-			# mask1 = aux_quantity <= critical_level
-			# mask2 = aux_quantity > critical_level
-			# plt.bar(aux_dates[mask1], aux_quantity[mask1], color='red', align='center')
-			# plt.bar(aux_dates[mask2], aux_quantity[mask2], color='blue', align='center')
 
-			p1 = plt.bar(aux_dates, aux_quantity, width=width, color='#0000FF', align='center')
+            width = 1
+            # offset = 0
 
-			# print(delta)
-			# print(aux_dates)
-			plt.grid()
-			plt.xlim(min_date, max_date + timedelta(days=1))
-			# plt.ylim(min_quantity - (span_quantities / 10), max_quantity + (span_quantities / 10))
-			plt.ylim(0, max_quantity + (span_quantities / 10))
-			plt.tight_layout()
-			plt.show(block=True)
-		p = Thread(target=plot_graph(quantities=quantities, dates=dates))
-		p.start()
-		p.join()
+            # mask1 = aux_quantity <= critical_level
+            # mask2 = aux_quantity > critical_level
+            # plt.bar(aux_dates[mask1], aux_quantity[mask1], color='red', align='center')
+            # plt.bar(aux_dates[mask2], aux_quantity[mask2], color='blue', align='center')
+
+            # plt.bar(aux_dates[aux_quantity < critical_level], aux_quantity[aux_quantity < critical_level], color='red', align='center')
+            # plt.bar(aux_dates[aux_quantity >= critical_level],
+            #         aux_quantity[aux_quantity >= critical_level], color='blue', align='center')
+
+            p1 = plt.bar(aux_dates, aux_quantity, width=width, color='#0000FF', align='center')
+
+            # plt.xticks(dates, dates, rotation='vertical') #Con esta configuración solo aparecen los labels de las fechas con cambios
+            plt.xticks(aux_dates, aux_dates, rotation='vertical')  # Con esta configuración aparecen los labels de todos los días
+            plt.grid()
+            plt.axhline(y=db.Stock[id_SKU].critical_level, color='r', linestyle='dashed',
+                        linewidth=2.5)
+            plt.axvline(x=max_date, color='k', linestyle='dashed', linewidth=1.5)
+            plt.xlim(min_date, max_date + timedelta(
+                days=4))  # Se agregan 4 días 'extras/ficticios' para un mejor display
+            # plt.ylim(min_quantity - (span_quantities / 10), max_quantity + (span_quantities / 10))
+            plt.ylim(0, max_quantity + (span_quantities / 10))
+            plt.tight_layout()
+            plt.show(block=True)
+
+        p = Thread(target=plot_graph(quantities=quantities, dates=dates))
+        p.start()
+        p.join()
 
 
 def updateEngagements(db, id_SKU):
