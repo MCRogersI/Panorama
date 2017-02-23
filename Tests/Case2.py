@@ -1,6 +1,6 @@
 #Caso de prueba 2
 #Se inicializan las siguientes entidades (tablas) : XXX, XXX, XXX, ...
-#Se prueban la(s) siguiente(s) funcionalidad(es): cambios de prioridades explícitos y stock más realista.
+#Se prueban la(s) siguiente(s) funcionalidad(es): cambios de prioridades explícitos e ingreso de vacaciones.
 from pony.orm import *
 from database import db
 import Employees.features as Ef, Employees.usuario as Eu
@@ -131,8 +131,10 @@ with db_session:
 	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
 	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
 	#Ingresar las vacaciones de un empleado
-	#db.Employees_Activities(db, employee = db.Employees[13], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
-	#db.Tasks[9].effective_initial_date = date(2017, 4, 18)
+	db.Employees_Activities(employee = db.Employees[13], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
+	db.Employees_Activities(employee = db.Employees[12], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
+	db.Employees_Activities(employee = db.Employees[8], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
+	#Considera bien las vacaciones.
 
 PLf.changePriority(db, 3, 1)
 PLf.DoPlanning(db, Pf.CreateTask, Sf.updateEngagements)
