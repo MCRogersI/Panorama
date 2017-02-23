@@ -1,7 +1,6 @@
 #Caso de prueba 1
 #Se inicializan las siguientes entidades (tablas) : XXX, XXX, XXX, ...
-#Se prueban la(s) siguiente(s) funcionalidad(es): XXX, XXX, XXX, ...
-
+#Se prueban la(s) siguiente(s) funcionalidad(es): utilización de prioridades, fijación de proyectos, algoritmo de asignación en general.
 from pony.orm import *
 from database import db
 import Employees.features as Ef, Employees.usuario as Eu

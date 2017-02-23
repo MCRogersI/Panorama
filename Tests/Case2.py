@@ -1,3 +1,6 @@
+#Caso de prueba 2
+#Se inicializan las siguientes entidades (tablas) : XXX, XXX, XXX, ...
+#Se prueban la(s) siguiente(s) funcionalidad(es): cambios de prioridades explícitos y stock más realista.
 from pony.orm import *
 from database import db
 import Employees.features as Ef, Employees.usuario as Eu
@@ -8,28 +11,13 @@ import Planning.features as PLf
 import Users.features as Uf
 import Stock.features as Sf
 
-#POR AHORA EJECUTAR LOS SIGUIENTES COMANDOS EN LA CONSOLA HABIENDO ACCEDIDO
-# A LA BASE DE DATOS:
-#'drop schema public cascade'
-# 'create schema public'
+#Uf.createUser(db,'Alberto',1,'123')
+#Uf.createUser(db,'Juan',2,'456')
+#Uf.createUser(db,'Felipe',3,'789')
 
-Uf.createUser(db,'Alberto',1,'123')
-Uf.createUser(db,'Juan',2,'456')
-Uf.createUser(db,'Felipe',3,'789')
-
-
-Sf.createSKU(db, 'Telescopic', 2.01, 100,real_quantity=200)
-Sf.createSKU(db, 'Glass Pane Knob', 6.43, 200,real_quantity=220)
-Sf.createSKU(db, 'Lower chamber-9', 4.77, 150,real_quantity=234)
-Sf.createSKU(db, 'Upper chamber-9', 3.07, 150,real_quantity=243)
-Sf.createSKU(db, 'Lock for latch', 12.03, 100,real_quantity=200)
-Sf.createSKU(db, 'Profile joint unit plastic bag', 4.93, 180,real_quantity=268)
-
-
-
-#Aquí las Skills, las Difficulties y las Activities se crean de forma directa. Esto no se hace a través de métodos "createSkill",
-#createActivity" o "create Difficulty" dado que esas relaciones son
-# constantes en las base de datos y no es necesario volver a crearlas en el futuro.
+#####################################################################
+# Inicialización de skills, dificultades y actividades, test case 2 #
+#####################################################################
 with db_session:
 	db.Skills(id=1, name='Rectification')
 	db.Skills(id=2, name='Design')
@@ -42,10 +30,25 @@ with db_session:
 	db.Activities(id=2, description='Vacaciones')
 	db.Activities(id=3, description='Cliente ocupado')
 
-##############################################
-# Lista de prueba de proyectos test case 1 #
-##############################################
+#############################
+# Stock inicial test case 2 #
+#############################
 
+Sf.createSKU(db, 'Telescopic', 2.01, 100,real_quantity=219)
+Sf.createSKU(db, 'Glass Pane Knob', 6.43, 200,real_quantity=220)
+Sf.createSKU(db, 'Lower chamber-9', 4.77, 150,real_quantity=234)
+Sf.createSKU(db, 'Upper chamber-9', 3.07, 150,real_quantity=243)
+Sf.createSKU(db, 'Lock for latch', 12.03, 100,real_quantity=251)
+Sf.createSKU(db, 'Screw M4x12 tx20 A2 DIN965', 0.07, 500,real_quantity=1000)
+Sf.createSKU(db, 'Screw M4x14 tx20 A2 DIN965', 0.07, 500,real_quantity=1000)
+Sf.createSKU(db, 'Fastening Bead 10mm transparent', 2.51, 300,real_quantity=600)
+Sf.createSKU(db, 'Screws for Water Sill', 0.69, 200,real_quantity=500)
+Sf.createSKU(db, 'Lock Keeper, wall side', 6.52, 200,real_quantity=800)
+Sf.createSKU(db, 'Profile joint unit plastic bag', 4.93, 180,real_quantity=268)
+
+#########################
+# Proyectos test case 2 #
+#########################
 Pf.CreateProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
 				 '17.094.362-0', 150, date(2017, 12, 30), estimated_cost = 200)
 Pf.CreateProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
@@ -57,34 +60,21 @@ Pf.CreateProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
 				 '14.214.392-K',
  220, date(2017, 8, 30), estimated_cost = 250)
 
+###########################
+# Engagements test case 2 #
+###########################
 
-Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,100),(6,38)],date(2017, 2, 25))
-Sf.createEngagement(db, 2, [(1,99),(4,100),(5,50)],date(2017, 2, 28))
+Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 27))
+Sf.createEngagement(db, 2, [(1,99),(4,100),(2,30)],date(2017, 2, 25))
 Sf.createEngagement(db, 2, [(1,55),(2,200)],date(2017, 3, 2))
-Sf.createEngagement(db, 1, [(1,60),(2,20),(5,25)],date(2017, 3, 4))
-Sf.createEngagement(db, 1, [(4,100),(1,25),(6,60)],date(2017, 3, 7))
-Sf.createEngagement(db, 3, [(1,55),(6,30)],date(2017, 3, 2))
-Sf.createPurchases(db,[(3,18),(5,100)],date(2017, 3, 8))
-Sf.createPurchases(db,(5,300),date(2017, 3, 14))
-
-
-aux_check_debug_variable_stock_calculation = Sf.calculateStock(db,1)
-
-#print(aux_check_debug_variable_stock_calculation)
-
-
-with db_session:
-	#Definición de las prioridades de los distintos proyectos
-	db.Projects[3].priority = 3
-	db.Projects[1].priority = 2
-	db.Projects[2].priority = 1
-	#Fijación de proyectos
-	db.Projects[4].fixed_planning = True
-
-
+Sf.createEngagement(db, 1, [(1,60),(2,20),(3,40)],date(2017, 3, 3))
+Sf.createEngagement(db, 1, [(4,100),(5,25),(6,60)],date(2017, 3, 7))
+Sf.createEngagement(db, 3, [(5,55),(6,30)],date(2017, 3, 2))
+Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 3, 2))
+Sf.createPurchases(db,(1,155),date(2017, 3, 4))
 
 #################################################
-#        Lista de empleados test case 1 		#
+#        Lista de empleados test case 2 		#
 # ###############################################
 
 Ef.CreateEmployee(db,  "Juan", 1, perf_rect = 10)
@@ -101,9 +91,8 @@ Ef.CreateEmployee(db,  "Mario", 1, perf_fab = 50)
 Ef.CreateEmployee(db,  "Felipe", 1, perf_inst = 60)
 Ef.CreateEmployee(db,  "Iker", 1, perf_inst = 70)
 
-
 ##############################################
-# Lista de prueba de tasks test case 1 		 #
+# Lista de prueba de tasks test case 2 		 #
 ##############################################
 
 Pf.CreateTask(db, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,4,28))
@@ -119,34 +108,35 @@ Pf.CreateTask(db, 2, 3, original_initial_date=date(2017, 6, 11), original_end_da
 Pf.CreateTask(db, 3, 3, original_initial_date=date(2017, 6, 21), original_end_date=date(2017,7,8))
 Pf.CreateTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_date=date(2017,7,19))
 
+######################################################
+# Lista de asignación de rectificaciones test case 2 #
+######################################################
+
 PLf.AssignTask(db, 1, 1, initial_date=date(2017, 4, 8), end_date=date(2017,4,28))
 PLf.AssignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
 PLf.AssignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
-#PLf.AssignTask(db, 2, 2,  initial_date=date(2017, 4, 28), end_date=date(2017,5,20))
-#PLf.AssignTask(db, 6, 6,  initial_date=date(2017, 4, 3), end_date=date(2017,4,18))
-#PLf.AssignTask(db, 10, 10,  initial_date=date(2017, 4, 12), end_date=date(2017,5,1))
-#PLf.AssignTask(db, 3, 3,  initial_date=date(2017, 4, 16), end_date=date(2017,5,7))
-#PLf.AssignTask(db, 7, 7,  initial_date=date(2017, 4, 26), end_date=date(2017,6,1))
-#PLf.AssignTask(db, 11, 11,  initial_date=date(2017, 4, 20), end_date=date(2017,4,30))
-#PLf.AssignTask(db, [4,8], 4,  initial_date=date(2017, 5, 10), end_date=date(2017,5,20))
-#PLf.AssignTask(db, [4,8,12], 8, initial_date=date(2017, 5, 15), end_date=date(2017,6,8))
-#PLf.AssignTask(db, 12, 12,  initial_date=date(2017, 5, 20), end_date=date(2017,7,3))
+
+############################################################################################
+# Cambios forzosos a prioridades, fijación de proyectos y de inicialización de actividades #
+############################################################################################
 
 with db_session:
+	#Definición de las prioridades de los distintos proyectos
+	db.Projects[3].priority = 3
+	db.Projects[1].priority = 2
+	db.Projects[2].priority = 1
+	#Fijación de proyectos
+	db.Projects[4].fixed_planning = True
 	#Definición de fechas de inicio efectivas para algunas tareas
 	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
 	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
-	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
-# recordar que una vez corrimos el mismo método croque y mai y nos daban resultados distintos
-#print(Pf.getCostProject(db, 2, 10, 0.1))
+	#Ingresar las vacaciones de un empleado
+	#db.Employees_Activities(db, employee = db.Employees[13], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
+	#db.Tasks[9].effective_initial_date = date(2017, 4, 18)
 
-# PLf.DoPlanning(db, Pf.CreateTask, Sf.updateEngagements)
-# Sf.printStock(db, 2)
-#Sf.updateEngagements(db, 2)
+PLf.changePriority(db, 3, 1)
+PLf.DoPlanning(db, Pf.CreateTask, Sf.updateEngagements)
 print('------')
-# print(Sf.checkStockAlarms(db))
-Sf.printStock(db, 5)
-Sf.displayStock(db,5)
-
-
-
+print(Sf.checkStockAlarms(db))
+Sf.printStock(db, 1)
+Sf.displayStock(db,1)
