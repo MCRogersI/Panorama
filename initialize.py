@@ -7,9 +7,10 @@ import Projects.features as Pf
 import Planning.features as PLf
 import Users.features as Uf
 import Stock.features as Sf
+
+
 import Tests.Case2 as case2
 
-case2()
 
 
 
