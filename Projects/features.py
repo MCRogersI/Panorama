@@ -103,13 +103,17 @@ def printTasks(db):
 		db.Tasks.select().show()
 
 def failedTask(db, contract_number, id_skill, fail_cost):
+	import Planning.features as PLf
 	with db_session:
 
-		tasks = select(t for t in db.Tasks if t.skill == db.Skills[id_skill] and t.project == db.Projects[contract_number] and t.failed == None)
+		tasks = select(t for t in db.Tasks if t.skill >= db.Skills[id_skill] and t.project == db.Projects[contract_number] and t.failed == None)
 		for t in tasks:
 			t.failed = True
-			t.fail_cost = fail_cost
+			if t.skill = db.Skills[id_skill]:
+				t.fail_cost = fail_cost
 		
 		tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects[contract_number] and t.efective_end_date == None)
 		for t in tasks:
 			t.delete()
+	PLf.doPlanning(db)	
+	
