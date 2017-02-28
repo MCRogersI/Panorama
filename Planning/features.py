@@ -328,6 +328,11 @@ def changePriority(db, contract_number, new_priority):
 			db.Projects[contract_number].priority = new_priority
 			db.Projects[contract_number].fixed_priority = True
 			db.Projects.select().order_by(lambda p: p.contract_number)
+			
+############
+#Este evento debe gatillar una replanificación
+	doPlanning(db)
+###########
 #Funcion para cambiar la prioridad de manera manual. Luego de cambiarla, la prioridad se marca como fijada por el usuario.
 #check
 
@@ -340,7 +345,10 @@ def addDelayed(db, Delayed, contract_number, task, num_workers, initial, ending,
 	return Delayed
 
 
-def doPlanning(db, createTask, updateEngagements):
+
+def doPlanning(db):
+	import Projects.features as Pf
+	import Stock.features as Sf
 	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 
 'task', 'num workers', 'initial date', 'ending date', 'deadline'])#Esto debería
 	# estar encapsulado en otro método.
@@ -363,8 +371,8 @@ def doPlanning(db, createTask, updateEngagements):
 							# arriba revisamos que la effective_initial_date sea None, si no, no la cambiamos
 							initial, ending, emps = findDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 							if task == None:
-								createTask(db, s.id, p.contract_number, initial, ending)
-								task = db.Tasks.get(skill = s, project = p)
+								Pf.createTask(db, s.id, p.contract_number, initial, ending)
+								task = db.Tasks.get(id_skill = s, id_project = p)
 							if ending > p.deadline :
 #								print("Se pasó la tarea  " +str(s) +" del proyecto "+str(p.contract_number))
 								#aquí se podría o no avisar que el proyecto estaría fuera de plazo
@@ -403,16 +411,16 @@ def doPlanning(db, createTask, updateEngagements):
 								#aquí ya no hay nada que hacer y se le debería mostrar la tabla Delayed
 								Delayed = addDelayed(db, Delayed, p.contract_number, s, num_workers, initial, ending[num_workers-1], p.deadline)
 								if task == None:
-									createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
-									task = db.Tasks.get(skill = s, project = p)
+									Pf.createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
+									task = db.Tasks.get(id_skill = s, id_project = p)
 								assignTask(db, emps, task, initial, ending[num_workers-1])
 							else:
 								if task == None:
-									createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
-									task = db.Tasks.get(skill = s, project = p)
+									Pf.createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
+									task = db.Tasks.get(id_skill = s, id_project = p)
 								assignTask(db, emps, task, initial, ending[num_workers-1])
 			for e in p.engagements:
-				updateEngagements(db, e.sku.id)			
+				Sf.updateEngagements(db, e.SKU.id)			
 		print(Delayed)		
 #tenemos un problema con los metros lineales (310) de un proyecto que 3 rectificadores con promedio 150 m/dia lo hacen en dos días
 
@@ -450,3 +458,8 @@ def doPlanning(db, createTask, updateEngagements):
 				# 		if(num_workers < 4 and d_t+timedelta(days)>p.deadline):
 				# 			num_workers=num_workers+1
                 #
+##########
+#eventos que gatillan una replanificación deben ser especificados
+##########
+
+

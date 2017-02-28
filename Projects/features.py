@@ -1,10 +1,12 @@
 from pony.orm import *
 
 
+
 def createProject(db, contract_number, client_address, client_comuna,
 				  client_name, client_rut, linear_meters, deadline,
 				  real_linear_meters = None, estimated_cost = None,
 				  real_cost = None):
+	import Planning.features as Pf
 	with db_session:
 		p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline=deadline, estimated_cost = estimated_cost)
 		if real_linear_meters != None:
@@ -19,7 +21,9 @@ def createProject(db, contract_number, client_address, client_comuna,
 		#NO ES BROMA!!
 	#?????????????????????????????	
 		#############################################################
-
+	Pf.doPlanning(db)
+	
+	
 def printProjects(db):
     with db_session:
         db.Projects.select().show()
