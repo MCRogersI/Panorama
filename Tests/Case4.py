@@ -45,6 +45,24 @@ with db_session:
 	db.Activities(id=2, description='Vacaciones')
 	db.Activities(id=3, description='Cliente ocupado')
 
+#################################################
+#        Lista de empleados test case 1 		#
+# ###############################################
+
+Ef.createEmployee(db,  "Juan", 1, perf_rect = 10)
+Ef.createEmployee(db,  "Pedro", 2, perf_des = 20)
+Ef.createEmployee(db,  "Diego", 2, perf_fab = 30)
+Ef.createEmployee(db,  "Miguel", 1, perf_inst = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_rect = 50)
+Ef.createEmployee(db,  "Felipe", 2, perf_des = 60)
+Ef.createEmployee(db,  "Miguel", 1, perf_fab = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_inst = 50)
+Ef.createEmployee(db,  "Felipe", 2, perf_rect = 60)
+Ef.createEmployee(db,  "Miguel", 1, perf_des = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_fab = 50)
+Ef.createEmployee(db,  "Felipe", 1, perf_inst = 60)
+Ef.createEmployee(db,  "Iker", 1, perf_inst = 70)	
+	
 ##############################################
 # Lista de prueba de proyectos test case 1   #
 ##############################################
@@ -86,46 +104,30 @@ with db_session:
 
 
 
-#################################################
-#        Lista de empleados test case 1 		#
-# ###############################################
 
-Ef.createEmployee(db,  "Juan", 1, perf_rect = 10)
-Ef.createEmployee(db,  "Pedro", 2, perf_des = 20)
-Ef.createEmployee(db,  "Diego", 2, perf_fab = 30)
-Ef.createEmployee(db,  "Miguel", 1, perf_inst = 40)
-Ef.createEmployee(db,  "Mario", 1, perf_rect = 50)
-Ef.createEmployee(db,  "Felipe", 2, perf_des = 60)
-Ef.createEmployee(db,  "Miguel", 1, perf_fab = 40)
-Ef.createEmployee(db,  "Mario", 1, perf_inst = 50)
-Ef.createEmployee(db,  "Felipe", 2, perf_rect = 60)
-Ef.createEmployee(db,  "Miguel", 1, perf_des = 40)
-Ef.createEmployee(db,  "Mario", 1, perf_fab = 50)
-Ef.createEmployee(db,  "Felipe", 1, perf_inst = 60)
-Ef.createEmployee(db,  "Iker", 1, perf_inst = 70)
 
 
 ##############################################
 # Lista de prueba de tasks test case 1 		 #
 ##############################################
 
-Pf.createTask(db, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,4,28))
-Pf.createTask(db, 2, 1, original_initial_date=date(2017, 4, 29), original_end_date=date(2017,5,10))
-Pf.createTask(db, 3, 1, original_initial_date=date(2017, 5, 11), original_end_date=date(2017,5,30))
-Pf.createTask(db, 4, 1, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,14))
-Pf.createTask(db, 1, 2, original_initial_date=date(2017, 4, 3), original_end_date=date(2017,5,18))
-Pf.createTask(db, 2, 2, original_initial_date=date(2017, 5, 19), original_end_date=date(2017,5,29))
-Pf.createTask(db, 3, 2, original_initial_date=date(2017, 5, 30), original_end_date=date(2017,6,1))
-Pf.createTask(db, 4, 2, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,15))
-Pf.createTask(db, 1, 3, original_initial_date=date(2017, 6, 3), original_end_date=date(2017,6,10))
-Pf.createTask(db, 2, 3, original_initial_date=date(2017, 6, 11), original_end_date=date(2017,6,20))
-Pf.createTask(db, 3, 3, original_initial_date=date(2017, 6, 21), original_end_date=date(2017,7,8))
-Pf.createTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_date=date(2017,7,19))
+# Pf.createTask(db, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,4,28))
+# Pf.createTask(db, 2, 1, original_initial_date=date(2017, 4, 29), original_end_date=date(2017,5,10))
+# Pf.createTask(db, 3, 1, original_initial_date=date(2017, 5, 11), original_end_date=date(2017,5,30))
+# Pf.createTask(db, 4, 1, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,14))
+# Pf.createTask(db, 1, 2, original_initial_date=date(2017, 4, 3), original_end_date=date(2017,5,18))
+# Pf.createTask(db, 2, 2, original_initial_date=date(2017, 5, 19), original_end_date=date(2017,5,29))
+# Pf.createTask(db, 3, 2, original_initial_date=date(2017, 5, 30), original_end_date=date(2017,6,1))
+# Pf.createTask(db, 4, 2, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,15))
+# Pf.createTask(db, 1, 3, original_initial_date=date(2017, 6, 3), original_end_date=date(2017,6,10))
+# Pf.createTask(db, 2, 3, original_initial_date=date(2017, 6, 11), original_end_date=date(2017,6,20))
+# Pf.createTask(db, 3, 3, original_initial_date=date(2017, 6, 21), original_end_date=date(2017,7,8))
+# Pf.createTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_date=date(2017,7,19))
 
 
-PLf.assignTask(db, 1, 1, initial_date=date(2017, 4, 8), end_date=date(2017,4,28))
-PLf.assignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
-PLf.assignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
+# PLf.assignTask(db, 1, 1, initial_date=date(2017, 4, 8), end_date=date(2017,4,28))
+# PLf.assignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
+# PLf.assignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
 #PLf.AssignTask(db, 2, 2,  initial_date=date(2017, 4, 28), end_date=date(2017,5,20))
 #PLf.AssignTask(db, 6, 6,  initial_date=date(2017, 4, 3), end_date=date(2017,4,18))
 #PLf.AssignTask(db, 10, 10,  initial_date=date(2017, 4, 12), end_date=date(2017,5,1))

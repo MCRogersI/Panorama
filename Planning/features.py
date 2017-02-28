@@ -372,7 +372,7 @@ def doPlanning(db):
 							initial, ending, emps = findDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 							if task == None:
 								Pf.createTask(db, s.id, p.contract_number, initial, ending)
-								task = db.Tasks.get(id_skill = s, id_project = p)
+								task = db.Tasks.get(skill = s, id_project = p)
 							if ending > p.deadline :
 #								print("Se pasó la tarea  " +str(s) +" del proyecto "+str(p.contract_number))
 								#aquí se podría o no avisar que el proyecto estaría fuera de plazo
