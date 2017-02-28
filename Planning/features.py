@@ -275,7 +275,7 @@ def cleanTasks(db):
 		#Cambiar en las tablas id_skill y id_project por skill y project !!!
 				# !!!!
 				###############################
-		# task.id_project.contract_number
+		# task.project.contract_number
 # Esta funcion borra las actividades que no están fijas y que no han empezado
 #####################################################################
 # Las siguientes funciones son para cambiar la prioridad
@@ -372,7 +372,7 @@ def doPlanning(db):
 							initial, ending, emps = findDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 							if task == None:
 								Pf.createTask(db, s.id, p.contract_number, initial, ending)
-								task = db.Tasks.get(skill = s, id_project = p)
+								task = db.Tasks.get(skill = s, project = p)
 							if ending > p.deadline :
 #								print("Se pasó la tarea  " +str(s) +" del proyecto "+str(p.contract_number))
 								#aquí se podría o no avisar que el proyecto estaría fuera de plazo
@@ -412,12 +412,12 @@ def doPlanning(db):
 								Delayed = addDelayed(db, Delayed, p.contract_number, s, num_workers, initial, ending[num_workers-1], p.deadline)
 								if task == None:
 									Pf.createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
-									task = db.Tasks.get(id_skill = s, id_project = p)
+									task = db.Tasks.get(skill = s, project = p)
 								assignTask(db, emps, task, initial, ending[num_workers-1])
 							else:
 								if task == None:
 									Pf.createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
-									task = db.Tasks.get(id_skill = s, id_project = p)
+									task = db.Tasks.get(skill = s, project = p)
 								assignTask(db, emps, task, initial, ending[num_workers-1])
 			for e in p.engagements:
 				Sf.updateEngagements(db, e.SKU.id)			

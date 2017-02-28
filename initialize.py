@@ -9,5 +9,9 @@ import Users.features as Uf
 import Stock.features as Sf
 
 
+<<<<<<< HEAD
 import Tests.Case4 as case4
 
+=======
+import Tests.Case1 as case1
+>>>>>>> c786c36073d71c3a2cc6b49fd92636c28cba0bf5
