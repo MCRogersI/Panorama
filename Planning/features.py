@@ -275,7 +275,7 @@ def cleanTasks(db):
 		#Cambiar en las tablas id_skill y id_project por skill y project !!!
 				# !!!!
 				###############################
-		# task.id_project.contract_number
+		# task.project.contract_number
 # Esta funcion borra las actividades que no están fijas y que no han empezado
 #####################################################################
 # Las siguientes funciones son para cambiar la prioridad
