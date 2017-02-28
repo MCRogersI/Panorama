@@ -122,7 +122,7 @@ Pf.createTask(db, 3, 3, original_initial_date=date(2017, 6, 21), original_end_da
 Pf.createTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_date=date(2017,7,19))
 
 PLf.assignTask(db, 1, 1, initial_date=date(2017, 4, 8), end_date=date(2017,4,28))
-PLf.asignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
+PLf.assignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
 PLf.assignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
 #PLf.AssignTask(db, 2, 2,  initial_date=date(2017, 4, 28), end_date=date(2017,5,20))
 #PLf.AssignTask(db, 6, 6,  initial_date=date(2017, 4, 3), end_date=date(2017,4,18))

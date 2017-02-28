@@ -1,4 +1,4 @@
-from Employees.features import CreateEmployee, PrintEmployees, EditEmployee, PrintEmployeesSkills, PrintSelectSkill, DeleteEmployee
+from Employees.features import createEmployee, printEmployees, editEmployee, printEmployeesSkills, printSelectSkill, deleteEmployee
 
 def employees_console(db, level):
 #Es mejor importar las funciones en lugar de entregarsélas como parámetro a la función. Cambiar más adelante.
