@@ -336,7 +336,7 @@ def addDelayed(db, Delayed, contract_number, task, num_workers, initial, ending,
 	Delayed =  Delayed.append({'contract number': contract_number, 'task': task, 'num workers': num_workers, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
 	return Delayed
 
-def DoPlanning(db, CreateTask, updateEngagements):
+def DoPlanning(db, createTask, updateEngagements):
 	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 
 'task', 'num workers', 'initial date', 'ending date', 'deadline'])#Esto debería
 	# estar encapsulado en otro método.
@@ -360,7 +360,7 @@ def DoPlanning(db, CreateTask, updateEngagements):
 							# arriba revisamos que la effective_initial_date sea None, si no, no la cambiamos
 							initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 							if task == None:
-								CreateTask(db, s.id, p.contract_number, initial, ending)
+								createTask(db, s.id, p.contract_number, initial, ending)
 								task = db.Tasks.get(id_skill = s, id_project = p)
 							if ending > p.deadline :
 #								print("Se pasó la tarea  " +str(s) +" del proyecto "+str(p.contract_number))
@@ -400,12 +400,12 @@ def DoPlanning(db, CreateTask, updateEngagements):
 								#aquí ya no hay nada que hacer y se le debería mostrar la tabla Delayed
 								Delayed = addDelayed(db, Delayed, p.contract_number, s, num_workers, initial, ending[num_workers-1], p.deadline)
 								if task == None:
-									CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
+									createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
 									task = db.Tasks.get(id_skill = s, id_project = p)
 								AssignTask(db, emps, task, initial, ending[num_workers-1])
 							else:
 								if task == None:
-									CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
+									createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
 									task = db.Tasks.get(id_skill = s, id_project = p)
 								AssignTask(db, emps, task, initial, ending[num_workers-1])
 			for e in p.engagements:

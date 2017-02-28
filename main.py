@@ -154,8 +154,8 @@ signIn()
 # print(PLf.FindDatesEmployees(db, 1, 2, 5, date(2017, 3, 9)))
 # print(PLf.FindDatesEmployees(db, 1, 2, 6, date(2017, 3, 9)))
 
-# Pf.CreateTask(db, 1, 1, date(2017, 3, 9), date(2017, 3, 9))
-# print(Pf.PrintTasks(db))
+# Pf.createTask(db, 1, 1, date(2017, 3, 9), date(2017, 3, 9))
+# print(Pf.printTasks(db))
 
 
 ##############################################
@@ -175,27 +175,27 @@ signIn()
 
 # db.Projects[5].fixed_priority = True
 # Pf.printProjects(db)
-# Pf.EditProject(db, 1, new_linear_meters = 12, new_deadline = date(2017, 3, 18), new_real_cost = 315,)
-# Pf.DeleteProject(db, 2)
+# Pf.editProject(db, 1, new_linear_meters = 12, new_deadline = date(2017, 3, 18), new_real_cost = 315,)
+# Pf.deleteProject(db, 2)
 
 
-# Pf.CreateTask(db, 1, 1, 1, date(2014, 12, 1), date(2017,2,28))
-# Pf.CreateTask(db, 2, 2, 2, date(2014, 12, 16), date(2017,3,1))
-# Pf.CreateTask(db, 3, 3, 2, date(2014, 12, 18), date(2017,3,8))
-# Pf.CreateTask(db, 4, 4, 2, date(2014, 12, 26), date(2017,12,14))
+# Pf.createTask(db, 1, 1, 1, date(2014, 12, 1), date(2017,2,28))
+# Pf.createTask(db, 2, 2, 2, date(2014, 12, 16), date(2017,3,1))
+# Pf.createTask(db, 3, 3, 2, date(2014, 12, 18), date(2017,3,8))
+# Pf.createTask(db, 4, 4, 2, date(2014, 12, 26), date(2017,12,14))
 
-# Pf.EditTask(db, 1, efective_initial_date = d.datetime(2014, 1, 1), efective_end_date = d.datetime(2014, 1, 10))
-# Pf.EditTask(db, 2, efective_initial_date = d.datetime(2014, 1, 11), efective_end_date = d.datetime(2014, 1, 15))
-# Pf.EditTask(db, 3, efective_initial_date = d.datetime(2014, 1, 16))
+# Pf.editTask(db, 1, efective_initial_date = d.datetime(2014, 1, 1), efective_end_date = d.datetime(2014, 1, 10))
+# Pf.editTask(db, 2, efective_initial_date = d.datetime(2014, 1, 11), efective_end_date = d.datetime(2014, 1, 15))
+# Pf.editTask(db, 3, efective_initial_date = d.datetime(2014, 1, 16))
 
 # Eu.employees_teams_console(db, Ef.CreateEmployee, Ef.PrintEmployees, Ef.EditEmployee, Ef.CreateTeam, Ef.PrintTeams, Ef.PrintTeamsSkills, Ef.EditTeam, Ef.PrintSkills)
 # Pf.AssignTask(db, 1, 1)
-# Pf.DeleteTask(db,1)
-# Pf.EditProject(db, 2 ,new_real_linear_meters = 400, new_real_cost = 8000)
-# Pf.DeleteProject(db, 1)
+# Pf.deleteTask(db,1)
+# Pf.editProject(db, 2 ,new_real_linear_meters = 400, new_real_cost = 8000)
+# Pf.deleteProject(db, 1)
 
 
-#Pf.FailedTask(db, 2, 1, 1000)
+#Pf.failedTask(db, 2, 1, 1000)
 
 			
 			
