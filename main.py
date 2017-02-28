@@ -161,10 +161,10 @@ signIn()
 ##############################################
 # Tests de los features de Projects.features #
 ##############################################
-# Pf.CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline, real_linear_meters = None, estimated_cost = None, real_cost = None)
-# Pf.CreateProject(db, 1, 'frutillita', 'Las Condes', 'frambuesita', '20.024.322-0', 15, date(2017, 3, 14), estimated_cost = 200,)
-# Pf.CreateProject(db, 2, 'cebollita', 'Las Condes', 'sub-campeon', '21.024.322-0', 20, date(2017, 3, 15), estimated_cost = 300,)
-# Pf.CreateProject(db, 3, 'lalala', 'Las Condes', 'sisisi', '22.024.322-0', 20, date(2017, 4, 30), estimated_cost = 150,)
+# Pf.createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline, real_linear_meters = None, estimated_cost = None, real_cost = None)
+# Pf.createProject(db, 1, 'frutillita', 'Las Condes', 'frambuesita', '20.024.322-0', 15, date(2017, 3, 14), estimated_cost = 200,)
+# Pf.createProject(db, 2, 'cebollita', 'Las Condes', 'sub-campeon', '21.024.322-0', 20, date(2017, 3, 15), estimated_cost = 300,)
+# Pf.createProject(db, 3, 'lalala', 'Las Condes', 'sisisi', '22.024.322-0', 20, date(2017, 4, 30), estimated_cost = 150,)
 # with db_session:
 	# db.Projects[1].priority = 1
 	# db.Projects[2].priority = 2
@@ -174,7 +174,7 @@ signIn()
 	# db.Projects[5].fixed_priority = False
 
 # db.Projects[5].fixed_priority = True
-# Pf.PrintProjects(db)
+# Pf.printProjects(db)
 # Pf.EditProject(db, 1, new_linear_meters = 12, new_deadline = date(2017, 3, 18), new_real_cost = 315,)
 # Pf.DeleteProject(db, 2)
 
