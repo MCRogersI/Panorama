@@ -49,14 +49,14 @@ Sf.createSKU(db, 'Profile joint unit plastic bag', 4.93, 180,real_quantity=268)
 #########################
 # Proyectos test case 2 #
 #########################
-Pf.CreateProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
+Pf.createProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
 				 '17.094.362-0', 150, date(2017, 12, 30), estimated_cost = 200)
-Pf.CreateProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
+Pf.createProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
 				 '16.224.112-0', 200, date(2017, 6, 30), estimated_cost = 300)
-Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
+Pf.createProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
  320, date(2017, 6, 3), estimated_cost = 150)
-Pf.CreateProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
+Pf.createProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
 				 '14.214.392-K',
  220, date(2017, 8, 30), estimated_cost = 250)
 
