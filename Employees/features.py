@@ -45,8 +45,14 @@ def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, per
 				db.Employees_Skills(employee = id, skill = 4, performance = perf_inst)
 			
 def deleteEmployee(db, id):
+	import Planning.features as Pf
 	with db_session:
-		db.Employees[id].delete()
+		if len(select(et for et in db.Employees_Tasks if et.employee == db.Employees[id]))>0:
+			db.Employees[id].delete()
+			Pf.doPlanning(db)
+		else:
+			db.Employees[id].delete()
+	
 
 def printEmployeesSkills(db):
 	with db_session:
