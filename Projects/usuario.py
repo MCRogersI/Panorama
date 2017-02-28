@@ -1,5 +1,5 @@
 from datetime import datetime
-from Projects.features import createProject, PrintProjects, EditProject, DeleteProject ,CreateTask, EditTask, PrintTasks, FailedTask
+from Projects.features import createProject, printProjects, EditProject, DeleteProject ,CreateTask, EditTask, PrintTasks, FailedTask
 
 
 def projects_console(db, level):
@@ -53,7 +53,7 @@ def projects_console(db, level):
 			DeleteProject(db, contract_number)		
 
 		if(opt == '4' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
-			PrintProjects(db)
+			printProjects(db)
 		
 		if(opt == '5' and level == 1) or (opt == '4' and level == 2) or (opt == '2' and level == 3):
 			break

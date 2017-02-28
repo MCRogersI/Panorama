@@ -20,7 +20,7 @@ def createProject(db, contract_number, client_address, client_comuna,
 	#?????????????????????????????	
 		#############################################################
 
-def PrintProjects(db):
+def printProjects(db):
     with db_session:
         db.Projects.select().show()
 
