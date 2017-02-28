@@ -37,6 +37,7 @@ def signIn():
 			print("Usuario y/o Contraseña incorrecto(s))")
 		break
 signIn()
+# Uf.createUser(db, "lalala", 1, "lalala")
 
 
 
