@@ -71,12 +71,12 @@ def getCostProject(db, contract_number, fixed_cost, variable_cost):
 			print('Value error: {}'.format(e))
 
 
-def createTask(db, id_skill, contract_number, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
+def createTask(db, id_skill, contract_number, original_initial_date, original_end_date, effective_initial_date = None, effective_end_date = None):
 	with db_session:
 		t = db.Tasks(skill = id_skill, project = contract_number, original_initial_date = original_initial_date, original_end_date = original_end_date)
 
 		
-def editTask(db, id , id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, efective_initial_date = None, efective_end_date = None, fail_cost = None):
+def editTask(db, id , id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
 	with db_session:
 		t = db.Tasks[id]
 		if id_skill != None:
@@ -87,10 +87,10 @@ def editTask(db, id , id_skill = None, contract_number = None, original_initial_
 			t.original_initial_date = original_initial_date
 		if original_end_date != None:
 			t.original_end_date = original_end_date
-		if efective_initial_date != None:
-			t.efective_initial_date = efective_initial_date
-		if efective_end_date != None:
-			t.efective_end_date = efective_end_date
+		if effective_initial_date != None:
+			t.effective_initial_date = effective_initial_date
+		if effective_end_date != None:
+			t.effective_end_date = effective_end_date
 		if fail_cost != None:
 			t.fail_cost = fail_cost
 
@@ -103,6 +103,7 @@ def printTasks(db):
 		db.Tasks.select().show()
 
 def failedTask(db, contract_number, id_skill, fail_cost):
+	import Planning.features as PLf
 	with db_session:
 
 		tasks = select(t for t in db.Tasks if t.skill == db.Skills[id_skill] and t.project == db.Projects[contract_number] and t.failed == None)
@@ -110,6 +111,14 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 			t.failed = True
 			t.fail_cost = fail_cost
 		
-		tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects[contract_number] and t.efective_end_date == None)
+		tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects[contract_number] and t.effective_end_date != None)
+		for t in tasks:
+			t.failed = True
+		
+		tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects[contract_number] and t.effective_end_date == None)
 		for t in tasks:
 			t.delete()
+
+		PLf.doPlanning(db)
+			
+		

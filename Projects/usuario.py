@@ -71,30 +71,30 @@ def tasks_console(db, level):
 			contract_number = input("\n Ingrese el número de contrato del proyecto asociado: ")
 			original_initial_date = input("\n Ingrese la fecha estimada de inicio: ")
 			original_end_date = input("\n Ingrese la fecha estimada de término: ")
-			efective_initial_date = input("\n Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
-			if(efective_initial_date != ''):
-				efective_end_date = input("\n Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
+			effective_initial_date = input("\n Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
+			if(effective_initial_date != ''):
+				effective_end_date = input("\n Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
 			else: 
-				efective_initial_date=None
-				efective_end_date=None
+				effective_initial_date=None
+				effective_end_date=None
 			original_initial_date=datetime.strptime(original_initial_date, '%Y-%m-%d')
 			original_end_date=datetime.strptime(original_end_date, '%Y-%m-%d')
-			createTask(db, id_skill, contract_number, original_initial_date, original_end_date, efective_initial_date, efective_end_date)
+			createTask(db, id_skill, contract_number, original_initial_date, original_end_date, effective_initial_date, effective_end_date)
 		if(opt == '2' and (level == 1 or level == 2)):
 			id_edit = input("\n Ingrese el ID de la tarea que desea editar: ")
 			new_id_skill = input("\n Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
 			new_contract_number = input("\n Ingrese el número de contrato del proyecto asociado: ")
 			new_original_initial_date = input("\n Ingrese la fecha estimada de inicio: ")
 			new_original_end_date = input("\n Ingrese la fecha estimada de término: ")
-			new_efective_initial_date= input("\n Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
-			if(new_efective_initial_date != ''):
-				new_efective_end_date = input("\n Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
+			new_effective_initial_date= input("\n Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
+			if(new_effective_initial_date != ''):
+				new_effective_end_date = input("\n Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
 			else: 
-				new_efective_initial_date=None
-				new_efective_end_date=None
+				new_effective_initial_date=None
+				new_effective_end_date=None
 			new_original_initial_date=datetime.strptime(new_original_initial_date, '%Y-%m-%d')
 			new_original_end_date=datetime.strptime(new_original_end_date, '%Y-%m-%d')
-			editTask(db, id_edit, new_id_skill, new_contract_number, new_original_initial_date, new_original_end_date, new_efective_initial_date, new_efective_end_date)
+			editTask(db, id_edit, new_id_skill, new_contract_number, new_original_initial_date, new_original_end_date, new_effective_initial_date, new_effective_end_date)
 		if(opt == '3' and (level == 1 or level == 2)):
 			contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
 			id_skill_fail = input("\n Ingrese el ID de la habilidad asociada a la tarea (1: rect, 2: dis, 3: fab, 4: ins): ")

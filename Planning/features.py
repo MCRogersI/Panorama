@@ -364,7 +364,7 @@ def doPlanning(db):
 				for s in skills:
 					if s.id < 4:
 						# obtiene el id del skill correspondiente a esa tarea y revisa que no corresponda a una 'Instalación'.
-						task = db.Tasks.get(skill = s, project = p, effective_end_date == None)
+						task = db.Tasks.get(skill = s, project = p, failed = None)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 
 						if task == None or (task != None and task.effective_initial_date == None):
@@ -372,7 +372,7 @@ def doPlanning(db):
 							initial, ending, emps = findDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 							if task == None:
 								Pf.createTask(db, s.id, p.contract_number, initial, ending)
-								task = db.Tasks.get(skill = s, project = p)
+								task = db.Tasks.get(skill = s, project = p, failed = None)
 							if ending > p.deadline :
 #								print("Se pasó la tarea  " +str(s) +" del proyecto "+str(p.contract_number))
 								#aquí se podría o no avisar que el proyecto estaría fuera de plazo
@@ -386,7 +386,7 @@ def doPlanning(db):
 								last_release_date = et.planned_end_date
 						
 					elif s.id == 4:
-						task = db.Tasks.get(skill = s, project = p)
+						task = db.Tasks.get(skill = s, project = p, failed = None)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 						ending = [None, None, None, None]
 						
