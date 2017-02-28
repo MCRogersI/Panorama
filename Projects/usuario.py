@@ -1,5 +1,5 @@
 from datetime import datetime
-from Projects.features import CreateProject, PrintProjects, EditProject, DeleteProject ,CreateTask, EditTask, PrintTasks, FailedTask
+from Projects.features import createProject, printProjects, editProject, deleteProject ,createTask, editTask, printTasks, failedTask
 
 
 def projects_console(db, level):
@@ -19,7 +19,7 @@ def projects_console(db, level):
 			client_rut = input("Ingrese el RUT del cliente: ")
 			linear_meters = input("Ingrese los metros lineales del proyecto: ")
 			deadline = input("ingrese la fecha de entrega pactada del proyecto: ")
-			CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline)
+			createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline)
 		if(opt == '2' and (level == 1 or level == 2)):
 			contract_number = input("\nIngrese el numero de contrato del proyecto a editar: ")
 			new_client_address = input("Ingrese la nueva direccion del cliente, solo presione enter si la mantiene: ")
@@ -47,13 +47,13 @@ def projects_console(db, level):
 			new_real_cost = input("Ingrese el costo real del proyecto, solo presione enter si no se conoce: ")
 			if new_real_cost == '':
 				new_real_cost = None
-			EditProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost)
+			editProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost)
 		if(opt == '3' and level == 1):
 			contract_number = input("\nIngrese el numero de contrato del proyecto a eliminar: ")
-			DeleteProject(db, contract_number)		
+			deleteProject(db, contract_number)		
 
 		if(opt == '4' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
-			PrintProjects(db)
+			printProjects(db)
 		
 		if(opt == '5' and level == 1) or (opt == '4' and level == 2) or (opt == '2' and level == 3):
 			break
@@ -79,7 +79,7 @@ def tasks_console(db, level):
 				efective_end_date=None
 			original_initial_date=datetime.strptime(original_initial_date, '%Y-%m-%d')
 			original_end_date=datetime.strptime(original_end_date, '%Y-%m-%d')
-			CreateTask(db, id_skill, contract_number, original_initial_date, original_end_date, efective_initial_date, efective_end_date)
+			createTask(db, id_skill, contract_number, original_initial_date, original_end_date, efective_initial_date, efective_end_date)
 		if(opt == '2' and (level == 1 or level == 2)):
 			id_edit = input("\n Ingrese el ID de la tarea que desea editar: ")
 			new_id_skill = input("\n Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
@@ -94,14 +94,14 @@ def tasks_console(db, level):
 				new_efective_end_date=None
 			new_original_initial_date=datetime.strptime(new_original_initial_date, '%Y-%m-%d')
 			new_original_end_date=datetime.strptime(new_original_end_date, '%Y-%m-%d')
-			EditTask(db, id_edit, new_id_skill, new_contract_number, new_original_initial_date, new_original_end_date, new_efective_initial_date, new_efective_end_date)
+			editTask(db, id_edit, new_id_skill, new_contract_number, new_original_initial_date, new_original_end_date, new_efective_initial_date, new_efective_end_date)
 		if(opt == '3' and (level == 1 or level == 2)):
 			contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
 			id_skill_fail = input("\n Ingrese el ID de la habilidad asociada a la tarea (1: rect, 2: dis, 3: fab, 4: ins): ")
 			fail_cost = input("\n Ingrese el costo estimado de la falla: ")
-			FailedTask(db, contract_number_fail, id_skill_fail, fail_cost)
+			failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
 		if(opt == '4' and (level == 1 or level == 2)) or (opt == '1' and level == 3):
-			PrintTasks(db)
+			printTasks(db)
 		if(opt == '5' and (level == 1 or level == 2)) or (opt == '2' and level == 3):
 			break
 

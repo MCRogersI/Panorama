@@ -10,7 +10,10 @@ import Stock.features as Sf
 
 
 import Tests.Case1 as case1
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 605687d0830d6a246f2c065b8e19c12a6ea39575

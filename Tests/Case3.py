@@ -50,14 +50,14 @@ Sf.createSKU(db, 'Profile joint unit plastic bag', 4.93, 50,real_quantity=0)
 #########################
 # Proyectos test case 2 #
 #########################
-Pf.CreateProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
+Pf.createProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
 				 '17.094.362-0', 150, date(2017, 12, 30), estimated_cost = 200)
-Pf.CreateProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
+Pf.createProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
 				 '16.224.112-0', 200, date(2017, 6, 30), estimated_cost = 300)
-Pf.CreateProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
+Pf.createProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
  320, date(2017, 6, 3), estimated_cost = 150)
-Pf.CreateProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
+Pf.createProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
 				 '14.214.392-K',
  220, date(2017, 8, 30), estimated_cost = 250)
 
@@ -120,18 +120,18 @@ Ef.CreateEmployee(db,  "Iker", 1, perf_inst = 70)
 # Lista de prueba de tasks test case 2 		 #
 ##############################################
 
-Pf.CreateTask(db, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,4,28))
-Pf.CreateTask(db, 2, 1, original_initial_date=date(2017, 4, 29), original_end_date=date(2017,5,10))
-Pf.CreateTask(db, 3, 1, original_initial_date=date(2017, 5, 11), original_end_date=date(2017,5,30))
-Pf.CreateTask(db, 4, 1, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,14))
-Pf.CreateTask(db, 1, 2, original_initial_date=date(2017, 4, 3), original_end_date=date(2017,5,18))
-Pf.CreateTask(db, 2, 2, original_initial_date=date(2017, 5, 19), original_end_date=date(2017,5,29))
-Pf.CreateTask(db, 3, 2, original_initial_date=date(2017, 5, 30), original_end_date=date(2017,6,1))
-Pf.CreateTask(db, 4, 2, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,15))
-Pf.CreateTask(db, 1, 3, original_initial_date=date(2017, 6, 3), original_end_date=date(2017,6,10))
-Pf.CreateTask(db, 2, 3, original_initial_date=date(2017, 6, 11), original_end_date=date(2017,6,20))
-Pf.CreateTask(db, 3, 3, original_initial_date=date(2017, 6, 21), original_end_date=date(2017,7,8))
-Pf.CreateTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_date=date(2017,7,19))
+Pf.createTask(db, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,4,28))
+Pf.createTask(db, 2, 1, original_initial_date=date(2017, 4, 29), original_end_date=date(2017,5,10))
+Pf.createTask(db, 3, 1, original_initial_date=date(2017, 5, 11), original_end_date=date(2017,5,30))
+Pf.createTask(db, 4, 1, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,14))
+Pf.createTask(db, 1, 2, original_initial_date=date(2017, 4, 3), original_end_date=date(2017,5,18))
+Pf.createTask(db, 2, 2, original_initial_date=date(2017, 5, 19), original_end_date=date(2017,5,29))
+Pf.createTask(db, 3, 2, original_initial_date=date(2017, 5, 30), original_end_date=date(2017,6,1))
+Pf.createTask(db, 4, 2, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,15))
+Pf.createTask(db, 1, 3, original_initial_date=date(2017, 6, 3), original_end_date=date(2017,6,10))
+Pf.createTask(db, 2, 3, original_initial_date=date(2017, 6, 11), original_end_date=date(2017,6,20))
+Pf.createTask(db, 3, 3, original_initial_date=date(2017, 6, 21), original_end_date=date(2017,7,8))
+Pf.createTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_date=date(2017,7,19))
 
 ######################################################
 # Lista de asignación de rectificaciones test case 2 #

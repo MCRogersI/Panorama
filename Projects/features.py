@@ -1,7 +1,7 @@
 from pony.orm import *
 
 
-def CreateProject(db, contract_number, client_address, client_comuna,
+def createProject(db, contract_number, client_address, client_comuna,
 				  client_name, client_rut, linear_meters, deadline,
 				  real_linear_meters = None, estimated_cost = None,
 				  real_cost = None):
@@ -14,21 +14,17 @@ def CreateProject(db, contract_number, client_address, client_comuna,
 		
 		############################################################
 		# La siguiente función es para asignar la prioridad al crear el proyecto. por ahora se hará FIFO ya que no sabemos estimar la holgura, pero debe cambiar después.
-
 		#DEBE CAMBIAR DESPUES
-
 		db.Projects[contract_number].priority = db.Projects.select().count()
 		#NO ES BROMA!!
-	#?????????????????????????????
-
-				
+	#?????????????????????????????	
 		#############################################################
 
-def PrintProjects(db):
+def printProjects(db):
     with db_session:
         db.Projects.select().show()
 
-def EditProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None):
+def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None):
 	with db_session:
 		p = db.Projects[contract_number]
 		if new_client_address != None:
@@ -50,7 +46,7 @@ def EditProject(db, contract_number, new_client_address = None, new_client_comun
 		if new_real_cost != None:
 			p.real_cost = new_real_cost
 			
-def DeleteProject(db, contract_number):
+def deleteProject(db, contract_number):
 	with db_session:
 		db.Projects[contract_number].delete()
 
@@ -70,11 +66,13 @@ def getCostProject(db, contract_number, fixed_cost, variable_cost):
 		except ValueError as e:
 			print('Value error: {}'.format(e))
 
-def CreateTask(db, id_skill, contract_number, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
+
+def createTask(db, id_skill, contract_number, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
 	with db_session:
 		t = db.Tasks(skill = id_skill, project = contract_number, original_initial_date = original_initial_date, original_end_date = original_end_date)
 
-def EditTask(db, id , id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, efective_initial_date = None, efective_end_date = None, fail_cost = None):
+		
+def editTask(db, id , id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, efective_initial_date = None, efective_end_date = None, fail_cost = None):
 	with db_session:
 		t = db.Tasks[id]
 		if id_skill != None:
@@ -92,15 +90,15 @@ def EditTask(db, id , id_skill = None, contract_number = None, original_initial_
 		if fail_cost != None:
 			t.fail_cost = fail_cost
 
-def DeleteTask(db, id_task):
+def deleteTask(db, id_task):
 	with db_session:
 			db.Tasks[id_task].delete()
 
-def PrintTasks(db):
+def printTasks(db):
 	with db_session:
 		db.Tasks.select().show()
 
-def FailedTask(db, contract_number, id_skill, fail_cost):
+def failedTask(db, contract_number, id_skill, fail_cost):
 	with db_session:
 
 		tasks = select(t for t in db.Tasks if t.skill == db.Skills[id_skill] and t.project == db.Projects[contract_number] and t.failed == None)
