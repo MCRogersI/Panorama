@@ -1,7 +1,7 @@
 from pony.orm import *
 
 
-def CreateProject(db, contract_number, client_address, client_comuna,
+def createProject(db, contract_number, client_address, client_comuna,
 				  client_name, client_rut, linear_meters, deadline,
 				  real_linear_meters = None, estimated_cost = None,
 				  real_cost = None):
@@ -14,17 +14,13 @@ def CreateProject(db, contract_number, client_address, client_comuna,
 		
 		############################################################
 		# La siguiente función es para asignar la prioridad al crear el proyecto. por ahora se hará FIFO ya que no sabemos estimar la holgura, pero debe cambiar después.
-
 		#DEBE CAMBIAR DESPUES
-
 		db.Projects[contract_number].priority = db.Projects.select().count()
 		#NO ES BROMA!!
-	#?????????????????????????????
-
-				
+	#?????????????????????????????	
 		#############################################################
 
-def PrintProjects(db):
+def printProjects(db):
     with db_session:
         db.Projects.select().show()
 

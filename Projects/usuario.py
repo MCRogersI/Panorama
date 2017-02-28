@@ -1,5 +1,5 @@
 from datetime import datetime
-from Projects.features import CreateProject, PrintProjects, EditProject, DeleteProject ,CreateTask, EditTask, PrintTasks, FailedTask
+from Projects.features import createProject, printProjects, EditProject, DeleteProject ,CreateTask, EditTask, PrintTasks, FailedTask
 
 
 def projects_console(db, level):
@@ -19,7 +19,7 @@ def projects_console(db, level):
 			client_rut = input("Ingrese el RUT del cliente: ")
 			linear_meters = input("Ingrese los metros lineales del proyecto: ")
 			deadline = input("ingrese la fecha de entrega pactada del proyecto: ")
-			CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline)
+			createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline)
 		if(opt == '2' and (level == 1 or level == 2)):
 			contract_number = input("\nIngrese el numero de contrato del proyecto a editar: ")
 			new_client_address = input("Ingrese la nueva direccion del cliente, solo presione enter si la mantiene: ")
@@ -53,7 +53,7 @@ def projects_console(db, level):
 			DeleteProject(db, contract_number)		
 
 		if(opt == '4' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
-			PrintProjects(db)
+			printProjects(db)
 		
 		if(opt == '5' and level == 1) or (opt == '4' and level == 2) or (opt == '2' and level == 3):
 			break

@@ -8,6 +8,11 @@ import Planning.features as PLf
 import Users.features as Uf
 import Stock.usuario as Sf
 
+
+Uf.createUser(db,'Admin', 1,'Armin')
+Uf.createUser(db,'Piola', 2,'Cuatro')
+Uf.createUser(db,'Pleb', 3,'00000')
+
 def console(level):
 	while True:
 		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Stock. \n - 5: Para salir. \n Ingrese la alternativa elegida: ")
