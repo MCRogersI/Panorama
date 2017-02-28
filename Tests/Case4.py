@@ -40,7 +40,6 @@ with db_session:
 	db.Skills(id=4, name='Installation')
 
 	db.Difficulties(id=1, description='Construccion en altura')
-
 	db.Activities(id=1, description='Licencia')
 	db.Activities(id=2, description='Vacaciones')
 	db.Activities(id=3, description='Cliente ocupado')
