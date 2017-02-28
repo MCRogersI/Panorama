@@ -21,12 +21,12 @@ Uf.createUser(db,'Juan',2,'456')
 Uf.createUser(db,'Felipe',3,'789')
 
 
-Sf.createSKU(db, 'Telescopic', 2.01, 100,real_quantity=219)
-Sf.createSKU(db, 'Glass Pane Knob', 6.43, 200,real_quantity=220)
-Sf.createSKU(db, 'Lower chamber-9', 4.77, 150,real_quantity=234)
-Sf.createSKU(db, 'Upper chamber-9', 3.07, 150,real_quantity=243)
-Sf.createSKU(db, 'Lock for latch', 12.03, 100,real_quantity=251)
-Sf.createSKU(db, 'Profile joint unit plastic bag', 4.93, 180,real_quantity=268)
+Sf.createSku(db, 'Telescopic', 2.01, 100,real_quantity=219)
+Sf.createSku(db, 'Glass Pane Knob', 6.43, 200,real_quantity=220)
+Sf.createSku(db, 'Lower chamber-9', 4.77, 150,real_quantity=234)
+Sf.createSku(db, 'Upper chamber-9', 3.07, 150,real_quantity=243)
+Sf.createSku(db, 'Lock for latch', 12.03, 100,real_quantity=251)
+Sf.createSku(db, 'Profile joint unit plastic bag', 4.93, 180,real_quantity=268)
 
 
 
@@ -56,12 +56,7 @@ Pf.createProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
 Pf.createProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
  450, date(2017, 6, 3), estimated_cost = 150)
-<<<<<<< HEAD
-Pf.CreateProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
-				 '14.214.392-K',
-=======
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil', '14.214.392-K',
->>>>>>> 605687d0830d6a246f2c065b8e19c12a6ea39575
  220, date(2017, 8, 30), estimated_cost = 250)
 
 
