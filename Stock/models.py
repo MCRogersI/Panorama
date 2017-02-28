@@ -18,7 +18,7 @@ def define_models(db):
 #cada engagement una task
 		id = PrimaryKey(int, auto = True)
 		project = Required('Projects')
-		SKU = Required('Stock')
+		sku = Required('Stock')
 		quantity = Required(float)
 		withdrawal_date = Optional(date)
 		def __repr__(self):
@@ -26,7 +26,7 @@ def define_models(db):
 
 	class Purchases(db.Entity):
 		id = PrimaryKey(int, auto = True)
-		SKU = Required('Stock')
+		sku = Required('Stock')
 		quantity = Required(float)
 		arrival_date = Required(date)	
 		def __repr__(self):

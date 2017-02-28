@@ -37,8 +37,11 @@ def signIn():
 			print("Usuario y/o Contraseña incorrecto(s))")
 		break
 signIn()
-# Uf.createUser(db, "lalala", 1, "lalala")
-
+# Uf.createUser(db, "1", 1, "1")
+# Uf.createUser(db, "2", 2, "2")
+# Uf.createUser(db, "3", 3, "3")
+# print(PLf.GetDays(db, 1, 1, 3))
+# print(PLf.SumDays(date(2015,1,1), 1.1))
 
 
 # PLf.DoPlanning(db)

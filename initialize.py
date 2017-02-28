@@ -9,7 +9,7 @@ import Users.features as Uf
 import Stock.features as Sf
 
 
-import Tests.Case2 as case2
+import Tests.Case1 as case1
 
 
 
