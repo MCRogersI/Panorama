@@ -28,7 +28,7 @@ def employees_console(db, level):
 			perf_ins = input("Ingrese el rendimiento histórico en instalación del empleado, solo presione enter si no realiza esta labor: ")
 			if(perf_ins == ''):
 				perf_ins=None	
-			CreateEmployee(db, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins)
+			createEmployee(db, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins)
 
 		if(opt == '2' and (level == 1 or level == 2)):
 			idEmpleado = input("\nIngrese el ID del empleado a editar: ")
@@ -50,25 +50,25 @@ def employees_console(db, level):
 				newPerf_fab = None
 			if newPerf_ins == '':
 				newPerf_ins = None
-			EditEmployee(db, idEmpleado,newName,newZone,newPerf_rect,newPerf_des,newPerf_fab,newPerf_ins)
+			editEmployee(db, idEmpleado,newName,newZone,newPerf_rect,newPerf_des,newPerf_fab,newPerf_ins)
 
 		if(opt == '3' and level == 1):
 			idEmpleado = input("\nIngrese el ID del empleado que desea eliminar: ")
-			DeleteEmployee(db, idEmpleado)
+			deleteEmployee(db, idEmpleado)
 
 		if(opt == '4' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
 			opt_ver_empleados = input("\n Marque una de las siguientes opciones: \n - 1: si desea ver empleados.  \n - 2: si desea ver la lista de rectificadores. \n - 3: si desea ver la lista de disenadores. \n - 4: si desea ver la lista de fabricadores. \n - 5: si desea ver la lista de instaladores. \n Ingrese la alternativa elegida: ")
 			print('\n')
 			if(opt_ver_empleados == '1'):
-				PrintEmployees(db)
+				printEmployees(db)
 			if(opt_ver_empleados == '2'):
-				PrintSelectSkill(db, 1)
+				printSelectSkill(db, 1)
 			if(opt_ver_empleados == '3'):
-				PrintSelectSkill(db, 2)
+				printSelectSkill(db, 2)
 			if(opt_ver_empleados == '4'):
-				PrintSelectSkill(db, 3)
+				printSelectSkill(db, 3)
 			if(opt_ver_empleados == '5'):
-				PrintSelectSkill(db, 4)
+				printSelectSkill(db, 4)
 
 		if(opt == '5' and level == 1) or (opt == '4' and level == 2) or (opt == '2' and level ==3):
 			break

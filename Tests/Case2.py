@@ -1,6 +1,6 @@
 #Caso de prueba 2
 #Se inicializan las siguientes entidades (tablas) : XXX, XXX, XXX, ...
-#Se prueban la(s) siguiente(s) funcionalidad(es): cambios de prioridades explícitos e ingreso de vacaciones.
+#Se prueban la(s) siguiente(s) funcionalidad(es): cambios de prioridades explícitos e ingreso de vacaciones y project activities.
 from pony.orm import *
 from database import db
 import Employees.features as Ef, Employees.usuario as Eu
@@ -132,9 +132,12 @@ with db_session:
 	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
 	#Ingresar las vacaciones de un empleado
 	db.Employees_Activities(employee = db.Employees[13], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
-	db.Employees_Activities(employee = db.Employees[12], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
-	db.Employees_Activities(employee = db.Employees[8], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
-	#Considera bien las vacaciones.
+#	db.Employees_Activities(employee = db.Employees[12], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
+#	db.Employees_Activities(employee = db.Employees[8], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
+	#Considera bien las vacaciones
+	#Ingresar la no disponibilidad de un cliente:
+	db.Projects_Activities(project = db.Projects[1], activity = db.Activities[3], initial_date = date(2017,4,8), end_date = date(2017,5,10))
+	#Cuando una tarea ya fue fijada, no considera que el cliente pase a estar ocupado. ARREGLAR
 
 PLf.changePriority(db, 3, 1)
 PLf.DoPlanning(db, Pf.CreateTask, Sf.updateEngagements)
