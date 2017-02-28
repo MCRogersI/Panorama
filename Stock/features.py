@@ -165,9 +165,13 @@ def printStock(db, id_SKU):
 		quantities.append(quantities[len(quantities) - 1])
 
 		def plot_graph(quantities, dates):
+			min_quantity = min(quantities)
+			max_quantity = max(quantities)
+			span_quantities = max_quantity - min_quantity
 			plt.figure()
 			plt.step(dates, quantities, where='post')
 			plt.xlim((date.today(), dates[len(dates) - 1] + timedelta(1)))
+			plt.ylim(min_quantity - (span_quantities / 10), max_quantity + (span_quantities / 10))
 			plt.xticks(dates, dates, rotation='vertical')
 			plt.ylabel('Quantity')
 			plt.xlabel('Date')
@@ -245,8 +249,8 @@ def displayStock(db, id_SKU):
 			plt.axvline(x=max_date, color='k', linestyle='dashed', linewidth=1.5)
 			plt.xlim(min_date, max_date + timedelta(
 				days=7))  # Se agregan 7 días 'extras/ficticios' para un mejor display
-			# plt.ylim(min_quantity - (span_quantities / 10), max_quantity + (span_quantities / 10))
-			plt.ylim(0, max_quantity + (span_quantities / 10))
+			plt.ylim(min_quantity - (span_quantities / 10), max_quantity + (span_quantities / 10))
+			# plt.ylim(0, max_quantity + (span_quantities / 10))
 			plt.tight_layout()
 			plt.show(block=True)
 
