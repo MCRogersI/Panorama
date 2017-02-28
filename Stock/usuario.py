@@ -1,4 +1,4 @@
-from Stock.features import createSKU, editSKU, deleteSKU, printStock
+from Stock.features import createSku, editSku, deleteSku, printStock
 
 
 #Entiéndase SKU como el producto en si mismo (aunque en realidad significa el código del producto)
@@ -20,7 +20,7 @@ def stock_console(db, level):
             price = input("Ingrese el precio unitario del producto: ")
             critical_level = input("Ingrese el nivel crítico del producto: ")
             real_quantity = input("Ingrese la cantidad en bodega del producto, solo presione enter si es que desea ingresar este valor en el futuro: ")
-            createSKU(db, name = name, price = price, critical_level = critical_level, real_quantity = real_quantity)
+            createSku(db, name = name, price = price, critical_level = critical_level, real_quantity = real_quantity)
 
         if (opt == '2' and level == 1):
             id = input("\nIngrese el id del producto: ")
@@ -40,13 +40,13 @@ def stock_console(db, level):
             if real_quantity == '':
                 real_quantity = None
 
-            editSKU(db,id = id, name=name, price=price, critical_level=critical_level,
+            editSku(db,id = id, name=name, price=price, critical_level=critical_level,
                       real_quantity=real_quantity)
 
         if (opt == '3' and level == 1):
             id = input("\nIngrese el id del producto que desea eliminar: ")
             # name = input("\nIngrese el nombre del SKU que desea elmininar: ")
-            deleteSKU(db, id)
+            deleteSku(db, id)
 
         if (opt == '4' and level == 1) or (opt == '1' and level == 2) or (
                 opt == '1' and level == 3):
