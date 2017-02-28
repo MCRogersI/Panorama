@@ -364,7 +364,7 @@ def doPlanning(db):
 				for s in skills:
 					if s.id < 4:
 						# obtiene el id del skill correspondiente a esa tarea y revisa que no corresponda a una 'Instalación'.
-						task = db.Tasks.get(skill = s, project = p)
+						task = db.Tasks.get(skill = s, project = p, effective_end_date == None)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 
 						if task == None or (task != None and task.effective_initial_date == None):
