@@ -2,6 +2,7 @@ from pony.orm import *
 from datetime import date, timedelta
 import pandas as pd
 import numpy as np
+from ..Projects import features
 
 #################################################################################################################
 # Acá empieza: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
@@ -336,7 +337,7 @@ def addDelayed(db, Delayed, contract_number, task, num_workers, initial, ending,
 	Delayed =  Delayed.append({'contract number': contract_number, 'task': task, 'num workers': num_workers, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
 	return Delayed
 
-def DoPlanning(db, CreateTask, updateEngagements):
+def DoPlanning(db, updateEngagements):
 	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 
 'task', 'num workers', 'initial date', 'ending date', 'deadline'])#Esto debería
 	# estar encapsulado en otro método.
