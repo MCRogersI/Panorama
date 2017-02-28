@@ -36,7 +36,7 @@ def define_models(db):
 		def __repr__(self):
 			return self.description
 
-	# actividades tipo "licencia", "vacaciones", etc.
+	# actividades tipo "licencia", "vacaciones", etc. Una actividad necesariamente implica no trabajar.
 	class Activities(db.Entity):
 		id = PrimaryKey(int, auto=False)
 		description = Required(str)
@@ -47,7 +47,7 @@ def define_models(db):
 			return self.description
 	
 	class Projects_Activities(db.Entity):
-		id = PrimaryKey(int, auto=False)
+		id = PrimaryKey(int, auto=True)
 		project = Required(Projects)
 		activity = Required(Activities)
 		initial_date = Optional(date)
