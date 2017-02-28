@@ -43,6 +43,8 @@ def getAveragePerformance(db, id_skill):
 
 #notar que asume que siempre perf > 0, si no, se cae: o sea, asume que para cada skill hay al menos un empleado capaz de realizarla 
 #checked
+#pendiente: en el caso de fabricación, hay que tomar el máximo entre el valor calculado acá y los 15 días de los cristales
+#pendiente: como los cristales pueden ser otro número aparte de 15 días, eso debiera ser una columna en Projects, que por defecto sea 15, pero que el usuario pueda cambiar
 def getDays(db, id_skill, contract_number, num_workers):
 	with db_session:
 		project = db.Projects[contract_number]
@@ -258,7 +260,7 @@ def eraseTasks(db):
 			task = employee_task.task
 			#Este 'if', para verificar si el proyecto está fijo, está fuera del 'select' porque
 			# pony parece no aceptar esa expresión como condición adicional.
-			if (task.effective_initial_date == None and not task.id_project.fixed_planning):
+			if (task.effective_initial_date == None and not task.project.fixed_planning):
 				employee_task.delete()
 
 def cleanTasks(db):
@@ -266,7 +268,7 @@ def cleanTasks(db):
 		employees_tasks_to_delete = select(employee_task for employee_task in db.Employees_Tasks)
 		for employee_task in employees_tasks_to_delete:
 			task= employee_task.task
-			if (task.effective_initial_date == None and  not task.id_project.fixed_planning):
+			if (task.effective_initial_date == None and  not task.project.fixed_planning):
 				employee_task.delete()
 
 ###################################################################################
@@ -343,6 +345,7 @@ def addDelayed(db, Delayed, contract_number, task, num_workers, initial, ending,
 	return Delayed
 
 
+
 def doPlanning(db):
 	import Projects.features as Pf
 	import Stock.features as Sf
@@ -361,7 +364,7 @@ def doPlanning(db):
 				for s in skills:
 					if s.id < 4:
 						# obtiene el id del skill correspondiente a esa tarea y revisa que no corresponda a una 'Instalación'.
-						task = db.Tasks.get(id_skill = s, id_project = p)
+						task = db.Tasks.get(skill = s, project = p)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 
 						if task == None or (task != None and task.effective_initial_date == None):
@@ -383,7 +386,7 @@ def doPlanning(db):
 								last_release_date = et.planned_end_date
 						
 					elif s.id == 4:
-						task = db.Tasks.get(id_skill = s, id_project = p)
+						task = db.Tasks.get(skill = s, project = p)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 						ending = [None, None, None, None]
 						
@@ -433,19 +436,19 @@ def doPlanning(db):
 				# 	# tarea y revisa que no corresponda a una 'Instalación'.
 				# 	#  También revisa que la realización de la tarea aún no
 				# 	# haya comenzado (que sea 'planificable').
-				# 	(initial, ending, emps) = FindDatesEmployees(db, t.id_skill.id, p.contract_number,1, d_t)
+				# 	(initial, ending, emps) = FindDatesEmployees(db, t.skill.id, p.contract_number,1, d_t)
 				# 	days=ending.day-initial.day
 				# 	AssignTask(db,emps,t.id,initial,ending)
 				# 	d_t=d_t+timedelta(days)
                 #
 				# 	if(d_t > p.deadline):
 				# 		AvailabilityUpdate(db, p.contract_number)
-				# 		#Delayed = addDelayed(db, Delayed, p.contract_number, t.id_skill, initial, ending, p.deadline)
+				# 		#Delayed = addDelayed(db, Delayed, p.contract_number, t.skill, initial, ending, p.deadline)
 				# 		#print(Delayed)
-				# if(t.id_skill.id == 4 and t.effective_initial_date == None):
+				# if(t.skill.id == 4 and t.effective_initial_date == None):
 				# 	num_workers=1
 				# 	while (num_workers<=4):
-				# 		(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, num_workers, d_t)
+				# 		(initial,ending,emps)=FindDatesEmployees(db, t.skill.id, p.contract_number, num_workers, d_t)
 				# 		days=ending.day-initial.day
 				# 		AssignTask(db, emps, t.id, initial, ending)
 				# 		if(num_workers==4 and d_t+timedelta(days)>p.deadline):

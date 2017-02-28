@@ -63,24 +63,26 @@ def getCostProject(db, contract_number, fixed_cost, variable_cost):
 			engagements = select(e for e in db.Engagements if e.project == db.Projects[contract_number])
 			cost=fixed_cost+variable_cost*db.Projects[contract_number].linear_meters
 			for e in engagements:
-				cost=cost + e.SKU.price*e.quantity
+				cost=cost + e.sku.price*e.quantity
 			return cost
 		except ObjectNotFound as e:
 			print('Object not found: {}'.format(e))
 		except ValueError as e:
 			print('Value error: {}'.format(e))
 
-def createTask(db, id_skill, id_project, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
-	with db_session:
-		t = db.Tasks(id_skill = id_skill, id_project = id_project, original_initial_date = original_initial_date, original_end_date = original_end_date)
 
-def editTask(db, id , id_skill = None, id_project = None, original_initial_date = None, original_end_date = None, efective_initial_date = None, efective_end_date = None, fail_cost = None):
+def createTask(db, id_skill, contract_number, original_initial_date, original_end_date, efective_initial_date = None, efective_end_date = None):
+	with db_session:
+		t = db.Tasks(skill = id_skill, project = contract_number, original_initial_date = original_initial_date, original_end_date = original_end_date)
+
+		
+def editTask(db, id , id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, efective_initial_date = None, efective_end_date = None, fail_cost = None):
 	with db_session:
 		t = db.Tasks[id]
 		if id_skill != None:
-			t.id_skill = id_skill
-		if id_project != None:
-			t.id_project = id_project
+			t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
+		if contract_number != None: 
+			t.project = contract_number #pendiente: revisar si funciona así o si tiene que ser como t.project = db.Projects[contract_number]
 		if original_initial_date != None:
 			t.original_initial_date = original_initial_date
 		if original_end_date != None:
@@ -100,14 +102,14 @@ def printTasks(db):
 	with db_session:
 		db.Tasks.select().show()
 
-def failedTask(db, id_project, id_skill, fail_cost):
+def failedTask(db, contract_number, id_skill, fail_cost):
 	with db_session:
 
-		tasks = select(t for t in db.Tasks if t.id_skill == db.Skills[id_skill] and t.id_project == db.Projects[id_project] and t.failed == None)
+		tasks = select(t for t in db.Tasks if t.skill == db.Skills[id_skill] and t.project == db.Projects[contract_number] and t.failed == None)
 		for t in tasks:
 			t.failed = True
 			t.fail_cost = fail_cost
 		
-		tasks = select(t for t in db.Tasks if t.id_skill.id > id_skill and t.id_project == db.Projects[id_project] and t.efective_end_date == None)
+		tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects[contract_number] and t.efective_end_date == None)
 		for t in tasks:
 			t.delete()

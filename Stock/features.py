@@ -6,7 +6,7 @@ from matplotlib.pyplot import plot, show
 from threading import Thread
 
 
-def createSKU(db, name, price, critical_level, real_quantity=None, estimated_quantity=None):
+def createSku(db, name, price, critical_level, real_quantity=None, estimated_quantity=None):
 	''' Este método crea una unidad nueva de stock, asigna automáticamente el ID de la misma.
 		La cantidad estimada es la que se ve afectada por una planificación que podría cambiarse 
 		en el futuro '''
@@ -16,7 +16,7 @@ def createSKU(db, name, price, critical_level, real_quantity=None, estimated_qua
 					 real_quantity=real_quantity, estimated_quantity=estimated_quantity)
 
 
-def editSKU(db, id, name=None, price=None, critical_level=None, real_quantity=None,
+def editSku(db, id, name=None, price=None, critical_level=None, real_quantity=None,
 			estimated_quantity=None):
 	''' Este método edita la unidad de stock, en cualquiera de sus características '''
 
@@ -40,7 +40,7 @@ def editSKU(db, id, name=None, price=None, critical_level=None, real_quantity=No
 			print('Value error: {}'.format(e))
 
 
-def deleteSKU(db, id):
+def deleteSku(db, id):
 	''' Este método elimina una de las entradas de SKU de la tabla de Stock'''
 	with db_session:
 		db.Stock[id].delete()
@@ -52,18 +52,18 @@ def printStock(db):
 		db.Stock.select().show()
 
 
-def createEngagement(db, id_project, SKUs_list, withdrawal_date=None):
+def createEngagement(db, contract_number, skus_list, withdrawal_date=None):
 	''' Este método crea una nueva entrada en la tabla de engagements a partir de los datos ingresados  '''
-	# SKUs_list es una lista de tuplas con el id del SKU y la cantidad correspondiente.
+	# skus_list es una lista de tuplas con el id del SKU y la cantidad correspondiente.
 	with db_session:
-		if type(SKUs_list) == list:  # Caso en el que se ingresa un lista de tuplas.
-			for sku_row in SKUs_list:
+		if type(skus_list) == list:  # Caso en el que se ingresa un lista de tuplas.
+			for sku_row in skus_list:
 				try:
 					sku = db.Stock[sku_row[0]]
-					# IMPORTANTE: En 'project' se podría haber guardado simplemente el id del proyecto (contrac_number),
+					# IMPORTANTE: En 'project' se podría haber guardado simplemente el id del proyecto (contract_number),
 					# pero de esta forma el proyecto puede ser accedido de forma directa a través del engagement.
 					# Deberíamos instaurar una convención al respecto.
-					db.Engagements(project=db.Projects[id_project], SKU=sku, quantity=sku_row[1],
+					db.Engagements(project=db.Projects[contract_number], sku=sku, quantity=sku_row[1],
 								   withdrawal_date=withdrawal_date)
 				except ObjectNotFound as e:
 					print('Object not found: {}'.format(e))
@@ -71,8 +71,8 @@ def createEngagement(db, id_project, SKUs_list, withdrawal_date=None):
 					print('Value error: {}'.format(e))
 		else:
 			try:
-				sku = db.Stock[SKUs_list[0]]
-				db.Engagements(project=db.Projects[id_project], SKU=sku, quantity=SKUs_list[1],
+				sku = db.Stock[skus_list[0]]
+				db.Engagements(project=db.Projects[contract_number], sku=sku, quantity=skus_list[1],
 							   withdrawal_date=withdrawal_date)
 
 			except ObjectNotFound as e:
@@ -83,23 +83,23 @@ def createEngagement(db, id_project, SKUs_list, withdrawal_date=None):
 				print('Type error: {}'.format(e))
 
 
-def createPurchases(db, SKUs_list, arrival_date):
+def createPurchases(db, skus_list, arrival_date):
 	''' Este método crea una nueva entrada en la tabla de purchases a partir de los datos ingresados  '''
-	# SKUs_list es una lista de tuplas con el id del SKU y la cantidad correspondiente. Se DEBE ingresar la fecha de entrega.
+	# skus_list es una lista de tuplas con el id del SKU y la cantidad correspondiente. Se DEBE ingresar la fecha de entrega.
 	with db_session:
-		if type(SKUs_list) == list:  # Caso en el que se ingresa un lista de tuplas.
-			for sku_row in SKUs_list:
+		if type(skus_list) == list:  # Caso en el que se ingresa un lista de tuplas.
+			for sku_row in skus_list:
 				try:
 					sku = db.Stock[sku_row[0]]
-					db.Purchases(SKU=sku, quantity=sku_row[1], arrival_date=arrival_date)
+					db.Purchases(sku=sku, quantity=sku_row[1], arrival_date=arrival_date)
 				except ObjectNotFound as e:
 					print('Object not found: {}'.format(e))
 				except ValueError as e:
 					print('Value error: {}'.format(e))
 		else:
 			try:
-				sku = db.Stock[SKUs_list[0]]
-				db.Purchases(SKU=sku, quantity=SKUs_list[1], arrival_date=arrival_date)
+				sku = db.Stock[skus_list[0]]
+				db.Purchases(sku=sku, quantity=skus_list[1], arrival_date=arrival_date)
 
 			except ObjectNotFound as e:
 				print('Object not found: {}'.format(e))
@@ -109,13 +109,13 @@ def createPurchases(db, SKUs_list, arrival_date):
 				print('Type error: {}'.format(e))
 
 
-def calculateStock(db, id_SKU):
+def calculateStock(db, id_sku):
 	''' Este método retorna una tupla con los valores (fecha,cantidad) de stock (considerando las fechas en las que se presentan cambios)'''
 	with db_session:
 		try:
-			engagements = select(en for en in db.Engagements if en.SKU.id == id_SKU).order_by(
+			engagements = select(en for en in db.Engagements if en.sku.id == id_sku).order_by(
 				lambda en: en.withdrawal_date)
-			purchases = select(pur for pur in db.Purchases if pur.SKU.id == id_SKU).order_by(
+			purchases = select(pur for pur in db.Purchases if pur.sku.id == id_sku).order_by(
 				lambda pur: pur.arrival_date)
 			aux_engagements = []
 			aux_purchases = []
@@ -126,7 +126,7 @@ def calculateStock(db, id_SKU):
 			fluxes = aux_engagements + aux_purchases
 			fluxes = sorted(fluxes, key=itemgetter(1))
 			beginning_date = date.today()
-			beginning_quantity = db.Stock[id_SKU].real_quantity
+			beginning_quantity = db.Stock[id_sku].real_quantity
 			fluxes = [(0, beginning_date)] + fluxes
 			values = [(beginning_quantity, beginning_date)]
 			for i in range(1, len(fluxes)):
@@ -138,22 +138,22 @@ def calculateStock(db, id_SKU):
 		except ValueError as e:
 			print('Value error: {}'.format(e))
 
-def updateEngagements(db, id_SKU):
+def updateEngagements(db, id_sku):
 	'''Este método actualiza los engagements una vez que se ha hecho una planificación, asignando la fecha de inicio
 		de la instalación '''
 	with db_session:
-		# installations = select(t for t in db.Tasks if t.id_skill.id == 4)
-		assigned_inst = select(at for at in db.Employees_Tasks if at.task.id_skill.id == 4)
-		engagements = select(e for e in db.Engagements if e.SKU == db.Stock[id_SKU])
+		# installations = select(t for t in db.Tasks if t.skill.id == 4)
+		assigned_inst = select(at for at in db.Employees_Tasks if at.task.skill.id == 4)
+		engagements = select(e for e in db.Engagements if e.sku == db.Stock[id_sku])
 		for e in engagements:
 			for at in assigned_inst:
-				if at.task.id_project == e.project:
+				if at.task.project == e.project:
 					e.withdrawal_date = at.planned_initial_date
 
-def printStock(db, id_SKU):
+def printStock(db, id_sku):
 	'''Este método imprime el comportamiento de un SKU hasta el último de los movimientos registrados '''
 	with db_session:
-		movements = calculateStock(db, id_SKU)
+		movements = calculateStock(db, id_sku)
 		quantities = []
 		dates = []
 		for l in movements:
@@ -175,10 +175,10 @@ def printStock(db, id_SKU):
 			plt.xticks(dates, dates, rotation='vertical')
 			plt.ylabel('Quantity')
 			plt.xlabel('Date')
-			plt.title('SKU (id = {}) quantities by date'.format(id_SKU))
+			plt.title('SKU (id = {}) quantities by date'.format(id_sku))
 			plt.title(
-				'Inventory prediction of unit ' + str(db.Stock[id_SKU]) + ', code: ' + str(id_SKU))
-			plt.axhline(y=db.Stock[id_SKU].critical_level, color='r', linestyle='-')
+				'Inventory prediction of unit ' + str(db.Stock[id_sku]) + ', code: ' + str(id_sku))
+			plt.axhline(y=db.Stock[id_sku].critical_level, color='r', linestyle='-')
 			plt.tight_layout()
 			plt.show(block=False) #Esto debería estar definido con el valor de block = True.
 			#Es un 'Workaround' para graficar múltiples gráficos.
@@ -186,21 +186,21 @@ def printStock(db, id_SKU):
 		p.start()
 		p.join()
 
-def displayStock(db, id_SKU):
+def displayStock(db, id_sku):
 	'''Este método grafica el comportamiento de un SKU hasta el último de los movimientos registrados '''
 	with db_session:
-		sku = db.Stock.get(id=id_SKU)
+		sku = db.Stock.get(id=id_sku)
 		critical_level = sku.critical_level
-		values = calculateStock(db, id_SKU)
+		values = calculateStock(db, id_sku)
 		quantities, dates = zip(*values)#<-- wooowowooo
 
 		def plot_graph(quantities, dates):
 			plt.figure()
 			plt.ylabel('Quantity')
 			plt.xlabel('Date')
-			# plt.title('SKU (id = {}) quantities by date'.format(id_SKU))
+			# plt.title('SKU (id = {}) quantities by date'.format(id_sku))
 			plt.title(
-				'Inventory prediction of unit ' + str(db.Stock[id_SKU]) + ', code: ' + str(id_SKU))
+				'Inventory prediction of unit ' + str(db.Stock[id_sku]) + ', code: ' + str(id_sku))
 			min_date = min(dates)
 			max_date = max(dates)
 			min_quantity = min(quantities)
@@ -244,7 +244,7 @@ def displayStock(db, id_SKU):
 			# plt.xticks(dates, dates, rotation='vertical') #Con esta configuración solo aparecen los labels de las fechas con cambios
 			plt.xticks(aux_dates, aux_dates, rotation='vertical')  # Con esta configuración aparecen los labels de todos los días
 			plt.grid()
-			plt.axhline(y=db.Stock[id_SKU].critical_level, color='r', linestyle='dashed',
+			plt.axhline(y=db.Stock[id_sku].critical_level, color='r', linestyle='dashed',
 						linewidth=2.5)
 			plt.axvline(x=max_date, color='k', linestyle='dashed', linewidth=1.5)
 			plt.xlim(min_date, max_date + timedelta(
@@ -259,16 +259,16 @@ def displayStock(db, id_SKU):
 		p.join()
 
 
-def updateEngagements(db, id_SKU):
+def updateEngagements(db, id_sku):
 	'''Este método actualiza los engagements una vez que se ha hecho una planificación, asignando la fecha de inicio
 		de la instalación '''
 	with db_session:
-		# installations = select(t for t in db.Tasks if t.id_skill.id == 4)
-		assigned_inst = select(at for at in db.Employees_Tasks if at.task.id_skill.id == 4)
-		engagements = select(e for e in db.Engagements if e.SKU == db.Stock[id_SKU])
+		# installations = select(t for t in db.Tasks if t.skill.id == 4)
+		assigned_inst = select(at for at in db.Employees_Tasks if at.task.skill.id == 4)
+		engagements = select(e for e in db.Engagements if e.sku == db.Stock[id_sku])
 		for e in engagements:
 			for at in assigned_inst:
-				if at.task.id_project == e.project:
+				if at.task.project == e.project:
 					e.withdrawal_date = at.planned_initial_date
 
 

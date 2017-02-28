@@ -56,7 +56,12 @@ Pf.createProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
 Pf.createProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
  450, date(2017, 6, 3), estimated_cost = 150)
+<<<<<<< HEAD
+Pf.CreateProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
+				 '14.214.392-K',
+=======
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil', '14.214.392-K',
+>>>>>>> 605687d0830d6a246f2c065b8e19c12a6ea39575
  220, date(2017, 8, 30), estimated_cost = 250)
 
 
