@@ -72,8 +72,8 @@ def employees_console(db, level):
 				createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day)
 			
 			elif opt_employees_activities == '2':
-				id = input("\n Ingrese el ID de la actividad que quiere eliminar: ")
-				deleteEmployeeActivity(db, id)
+				id_employee_activity = input("\n Ingrese el ID de la actividad que quiere eliminar: ")
+				deleteEmployeeActivity(db, id_employee_activity)
 				
 			elif opt_employees_activities == '3':
 				print('\n')
