@@ -124,10 +124,28 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 		
 # métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees)
 def createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
-	initial_date = datetime.strptime(initial_year + '-' + initial_month + '-' + initial_day, '%Y-%m-%d')
-	end_date = datetime.strptime(end_year + '-' + end_month + '-' + end_day, '%Y-%m-%d')
+	import Planning.features as PLf
+	initial_date = date(int(initial_year), int(initial_month), int(initial_day))
+	end_date = date(int(end_year), int(end_month), int(end_day))
 	with db_session:
 		db.Employees_Activities(employee = employee, activity = activity, initial_date = initial_date, end_date = end_date)
+	if updateEmployeeProjects(db, employee, initial_date, end_date):
+		PLf.doPlanning(db)
+		
+def updateEmployeeProjects(db, employee, initial_date, end_date):
+	changed = False
+	with db_session:
+		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id == employee)
+		for et in emp_tasks:
+			if (initial_date >= et.planned_initial_date and initial_date <= et.planned_end_date)\
+					or (end_date >= et.planned_initial_date and end_date <= et.planned_end_date):
+				et.task.project.fixed_planning = False
+				##aqui se va a desfijar el proyecto para que no haga planificaciones infactibles
+				delete(er for er in db.Employees_Restrictions if er.employee.id == employee and er.project == et.task.project and er.fixed == True)
+				## esto desfija al empleado de un proyecto si se va de vacaciones, privilegiando la fecha de entrega sobre la preferencia del cliente
+				changed = True
+	return changed
+
 		
 def deleteEmployeeActivity(db, id_employee_activity):
 	with db_session:
