@@ -122,7 +122,7 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 		
 		
 		
-# métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees
+# métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees)
 def createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
 	import Planning.features as PLf
 	initial_date = date(int(initial_year), int(initial_month), int(initial_day))
@@ -154,3 +154,22 @@ def deleteEmployeeActivity(db, id_employee_activity):
 def printEmployeesActivities(db):
 	with db_session:
 		db.Employees_Activities.select().show()
+		
+		
+		
+		
+		
+# métodos asociados a Projects_Activities (llamados en usuario.py de carpeta Projects)
+def createProjectActivity(db, project, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
+	initial_date = datetime.strptime(initial_year + '-' + initial_month + '-' + initial_day, '%Y-%m-%d')
+	end_date = datetime.strptime(end_year + '-' + end_month + '-' + end_day, '%Y-%m-%d')
+	with db_session:
+		db.Projects_Activities(project = project, activity = activity, initial_date = initial_date, end_date = end_date)
+		
+def deleteProjectActivity(db, id_project_activity):
+	with db_session:
+		db.Projects_Activities[id_project_activity].delete()
+		
+def printProjectsActivities(db):
+	with db_session:
+		db.Projects_Activities.select().show()
