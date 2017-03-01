@@ -53,6 +53,12 @@ def define_models(db):
 		initial_date = Optional(date)
 		end_date = Optional(date)
 	
+	class Projects_Delays(db.Entity):
+		id = PrimaryKey(int, auto = True)
+		project_id = Required(int)
+		skill_id = Required(int)
+		delay = Required(int)
+	
 	class Employees_Activities(db.Entity):
 		id = PrimaryKey(int, auto=True)
 		employee = Required('Employees')
