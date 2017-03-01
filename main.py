@@ -9,9 +9,9 @@ import Users.features as Uf
 import Stock.usuario as Sf
 
 
-Uf.createUser(db,'Admin', 1,'Armin')
-Uf.createUser(db,'Piola', 2,'Cuatro')
-Uf.createUser(db,'Pleb', 3,'00000')
+# Uf.createUser(db,'Admin', 1,'Armin')
+# Uf.createUser(db,'Piola', 2,'Cuatro')
+# Uf.createUser(db,'Pleb', 3,'00000')
 
 def console(level):
 	while True:
@@ -41,12 +41,13 @@ def signIn():
 		else:
 			print("Usuario y/o Contraseña incorrecto(s))")
 		break
-signIn()
+# signIn()
 # Uf.createUser(db, "1", 1, "1")
 # Uf.createUser(db, "2", 2, "2")
 # Uf.createUser(db, "3", 3, "3")
 # print(PLf.GetDays(db, 1, 1, 3))
 # print(PLf.SumDays(date(2015,1,1), 1.1))
+Pf.failedTask(db, 1, 1, 2300)
 
 
 # PLf.DoPlanning(db)
@@ -188,9 +189,9 @@ signIn()
 # Pf.createTask(db, 3, 3, 2, date(2014, 12, 18), date(2017,3,8))
 # Pf.createTask(db, 4, 4, 2, date(2014, 12, 26), date(2017,12,14))
 
-# Pf.editTask(db, 1, efective_initial_date = d.datetime(2014, 1, 1), efective_end_date = d.datetime(2014, 1, 10))
-# Pf.editTask(db, 2, efective_initial_date = d.datetime(2014, 1, 11), efective_end_date = d.datetime(2014, 1, 15))
-# Pf.editTask(db, 3, efective_initial_date = d.datetime(2014, 1, 16))
+# Pf.editTask(db, 1, effective_initial_date = d.datetime(2014, 1, 1), effective_end_date = d.datetime(2014, 1, 10))
+# Pf.editTask(db, 2, effective_initial_date = d.datetime(2014, 1, 11), effective_end_date = d.datetime(2014, 1, 15))
+# Pf.editTask(db, 3, effective_initial_date = d.datetime(2014, 1, 16))
 
 # Eu.employees_teams_console(db, Ef.CreateEmployee, Ef.PrintEmployees, Ef.EditEmployee, Ef.CreateTeam, Ef.PrintTeams, Ef.PrintTeamsSkills, Ef.EditTeam, Ef.PrintSkills)
 # Pf.AssignTask(db, 1, 1)

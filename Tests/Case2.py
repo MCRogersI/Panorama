@@ -34,17 +34,17 @@ with db_session:
 # Stock inicial test case 2 #
 #############################
 
-Sf.createSKU(db, 'Telescopic', 2.01, 100,real_quantity=219)
-Sf.createSKU(db, 'Glass Pane Knob', 6.43, 200,real_quantity=220)
-Sf.createSKU(db, 'Lower chamber-9', 4.77, 150,real_quantity=234)
-Sf.createSKU(db, 'Upper chamber-9', 3.07, 150,real_quantity=243)
-Sf.createSKU(db, 'Lock for latch', 12.03, 100,real_quantity=251)
-Sf.createSKU(db, 'Screw M4x12 tx20 A2 DIN965', 0.07, 500,real_quantity=1000)
-Sf.createSKU(db, 'Screw M4x14 tx20 A2 DIN965', 0.07, 500,real_quantity=1000)
-Sf.createSKU(db, 'Fastening Bead 10mm transparent', 2.51, 300,real_quantity=600)
-Sf.createSKU(db, 'Screws for Water Sill', 0.69, 200,real_quantity=500)
-Sf.createSKU(db, 'Lock Keeper, wall side', 6.52, 200,real_quantity=800)
-Sf.createSKU(db, 'Profile joint unit plastic bag', 4.93, 180,real_quantity=268)
+Sf.createSku(db, 'Telescopic', 2.01, 100,real_quantity=219)
+Sf.createSku(db, 'Glass Pane Knob', 6.43, 200,real_quantity=220)
+Sf.createSku(db, 'Lower chamber-9', 4.77, 150,real_quantity=234)
+Sf.createSku(db, 'Upper chamber-9', 3.07, 150,real_quantity=243)
+Sf.createSku(db, 'Lock for latch', 12.03, 100,real_quantity=251)
+Sf.createSku(db, 'Screw M4x12 tx20 A2 DIN965', 0.07, 500,real_quantity=1000)
+Sf.createSku(db, 'Screw M4x14 tx20 A2 DIN965', 0.07, 500,real_quantity=1000)
+Sf.createSku(db, 'Fastening Bead 10mm transparent', 2.51, 300,real_quantity=600)
+Sf.createSku(db, 'Screws for Water Sill', 0.69, 200,real_quantity=500)
+Sf.createSku(db, 'Lock Keeper, wall side', 6.52, 200,real_quantity=800)
+Sf.createSku(db, 'Profile joint unit plastic bag', 4.93, 180,real_quantity=268)
 
 #########################
 # Proyectos test case 2 #
