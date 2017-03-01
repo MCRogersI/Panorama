@@ -1,5 +1,5 @@
 from pony.orm import *
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 
 def createProject(db, contract_number, client_address, client_comuna,
@@ -118,9 +118,15 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 
 		PLf.doPlanning(db)
 
-		
-		
-		
+def createDelay(db, project_id, skill_id, delay):
+	'''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = project_id, alargando el end date en delay días. 		Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html '''
+	 
+	with db_session:
+		p = db.Projects[project_id]
+		task = db.Tasks.get(skill = db.Skills[skill_id], project = p)
+		db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
+		et = db.Employees_Tasks.get(task = task)
+		et.planned_end_date = et.planned_end_date+timedelta(delay)
 		
 # métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees)
 def createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
