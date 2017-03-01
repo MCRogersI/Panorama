@@ -1,5 +1,5 @@
 from pony.orm import *
-
+from datetime import date, datetime
 
 
 def createProject(db, contract_number, client_address, client_comuna,
@@ -96,7 +96,7 @@ def editTask(db, id , id_skill = None, contract_number = None, original_initial_
 
 def deleteTask(db, id_task):
 	with db_session:
-			db.Tasks[id_task].delete()
+		db.Tasks[id_task].delete()
 
 def printTasks(db):
 	with db_session:
@@ -109,15 +109,30 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 		tasks = select(t for t in db.Tasks if t.skill >= db.Skills[id_skill] and t.project == db.Projects[contract_number] and t.failed == None)
 		for t in tasks:
 			t.failed = True
-			if t.skill = db.Skills[id_skill]:
+			if t.skill == db.Skills[id_skill]:
 				t.fail_cost = fail_cost
-		
-		tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects[contract_number] and t.effective_end_date != None)
-		for t in tasks:
-			t.failed = True
 		
 		tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects[contract_number] and t.effective_end_date == None)
 		for t in tasks:
 			t.delete()
 
 		PLf.doPlanning(db)
+
+		
+		
+		
+		
+# métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees
+def createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
+	initial_date = datetime.strptime(initial_year + '-' + initial_month + '-' + initial_day, '%Y-%m-%d')
+	end_date = datetime.strptime(end_year + '-' + end_month + '-' + end_day, '%Y-%m-%d')
+	with db_session:
+		db.Employees_Activities(employee = employee, activity = activity, initial_date = initial_date, end_date = end_date)
+		
+def deleteEmployeeActivity(db, id_employee_activity):
+	with db_session:
+		db.Employees_Activities[id_employee_activity].delete()
+		
+def printEmployeesActivities(db):
+	with db_session:
+		db.Employees_Activities.select().show()
