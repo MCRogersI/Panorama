@@ -124,6 +124,9 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 		
 # métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees)
 def createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
+'''
+Crea una actividad para un empleado de tipo licencia, vacaciones u otros. en caso de que el empleado tenga asignada una tarea en las fechas de la actividad, se replanifica
+'''
 	import Planning.features as PLf
 	initial_date = date(int(initial_year), int(initial_month), int(initial_day))
 	end_date = date(int(end_year), int(end_month), int(end_day))
@@ -133,6 +136,10 @@ def createEmployeeActivity(db, employee, activity, initial_year, initial_month, 
 		PLf.doPlanning(db)
 		
 def updateEmployeeProjects(db, employee, initial_date, end_date):
+'''
+Este metodo revisa si un empleado tiene tareas asignadas durante las fechas impuestas y ,de ser cierto, deja móviles dichas actividades para una
+futura replanificación. Es un método auxiliar, por lo que no es recomendable usarlo directamente.
+'''
 	changed = False
 	with db_session:
 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id == employee)
