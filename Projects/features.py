@@ -118,15 +118,7 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 
 		PLf.doPlanning(db)
 
-def createDelay(db, project_id, skill_id, delay):
-	'''Este método ingresa un delay en la tarea skill del proyecto project, alargando el end date en delay días. Todo
-	está con ints porque si no había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html '''
-	with db_session:
-		p = db.Projects[project_id]
-		#s = select(t for t in p.tasks if t.skill.id == skill_id)
-		db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
-		print(p.tasks)
-		#editTask(db, project.tasks[skill = skill]
+		
 		
 		
 		
@@ -163,4 +155,20 @@ def deleteEmployeeActivity(db, id_employee_activity):
 def printEmployeesActivities(db):
 	with db_session:
 		db.Employees_Activities.select().show()
+		
 
+		
+# métodos asociados a Projects_Activities (llamados en usuario.py de carpeta Projects)
+def createProjectActivity(db, project, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
+	initial_date = datetime.strptime(initial_year + '-' + initial_month + '-' + initial_day, '%Y-%m-%d')
+	end_date = datetime.strptime(end_year + '-' + end_month + '-' + end_day, '%Y-%m-%d')
+	with db_session:
+		db.Projects_Activities(project = project, activity = activity, initial_date = initial_date, end_date = end_date)
+		
+def deleteProjectActivity(db, id_project_activity):
+	with db_session:
+		db.Projects_Activities[id_project_activity].delete()
+		
+def printProjectsActivities(db):
+	with db_session:
+		db.Projects_Activities.select().show()
