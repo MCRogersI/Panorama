@@ -126,7 +126,7 @@ def createDelay(db, project_id, skill_id, delay):
 		t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
 		db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
 		et = db.Employees_Tasks.get(task = t)
-		print(et)
+		print(et)	
 		et.planned_end_date = et.planned_end_date+timedelta(delay)
 		
 # métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees)
