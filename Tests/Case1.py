@@ -30,6 +30,8 @@ Sf.createSku(db, 'Profile joint unit plastic bag', 4.93, 180,real_quantity=268)
 
 
 
+
+
 #Aquí las Skills, las Difficulties y las Activities se crean de forma directa. Esto no se hace a través de métodos "createSkill",
 #createActivity" o "create Difficulty" dado que esas relaciones son
 # constantes en las base de datos y no es necesario volver a crearlas en el futuro.
@@ -45,6 +47,24 @@ with db_session:
 	db.Activities(id=2, description='Vacaciones')
 	db.Activities(id=3, description='Cliente ocupado')
 
+#################################################
+#        Lista de empleados test case 1 		#
+# ###############################################
+
+Ef.createEmployee(db,  "Juan", 1, perf_rect = 10)
+Ef.createEmployee(db,  "Pedro", 2, perf_des = 20)
+Ef.createEmployee(db,  "Diego", 2, perf_fab = 30)
+Ef.createEmployee(db,  "Miguel", 1, perf_inst = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_rect = 50)
+Ef.createEmployee(db,  "Felipe", 2, perf_des = 60)
+Ef.createEmployee(db,  "Miguel", 1, perf_fab = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_inst = 50)
+Ef.createEmployee(db,  "Felipe", 2, perf_rect = 60)
+Ef.createEmployee(db,  "Miguel", 1, perf_des = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_fab = 50)
+Ef.createEmployee(db,  "Felipe", 1, perf_inst = 60)
+Ef.createEmployee(db,  "Iker", 1, perf_inst = 70)
+
 ##############################################
 # Lista de prueba de proyectos test case 1   #
 ##############################################
@@ -56,12 +76,7 @@ Pf.createProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
 Pf.createProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
  450, date(2017, 6, 3), estimated_cost = 150)
-<<<<<<< HEAD
-Pf.CreateProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
-				 '14.214.392-K',
-=======
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil', '14.214.392-K',
->>>>>>> c786c36073d71c3a2cc6b49fd92636c28cba0bf5
  220, date(2017, 8, 30), estimated_cost = 250)
 
 
@@ -90,23 +105,7 @@ with db_session:
 
 
 
-#################################################
-#        Lista de empleados test case 1 		#
-# ###############################################
 
-Ef.createEmployee(db,  "Juan", 1, perf_rect = 10)
-Ef.createEmployee(db,  "Pedro", 2, perf_des = 20)
-Ef.createEmployee(db,  "Diego", 2, perf_fab = 30)
-Ef.createEmployee(db,  "Miguel", 1, perf_inst = 40)
-Ef.createEmployee(db,  "Mario", 1, perf_rect = 50)
-Ef.createEmployee(db,  "Felipe", 2, perf_des = 60)
-Ef.createEmployee(db,  "Miguel", 1, perf_fab = 40)
-Ef.createEmployee(db,  "Mario", 1, perf_inst = 50)
-Ef.createEmployee(db,  "Felipe", 2, perf_rect = 60)
-Ef.createEmployee(db,  "Miguel", 1, perf_des = 40)
-Ef.createEmployee(db,  "Mario", 1, perf_fab = 50)
-Ef.createEmployee(db,  "Felipe", 1, perf_inst = 60)
-Ef.createEmployee(db,  "Iker", 1, perf_inst = 70)
 
 
 ##############################################
@@ -126,34 +125,18 @@ Pf.createTask(db, 2, 3, original_initial_date=date(2017, 6, 11), original_end_da
 Pf.createTask(db, 3, 3, original_initial_date=date(2017, 6, 21), original_end_date=date(2017,7,8))
 Pf.createTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_date=date(2017,7,19))
 
+#########################################
+# Asignación de algunas rectificaciones #
+#########################################
 
-PLf.assignTask(db, 1, 1, initial_date=date(2017, 4, 8), end_date=date(2017,4,28))
-PLf.assignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
-PLf.assignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
-#PLf.AssignTask(db, 2, 2,  initial_date=date(2017, 4, 28), end_date=date(2017,5,20))
-#PLf.AssignTask(db, 6, 6,  initial_date=date(2017, 4, 3), end_date=date(2017,4,18))
-#PLf.AssignTask(db, 10, 10,  initial_date=date(2017, 4, 12), end_date=date(2017,5,1))
-#PLf.AssignTask(db, 3, 3,  initial_date=date(2017, 4, 16), end_date=date(2017,5,7))
-#PLf.AssignTask(db, 7, 7,  initial_date=date(2017, 4, 26), end_date=date(2017,6,1))
-#PLf.AssignTask(db, 11, 11,  initial_date=date(2017, 4, 20), end_date=date(2017,4,30))
-#PLf.AssignTask(db, [4,8], 4,  initial_date=date(2017, 5, 10), end_date=date(2017,5,20))
-#PLf.AssignTask(db, [4,8,12], 8, initial_date=date(2017, 5, 15), end_date=date(2017,6,8))
-#PLf.AssignTask(db, 12, 12,  initial_date=date(2017, 5, 20), end_date=date(2017,7,3))
+#PLf.assignTask(db, 1, 1, initial_date=date(2017, 4, 8), end_date=date(2017,4,28))
+#PLf.assignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
+#PLf.assignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
 
 with db_session:
 	#Definición de fechas de inicio efectivas para algunas tareas
 	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
 	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
 	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
-# recordar que una vez corrimos el mismo método croque y mai y nos daban resultados distintos
-#print(Pf.getCostProject(db, 2, 10, 0.1))
-
-
-PLf.doPlanning(db)
-
-# Sf.printStock(db, 2)
-#Sf.updateEngagements(db, 2)
-print('------')
-print(Sf.checkStockAlarms(db))
-Sf.printStock(db, 1)
-Sf.displayStock(db,1)
+	
+Pf.createDelay(db, 1, 4, 5)

@@ -118,7 +118,15 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 
 		PLf.doPlanning(db)
 
-		
+def createDelay(db, project_id, skill_id, delay):
+	'''Este método ingresa un delay en la tarea skill del proyecto project, alargando el end date en delay días. Todo
+	está con ints porque si no había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html '''
+	with db_session:
+		p = db.Projects[project_id]
+		#s = select(t for t in p.tasks if t.skill.id == skill_id)
+		db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
+		print(p.tasks)
+		#editTask(db, project.tasks[skill = skill]
 		
 		
 		
