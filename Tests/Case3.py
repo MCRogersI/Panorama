@@ -47,6 +47,25 @@ Sf.createSku(db, 'Screws for Water Sill', 0.69, 50,real_quantity=0)
 Sf.createSku(db, 'Lock Keeper, wall side', 6.52, 50,real_quantity=0)
 Sf.createSku(db, 'Profile joint unit plastic bag', 4.93, 50,real_quantity=0)
 
+#################################################
+#        Lista de empleados test case 2 		#
+# ###############################################
+
+Ef.createEmployee(db,  "Juan", 1, perf_rect = 10)
+Ef.createEmployee(db,  "Pedro", 2, perf_des = 20)
+Ef.createEmployee(db,  "Diego", 2, perf_fab = 30)
+Ef.createEmployee(db,  "Miguel", 1, perf_inst = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_rect = 50)
+Ef.createEmployee(db,  "Felipe", 2, perf_des = 60)
+Ef.createEmployee(db,  "Miguel", 1, perf_fab = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_inst = 50)
+Ef.createEmployee(db,  "Felipe", 2, perf_rect = 60)
+Ef.createEmployee(db,  "Miguel", 1, perf_des = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_fab = 50)
+Ef.createEmployee(db,  "Felipe", 1, perf_inst = 60)
+Ef.createEmployee(db,  "Iker", 1, perf_inst = 70)
+
+
 #########################
 # Proyectos test case 2 #
 #########################
@@ -91,55 +110,38 @@ Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017
 Sf.createEngagement(db, 3, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 4, 6))
 
 
-Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 2, 26))
-Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 2, 27))
+Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 3, 4))
+Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 3, 4))
 Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 4, 15))
 Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 4, 16))
 Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 4, 20))
 Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 8, 2))
 
-#################################################
-#        Lista de empleados test case 2 		#
-# ###############################################
-
-Ef.CreateEmployee(db,  "Juan", 1, perf_rect = 10)
-Ef.CreateEmployee(db,  "Pedro", 2, perf_des = 20)
-Ef.CreateEmployee(db,  "Diego", 2, perf_fab = 30)
-Ef.CreateEmployee(db,  "Miguel", 1, perf_inst = 40)
-Ef.CreateEmployee(db,  "Mario", 1, perf_rect = 50)
-Ef.CreateEmployee(db,  "Felipe", 2, perf_des = 60)
-Ef.CreateEmployee(db,  "Miguel", 1, perf_fab = 40)
-Ef.CreateEmployee(db,  "Mario", 1, perf_inst = 50)
-Ef.CreateEmployee(db,  "Felipe", 2, perf_rect = 60)
-Ef.CreateEmployee(db,  "Miguel", 1, perf_des = 40)
-Ef.CreateEmployee(db,  "Mario", 1, perf_fab = 50)
-Ef.CreateEmployee(db,  "Felipe", 1, perf_inst = 60)
-Ef.CreateEmployee(db,  "Iker", 1, perf_inst = 70)
 
 ##############################################
 # Lista de prueba de tasks test case 2 		 #
 ##############################################
 
-Pf.createTask(db, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,4,28))
-Pf.createTask(db, 2, 1, original_initial_date=date(2017, 4, 29), original_end_date=date(2017,5,10))
-Pf.createTask(db, 3, 1, original_initial_date=date(2017, 5, 11), original_end_date=date(2017,5,30))
-Pf.createTask(db, 4, 1, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,14))
-Pf.createTask(db, 1, 2, original_initial_date=date(2017, 4, 3), original_end_date=date(2017,5,18))
-Pf.createTask(db, 2, 2, original_initial_date=date(2017, 5, 19), original_end_date=date(2017,5,29))
-Pf.createTask(db, 3, 2, original_initial_date=date(2017, 5, 30), original_end_date=date(2017,6,1))
-Pf.createTask(db, 4, 2, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,15))
-Pf.createTask(db, 1, 3, original_initial_date=date(2017, 6, 3), original_end_date=date(2017,6,10))
-Pf.createTask(db, 2, 3, original_initial_date=date(2017, 6, 11), original_end_date=date(2017,6,20))
-Pf.createTask(db, 3, 3, original_initial_date=date(2017, 6, 21), original_end_date=date(2017,7,8))
-Pf.createTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_date=date(2017,7,19))
+# Pf.createTask(db, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,4,28))
+# Pf.createTask(db, 2, 1, original_initial_date=date(2017, 4, 29), original_end_date=date(2017,5,10))
+# Pf.createTask(db, 3, 1, original_initial_date=date(2017, 5, 11), original_end_date=date(2017,5,30))
+# Pf.createTask(db, 4, 1, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,14))
+# Pf.createTask(db, 1, 2, original_initial_date=date(2017, 4, 3), original_end_date=date(2017,5,18))
+# Pf.createTask(db, 2, 2, original_initial_date=date(2017, 5, 19), original_end_date=date(2017,5,29))
+# Pf.createTask(db, 3, 2, original_initial_date=date(2017, 5, 30), original_end_date=date(2017,6,1))
+# Pf.createTask(db, 4, 2, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,15))
+# Pf.createTask(db, 1, 3, original_initial_date=date(2017, 6, 3), original_end_date=date(2017,6,10))
+# Pf.createTask(db, 2, 3, original_initial_date=date(2017, 6, 11), original_end_date=date(2017,6,20))
+# Pf.createTask(db, 3, 3, original_initial_date=date(2017, 6, 21), original_end_date=date(2017,7,8))
+# Pf.createTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_date=date(2017,7,19))
 
 ######################################################
 # Lista de asignación de rectificaciones test case 2 #
 ######################################################
 
-PLf.AssignTask(db, 1, 1, initial_date=date(2017, 4, 8), end_date=date(2017,4,28))
-PLf.AssignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
-PLf.AssignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
+PLf.assignTask(db, 1, 1, initial_date=date(2017, 4, 8), end_date=date(2017,4,28))
+PLf.assignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
+PLf.assignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
 
 ############################################################################################
 # Cambios forzosos a prioridades, fijación de proyectos y de inicialización de actividades #
