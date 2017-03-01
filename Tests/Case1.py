@@ -1,6 +1,6 @@
 #Caso de prueba 1
 #Se inicializan las siguientes entidades (tablas) : XXX, XXX, XXX, ...
-#Se prueban la(s) siguiente(s) funcionalidad(es): utilización de prioridades, fijación de proyectos, algoritmo de asignación en general.
+#Se prueban la(s) siguiente(s) funcionalidad(es): utilización de prioridades, fijación de proyectos, algoritmo de asignación en general, ingreso de atrasos.
 from pony.orm import *
 from database import db
 import Employees.features as Ef, Employees.usuario as Eu
@@ -103,7 +103,10 @@ with db_session:
 	#Fijación de proyectos
 	db.Projects[4].fixed_planning = True
 
-
+#################
+# Crear atrasos #
+#################
+Pf.createDelay(db, 2, 4, 5)
 #########################################
 # Asignación de algunas rectificaciones #
 #########################################
@@ -117,5 +120,4 @@ with db_session:
 #	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
 #	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
 #	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
-	
-Pf.createDelay(db, 2, 4, 5)
+

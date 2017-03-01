@@ -210,21 +210,46 @@ def displayStock(db, id_sku):
 			delta = delta.days
 			aux_quantity = []
 			aux_dates = []
+			virtual_extra_days = 7
 
-			c = 1
-			for i in range(0,delta + 7):  # Se agregan 7 días 'extras/ficticios' para un mejor display
-				if c < len(dates)-1:
-					if (min_date + timedelta(days=i) >= dates[c]):
-						c += 1
-					aux_dates.append(min_date + timedelta(days=i))
-					aux_quantity.append(quantities[c - 1])
+
+			for i in range(0,delta + virtual_extra_days):
+				aux_dates.append(min_date+timedelta(days=i))
+				aux_quantity.append(15)
+			d = 0
+			for i in range(0,len(aux_dates)):
+				if dates[d]>= aux_dates[i]:
+					aux_quantity[i] = quantities[d]
 				else:
-					if (min_date + timedelta(days=i) < dates[c]):
-						aux_dates.append(min_date + timedelta(days=i))
-						aux_quantity.append(quantities[c-1])
-					else:
-						aux_dates.append(min_date + timedelta(days=i))
-						aux_quantity.append(quantities[c])
+					print('ELSEEEEEEE{}'.format(dates[d]))
+				if d < len(dates)-1:
+					d+=1
+
+
+
+
+
+
+
+
+
+
+
+
+			# c = 1
+			# for i in range(0,delta + 7):  # Se agregan 7 días 'extras/ficticios' para un mejor display
+			# 	if c < len(dates)-1:
+			# 		if (min_date + timedelta(days=i) >= dates[c]):
+			# 			c += 1
+			# 		aux_dates.append(min_date + timedelta(days=i))
+			# 		aux_quantity.append(quantities[c - 1])
+			# 	else:
+			# 		if (min_date + timedelta(days=i) < dates[c]):
+			# 			aux_dates.append(min_date + timedelta(days=i))
+			# 			aux_quantity.append(quantities[c-1])
+			# 		else:
+			# 			aux_dates.append(min_date + timedelta(days=i))
+			# 			aux_quantity.append(quantities[c])
 
 
 			width = 1
