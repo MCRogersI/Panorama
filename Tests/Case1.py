@@ -90,6 +90,7 @@ Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 3, 2))
 Sf.createPurchases(db,(1,155),date(2017, 3, 4))
 
 
+
 aux_check_debug_variable_stock_calculation = Sf.calculateStock(db,1)
 
 #print(aux_check_debug_variable_stock_calculation)
@@ -107,6 +108,8 @@ with db_session:
 # Crear atrasos #
 #################
 Pf.createDelay(db, 2, 4, 5)
+
+
 #########################################
 # Asignación de algunas rectificaciones #
 #########################################
