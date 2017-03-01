@@ -27,7 +27,7 @@ def console(level):
 		if (opt == '4'):
 			Sf.stock_console(db, level)
 		if(opt == '5'):
-			print("Has salido de la consola")
+			print("\n Has salido del programa.")
 			break
 def signIn():
 	while True:
@@ -41,13 +41,13 @@ def signIn():
 		else:
 			print("Usuario y/o Contraseña incorrecto(s))")
 		break
-# signIn()
+signIn()
 # Uf.createUser(db, "1", 1, "1")
 # Uf.createUser(db, "2", 2, "2")
 # Uf.createUser(db, "3", 3, "3")
 # print(PLf.GetDays(db, 1, 1, 3))
 # print(PLf.SumDays(date(2015,1,1), 1.1))
-Pf.failedTask(db, 1, 1, 2300)
+# Pf.failedTask(db, 1, 1, 2300)
 
 
 # PLf.DoPlanning(db)
