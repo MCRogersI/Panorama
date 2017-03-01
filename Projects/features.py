@@ -130,6 +130,7 @@ def createEmployeeActivity(db, employee, activity, initial_year, initial_month, 
 	with db_session:
 		db.Employees_Activities(employee = employee, activity = activity, initial_date = initial_date, end_date = end_date)
 	if updateEmployeeProjects(db, employee, initial_date, end_date):
+		db.Employees_Activities.select().show()
 		PLf.doPlanning(db)
 		
 def updateEmployeeProjects(db, employee, initial_date, end_date):
