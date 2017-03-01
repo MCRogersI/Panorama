@@ -1,6 +1,6 @@
 #Caso de prueba 1
 #Se inicializan las siguientes entidades (tablas) : XXX, XXX, XXX, ...
-#Se prueban la(s) siguiente(s) funcionalidad(es): utilización de prioridades, fijación de proyectos, algoritmo de asignación en general.
+#Se prueban la(s) siguiente(s) funcionalidad(es): utilización de prioridades, fijación de proyectos, algoritmo de asignación en general, ingreso de atrasos.
 from pony.orm import *
 from database import db
 import Employees.features as Ef, Employees.usuario as Eu
@@ -103,28 +103,10 @@ with db_session:
 	#Fijación de proyectos
 	db.Projects[4].fixed_planning = True
 
-
-
-
-
-
-##############################################
-# Lista de prueba de tasks test case 1 		 #
-##############################################
-
-Pf.createTask(db, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,4,28))
-Pf.createTask(db, 2, 1, original_initial_date=date(2017, 4, 29), original_end_date=date(2017,5,10))
-Pf.createTask(db, 3, 1, original_initial_date=date(2017, 5, 11), original_end_date=date(2017,5,30))
-Pf.createTask(db, 4, 1, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,14))
-Pf.createTask(db, 1, 2, original_initial_date=date(2017, 4, 3), original_end_date=date(2017,5,18))
-Pf.createTask(db, 2, 2, original_initial_date=date(2017, 5, 19), original_end_date=date(2017,5,29))
-Pf.createTask(db, 3, 2, original_initial_date=date(2017, 5, 30), original_end_date=date(2017,6,1))
-Pf.createTask(db, 4, 2, original_initial_date=date(2017, 6, 2), original_end_date=date(2017,6,15))
-Pf.createTask(db, 1, 3, original_initial_date=date(2017, 6, 3), original_end_date=date(2017,6,10))
-Pf.createTask(db, 2, 3, original_initial_date=date(2017, 6, 11), original_end_date=date(2017,6,20))
-Pf.createTask(db, 3, 3, original_initial_date=date(2017, 6, 21), original_end_date=date(2017,7,8))
-Pf.createTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_date=date(2017,7,19))
-
+#################
+# Crear atrasos #
+#################
+Pf.createDelay(db, 2, 4, 5)
 #########################################
 # Asignación de algunas rectificaciones #
 #########################################
@@ -133,15 +115,9 @@ Pf.createTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_dat
 #PLf.assignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
 #PLf.assignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
 
-with db_session:
-	#Definición de fechas de inicio efectivas para algunas tareas
-	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
-	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
-	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
-	
-# Pf.createDelay(db, 1, 4, 5)
+#with db_session:
+#	#Definición de fechas de inicio efectivas para algunas tareas
+#	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
+#	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
+#	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
 
-print('------')
-print(Sf.checkStockAlarms(db))
-Sf.printStock(db, 1)
-Sf.displayStock(db,1)
