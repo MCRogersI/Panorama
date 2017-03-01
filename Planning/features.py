@@ -421,8 +421,7 @@ def doPlanning(db):
 								assignTask(db, emps, task, initial, ending[num_workers-1])
 			for e in p.engagements:
 				Sf.updateEngagements(db, e.sku.id)			
-		print(Delayed)		
-#tenemos un problema con los metros lineales (310) de un proyecto que 3 rectificadores con promedio 150 m/dia lo hacen en dos días
+		print(Delayed)
 
 
 
