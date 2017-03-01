@@ -331,7 +331,7 @@ def changePriority(db, contract_number, new_priority):
 			
 ############
 #Este evento debe gatillar una replanificación
-	doPlanning(db)
+	# doPlanning(db)
 ###########
 #Funcion para cambiar la prioridad de manera manual. Luego de cambiarla, la prioridad se marca como fijada por el usuario.
 #check

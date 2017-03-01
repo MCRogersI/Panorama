@@ -192,13 +192,12 @@ def displayStock(db, id_sku):
 		sku = db.Stock.get(id=id_sku)
 		critical_level = sku.critical_level
 		values = calculateStock(db, id_sku)
-		quantities, dates = zip(*values)#<-- wooowowooo
+		quantities, dates = zip(*values)#<-- wooowowooo (que bonita función)
 
 		def plot_graph(quantities, dates):
 			plt.figure()
 			plt.ylabel('Quantity')
 			plt.xlabel('Date')
-			# plt.title('SKU (id = {}) quantities by date'.format(id_sku))
 			plt.title(
 				'Inventory prediction of unit ' + str(db.Stock[id_sku]) + ', code: ' + str(id_sku))
 			min_date = min(dates)
@@ -212,59 +211,45 @@ def displayStock(db, id_sku):
 			aux_dates = []
 			virtual_extra_days = 7
 
+			def get_set_from_dates(quantities,dates): #Método auxiliar para generar un 'set' de los datos en values
+				result = []
+				for i in range(1,len(dates)):
+					if dates[i-1]!=dates[i]:
+						result.append((quantities[i-1],dates[i-1]))
+					if i == len(dates)-1:
+						result.append((quantities[i], dates[i]))
+				return result
+
+			set_of_quantities, set_of_dates = zip(*get_set_from_dates(quantities,dates))
+
 
 			for i in range(0,delta + virtual_extra_days):
 				aux_dates.append(min_date+timedelta(days=i))
-				aux_quantity.append(15)
+				aux_quantity.append(0)
+
 			d = 0
 			for i in range(0,len(aux_dates)):
-				if dates[d]>= aux_dates[i]:
-					aux_quantity[i] = quantities[d]
+				if d < len(set_of_dates)-1:
+					if aux_dates[i] < set_of_dates[d+1]:
+						aux_quantity[i] = set_of_quantities[d]
+
+					elif d<len(set_of_dates)-1:
+						aux_quantity[i] = set_of_quantities[d+1]
+						d += 1
+
 				else:
-					print('ELSEEEEEEE{}'.format(dates[d]))
-				if d < len(dates)-1:
-					d+=1
-
-
-
-
-
-
-
-
-
-
-
-
-			# c = 1
-			# for i in range(0,delta + 7):  # Se agregan 7 días 'extras/ficticios' para un mejor display
-			# 	if c < len(dates)-1:
-			# 		if (min_date + timedelta(days=i) >= dates[c]):
-			# 			c += 1
-			# 		aux_dates.append(min_date + timedelta(days=i))
-			# 		aux_quantity.append(quantities[c - 1])
-			# 	else:
-			# 		if (min_date + timedelta(days=i) < dates[c]):
-			# 			aux_dates.append(min_date + timedelta(days=i))
-			# 			aux_quantity.append(quantities[c-1])
-			# 		else:
-			# 			aux_dates.append(min_date + timedelta(days=i))
-			# 			aux_quantity.append(quantities[c])
-
+					aux_quantity[i] = set_of_quantities[d]
 
 			width = 1
-			# offset = 0
-
-			# mask1 = aux_quantity <= critical_level
-			# mask2 = aux_quantity > critical_level
-			# plt.bar(aux_dates[mask1], aux_quantity[mask1], color='red', align='center')
-			# plt.bar(aux_dates[mask2], aux_quantity[mask2], color='blue', align='center')
-
-			# plt.bar(aux_dates[aux_quantity < critical_level], aux_quantity[aux_quantity < critical_level], color='red', align='center')
-			# plt.bar(aux_dates[aux_quantity >= critical_level],
-			#         aux_quantity[aux_quantity >= critical_level], color='blue', align='center')
-
 			p1 = plt.bar(aux_dates, aux_quantity, width=width, color='#0000FF', align='center')
+
+			for i in range(0,len(aux_dates)): #Para colorear los días con stock bajo el nivel crítico.
+				if aux_quantity[i] <= critical_level:
+					p1[i].set_color('r')
+					# p1[i].set_linewidth(1)
+					# p1[i].set_edgecolor('k')
+				p1[i].set_linewidth(1.1)
+				p1[i].set_edgecolor('k')
 
 			# plt.xticks(dates, dates, rotation='vertical') #Con esta configuración solo aparecen los labels de las fechas con cambios
 			plt.xticks(aux_dates, aux_dates, rotation='vertical')  # Con esta configuración aparecen los labels de todos los días
