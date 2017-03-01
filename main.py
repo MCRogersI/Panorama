@@ -8,6 +8,11 @@ import Planning.features as PLf
 import Users.features as Uf
 import Stock.usuario as Sf
 
+
+# Uf.createUser(db,'Admin', 1,'Armin')
+# Uf.createUser(db,'Piola', 2,'Cuatro')
+# Uf.createUser(db,'Pleb', 3,'00000')
+
 def console(level):
 	while True:
 		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Stock. \n - 5: Para salir. \n Ingrese la alternativa elegida: ")
@@ -22,7 +27,7 @@ def console(level):
 		if (opt == '4'):
 			Sf.stock_console(db, level)
 		if(opt == '5'):
-			print("Has salido de la consola")
+			print("\n Has salido del programa.")
 			break
 def signIn():
 	while True:
@@ -37,7 +42,12 @@ def signIn():
 			print("Usuario y/o Contraseña incorrecto(s))")
 		break
 signIn()
-
+# Uf.createUser(db, "1", 1, "1")
+# Uf.createUser(db, "2", 2, "2")
+# Uf.createUser(db, "3", 3, "3")
+# print(PLf.GetDays(db, 1, 1, 3))
+# print(PLf.SumDays(date(2015,1,1), 1.1))
+# Pf.failedTask(db, 1, 1, 2300)
 
 
 # PLf.DoPlanning(db)
@@ -149,17 +159,17 @@ signIn()
 # print(PLf.FindDatesEmployees(db, 1, 2, 5, date(2017, 3, 9)))
 # print(PLf.FindDatesEmployees(db, 1, 2, 6, date(2017, 3, 9)))
 
-# Pf.CreateTask(db, 1, 1, date(2017, 3, 9), date(2017, 3, 9))
-# print(Pf.PrintTasks(db))
+# Pf.createTask(db, 1, 1, date(2017, 3, 9), date(2017, 3, 9))
+# print(Pf.printTasks(db))
 
 
 ##############################################
 # Tests de los features de Projects.features #
 ##############################################
-# Pf.CreateProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline, real_linear_meters = None, estimated_cost = None, real_cost = None)
-# Pf.CreateProject(db, 1, 'frutillita', 'Las Condes', 'frambuesita', '20.024.322-0', 15, date(2017, 3, 14), estimated_cost = 200,)
-# Pf.CreateProject(db, 2, 'cebollita', 'Las Condes', 'sub-campeon', '21.024.322-0', 20, date(2017, 3, 15), estimated_cost = 300,)
-# Pf.CreateProject(db, 3, 'lalala', 'Las Condes', 'sisisi', '22.024.322-0', 20, date(2017, 4, 30), estimated_cost = 150,)
+# Pf.createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline, real_linear_meters = None, estimated_cost = None, real_cost = None)
+# Pf.createProject(db, 1, 'frutillita', 'Las Condes', 'frambuesita', '20.024.322-0', 15, date(2017, 3, 14), estimated_cost = 200,)
+# Pf.createProject(db, 2, 'cebollita', 'Las Condes', 'sub-campeon', '21.024.322-0', 20, date(2017, 3, 15), estimated_cost = 300,)
+# Pf.createProject(db, 3, 'lalala', 'Las Condes', 'sisisi', '22.024.322-0', 20, date(2017, 4, 30), estimated_cost = 150,)
 # with db_session:
 	# db.Projects[1].priority = 1
 	# db.Projects[2].priority = 2
@@ -169,28 +179,28 @@ signIn()
 	# db.Projects[5].fixed_priority = False
 
 # db.Projects[5].fixed_priority = True
-# Pf.PrintProjects(db)
-# Pf.EditProject(db, 1, new_linear_meters = 12, new_deadline = date(2017, 3, 18), new_real_cost = 315,)
-# Pf.DeleteProject(db, 2)
+# Pf.printProjects(db)
+# Pf.editProject(db, 1, new_linear_meters = 12, new_deadline = date(2017, 3, 18), new_real_cost = 315,)
+# Pf.deleteProject(db, 2)
 
 
-# Pf.CreateTask(db, 1, 1, 1, date(2014, 12, 1), date(2017,2,28))
-# Pf.CreateTask(db, 2, 2, 2, date(2014, 12, 16), date(2017,3,1))
-# Pf.CreateTask(db, 3, 3, 2, date(2014, 12, 18), date(2017,3,8))
-# Pf.CreateTask(db, 4, 4, 2, date(2014, 12, 26), date(2017,12,14))
+# Pf.createTask(db, 1, 1, 1, date(2014, 12, 1), date(2017,2,28))
+# Pf.createTask(db, 2, 2, 2, date(2014, 12, 16), date(2017,3,1))
+# Pf.createTask(db, 3, 3, 2, date(2014, 12, 18), date(2017,3,8))
+# Pf.createTask(db, 4, 4, 2, date(2014, 12, 26), date(2017,12,14))
 
-# Pf.EditTask(db, 1, efective_initial_date = d.datetime(2014, 1, 1), efective_end_date = d.datetime(2014, 1, 10))
-# Pf.EditTask(db, 2, efective_initial_date = d.datetime(2014, 1, 11), efective_end_date = d.datetime(2014, 1, 15))
-# Pf.EditTask(db, 3, efective_initial_date = d.datetime(2014, 1, 16))
+# Pf.editTask(db, 1, effective_initial_date = d.datetime(2014, 1, 1), effective_end_date = d.datetime(2014, 1, 10))
+# Pf.editTask(db, 2, effective_initial_date = d.datetime(2014, 1, 11), effective_end_date = d.datetime(2014, 1, 15))
+# Pf.editTask(db, 3, effective_initial_date = d.datetime(2014, 1, 16))
 
 # Eu.employees_teams_console(db, Ef.CreateEmployee, Ef.PrintEmployees, Ef.EditEmployee, Ef.CreateTeam, Ef.PrintTeams, Ef.PrintTeamsSkills, Ef.EditTeam, Ef.PrintSkills)
 # Pf.AssignTask(db, 1, 1)
-# Pf.DeleteTask(db,1)
-# Pf.EditProject(db, 2 ,new_real_linear_meters = 400, new_real_cost = 8000)
-# Pf.DeleteProject(db, 1)
+# Pf.deleteTask(db,1)
+# Pf.editProject(db, 2 ,new_real_linear_meters = 400, new_real_cost = 8000)
+# Pf.deleteProject(db, 1)
 
 
-#Pf.FailedTask(db, 2, 1, 1000)
+#Pf.failedTask(db, 2, 1, 1000)
 
 			
 			

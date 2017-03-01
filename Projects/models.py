@@ -36,7 +36,7 @@ def define_models(db):
 		def __repr__(self):
 			return self.description
 
-	# actividades tipo "licencia", "vacaciones", etc.
+	# actividades tipo "licencia", "vacaciones", etc. Una actividad necesariamente implica no trabajar.
 	class Activities(db.Entity):
 		id = PrimaryKey(int, auto=False)
 		description = Required(str)
@@ -47,11 +47,17 @@ def define_models(db):
 			return self.description
 	
 	class Projects_Activities(db.Entity):
-		id = PrimaryKey(int, auto=False)
+		id = PrimaryKey(int, auto=True)
 		project = Required(Projects)
 		activity = Required(Activities)
 		initial_date = Optional(date)
 		end_date = Optional(date)
+	
+	class Projects_Delays(db.Entity):
+		id = PrimaryKey(int, auto = True)
+		project_id = Required(int)
+		skill_id = Required(int)
+		delay = Required(int)
 	
 	class Employees_Activities(db.Entity):
 		id = PrimaryKey(int, auto=True)
@@ -62,9 +68,8 @@ def define_models(db):
 
 	class Tasks(db.Entity):
 		id = PrimaryKey(int, auto=True)
-		id_skill = Required('Skills') #Arreglar la discrepancia de nombre
-		# 'id_skill'
-		id_project = Required(Projects)
+		skill = Required('Skills')
+		project = Required(Projects)
 		original_initial_date = Required(date) #Esto debería ser optional,
 		# dejarse vacío y luego ser llenado automáticamente por el programa.
 		original_end_date = Required(date)#Esto debería ser optional,

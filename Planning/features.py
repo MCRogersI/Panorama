@@ -7,31 +7,31 @@ import numpy as np
 # Acá empieza: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
 
 # checked
-def IsHoliday(dt):
+def isHoliday(dt):
 	holidays = [date(2017, 9, 18), date(2017, 9, 20)]
 	if dt in holidays:
 		return True
 	return False
 
 #checked
-def IsNotWorkday(dt):
-	if dt.weekday() >= 5 or IsHoliday(dt):
+def isNotWorkday(dt):
+	if dt.weekday() >= 5 or isHoliday(dt):
 		return True
 	return False
 
 #checked
-def SumDays(dt, days):
+def sumDays(dt, days):
 	new_dt = dt
 	delta = timedelta(days = 1)
 	while(days > 0):
 		new_dt = new_dt + delta
-		while(IsNotWorkday(new_dt)):
+		while(isNotWorkday(new_dt)):
 			new_dt = new_dt + delta
 		days = days - 1
 	return new_dt
 
 #checked
-def GetAveragePerformance(db, id_skill):
+def getAveragePerformance(db, id_skill):
 	with db_session:
 		emp_skills = select(es for es in db.Employees_Skills if es.skill == db.Skills[id_skill])
 		perf = 0
@@ -43,20 +43,22 @@ def GetAveragePerformance(db, id_skill):
 
 #notar que asume que siempre perf > 0, si no, se cae: o sea, asume que para cada skill hay al menos un empleado capaz de realizarla 
 #checked
-def GetDays(db, id_skill, contract_number, num_workers):
+#pendiente: en el caso de fabricación, hay que tomar el máximo entre el valor calculado acá y los 15 días de los cristales
+#pendiente: como los cristales pueden ser otro número aparte de 15 días, eso debiera ser una columna en Projects, que por defecto sea 15, pero que el usuario pueda cambiar
+def getDays(db, id_skill, contract_number, num_workers):
 	with db_session:
 		project = db.Projects[contract_number]
 		linear_meters = project.linear_meters
 		if project.real_linear_meters != None:
 			linear_meters = project.real_linear_meters
 		
-		perf = GetAveragePerformance(db, id_skill)
+		perf = getAveragePerformance(db, id_skill)
 		days = linear_meters/(num_workers * perf)
 		return days
 
 #checked with only one project_activity
 #checked with several project_activity
-def ClientAvailable(db, contract_number, initial_date, end_date):
+def clientAvailable(db, contract_number, initial_date, end_date):
 	with db_session:
 		proj_acts = select(pa for pa in db.Projects_Activities if pa.project == db.Projects[contract_number])
 		for pa in proj_acts:
@@ -65,7 +67,7 @@ def ClientAvailable(db, contract_number, initial_date, end_date):
 		return True
 
 #checked
-def EmployeesBySkill(db, id_skill):
+def employeesBySkill(db, id_skill):
 	with db_session:
 		ids_employees = []
 		emps = select(e for e in db.Employees)
@@ -76,7 +78,7 @@ def EmployeesBySkill(db, id_skill):
 		return ids_employees
 
 # checked
-def EmployeesByStatus(db, contract_number, ids_employees, this_project, fixed):
+def employeesByStatus(db, contract_number, ids_employees, this_project, fixed):
 	with db_session:
 		ids_status = []
 		for id in ids_employees:
@@ -89,7 +91,7 @@ def EmployeesByStatus(db, contract_number, ids_employees, this_project, fixed):
 		return ids_status
 
 #checked
-def EmployeesAvailable(db, ids_employees, initial_date, end_date):
+def employeesAvailable(db, ids_employees, initial_date, end_date):
 	with db_session:
 		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
@@ -104,7 +106,7 @@ def EmployeesAvailable(db, ids_employees, initial_date, end_date):
 		return True		
 
 #checked
-def HasNOnes(chosen, n):
+def hasNOnes(chosen, n):
 	ones = 0
 	for c in chosen:
 		if c == 1:
@@ -114,7 +116,7 @@ def HasNOnes(chosen, n):
 	return False
 
 #checked
-def StringToList(as_string, chosen):
+def stringToList(as_string, chosen):
 	for i in range(1, len(as_string) - 1):
 		if as_string[-i] == '0':
 			chosen[-i] = 0
@@ -123,7 +125,7 @@ def StringToList(as_string, chosen):
 	return chosen
 
 #checked
-def Successor(chosen, num_workers):
+def successor(chosen, num_workers):
 	as_string = ''
 	last = [] # definimos la última combinación posible de elegidos para saber cuando parar
 	for _ in range(0, num_workers): last.append(1)
@@ -137,15 +139,15 @@ def Successor(chosen, num_workers):
 		if c == 1: as_string = as_string + '1'
 	
 	as_string = str(bin(int(as_string,2) + int('1',2)))
-	chosen = StringToList(as_string, chosen)
+	chosen = stringToList(as_string, chosen)
 	
-	while not HasNOnes(chosen, num_workers) and chosen != last:
+	while not hasNOnes(chosen, num_workers) and chosen != last:
 		as_string = str(bin(int(as_string,2) + int('1',2)))
-		chosen = StringToList(as_string, chosen)
+		chosen = stringToList(as_string, chosen)
 	return chosen
 
 #checked
-def GetChosenIds(possibilities, chosen):
+def getChosenIds(possibilities, chosen):
 	ids = []
 	for i in range(0, len(possibilities)):
 		if chosen[i] == 1:
@@ -153,21 +155,21 @@ def GetChosenIds(possibilities, chosen):
 	return ids
 	
 #checked (kind of)
-def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date):
+def findEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date):
 	with db_session:		
-		ids_employees = EmployeesBySkill(db, id_skill) # elegimos a los empleados con el skill necesario
+		ids_employees = employeesBySkill(db, id_skill) # elegimos a los empleados con el skill necesario
 		
-		cluster1 = EmployeesByStatus(db, contract_number, ids_employees, True, True) # empleados fijos en este proyecto
-		cluster2 = EmployeesByStatus(db, contract_number, ids_employees, True, False) # empleados vetados en este proyecto
-		cluster3 = EmployeesByStatus(db, contract_number, ids_employees, False, True) # empleados fijos en otros proyectos
-		cluster4 = EmployeesByStatus(db, contract_number, ids_employees, False, False) # empleados vetados en otros proyectos
+		cluster1 = employeesByStatus(db, contract_number, ids_employees, True, True) # empleados fijos en este proyecto
+		cluster2 = employeesByStatus(db, contract_number, ids_employees, True, False) # empleados vetados en este proyecto
+		cluster3 = employeesByStatus(db, contract_number, ids_employees, False, True) # empleados fijos en otros proyectos
+		cluster4 = employeesByStatus(db, contract_number, ids_employees, False, False) # empleados vetados en otros proyectos
 		
 		ids_employees = list(id for id in ids_employees if id not in cluster1 and id not in cluster2) # sacamos a todos los empleados vetados en este proyecto
 		ids_found = cluster1  # incluimos sí o sí a los empleados que están fijos en el proyecto
 		
 		num_workers = num_workers - len(ids_found)
 		if num_workers <= 0: #revisamos si con los empleados fijos basta y si ellos están disponibles en las fechas necesarias
-			if EmployeesAvailable(db, ids_found, initial_date, end_date):
+			if employeesAvailable(db, ids_found, initial_date, end_date):
 				return ids_found
 			else:
 				return []
@@ -194,22 +196,22 @@ def FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		for _ in range(0, num_workers): last.append(1)
 		for _ in range(0, len(chosen) - num_workers): last.append(0)
 		
-		while(not EmployeesAvailable(db, ids_found + GetChosenIds(possibilities, chosen), initial_date, end_date)):
+		while(not employeesAvailable(db, ids_found + getChosenIds(possibilities, chosen), initial_date, end_date)):
 			if chosen == last:
 				return []
-			chosen = Successor(chosen, num_workers)
+			chosen = successor(chosen, num_workers)
 			
-		return ids_found + GetChosenIds(possibilities, chosen)
+		return ids_found + getChosenIds(possibilities, chosen)
 		
 #checked (kind of)
-def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date):
+def findDatesEmployees(db, id_skill, contract_number, num_workers, current_date):
 	days_from_current = 1
-	task_days = GetDays(db, id_skill, contract_number, num_workers)
+	task_days = getDays(db, id_skill, contract_number, num_workers)
 	while(True):
-		initial_date = SumDays(current_date, days_from_current)
-		end_date = SumDays(current_date, days_from_current + task_days - 1)
-		if ClientAvailable(db, contract_number, initial_date, end_date):
-			ids_found = FindEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date)
+		initial_date = sumDays(current_date, days_from_current)
+		end_date = sumDays(current_date, days_from_current + task_days - 1)
+		if clientAvailable(db, contract_number, initial_date, end_date):
+			ids_found = findEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date)
 			if ids_found == False:
 				return None, None, None
 			elif len(ids_found) > 0:
@@ -231,7 +233,7 @@ def FindDatesEmployees(db, id_skill, contract_number, num_workers, current_date)
 #####################################################################
 # Acá empieza: funciones para asignar/desasignar tareas a empleados #
 
-def AssignTask(db, ids_employees, id_task, initial_date = None, end_date = None):
+def assignTask(db, ids_employees, id_task, initial_date = None, end_date = None):
 	with db_session:
 		if (type(ids_employees) != int):
 			for id_employee in ids_employees:
@@ -244,7 +246,7 @@ def AssignTask(db, ids_employees, id_task, initial_date = None, end_date = None)
 			et.planned_end_date = end_date
 
 	
-def UnassignTask(db, id_employee, id_task):
+def unassignTask(db, id_employee, id_task):
 	with db_session:
 		db.Employees_Tasks[(id_employee, id_task)].delete()
 	
@@ -258,7 +260,7 @@ def eraseTasks(db):
 			task = employee_task.task
 			#Este 'if', para verificar si el proyecto está fijo, está fuera del 'select' porque
 			# pony parece no aceptar esa expresión como condición adicional.
-			if (task.effective_initial_date == None and not task.id_project.fixed_planning):
+			if (task.effective_initial_date == None and not task.project.fixed_planning):
 				employee_task.delete()
 
 def cleanTasks(db):
@@ -266,14 +268,14 @@ def cleanTasks(db):
 		employees_tasks_to_delete = select(employee_task for employee_task in db.Employees_Tasks)
 		for employee_task in employees_tasks_to_delete:
 			task= employee_task.task
-			if (task.effective_initial_date == None and  not task.id_project.fixed_planning):
+			if (task.effective_initial_date == None and  not task.project.fixed_planning):
 				employee_task.delete()
 
 ###################################################################################
 		#Cambiar en las tablas id_skill y id_project por skill y project !!!
 				# !!!!
 				###############################
-		# task.id_project.contract_number
+		# task.project.contract_number
 # Esta funcion borra las actividades que no están fijas y que no han empezado
 #####################################################################
 # Las siguientes funciones son para cambiar la prioridad
@@ -326,6 +328,11 @@ def changePriority(db, contract_number, new_priority):
 			db.Projects[contract_number].priority = new_priority
 			db.Projects[contract_number].fixed_priority = True
 			db.Projects.select().order_by(lambda p: p.contract_number)
+			
+############
+#Este evento debe gatillar una replanificación
+	doPlanning(db)
+###########
 #Funcion para cambiar la prioridad de manera manual. Luego de cambiarla, la prioridad se marca como fijada por el usuario.
 #check
 
@@ -337,12 +344,15 @@ def addDelayed(db, Delayed, contract_number, task, num_workers, initial, ending,
 	Delayed =  Delayed.append({'contract number': contract_number, 'task': task, 'num workers': num_workers, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
 	return Delayed
 
-def DoPlanning(db, CreateTask, updateEngagements):
+
+
+def doPlanning(db):
+	import Projects.features as Pf
+	import Stock.features as Sf
 	Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 
 'task', 'num workers', 'initial date', 'ending date', 'deadline'])#Esto debería
 	# estar encapsulado en otro método.
 	cleanTasks(db) #Aquí se borran todas las tasks de planificaciones anteriores (las 'borrables')
-
 	with db_session:
 		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
 
@@ -354,21 +364,21 @@ def DoPlanning(db, CreateTask, updateEngagements):
 				for s in skills:
 					if s.id < 4:
 						# obtiene el id del skill correspondiente a esa tarea y revisa que no corresponda a una 'Instalación'.
-						task = db.Tasks.get(id_skill = s, id_project = p)
+						task = db.Tasks.get(skill = s, project = p, failed = None)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 
 						if task == None or (task != None and task.effective_initial_date == None):
 							# arriba revisamos que la effective_initial_date sea None, si no, no la cambiamos
-							initial, ending, emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+							initial, ending, emps = findDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 							if task == None:
-								CreateTask(db, s.id, p.contract_number, initial, ending)
-								task = db.Tasks.get(id_skill = s, id_project = p)
+								Pf.createTask(db, s.id, p.contract_number, initial, ending)
+								task = db.Tasks.get(skill = s, project = p, failed = None)
 							if ending > p.deadline :
 #								print("Se pasó la tarea  " +str(s) +" del proyecto "+str(p.contract_number))
 								#aquí se podría o no avisar que el proyecto estaría fuera de plazo
 								Delayed = addDelayed(db, Delayed, p.contract_number, s, num_workers, initial, ending, p.deadline)
 							
-							AssignTask(db, emps, task, initial, ending)
+							assignTask(db, emps, task, initial, ending)
 							last_release_date = ending
 						else: 	# asume que el et.planned_end_date está bien actualizado, si no, habría que calcular el last_release_days como
 								# task.effective_initial_date + los días que se demora el trabajo según la cantidad de trabajadores
@@ -376,16 +386,16 @@ def DoPlanning(db, CreateTask, updateEngagements):
 								last_release_date = et.planned_end_date
 						
 					elif s.id == 4:
-						task = db.Tasks.get(id_skill = s, id_project = p)
+						task = db.Tasks.get(skill = s, project = p, failed = None)
 						employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)
 						ending = [None, None, None, None]
 						
 						if len(employees_tasks) == 0 and (task == None or (task != None and task.effective_initial_date == None)):
-							initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+							initial, ending[num_workers-1], emps = findDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 					
 							while(ending[num_workers-1] > p.deadline and num_workers < 4):
 								num_workers = num_workers + 1
-								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+								initial, ending[num_workers-1], emps = findDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 								if ending[num_workers-1] == None:
 									num_workers = num_workers - 1
 									break
@@ -397,22 +407,21 @@ def DoPlanning(db, CreateTask, updateEngagements):
 									if ending[n-1] != None and ending[n-1] < ending[num_workers-1]:
 										num_workers = n
 								
-								initial, ending[num_workers-1], emps = FindDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
+								initial, ending[num_workers-1], emps = findDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
 								#aquí ya no hay nada que hacer y se le debería mostrar la tabla Delayed
 								Delayed = addDelayed(db, Delayed, p.contract_number, s, num_workers, initial, ending[num_workers-1], p.deadline)
 								if task == None:
-									CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
-									task = db.Tasks.get(id_skill = s, id_project = p)
-								AssignTask(db, emps, task, initial, ending[num_workers-1])
+									Pf.createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
+									task = db.Tasks.get(skill = s, project = p)
+								assignTask(db, emps, task, initial, ending[num_workers-1])
 							else:
 								if task == None:
-									CreateTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
-									task = db.Tasks.get(id_skill = s, id_project = p)
-								AssignTask(db, emps, task, initial, ending[num_workers-1])
+									Pf.createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
+									task = db.Tasks.get(skill = s, project = p)
+								assignTask(db, emps, task, initial, ending[num_workers-1])
 			for e in p.engagements:
-				updateEngagements(db, e.SKU.id)			
-		print(Delayed)		
-#tenemos un problema con los metros lineales (310) de un proyecto que 3 rectificadores con promedio 150 m/dia lo hacen en dos días
+				Sf.updateEngagements(db, e.sku.id)			
+		print(Delayed)
 
 
 
@@ -426,19 +435,19 @@ def DoPlanning(db, CreateTask, updateEngagements):
 				# 	# tarea y revisa que no corresponda a una 'Instalación'.
 				# 	#  También revisa que la realización de la tarea aún no
 				# 	# haya comenzado (que sea 'planificable').
-				# 	(initial, ending, emps) = FindDatesEmployees(db, t.id_skill.id, p.contract_number,1, d_t)
+				# 	(initial, ending, emps) = FindDatesEmployees(db, t.skill.id, p.contract_number,1, d_t)
 				# 	days=ending.day-initial.day
 				# 	AssignTask(db,emps,t.id,initial,ending)
 				# 	d_t=d_t+timedelta(days)
                 #
 				# 	if(d_t > p.deadline):
 				# 		AvailabilityUpdate(db, p.contract_number)
-				# 		#Delayed = addDelayed(db, Delayed, p.contract_number, t.id_skill, initial, ending, p.deadline)
+				# 		#Delayed = addDelayed(db, Delayed, p.contract_number, t.skill, initial, ending, p.deadline)
 				# 		#print(Delayed)
-				# if(t.id_skill.id == 4 and t.effective_initial_date == None):
+				# if(t.skill.id == 4 and t.effective_initial_date == None):
 				# 	num_workers=1
 				# 	while (num_workers<=4):
-				# 		(initial,ending,emps)=FindDatesEmployees(db, t.id_skill.id, p.contract_number, num_workers, d_t)
+				# 		(initial,ending,emps)=FindDatesEmployees(db, t.skill.id, p.contract_number, num_workers, d_t)
 				# 		days=ending.day-initial.day
 				# 		AssignTask(db, emps, t.id, initial, ending)
 				# 		if(num_workers==4 and d_t+timedelta(days)>p.deadline):
@@ -448,3 +457,8 @@ def DoPlanning(db, CreateTask, updateEngagements):
 				# 		if(num_workers < 4 and d_t+timedelta(days)>p.deadline):
 				# 			num_workers=num_workers+1
                 #
+##########
+#eventos que gatillan una replanificación deben ser especificados
+##########
+
+
