@@ -21,7 +21,7 @@ def createProject(db, contract_number, client_address, client_comuna,
 		#NO ES BROMA!!
 	#?????????????????????????????	
 		#############################################################
-	# Pf.doPlanning(db)
+	Pf.doPlanning(db)
 	
 	
 def printProjects(db):
@@ -120,13 +120,14 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 
 def createDelay(db, project_id, skill_id, delay):
 	'''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = project_id, alargando el end date en delay días. 		Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html '''
-	 
+	#el método necesita que cada vez que se ingrese la effective_initial_date de alguna tarea se planifique el resto del proyecto
+	#para luego ingresar el atraso sobre esa planificación
 	with db_session:
 		p = db.Projects[project_id]
 		t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
 		db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
 		et = db.Employees_Tasks.get(task = t)
-		print(et)	
+#		print(db.Skills[skill_id])	
 		et.planned_end_date = et.planned_end_date+timedelta(delay)
 		
 # métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees)

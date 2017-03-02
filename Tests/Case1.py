@@ -107,7 +107,7 @@ with db_session:
 #################
 # Crear atrasos #
 #################
-Pf.createDelay(db, 2, 4, 5)
+Pf.createDelay(db, 2, 2, 8)
 
 
 #########################################
