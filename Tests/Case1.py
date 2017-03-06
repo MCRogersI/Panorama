@@ -1,6 +1,6 @@
 #Caso de prueba 1
 #Se inicializan las siguientes entidades (tablas) : XXX, XXX, XXX, ...
-#Se prueban la(s) siguiente(s) funcionalidad(es): utilización de prioridades, fijación de proyectos, algoritmo de asignación en general.
+#Se prueban la(s) siguiente(s) funcionalidad(es): utilización de prioridades, fijación de proyectos, algoritmo de asignación en general, ingreso de atrasos.
 from pony.orm import *
 from database import db
 import Employees.features as Ef, Employees.usuario as Eu
@@ -90,6 +90,7 @@ Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 3, 2))
 Sf.createPurchases(db,(1,155),date(2017, 3, 4))
 
 
+
 aux_check_debug_variable_stock_calculation = Sf.calculateStock(db,1)
 
 #print(aux_check_debug_variable_stock_calculation)
@@ -103,8 +104,10 @@ with db_session:
 	#Fijación de proyectos
 	db.Projects[4].fixed_planning = True
 
-
-
+#################
+# Crear atrasos #
+#################
+Pf.createDelay(db, 2, 2, 8)
 
 
 
@@ -133,10 +136,8 @@ with db_session:
 #PLf.assignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
 #PLf.assignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
 
-with db_session:
-	#Definición de fechas de inicio efectivas para algunas tareas
-	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
-	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
-	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
-	
-# Pf.createDelay(db, 1, 4, 5)
+#with db_session:
+#	#Definición de fechas de inicio efectivas para algunas tareas
+#	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
+#	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
+#	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
