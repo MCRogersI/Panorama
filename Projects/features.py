@@ -121,7 +121,7 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 		
 		
 		
-		
+	
 # métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees)
 def createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
 	import Planning.features as PLf
@@ -130,7 +130,6 @@ def createEmployeeActivity(db, employee, activity, initial_year, initial_month, 
 	with db_session:
 		db.Employees_Activities(employee = employee, activity = activity, initial_date = initial_date, end_date = end_date)
 	if updateEmployeeProjects(db, employee, initial_date, end_date):
-		db.Employees_Activities.select().show()
 		PLf.doPlanning(db)
 		
 def updateEmployeeProjects(db, employee, initial_date, end_date):

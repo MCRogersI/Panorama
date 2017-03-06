@@ -90,18 +90,26 @@ def employeesByStatus(db, contract_number, ids_employees, this_project, fixed):
 					ids_status.append(id)
 		return ids_status
 
+def datesOverlap(initial_date_1, end_date_1, initial_date_2, end_date_2):
+	if initial_date_1 <= initial_date_2 and end_date_1 >= initial_date_2:
+		return False
+	elif initial_date_1 >= initial_date_2 and end_date_1 <= end_date_2:
+		return False
+	elif initial_date_1 <= end_date_2 and end_date_1 >= end_date_2:
+		return False
+	return True
+
 #checked
 def employeesAvailable(db, ids_employees, initial_date, end_date):
 	with db_session:
 		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
+
 		for ea in emp_acts:
-			if (initial_date >= ea.initial_date and initial_date <= ea.end_date) or (
-							end_date >= ea.initial_date and end_date <= ea.end_date):
+			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
 				return False
 		for et in emp_tasks:
-			if (initial_date >= et.planned_initial_date and initial_date <= et.planned_end_date)\
-					or (end_date >= et.planned_initial_date and end_date <= et.planned_end_date):
+			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
 				return False
 		return True		
 
