@@ -128,7 +128,9 @@ def createDelay(db, project_id, skill_id, delay):
 		db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
 		et = db.Employees_Tasks.get(task = t)
 		et.planned_end_date = et.planned_end_date+timedelta(delay)
-		
+
+
+
 # métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees)
 def createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
 	'''
@@ -188,8 +190,8 @@ def updateProjectActivities(db, project, initial_date, end_date):
 	'''
 	changed = False
 	with db_session:
-		tasks_project = select(tp for tp in db.Employees_Tasks if et.task.project == project and et.task.skill.id in [1,4])
-		for et in emp_tasks:
+		tasks_project = select(tp for tp in db.Employees_Tasks if tp.task.project.contract_number == project and tp.task.skill.id in [1,4])
+		for tp in tasks_project:
 			if (initial_date >= tp.planned_initial_date and initial_date <= tp.planned_end_date)\
 					or (end_date >= tp.planned_initial_date and end_date <= tp.planned_end_date):
 				tp.task.project.fixed_planning = False
