@@ -118,9 +118,9 @@ Pf.createDelay(db, 2, 2, 8)
 #PLf.assignTask(db, 5, 5,  initial_date=date(2017, 4, 15), end_date=date(2017,4,25))
 #PLf.assignTask(db, 9, 9,  initial_date=date(2017, 5, 1), end_date=date(2017,5,12))
 
-#with db_session:
-#	#Definición de fechas de inicio efectivas para algunas tareas
+with db_session:
+	#Definición de fechas de inicio efectivas para algunas tareas
 #	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
 #	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
-#	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
+	db.Tasks[9].effective_initial_date = date(2017, 4, 18)
 
