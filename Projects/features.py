@@ -123,11 +123,26 @@ def createDelay(db, project_id, skill_id, delay):
 	#el método necesita que cada vez que se ingrese la effective_initial_date de alguna tarea se planifique el resto del proyecto
 	#para luego ingresar el atraso sobre esa planificación
 	with db_session:
-		p = db.Projects[project_id]
-		t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
-		db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
-		et = db.Employees_Tasks.get(task = t)
-		et.planned_end_date = et.planned_end_date+timedelta(delay)
+		if skill_id < 4:
+			p = db.Projects[project_id]
+			t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
+			db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
+			et = db.Employees_Tasks.get(task = t)
+			et.planned_end_date = et.planned_end_date+timedelta(delay)
+			skill_aux = skill_id + 1
+			while skill_aux <= 4:#si es una actividad anterior a instalación, atrasa todas las 
+			#tareas que le siguen
+				t_aux = db.Tasks.get(skill = db.Skills[skill_aux], project = p)
+				et_aux = db.Employees_Tasks.get(task = t_aux)
+				et_aux.planned_initial_date = et_aux.planned_initial_date + timedelta(delay)
+				et_aux.planned_end_date = et_aux.planned_end_date+timedelta(delay)
+				skill_aux += 1
+		else:
+			p = db.Projects[project_id]
+			t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
+			db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
+			et = db.Employees_Tasks.get(task = t)
+			et.planned_end_date = et.planned_end_date+timedelta(delay)
 
 
 
@@ -206,3 +221,34 @@ def deleteProjectActivity(db, id_project_activity):
 def printProjectsActivities(db):
 	with db_session:
 		db.Projects_Activities.select().show()
+#def makeInform(db):
+#	import csv
+#	import psycopg2
+#	with db_session:
+#		conn = psycopg2.connect(user='postgres', password='panorama', host='localhost', database='panorama')
+#		cur = conn.cursor()
+#		projects = db.Projects.select()		
+#		cur.execute("copy (select * from projects) to '/home/mauricio/Projects/Panorama/pepo.csv'")
+		
+#		with open('poto.csv', 'w') as f:
+#			writer = csv.writer(f, delimiter = ',')
+#			for project in projects:
+#				writer.writerow(project)
+#		print("Done")
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
