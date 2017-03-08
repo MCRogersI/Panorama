@@ -120,8 +120,6 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 
 def createDelay(db, project_id, skill_id, delay):
 	'''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = project_id, alargando el end date en delay días. 		Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html '''
-	#el método necesita que cada vez que se ingrese la effective_initial_date de alguna tarea se planifique el resto del proyecto
-	#para luego ingresar el atraso sobre esa planificación
 	with db_session:
 		if skill_id < 4:
 			p = db.Projects[project_id]
