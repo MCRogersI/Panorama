@@ -1,6 +1,7 @@
 from datetime import date
 from pony.orm import *
-from Planning.features import changePriority, addDelayed, doPlanning, createReport, createDelayedReport, createPlanningReport
+from Planning.features import changePriority, addDelayed, doPlanning
+form Planning.features import createGlobalReport
 
 def planning_console(db,level):
 	if level==1:
@@ -59,7 +60,10 @@ def planning_console(db,level):
 				if opt2 == '4':
 					continue
 			if opt == '4':
-				print(' \n acá va la función de alonso')
+				try:
+					createGlobalReport()
+				except:
+					print('estamos trabajando para usted')
 			if opt == '5':
 				break
 			
