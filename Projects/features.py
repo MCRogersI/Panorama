@@ -55,23 +55,73 @@ def deleteProject(db, contract_number):
 	with db_session:
 		db.Projects[contract_number].delete()
 
-def getCostProject(db, contract_number, fixed_cost, variable_cost):
-	''' Este método entrega el costo de un proyecto considerando que hay un costo fijo y además 
-		un costo variable que depende de los metros lineales del proyecto, hasta el momento 
-		estos parámetros se ingresan cada vez que se quiera calcular el costo de un proyecto'''
+# def getCostProject(db, contract_number, fixed_cost, variable_cost):
+# 	''' Este método entrega el costo de un proyecto considerando que hay un costo fijo y además 
+# 		un costo variable que depende de los metros lineales del proyecto, hasta el momento 
+# 		estos parámetros se ingresan cada vez que se quiera calcular el costo de un proyecto'''
+# 	with db_session:
+# 		try:	
+# 			engagements = select(e for e in db.Engagements if e.project == db.Projects[contract_number])
+# 			cost=fixed_cost+variable_cost*db.Projects[contract_number].linear_meters
+# 			for e in engagements:
+# 				cost=cost + e.sku.price*e.quantity
+# 			return cost
+# 		except ObjectNotFound as e:
+# 			print('Object not found: {}'.format(e))
+# 		except ValueError as e:
+# 			print('Value error: {}'.format(e))
+def getCostRM(db, contract_number):#RM = Raw Materials
 	with db_session:
-		try:	
-			engagements = select(e for e in db.Engagements if e.project == db.Projects[contract_number])
-			cost=fixed_cost+variable_cost*db.Projects[contract_number].linear_meters
-			for e in engagements:
-				cost=cost + e.sku.price*e.quantity
-			return cost
-		except ObjectNotFound as e:
-			print('Object not found: {}'.format(e))
-		except ValueError as e:
-			print('Value error: {}'.format(e))
+		p = db.Projects[contract_number]
+		sum_crystal = 0
+		sum_profile = 0
+		sum_components = 0
+		for e in p.engagements:#los if van separados por si alguna vez hay una distinción por las unidades de medida
+			if e.sku.type == 'Crystal' :
+				sum_crystal += e.sku.price*e.quantity
+			if e.sku.type == 'Profile':
+				sum_profile += e.sku.price*e.quantity
+			if e.sku.type == 'Component':
+				sum_components += e.sku.price*e.quantity
+		return sum_crystal + sum_components+ sum_profile
+def getCostInstallation(db, contract_number, internal = True, num_projects = 1):
+	with db_session:
+		total_cost = 0
+		p = db.Projects[contract_number]
+		price_ml = db.Operating_Costs['Costo por metro lineal de instalacion'].cost
+		task_aux = db.Tasks.get(skill = 4, project = p)
+		print(task_aux)
+		if internal:
+			total_cost += p.linear_meters*price_ml
+		else:
+			total_cost += p.linear_meters*price_ml*1.5 #suponiendo que contratar un
+			# instalador externo cuesta 1.5 veces más
+		total_cost += db.Freight_Costs[p.client_comuna].freight_cost/num_projects
+		return total_cost
+def getCostFabrication(db, contract_number):
+	#hay que tener los metros lineales vendidos al mes, aqui los fijo según el excel
+	monthly_selled_ml = 240
+	monthly_income = 80000000 #venta promedio mensual, basada en el año
+	total_cost = 0
+	p = db.Projects[contract_number]
+	total_cost += db.Operating_Costs['Remuneracion fija fabrica'].cost
+	total_cost += db.Operating_Costs['Remuneracion variable fabrica'].cost
+	total_cost += db.Operating_Costs['Porcentaje ventas para materiales'].cost*monthly_income
+	total_cost += db.Operating_Costs['Arriendo fabrica'].cost
+	total_cost += db.Operating_Costs['Costos operacion'].cost
+	total_cost = total_cost/monthly_selled_ml
+	total_cost = total_cost*p.linear_meters
+	return total_cost
 
 
+
+
+def getCostProject(db, contract_number):
+	with db_session:
+		rmc = getCostRM(db, contract_number)
+		ic = getCostInstallation(db, contract_number, internal = True, num_projects = 1)
+		fc = getCostFabrication(db, contract_number)
+		return rmc + ic + fc
 def createTask(db, id_skill, contract_number, original_initial_date, original_end_date, effective_initial_date = None, effective_end_date = None):
 	with db_session:
 		t = db.Tasks(skill = id_skill, project = contract_number, original_initial_date = original_initial_date, original_end_date = original_end_date)
@@ -121,15 +171,28 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 
 def createDelay(db, project_id, skill_id, delay):
 	'''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = project_id, alargando el end date en delay días. 		Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html '''
-	#el método necesita que cada vez que se ingrese la effective_initial_date de alguna tarea se planifique el resto del proyecto
-	#para luego ingresar el atraso sobre esa planificación
 	with db_session:
-		p = db.Projects[project_id]
-		t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
-		db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
-		et = db.Employees_Tasks.get(task = t)
-#		print(db.Skills[skill_id])	
-		et.planned_end_date = et.planned_end_date+timedelta(delay)
+		if skill_id < 4:
+			p = db.Projects[project_id]
+			t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
+			db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
+			et = db.Employees_Tasks.get(task = t)
+			et.planned_end_date = et.planned_end_date+timedelta(delay)
+			skill_aux = skill_id + 1
+			while skill_aux <= 4:#si es una actividad anterior a instalación, atrasa todas las 
+			#tareas que le siguen
+				t_aux = db.Tasks.get(skill = db.Skills[skill_aux], project = p)
+				et_aux = db.Employees_Tasks.get(task = t_aux)
+				et_aux.planned_initial_date = et_aux.planned_initial_date + timedelta(delay)
+				et_aux.planned_end_date = et_aux.planned_end_date+timedelta(delay)
+				skill_aux += 1
+		else:
+			p = db.Projects[project_id]
+			t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
+			db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
+			et = db.Employees_Tasks.get(task = t)#si es una instalación con varios trabajadores
+			#asignados podría no funcionar esta línea
+			et.planned_end_date = et.planned_end_date+timedelta(delay)
 
 
 
@@ -208,3 +271,34 @@ def deleteProjectActivity(db, id_project_activity):
 def printProjectsActivities(db):
 	with db_session:
 		db.Projects_Activities.select().show()
+#def makeInform(db):
+#	import csv
+#	import psycopg2
+#	with db_session:
+#		conn = psycopg2.connect(user='postgres', password='panorama', host='localhost', database='panorama')
+#		cur = conn.cursor()
+#		projects = db.Projects.select()		
+#		cur.execute("copy (select * from projects) to '/home/mauricio/Projects/Panorama/pepo.csv'")
+		
+#		with open('poto.csv', 'w') as f:
+#			writer = csv.writer(f, delimiter = ',')
+#			for project in projects:
+#				writer.writerow(project)
+#		print("Done")
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

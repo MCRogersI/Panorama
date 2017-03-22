@@ -90,3 +90,20 @@ def define_models(db):
 		PrimaryKey(employee, task)
 		planned_initial_date = Optional(date)
 		planned_end_date = Optional(date)
+		
+	class Freight_Costs(db.Entity):#La cantidad costo flete sistema que aparece en el excel Base de Datos 			#_sistema Gestion de Operaciones_ACO_04 03 2017_vf.xlsx, en la hoja 'COSTO ESTANDAR INSTALACION',
+		#se debería fijar una sola vez el costo para todas las comunas de chile. El nombre de la comuna
+		#en name, y la región en region. Se podría también tratar a la región como un int
+		# id = PrimaryKey(int, auto = False)
+		name = PrimaryKey(str)
+		region = Required(str)		
+		freight_cost = Required(float)
+		
+	class Operating_Costs(db.Entity):#Cantidades utilizadas en el cálculo del costo de fabricación del
+		#excel Base de Datos _sistema Gestion de Operaciones_ACO_04 03 2017_vf.xlsx, en la hoga 
+		#'COSTO ESTANDAR FABRICACION'. Se ingresarán los costos fijos y variables de la fábrica,
+		# el arriendo y los gastos de luz, agua, etc, el porcentaje de ventas para los materiales. 
+		# La depreciación podría ir aquí o ser ingresada cuando se necesite calcular el costo de fab.
+		name = PrimaryKey(str)
+		cost = Required(float)
+		

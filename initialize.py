@@ -20,3 +20,4 @@ with db_session:
 	db.Activities(id=1, description='Licencia')
 	db.Activities(id=2, description='Vacaciones')
 	db.Activities(id=3, description='Cliente ocupado')
+
