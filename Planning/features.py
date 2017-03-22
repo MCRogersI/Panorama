@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font
-from Planning.reports import createReport
+# from Planning.reports import createReport
 
 #################################################################################################################
 # Acá empieza: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
@@ -442,7 +442,7 @@ def doPlanning(db):
 								assignTask(db, emps, task, initial, ending[num_workers-1])
 			for e in p.engagements:
 				Sf.updateEngagements(db, e.sku.id)			
-		createReport(db, Delayed)
+		# createReport(db, Delayed)
 		
 		
 
