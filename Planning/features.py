@@ -98,12 +98,12 @@ def employeesByStatus(db, contract_number, ids_employees, this_project, fixed):
 
 def datesOverlap(initial_date_1, end_date_1, initial_date_2, end_date_2):
 	if initial_date_1 <= initial_date_2 and end_date_1 >= initial_date_2:
-		return False
+		return True
 	elif initial_date_1 >= initial_date_2 and end_date_1 <= end_date_2:
-		return False
+		return True
 	elif initial_date_1 <= end_date_2 and end_date_1 >= end_date_2:
-		return False
-	return True
+		return True
+	return False
 
 #checked
 def employeesAvailable(db, ids_employees, initial_date, end_date):
@@ -112,10 +112,10 @@ def employeesAvailable(db, ids_employees, initial_date, end_date):
 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
 
 		for ea in emp_acts:
-			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
+			if datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
 				return False
 		for et in emp_tasks:
-			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
+			if datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
 				return False
 		return True		
 
@@ -593,15 +593,15 @@ def planningChangesPlausible(db):
 		return False, "Uno de los empleados fue asignado a una tarea para la cual no está capacitado."
 	if not employeesActivitiesPlausible(db, ws):
 		return False, "Uno de los empleados fue asignado a una tarea en fecha que coincide con sus vacaciones o alguna licencia."
-	if not employeesTasksPlausible(ws):
+	if not employeesTasksPlausible(db, ws):
 		return False, "Uno de los empleados fue asignado a más de una tarea en la misma fecha."
-	if not employeesRestrictionsPlausible(db, ws)[0]:
-		return False, employeesRestrictionsPlausible(db, ws)[1]
+	if not employeesRestrictionsPlausible(db, ws):
+		return False, str(employeesRestrictionsPlausible(db, ws))
 	return True, "Los cambios hechos a la planificación son válidos, por lo tanto, serán aplicados."
 
 def employeesSkillsPlausible(db, ws):
 	with db_session:
-		for next_row in range(4, ws.max_row):
+		for next_row in range(4, ws.max_row + 1):
 			#revisamos primero el caso de las Skills 1, 2, 3 que es el más sencillo
 			rectifier = ws.cell(row = next_row, column = 4).value
 			designer = ws.cell(row = next_row, column = 7).value
@@ -621,38 +621,68 @@ def employeesSkillsPlausible(db, ws):
 		
 def employeesActivitiesPlausible(db, ws):
 	with db_session:
-		def employeesAvailable(db, ids_employees, initial_date, end_date):
-	with db_session:
-		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
-
-		for ea in emp_acts:
-			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
-				return False
-		for et in emp_tasks:
-			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
-				return False
-		return True		
+		for next_row in range(4, ws.max_row + 1):
+			rectifier = ws.cell(row = next_row, column = 4).value
+			designer = ws.cell(row = next_row, column = 7).value
+			fabricator = ws.cell(row = next_row, column = 10).value
+			installers = str(ws.cell(row = next_row, column = 13).value).split(';')
+			employees = [[rectifier], [designer], [fabricator], installers]
+			for i in range(0, 4):
+				initial_date = ws.cell(row = next_row, column = 3*i+2).value.date()
+				end_date = ws.cell(row = next_row, column = 3*i+3).value.date()
+				if not employeesAvailableBool(db, employees[i], initial_date, end_date, True):
+					return False
 	return True
 	
-def employeesTasksPlausible(ws):
+def employeesTasksPlausible(db, ws):
+	with db_session:
+		#recorremos para cada empleado el reporte de planificación, guardando todas las veces en que aparece asignado para una tarea
+		employees = select(e for e in db.Employees)
+		for e in employees:
+			id = e.id
+			initial_date_rows = []
+			initial_date_columns = []
+			for next_row in range(4, ws.max_row + 1):
+				if id == ws.cell(row = next_row, column = 4).value:
+					initial_date_rows.append(next_row)
+					initial_date_columns.append(2)
+				if id == ws.cell(row = next_row, column = 7).value:
+					initial_date_rows.append(next_row)
+					initial_date_columns.append(5)
+				if id == ws.cell(row = next_row, column = 10).value:
+					initial_date_rows.append(next_row)
+					initial_date_columns.append(8)
+				if str(id) in str(ws.cell(row = next_row, column = 13).value).split(';'):
+					initial_date_rows.append(next_row)
+					initial_date_columns.append(11)
+			#teniendo esa información guardada, ahora revisamos si calzan entre ellas
+			dates = len(initial_date_columns)
+			for i in range(0, dates):
+				for j in (k for k in range(0, dates) if k != i):
+					initial_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i]).value.date()
+					end_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i+1]).value.date()
+					initial_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j]).value.date()
+					end_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j+1]).value.date()
+					if datesOverlap(initial_date_1, end_date_1, initial_date_2, end_date_2):
+						return False
 	return True
 	
 def employeesRestrictionsPlausible(db, ws):
 	return True
 	
 #método auxiliar para ver si un empleado está disponible según sus Activities XOR Tasks (activities = True es Activities, si no, Tasks)
-def employeesAvailable(db, ids_employees, initial_date, end_date, activities):
+def employeesAvailableBool(db, ids_employees, initial_date, end_date, activities):
 	with db_session:
-		employee_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
-
-		for ea in emp_acts:
-			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
-				return False
-		for et in emp_tasks:
-			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
-				return False
-		return True	
+		if activities:
+			emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
+			for ea in emp_acts:
+				if datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
+					return False
+		else:
+			emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
+			for et in emp_tasks:
+				if datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
+					return False
+		return True
 
 
