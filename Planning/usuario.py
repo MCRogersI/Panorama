@@ -44,6 +44,7 @@ def planning_console(db,level):
 					month = input('\n Ingrese el mes de la fecha limite: ')
 					day = input('\n ingrese el dia de la fecha límite: ')
 				if opt2 == '4':
+					pass
 				if opt2 == '5':
 					with db_session:
 						db.Employees_Restrictions.select().show()

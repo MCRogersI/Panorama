@@ -7,7 +7,7 @@ import Projects.features as Pf
 import Planning.features as PLf
 import Users.features as Uf
 import Stock.usuario as Sf
-import Planning.Usuario as PlanU
+import Planning.usuario as PlanU
 
 # Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 1,'Armin')
