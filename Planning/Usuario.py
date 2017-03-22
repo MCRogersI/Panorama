@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from pony.orm import *
 from Planning.features import changePriority, addDelayed, doPlanning, createReport, createDelayedReport, createPlanningReport
 
@@ -43,10 +43,17 @@ def planning_console(db,level):
 					year = input('\n Ingrese el año de la fecha límite: ')
 					month = input('\n Ingrese el mes de la fecha limite: ')
 					day = input('\n ingrese el dia de la fecha límite: ')
+					with db_session:
+						r = db.Deadlines_Restrictions( project = db.Projects[int(contract_number)], skill = db.Skills[int(skill_id)], deadline = date(int(year),int(month),int(day)))
 				if opt2 == '4':
+					id = input('Ingrese la id de la restricción a eliminar: ')
+					with db_session:
+						db.Deadlines_Restrictions[int(id)].delete()
 				if opt2 == '5':
 					with db_session:
+						print(' \n Restricciones de asignación: \n')
 						db.Employees_Restrictions.select().show()
+						print('\n Restricciones de tiempo \n')
 						db.Deadlines_Restrictions.select().show()
 				if opt2 == '4':
 					continue
