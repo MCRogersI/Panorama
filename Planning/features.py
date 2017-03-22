@@ -619,20 +619,7 @@ def employeesSkillsPlausible(db, ws):
 					return False
 		return True
 		
-def employeesActivitiesPlausible(db, ws):
-	with db_session:
-		def employeesAvailable(db, ids_employees, initial_date, end_date):
-	with db_session:
-		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
-
-		for ea in emp_acts:
-			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
-				return False
-		for et in emp_tasks:
-			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
-				return False
-		return True		
+def employeesActivitiesPlausible(db, ws):	
 	return True
 	
 def employeesTasksPlausible(ws):
@@ -642,17 +629,17 @@ def employeesRestrictionsPlausible(db, ws):
 	return True
 	
 #método auxiliar para ver si un empleado está disponible según sus Activities XOR Tasks (activities = True es Activities, si no, Tasks)
-def employeesAvailable(db, ids_employees, initial_date, end_date, activities):
-	with db_session:
-		employee_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
+# def employeesAvailable(db, ids_employees, initial_date, end_date, activities):
+	# with db_session:
+		# employee_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
+		# emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
 
-		for ea in emp_acts:
-			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
-				return False
-		for et in emp_tasks:
-			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
-				return False
-		return True	
+		# for ea in emp_acts:
+			# if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
+				# return False
+		# for et in emp_tasks:
+			# if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
+				# return False
+		# return True	
 
 
