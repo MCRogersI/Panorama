@@ -46,6 +46,7 @@ def planning_console(db,level):
 					with db_session:
 						r = db.Deadlines_Restrictions( project = db.Projects[int(contract_number)], skill = db.Skills[int(skill_id)], deadline = date(int(year),int(month),int(day)))
 				if opt2 == '4':
+
 					id = input('Ingrese la id de la restricción a eliminar: ')
 					with db_session:
 						db.Deadlines_Restrictions[int(id)].delete()

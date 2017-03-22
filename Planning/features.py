@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font
-from Planning.reports import createReport, createDelayedReport, createPlanningReport
+from Planning.reports import createReport
 
 #################################################################################################################
 # Acá empieza: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
@@ -99,12 +99,12 @@ def employeesByStatus(db, contract_number, ids_employees, this_project, fixed):
 
 def datesOverlap(initial_date_1, end_date_1, initial_date_2, end_date_2):
 	if initial_date_1 <= initial_date_2 and end_date_1 >= initial_date_2:
-		return False
+		return True
 	elif initial_date_1 >= initial_date_2 and end_date_1 <= end_date_2:
-		return False
+		return True
 	elif initial_date_1 <= end_date_2 and end_date_1 >= end_date_2:
-		return False
-	return True
+		return True
+	return False
 
 #checked
 def employeesAvailable(db, ids_employees, initial_date, end_date):
@@ -113,10 +113,10 @@ def employeesAvailable(db, ids_employees, initial_date, end_date):
 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
 
 		for ea in emp_acts:
-			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
+			if datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
 				return False
 		for et in emp_tasks:
-			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
+			if datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
 				return False
 		return True		
 
@@ -476,84 +476,5 @@ def doPlanning(db):
 ##########
 #eventos que gatillan una replanificación deben ser especificados
 ##########
-
-
-#############################################################################
-# Métodos relacionados con cambiar empleados manualmente post-planificación #
-#############################################################################
-
-#método que revisa si las asignaciones de empleados que hizo el usuario entregan una planificación factible
-def planningChangesPlausible(db):
-	wb = load_workbook('ReportePlanificacion.xlsx')
-	ws = wb["Reporte planificación"]
-	if not employeesSkillsPlausible(db, ws):
-		return False, "Uno de los empleados fue asignado a una tarea para la cual no está capacitado."
-	if not employeesActivitiesPlausible(db, ws):
-		return False, "Uno de los empleados fue asignado a una tarea en fecha que coincide con sus vacaciones o alguna licencia."
-	if not employeesTasksPlausible(ws):
-		return False, "Uno de los empleados fue asignado a más de una tarea en la misma fecha."
-	if not employeesRestrictionsPlausible(db, ws)[0]:
-		return False, employeesRestrictionsPlausible(db, ws)[1]
-	return True, "Los cambios hechos a la planificación son válidos, por lo tanto, serán aplicados."
-
-def employeesSkillsPlausible(db, ws):
-	with db_session:
-		for next_row in range(4, ws.max_row):
-			#revisamos primero el caso de las Skills 1, 2, 3 que es el más sencillo
-			rectifier = ws.cell(row = next_row, column = 4).value
-			designer = ws.cell(row = next_row, column = 7).value
-			fabricator = ws.cell(row = next_row, column = 10).value
-			if db.Employees_Skills[db.Employees[rectifier], db.Skills[1]].performance == 0 or \
-				db.Employees_Skills[db.Employees[designer], db.Skills[2]].performance == 0 or \
-				db.Employees_Skills[db.Employees[fabricator], db.Skills[3]].performance == 0:
-				return False
-			
-			#ahora revisamos para el Skill 4
-			installers = str(ws.cell(row = next_row, column = 13).value).split(';')
-			print(installers)
-			for i in installers:
-				if db.Employees_Skills[db.Employees[i], db.Skills[4]].performance == 0:
-					return False
-		return True
-		
-		
-def employeesActivitiesPlausible(db, ws):	
-	return True
-# def employeesActivitiesPlausible(db, ws):
-# 	with db_session:
-# 		def employeesAvailable(db, ids_employees, initial_date, end_date):
-# 	with db_session:
-# 		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-# 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
-#
-# 		for ea in emp_acts:
-# 			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
-# 				return False
-# 		for et in emp_tasks:
-# 			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
-# 				return False
-# 		return True
-# 	return True
-
-	
-def employeesTasksPlausible(ws):
-	return True
-	
-def employeesRestrictionsPlausible(db, ws):
-	return True
-	
-#método auxiliar para ver si un empleado está disponible según sus Activities XOR Tasks (activities = True es Activities, si no, Tasks)
-# def employeesAvailable(db, ids_employees, initial_date, end_date, activities):
-	# with db_session:
-		# employee_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-		# emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
-
-		# for ea in emp_acts:
-			# if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
-				# return False
-		# for et in emp_tasks:
-			# if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
-				# return False
-		# return True	
 
 
