@@ -7,6 +7,7 @@ import Projects.features as Pf
 import Planning.features as PLf
 import Users.features as Uf
 import Stock.usuario as Sf
+import Planning.Usuario as PlanU
 
 # Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 1,'Armin')
@@ -15,7 +16,7 @@ import Stock.usuario as Sf
 
 def console(level):
 	while True:
-		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Stock. \n - 5: Para salir. \n Ingrese la alternativa elegida: ")
+		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Stock. \n - 5: Planificación \n - 6: Para salir. \n Ingrese la alternativa elegida: ")
 		if(opt == '1'):
 			# Los ids deberían ser creados automáticamente y no ingresados (para asegurarse de que sean únicos).
 			# Para el caso particular de los proyectos el contract_number puede ser ingresado porque tiene la propiedad de ser único.
@@ -26,7 +27,9 @@ def console(level):
 			Pu.tasks_console(db, level)
 		if (opt == '4'):
 			Sf.stock_console(db, level)
-		if(opt == '5'):
+		if (opt =='5'):
+			PlanU.planning_console(db,level)
+		if(opt == '6'):
 			print("\n Has salido del programa.")
 			break
 def signIn():
@@ -41,7 +44,7 @@ def signIn():
 		else:
 			print("Usuario y/o Contraseña incorrecto(s))")
 		break
-# signIn()
+signIn()
 # Uf.createUser(db, "1", 1, "1")
 # Uf.createUser(db, "2", 2, "2")
 # Uf.createUser(db, "3", 3, "3")
@@ -209,4 +212,4 @@ def signIn():
 # Tests de los features de Planning.features relacionados al reporte post-planificación #
 #########################################################################################
 
-print(PLf.planningChangesPlausible(db))
+# print(PLf.planningChangesPlausible(db))

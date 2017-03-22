@@ -35,7 +35,7 @@ def employees_console(db, level):
 				perf_rect=None
 			perf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione enter si no realiza esta labor: ")
 			if(perf_des == ''):
-				perf_des=None
+				perf_des=None						
 			perf_fab = input(" Ingrese el rendimiento histórico en fabricación del empleado, solo presione enter si no realiza esta labor: ")
 			if(perf_fab == ''):
 				perf_fab=None
