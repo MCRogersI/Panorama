@@ -11,6 +11,7 @@ def createEmployee(db,  name, zone, perf_rect = None , perf_des = None, perf_fab
 			db.Employees_Skills(employee = e, skill = 3, performance = perf_fab)
 		if perf_inst != None:
 			db.Employees_Skills(employee = e, skill = 4, performance = perf_inst)
+		commit()
 
 def printEmployees(db):
 	with db_session:

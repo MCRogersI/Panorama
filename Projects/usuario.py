@@ -24,8 +24,10 @@ def projects_console(db, level):
 			client_name = input("Ingrese el nombre del cliente: ")
 			client_rut = input("Ingrese el RUT del cliente: ")
 			linear_meters = input("Ingrese los metros lineales del proyecto: ")
-			deadline = input("ingrese la fecha de entrega pactada del proyecto: ")
-			createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, deadline)
+			year = input("ingrese el año de la fecha de entrega pactada del proyecto: ")
+			month = input("ingrese el mes de la fecha de entrega pactada del proyecto: ")
+			day = input("ingrese el día de la fecha de entrega pactada del proyecto: ")
+			createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, year, month, day)
 			
 		elif(opt == '2' and (level == 1 or level == 2)):
 			contract_number = input("\nIngrese el número de contrato del proyecto a editar: ")

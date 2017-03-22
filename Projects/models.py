@@ -22,6 +22,7 @@ def define_models(db):
 		fixed_planning = Optional(bool)
 		fixed_priority = Optional(bool)
 		engagements = Set('Engagements')
+		crystal_leadtime = Optional(int, default = 15)
 
 
 		def __repr__(self):

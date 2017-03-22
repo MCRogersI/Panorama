@@ -8,7 +8,7 @@ import Planning.features as PLf
 import Users.features as Uf
 import Stock.usuario as Sf
 
-
+# Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 1,'Armin')
 # Uf.createUser(db,'Piola', 2,'Cuatro')
 # Uf.createUser(db,'Pleb', 3,'00000')
@@ -41,7 +41,7 @@ def signIn():
 		else:
 			print("Usuario y/o Contraseña incorrecto(s))")
 		break
-signIn()
+# signIn()
 # Uf.createUser(db, "1", 1, "1")
 # Uf.createUser(db, "2", 2, "2")
 # Uf.createUser(db, "3", 3, "3")
@@ -54,6 +54,7 @@ signIn()
 # PLf.addDelayed(db, 1,1,1,1,1)
 # PLf.addDelayed(db, 10, 2, 2017-2-12, 2017-3-1, 2017-2-28)
 # print(PLf.addDelayed(db, 5, 3 , '2017-3-1', '2017-3-10', '2017-3-30'))
+
 
 
 
@@ -204,10 +205,8 @@ signIn()
 
 			
 			
-##############################################
-# Tests de los features de Planning.features #
-##############################################
+#########################################################################################
+# Tests de los features de Planning.features relacionados al reporte post-planificación #
+#########################################################################################
 
-# PLf.ChangePriority(db, 5, 1)
-
-# AvailabilityUpdate(db)
+print(PLf.planningChangesPlausible(db))
