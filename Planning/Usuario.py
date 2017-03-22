@@ -38,7 +38,11 @@ def planning_console(db,level):
 					with db_session:
 						db.Employees_Restrictions[db.Employees[int(employee_id)],db.Projects[int(contract_number)]].delete()
 				if opt2 == '3':
-					contract_number = input('Ingrese el número de contrato del proyecto ')
+					contract_number = input('Ingrese el número de contrato del proyecto elegido: ')
+					skill_id = input('\n Marque la tarea que se quiere restringir: \n - 1: Rectificación . \n - 2: Diseño. \n - 3: Fabricación. \n - 4: Instalación. \n Ingrese la alternativa elegida:  ')
+					year = input('\n Ingrese el año de la fecha límite: ')
+					month = input('\n Ingrese el mes de la fecha limite: ')
+					day = input('\n ingrese el dia de la fecha límite: ')
 				if opt2 == '4':
 				if opt2 == '5':
 					with db_session:
