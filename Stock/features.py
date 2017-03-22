@@ -268,6 +268,12 @@ def displayStock(db, id_sku):
 		p.start()
 		p.join()
 
+#FUNCIÓN EN DESARROLLO
+# def displayALlSKUs(db):
+# 	with db_session:
+# 		skus = select(sku for sku in db.Stock).order_by(lambda s: s.id)
+# 		for sku in skus:
+# 			displayStock(db,sku.id)
 
 def updateEngagements(db, id_sku):
 	'''Este método actualiza los engagements una vez que se ha hecho una planificación, asignando la fecha de inicio
