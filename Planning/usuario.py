@@ -1,7 +1,7 @@
 from datetime import date
 from pony.orm import *
 from Planning.features import changePriority, addDelayed, doPlanning
-form Planning.features import createGlobalReport
+from Planning.reports import createGlobalReport
 
 def planning_console(db,level):
 	if level==1:
@@ -16,7 +16,7 @@ def planning_console(db,level):
 					old_priority = db.Projects[int(contract_number)].priority
 				print('la prioridad actual de este proyecto es de ' + str(old_priority) + ' de ' + str(current_projects))
 				new_priority = input('ingrese la nueva prioridad que desea asignarle al proyecto. Presione enter si no quiere cambiar la prioridad ')
-				if new_priority != none:
+				if new_priority != None:
 					try:
 						changePriority(db, int(contract_number), int(new_priority))
 					except:
@@ -63,7 +63,7 @@ def planning_console(db,level):
 				try:
 					createGlobalReport()
 				except:
-					print('estamos trabajando para usted')
+					print('\n estamos trabajando para usted \n')
 			if opt == '5':
 				break
 			

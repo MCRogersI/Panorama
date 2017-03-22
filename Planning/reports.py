@@ -241,7 +241,7 @@ def employeesAvailableBool(db, ids_employees, initial_date, end_date, activities
 # Base report #
 ###############
 
-def baseCreateReport():
+def createGlobalReport():
     wb = Workbook()
     wb.save('ReportePlanificacionBásico.xlsx')
     ws = wb.create_sheet(
@@ -262,4 +262,4 @@ def baseCreateReport():
 
     # llenar con los datos
 
-baseCreateReport()
+createGlobalReport()
