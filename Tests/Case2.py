@@ -34,31 +34,31 @@ with db_session:
 # Stock inicial test case 2 #
 #############################
 
-Sf.createSku(db, 'Telescopic', 2.01, 100,real_quantity=219)
-Sf.createSku(db, 'Glass Pane Knob', 6.43, 200,real_quantity=220)
-Sf.createSku(db, 'Lower chamber-9', 4.77, 150,real_quantity=234)
-Sf.createSku(db, 'Upper chamber-9', 3.07, 150,real_quantity=243)
-Sf.createSku(db, 'Lock for latch', 12.03, 100,real_quantity=251)
-Sf.createSku(db, 'Screw M4x12 tx20 A2 DIN965', 0.07, 500,real_quantity=1000)
-Sf.createSku(db, 'Screw M4x14 tx20 A2 DIN965', 0.07, 500,real_quantity=1000)
-Sf.createSku(db, 'Fastening Bead 10mm transparent', 2.51, 300,real_quantity=600)
-Sf.createSku(db, 'Screws for Water Sill', 0.69, 200,real_quantity=500)
-Sf.createSku(db, 'Lock Keeper, wall side', 6.52, 200,real_quantity=800)
-Sf.createSku(db, 'Profile joint unit plastic bag', 4.93, 180,real_quantity=268)
+Sf.createSku(db, 'Telescopic', 'Profile',2.01, 100,real_quantity=219)
+Sf.createSku(db, 'Glass Pane Knob','Profile', 6.43, 200,real_quantity=220)
+Sf.createSku(db, 'Lower chamber-9','Profile', 4.77, 150,real_quantity=234)
+Sf.createSku(db, 'Upper chamber-9', 'Profile',3.07, 150,real_quantity=243)
+Sf.createSku(db, 'Lock for latch', 'Profile',12.03, 100,real_quantity=251)
+Sf.createSku(db, 'Screw M4x12 tx20 A2 DIN965','Profile', 0.07, 500,real_quantity=1000)
+Sf.createSku(db, 'Screw M4x14 tx20 A2 DIN965','Profile', 0.07, 500,real_quantity=1000)
+Sf.createSku(db, 'Fastening Bead 10mm transparent','Profile', 2.51, 300,real_quantity=600)
+Sf.createSku(db, 'Screws for Water Sill','Profile', 0.69, 200,real_quantity=500)
+Sf.createSku(db, 'Lock Keeper, wall side','Profile', 6.52, 200,real_quantity=800)
+Sf.createSku(db, 'Profile joint unit plastic bag','Profile', 4.93, 180,real_quantity=268)
 
 #########################
 # Proyectos test case 2 #
 #########################
 Pf.createProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
-				 '17.094.362-0', 150, date(2017, 12, 30), estimated_cost = 200)
+				 '17.094.362-0', 150, 2017, 12, 30, estimated_cost = 200)
 Pf.createProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
-				 '16.224.112-0', 200, date(2017, 6, 30), estimated_cost = 300)
+				 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300)
 Pf.createProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
- 320, date(2017, 6, 3), estimated_cost = 150)
+ 320, 2017, 6, 3, estimated_cost = 150)
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
 				 '14.214.392-K',
- 220, date(2017, 8, 30), estimated_cost = 250)
+ 220, 2017, 8, 30, estimated_cost = 250)
 
 ###########################
 # Engagements test case 2 #

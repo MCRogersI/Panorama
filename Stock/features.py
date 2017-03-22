@@ -150,7 +150,7 @@ def updateEngagements(db, id_sku):
 				if at.task.project == e.project:
 					e.withdrawal_date = at.planned_initial_date
 
-def printStock(db, id_sku):
+def printStock(db, id_sku): #Revisar este método para el caso 3 gráfica una línea al principio que no parece función.
 	'''Este método imprime el comportamiento de un SKU hasta el último de los movimientos registrados '''
 	with db_session:
 		movements = calculateStock(db, id_sku)
