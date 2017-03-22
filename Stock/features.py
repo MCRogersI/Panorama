@@ -46,7 +46,7 @@ def deleteSku(db, id):
 		db.Stock[id].delete()
 
 
-def printStock(db):
+def printStockConsole(db):
 	''' Este método elimina una de las entradas de SKU de la tabla de Stock '''
 	with db_session:
 		db.Stock.select().show()
