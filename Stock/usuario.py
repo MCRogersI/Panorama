@@ -39,22 +39,14 @@ def stock_console(db, level):
                 "Ingrese la nueva cantidad en bodega del producto, solo presione enter si es que desea ingresar este valor en el futuro: ")
             if real_quantity == '':
                 real_quantity = None
-            try:
-                editSku(db,id = id, name=name, price=price, critical_level=critical_level,
+
+            editSku(db,id = id, name=name, price=price, critical_level=critical_level,
                       real_quantity=real_quantity)
-            except ObjectNotFound as e:
-                print('Object not found: {}'.format(e))
-            except ValueError as e:
-                print('Value error: {}'.format(e))
+
         if (opt == '3' and level == 1):
             id = input("\nIngrese el id del producto que desea eliminar: ")
             # name = input("\nIngrese el nombre del SKU que desea elmininar: ")
-            try:
-                deleteSku(db, id)
-            except ObjectNotFound as e:
-                print('Object not found: {}'.format(e))
-            except ValueError as e:
-                print('Value error: {}'.format(e))
+            deleteSku(db, id)
 
         if (opt == '4' and level == 1) or (opt == '1' and level == 2) or (
                 opt == '1' and level == 3):

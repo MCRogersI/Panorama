@@ -64,20 +64,11 @@ def employees_console(db, level):
 				newPerf_fab = None
 			if newPerf_ins == '':
 				newPerf_ins = None
-			try:
-				editEmployee(db, idEmpleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins)
-			except ObjectNotFound as e:
-				print('Object not found: {}'.format(e))
-			except ValueError as e:
-				print('Value error: {}'.format(e))
+			editEmployee(db, idEmpleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins)
+
 		if(opt == '3' and level == 1):
 			idEmpleado = input("\n Ingrese el ID del empleado que desea eliminar: ")
-			try:
-				deleteEmployee(db, idEmpleado)
-			except ObjectNotFound as e:
-				print('Object not found: {}'.format(e))
-			except ValueError as e:
-				print('Value error: {}'.format(e))
+			deleteEmployee(db, idEmpleado)
 		
 		if(opt == '4' and level == 1) or (opt == '3' and level == 2):
 			opt_employees_activities = input("\n Marque una de las siguientes opciones: \n - 1: si desea ingresar datos de una actividad. \
@@ -97,20 +88,12 @@ def employees_console(db, level):
 				end_year = input(" Ingrese el año en que termina la actividad: ")
 				end_month = input(" Ingrese el mes en que termina la actividad: ")
 				end_day = input(" Ingrese el día en que termina la actividad: ")
-				try:
-					createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day)
-				except ObjectNotFound as e:
-					print('Object not found: {}'.format(e))
-				except ValueError as e:
-					print('Value error: {}'.format(e))
+				createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day)
+			
 			elif opt_employees_activities == '2':
 				id_employee_activity = input("\n Ingrese el ID de la actividad que quiere eliminar: ")
-				try:	
-					deleteEmployeeActivity(db, id_employee_activity)
-				except ObjectNotFound as e:
-					print('Object not found: {}'.format(e))
-				except ValueError as e:
-					print('Value error: {}'.format(e))
+				deleteEmployeeActivity(db, id_employee_activity)
+				
 			elif opt_employees_activities == '3':
 				print('\n')
 				printEmployeesActivities(db)
