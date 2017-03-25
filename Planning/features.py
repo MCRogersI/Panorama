@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font
+# from Planning.reports import createReport
 
 #################################################################################################################
 # Acá empieza: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
@@ -98,12 +99,12 @@ def employeesByStatus(db, contract_number, ids_employees, this_project, fixed):
 
 def datesOverlap(initial_date_1, end_date_1, initial_date_2, end_date_2):
 	if initial_date_1 <= initial_date_2 and end_date_1 >= initial_date_2:
-		return False
+		return True
 	elif initial_date_1 >= initial_date_2 and end_date_1 <= end_date_2:
-		return False
+		return True
 	elif initial_date_1 <= end_date_2 and end_date_1 >= end_date_2:
-		return False
-	return True
+		return True
+	return False
 
 #checked
 def employeesAvailable(db, ids_employees, initial_date, end_date):
@@ -112,10 +113,10 @@ def employeesAvailable(db, ids_employees, initial_date, end_date):
 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
 
 		for ea in emp_acts:
-			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
+			if datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
 				return False
 		for et in emp_tasks:
-			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
+			if datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
 				return False
 		return True		
 
@@ -441,7 +442,7 @@ def doPlanning(db):
 								assignTask(db, emps, task, initial, ending[num_workers-1])
 			for e in p.engagements:
 				Sf.updateEngagements(db, e.sku.id)			
-		createReport(db, Delayed)
+		# createReport(db, Delayed)
 		
 		
 
@@ -655,5 +656,4 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, activities):
 			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
 				return False
 		return True	
-
 
