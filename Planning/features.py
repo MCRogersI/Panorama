@@ -210,7 +210,7 @@ def findEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		for _ in range(0, num_workers): last.append(1)
 		for _ in range(0, len(chosen) - num_workers): last.append(0)
 		
-		while(not employeesAvailable(db, ids_found + getChosenIds(possibilities, chosen), initial_date, end_date)):
+		while(not employeesAvailable(db, ids_found + getChosenIds(possibilities, chosen), initial_date, end_date, activities = True)):
 			if chosen == last:
 				return []
 			chosen = successor(chosen, num_workers)
@@ -620,8 +620,9 @@ def employeesSkillsPlausible(db, ws):
 		return True
 		
 def employeesActivitiesPlausible(db, ws):
-	with db_session:
-		def employeesAvailable(db, ids_employees, initial_date, end_date):
+	# with db_session:
+	# 	def employeesAvailable(db, ids_employees, initial_date, end_date):
+	#comentado momentaneamente
 	with db_session:
 		emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
@@ -647,7 +648,7 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, activities):
 		employee_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
 
-		for ea in emp_acts:
+		for ea in employee_acts:
 			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
 				return False
 		for et in emp_tasks:

@@ -1,7 +1,6 @@
-#Caso de prueba 6
-#Se inicializan las siguientes entidades (tablas) : Freight_Costs, Operating_Costs (Projects/models),
-#Waste_Factors (Stock/models)
-#Se prueban la(s) siguiente(s) funcionalidad(es): cálculo real de costos.
+#Caso de prueba 7
+#Se inicializan las siguientes entidades (tablas) : 
+#Se prueban la(s) siguiente(s) funcionalidad(es): ingreso de las características de un proyecto desde excel
 from pony.orm import *
 from database import db
 import Employees.features as Ef, Employees.usuario as Eu
@@ -20,18 +19,6 @@ import Stock.features as Sf
 Uf.createUser(db,'Alberto',1,'123')
 Uf.createUser(db,'Juan',2,'456')
 Uf.createUser(db,'Felipe',3,'789')
-
-
-Sf.createSku(db, 'Telescopic', 'Profile', 2.01, 100,real_quantity=219, waste_factor = 0.02)
-Sf.createSku(db, 'Glass Pane Knob', 'Crystal', 6.43, 200,real_quantity=220, waste_factor = 0.03)
-Sf.createSku(db, 'Lower chamber-9', 'Profile', 4.77, 150,real_quantity=234, waste_factor = 0.04)
-Sf.createSku(db, 'Upper chamber-9', 'Profile', 3.07, 150,real_quantity=243, waste_factor = 0.05)
-Sf.createSku(db, 'Lock for latch', 'Component', 12.03, 100,real_quantity=251, waste_factor = 0.03)
-Sf.createSku(db, 'Profile joint unit plastic bag','Component', 4.93, 180,real_quantity=268, waste_factor = 0.03)
-
-
-
-
 
 #Aquí las Skills, las Difficulties y las Activities se crean de forma directa. Esto no se hace a través de métodos "createSkill",
 #createActivity" o "create Difficulty" dado que esas relaciones son
@@ -70,9 +57,9 @@ with db_session:
 	# Inicialización de valores para los factores de pérdida según tipo de componentes y los de instalación #
 	#########################################################################################################
 	db.Waste_Factors(id = 1, name = 'Components type 1' , factor = 0.03)
-	db.Waste_Factors(id = 2, name = 'Components type 2' , factor = 0.04)
-	db.Waste_Factors(id = 3, name = 'Components type 3' , factor = 0.02)
-	db.Waste_Factors(id = 4, name = 'Components type 4' , factor = 0.01)
+	db.Waste_Factors(id = 2, name = 'Components type 2' , factor = 0.03)
+	db.Waste_Factors(id = 3, name = 'Components type 3' , factor = 0.03)#En el excel son todos iguales, podrían diferir, aún así no sé como
+	db.Waste_Factors(id = 4, name = 'Components type 4' , factor = 0.03)
 	db.Waste_Factors(id = 5, name = 'Installation errors' , factor = 0.035)
 	db.Waste_Factors(id = 6, name = 'Profile and glassing loss factor', factor = 0.13)
 
@@ -109,22 +96,15 @@ Pf.createProject(db, 4, 'Miguel Angelo 987', 'Arica', 'Miguel Devil', '14.214.39
  220, 2017,8,30, estimated_cost = 250)
 
 
-Sf.createEngagement(db, 1, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 27))
-Sf.createEngagement(db, 1, [(1,99),(4,100),(2,30)],date(2017, 2, 25))
-Sf.createEngagement(db, 1, [(1,55),(2,200)],date(2017, 3, 2))
-Sf.createEngagement(db, 1, [(1,60),(2,20),(3,40)],date(2017, 3, 3))
-Sf.createEngagement(db, 1, [(4,100),(5,25),(6,60)],date(2017, 3, 7))
-Sf.createEngagement(db, 1, [(5,55),(6,30)],date(2017, 3, 2))
-Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 3, 2))
-Sf.createPurchases(db,(1,155),date(2017, 3, 4))
-#crear Engagements desde un excel.
-
-
-
-aux_check_debug_variable_stock_calculation = Sf.calculateStock(db,1)
-
-#print(aux_check_debug_variable_stock_calculation)
-
+# Sf.createEngagement(db, 1, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 27))
+# Sf.createEngagement(db, 1, [(1,99),(4,100),(2,30)],date(2017, 2, 25))
+# Sf.createEngagement(db, 1, [(1,55),(2,200)],date(2017, 3, 2))
+# Sf.createEngagement(db, 1, [(1,60),(2,20),(3,40)],date(2017, 3, 3))
+# Sf.createEngagement(db, 1, [(4,100),(5,25),(6,60)],date(2017, 3, 7))
+# Sf.createEngagement(db, 1, [(5,55),(6,30)],date(2017, 3, 2))
+# Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 3, 2))
+# Sf.createPurchases(db,(1,155),date(2017, 3, 4))
+#crear Engagements desde un excel. Las purchases deberían crearse solas.
 
 with db_session:
 	#Definición de las prioridades de los distintos proyectos
@@ -133,4 +113,6 @@ with db_session:
 	db.Projects[2].priority = 1
 	#Fijación de proyectos
 	db.Projects[4].fixed_planning = True
-Pf.getCostProject(db, 1)
+# Pf.getCostProject(db, 1)
+Pf.getListProducts(db)
+Pf.getProjectFeatures(db,1)

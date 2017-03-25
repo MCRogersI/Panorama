@@ -7,7 +7,7 @@ import Projects.features as Pf
 import Planning.features as PLf
 import Users.features as Uf
 import Stock.usuario as Sf
-
+import Tests.Case7 as case7
 # Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 1,'Armin')
 # Uf.createUser(db,'Piola', 2,'Cuatro')
@@ -209,4 +209,4 @@ def signIn():
 # Tests de los features de Planning.features relacionados al reporte post-planificación #
 #########################################################################################
 
-print(PLf.planningChangesPlausible(db))
+# print(PLf.planningChangesPlausible(db))
