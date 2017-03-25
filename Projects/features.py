@@ -34,25 +34,30 @@ def printProjects(db):
 
 def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None):
 	with db_session:
-		p = db.Projects[contract_number]
-		if new_client_address != None:
-			p.client_addres = new_client_address
-		if new_client_comuna != None:
-			p.client_comuna = new_client_comuna
-		if new_client_name != None:
-			p.client_name = new_client_name
-		if new_client_rut != None:
-			p.client_rut = new_client_rut
-		if new_linear_meters != None:
-			p.linear_meters = new_linear_meters
-		if new_deadline != None:
-			p.deadline = new_deadline
-		if new_real_linear_meters != None:
-			p.real_linear_meters = new_real_linear_meters
-		if new_estimated_cost != None:
-			p.estimated_cost = new_estimated_cost
-		if new_real_cost != None:
-			p.real_cost = new_real_cost
+		try:
+			p = db.Projects[contract_number]
+			if new_client_address != None:
+				p.client_addres = new_client_address
+			if new_client_comuna != None:
+				p.client_comuna = new_client_comuna
+			if new_client_name != None:
+				p.client_name = new_client_name
+			if new_client_rut != None:
+				p.client_rut = new_client_rut
+			if new_linear_meters != None:
+				p.linear_meters = new_linear_meters
+			if new_deadline != None:
+				p.deadline = new_deadline
+			if new_real_linear_meters != None:
+				p.real_linear_meters = new_real_linear_meters
+			if new_estimated_cost != None:
+				p.estimated_cost = new_estimated_cost
+			if new_real_cost != None:
+				p.real_cost = new_real_cost
+		except ObjectNotFound as e:
+			print('Object not found: {}'.format(e))
+		except ValueError as e:
+			print('Value error: {}'.format(e))
 			
 def deleteProject(db, contract_number):
 	with db_session:
@@ -88,7 +93,7 @@ def getCostRM(db, contract_number):#RM = Raw Materials
 			if e.sku.type == 'Component':
 				sum_components += e.sku.price*(e.quantity*db.Waste_Factors[1].factor)
 		return sum_crystal + sum_components+ sum_profile
-def getCostInstallation(db, contract_number, internal = True, num_projects = 1):
+def getCostInstallation(db, contract_number, internal = True):
 	''' Cálculo de los costos de instalación según lo especificado en el excel '''
 	with db_session:
 		total_cost = 0
@@ -137,7 +142,7 @@ def getCostProject(db, contract_number):
 	''' Obtención de los costos de un proyecto '''
 	with db_session:
 		rmc = getCostRM(db, contract_number)
-		ic = getCostInstallation(db, contract_number, internal = True, num_projects = 1)
+		ic = getCostInstallation(db, contract_number, internal = True)
 		fc = getCostFabrication(db, contract_number)
 		return rmc + ic + fc
 def createTask(db, id_skill, contract_number, original_initial_date, original_end_date, effective_initial_date = None, effective_end_date = None):
@@ -147,21 +152,26 @@ def createTask(db, id_skill, contract_number, original_initial_date, original_en
 		
 def editTask(db, id , id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
 	with db_session:
-		t = db.Tasks[id]
-		if id_skill != None:
-			t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
-		if contract_number != None: 
-			t.project = contract_number #pendiente: revisar si funciona así o si tiene que ser como t.project = db.Projects[contract_number]
-		if original_initial_date != None:
-			t.original_initial_date = original_initial_date
-		if original_end_date != None:
-			t.original_end_date = original_end_date
-		if effective_initial_date != None:
-			t.effective_initial_date = effective_initial_date
-		if effective_end_date != None:
-			t.effective_end_date = effective_end_date
-		if fail_cost != None:
-			t.fail_cost = fail_cost
+		try:
+			t = db.Tasks[id]
+			if id_skill != None:
+				t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
+			if contract_number != None: 
+				t.project = contract_number #pendiente: revisar si funciona así o si tiene que ser como t.project = db.Projects[contract_number]
+			if original_initial_date != None:
+				t.original_initial_date = original_initial_date
+			if original_end_date != None:
+				t.original_end_date = original_end_date
+			if effective_initial_date != None:
+				t.effective_initial_date = effective_initial_date
+			if effective_end_date != None:
+				t.effective_end_date = effective_end_date
+			if fail_cost != None:
+				t.fail_cost = fail_cost
+		except ObjectNotFound as e:
+			print('Object not found: {}'.format(e))
+		except ValueError as e:
+			print('Value error: {}'.format(e))
 
 def deleteTask(db, id_task):
 	with db_session:
@@ -190,27 +200,32 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 def createDelay(db, project_id, skill_id, delay):
 	'''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = project_id, alargando el end date en delay días. 		Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html '''
 	with db_session:
-		if skill_id < 4:
-			p = db.Projects[project_id]
-			t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
-			db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
-			et = db.Employees_Tasks.get(task = t)
-			et.planned_end_date = et.planned_end_date+timedelta(delay)
-			skill_aux = skill_id + 1
-			while skill_aux <= 4:#si es una actividad anterior a instalación, atrasa todas las 
-			#tareas que le siguen
-				t_aux = db.Tasks.get(skill = db.Skills[skill_aux], project = p)
-				et_aux = db.Employees_Tasks.get(task = t_aux)
-				et_aux.planned_initial_date = et_aux.planned_initial_date + timedelta(delay)
-				et_aux.planned_end_date = et_aux.planned_end_date+timedelta(delay)
-				skill_aux += 1
-		else:
-			p = db.Projects[project_id]
-			t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
-			db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
-			et = db.Employees_Tasks.get(task = t)#si es una instalación con varios trabajadores
-			#asignados podría no funcionar esta línea
-			et.planned_end_date = et.planned_end_date+timedelta(delay)
+		try:
+			if skill_id < 4:
+				p = db.Projects[project_id]
+				t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
+				db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
+				et = db.Employees_Tasks.get(task = t)
+				et.planned_end_date = et.planned_end_date+timedelta(delay)
+				skill_aux = skill_id + 1
+				while skill_aux <= 4:#si es una actividad anterior a instalación, atrasa todas las 
+				#tareas que le siguen
+					t_aux = db.Tasks.get(skill = db.Skills[skill_aux], project = p)
+					et_aux = db.Employees_Tasks.get(task = t_aux)
+					et_aux.planned_initial_date = et_aux.planned_initial_date + timedelta(delay)
+					et_aux.planned_end_date = et_aux.planned_end_date+timedelta(delay)
+					skill_aux += 1
+			else:
+				p = db.Projects[project_id]
+				t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
+				db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
+				et = db.Employees_Tasks.get(task = t)#si es una instalación con varios trabajadores
+				#asignados podría no funcionar esta línea
+				et.planned_end_date = et.planned_end_date+timedelta(delay)
+		except ObjectNotFound as e:
+			print('Object not found: {}'.format(e))
+		except ValueError as e:
+			print('Value error: {}'.format(e))
 
 
 
