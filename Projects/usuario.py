@@ -56,12 +56,20 @@ def projects_console(db, level):
 				new_deadline = None
 			if new_real_cost == '':
 				new_real_cost = None
-			editProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost)
-			
+			try:
+				editProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost)
+			except ObjectNotFound as e:
+				print('Object not found: {}'.format(e))
+			except ValueError as e:
+				print('Value error: {}'.format(e))
 		elif(opt == '3' and level == 1):
 			contract_number = input("\n Ingrese el número de contrato del proyecto a eliminar: ")
-			deleteProject(db, contract_number)		
-
+			try:
+				deleteProject(db, contract_number)		
+			except ObjectNotFound as e:
+				print('Object not found: {}'.format(e))
+			except ValueError as e:
+				print('Value error: {}'.format(e))
 		elif(opt == '4' and level == 1):
 			opt_projects_activities = input("\n Marque una de las siguientes opciones: \n - 1: si desea ingresar datos de disponibilidad de un cliente. \
 																					   \n - 2: si desea eliminar una indisponibilidad. \
@@ -76,16 +84,28 @@ def projects_console(db, level):
 				end_year = input(" Ingrese el año en que termina la actividad: ")
 				end_month = input(" Ingrese el mes en que termina la actividad: ")
 				end_day = input(" Ingrese el día en que termina la actividad: ")
-				createProjectActivity(db, project, 4, initial_year, initial_month, initial_day, end_year, end_month, end_day)
-			
+				try:
+					createProjectActivity(db, project, 4, initial_year, initial_month, initial_day, end_year, end_month, end_day)
+				except ObjectNotFound as e:
+					print('Object not found: {}'.format(e))
+				except ValueError as e:
+					print('Value error: {}'.format(e))
 			elif opt_projects_activities == '2':
 				id_project_activity = input("\n Ingrese el ID de la indisponibilidad que quiere eliminar: ")
-				deleteProjectActivity(db, id_project_activity)
-				
+				try:
+					deleteProjectActivity(db, id_project_activity)
+				except ObjectNotFound as e:
+					print('Object not found: {}'.format(e))
+				except ValueError as e:
+					print('Value error: {}'.format(e))
 			elif opt_projects_activities == '3':
 				print('\n')
-				printProjectsActivities(db)
-			
+				try:
+					printProjectsActivities(db)
+				except ObjectNotFound as e:
+					print('Object not found: {}'.format(e))
+				except ValueError as e:
+					print('Value error: {}'.format(e))
 		elif(opt == '5' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
 			printProjects(db)
 		
