@@ -1,6 +1,6 @@
 from datetime import datetime
 from pony.orm import *
-from Planning.features import changePriority, addDelayed, doPlanning, createReport, createDelayedReport, createPlanningReport
+from Planning.features import changePriority, addDelayed, doPlanning
 
 def planning_console(db,level):
 	if level==1:
