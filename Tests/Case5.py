@@ -74,10 +74,9 @@ Pf.createProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
 Pf.createProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
 				 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300)
 Pf.createProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
-				 '15.114.992-0',
- 450, 2017, 6, 3, estimated_cost = 150)
-Pf.createProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil', '14.214.392-K',
- 220, 2017, 8, 30, estimated_cost = 250)
+				 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150)
+Pf.createProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil', 
+					'14.214.392-K',220, 2017, 8, 30, estimated_cost = 250)
 
 
 Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 27))

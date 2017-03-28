@@ -82,17 +82,11 @@ def getCostRM(db, contract_number):#RM = Raw Materials
 	''' Este método obtiene el costo de las materias primas según lo especificado en el Excel'''
 	with db_session:
 		p = db.Projects[contract_number]
-		sum_crystal = 0
-		sum_profile = 0
-		sum_components = 0
-		for e in p.engagements:#los if van separados por si alguna vez hay una distinción por las unidades de medida
-			if e.sku.type == 'Crystal' :
-				sum_crystal += e.sku.price*e.quantity#*factor_segun_tipo_de_cristal (falta esa tabla)
-			if e.sku.type == 'Profile':
-				sum_profile += e.sku.price*(e.quantity*db.Waste_Factors[6].factor)
-			if e.sku.type == 'Component':
-				sum_components += e.sku.price*(e.quantity*db.Waste_Factors[1].factor)
-		return sum_crystal + sum_components+ sum_profile
+		total_sum = 0
+
+		for e in p.engagements:
+			total_sum += e.sku.price*e.quantity*(1+e.sku.waste_factor)
+	return total_sum
 def getCostInstallation(db, contract_number, internal = True):
 	''' Cálculo de los costos de instalación según lo especificado en el excel '''
 	with db_session:

@@ -86,14 +86,13 @@ Ef.createEmployee(db,  "Iker", 1, perf_inst = 70)
 ##############################################
 
 Pf.createProject(db, 1, 'Manuel Montt 1235', 'Calera', 'Pedro Sánchez',
-				 '17.094.362-0', 150, 2017, 3, 30, estimated_cost = 200)
-Pf.createProject(db, 2, 'Suecia 86', 'Curepto', 'Franco Soto',
-				 '16.224.112-0', 200, 2017, 4, 30, estimated_cost = 300)
-Pf.createProject(db, 3, 'Barros Luco 997', 'San José', 'Miguel Acevedo',
-				 '15.114.992-0',
- 450, 2017,6,3, estimated_cost = 150)
-Pf.createProject(db, 4, 'Miguel Angelo 987', 'Arica', 'Miguel Devil', '14.214.392-K',
- 220, 2017,8,30, estimated_cost = 250)
+				 '17.094.362-0', 150, 2017, 12, 30, estimated_cost = 200)
+Pf.createProject(db, 2, 'Suecia 86', 'Arica', 'Franco Soto',
+				 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300)
+Pf.createProject(db, 3, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
+				 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150)
+Pf.createProject(db, 4, 'Miguel Angelo 987', 'San José', 'Miguel Devil', 
+					'14.214.392-K',220, 2017, 8, 30, estimated_cost = 250)
 
 
 # Sf.createEngagement(db, 1, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 27))

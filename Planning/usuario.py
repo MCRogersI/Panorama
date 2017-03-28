@@ -10,18 +10,28 @@ def planning_console(db,level):
 			if opt == '1':
 				doPlanning(db)
 			if opt == '2':
-				contract_number = input('ingrese el numero de contrato del proyecto que desea cambiar ')
-				with db_session:
-					current_projects = len(select(p for p in db.Projects))
-					old_priority = db.Projects[int(contract_number)].priority
-				print('la prioridad actual de este proyecto es de ' + str(old_priority) + ' de ' + str(current_projects))
-				new_priority = input('ingrese la nueva prioridad que desea asignarle al proyecto. Presione enter si no quiere cambiar la prioridad ')
-				if new_priority != None:
-					try:
-						changePriority(db, int(contract_number), int(new_priority))
-					except:
-						
-						print('Ingreso de variables inválidas')
+				try:
+					contract_number = input('ingrese el numero de contrato del proyecto que desea cambiar ')
+					with db_session:
+						try:
+							db.Projects[int(contract_number)].contract_number
+						except:
+							raise ValueError('\n No existe ese número de contrato \n')
+							
+					with db_session:
+						current_projects = len(select(p for p in db.Projects))
+						old_priority = db.Projects[int(contract_number)].priority
+					print('la prioridad actual de este proyecto es de ' + str(old_priority) + ' de ' + str(current_projects))
+					new_priority = input('ingrese la nueva prioridad que desea asignarle al proyecto. Presione enter si no quiere cambiar la prioridad ')
+					if new_priority != None:
+						try:
+							changePriority(db, int(contract_number), int(new_priority))
+						except:
+							
+							print('Ingreso de variables inválidas')
+				except ValueError as ve:
+					print(ve)
+					input('Precione cualquier tecla para volver \n')
 			if opt == '3':
 				opt2 = input('\n Marque una de las siguientes opciones: \n - 1: Agregar una restricción de asignación. \n - 2: Eliminar una restricción de asignación. \n - 3: Agregar una restricción de tiempo. \n - 4: Eliminar una restricción de tiempo. \n - 5: Ver restricciones actuales. \n Ingrese la alternativa elegida: ')
 				if opt2 == '1':

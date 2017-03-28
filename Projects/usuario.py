@@ -152,8 +152,10 @@ def projects_console(db, level):
 				editProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost)
 			except ValueError as ve:
 				print(ve)
+				input('Precione cualquier tecla para volver \n')
 			except:
 				print('\n No se pudo realizar la edición. \n')
+				input('Precione cualquier tecla para volver \n')
 			
 		elif(opt == '3' and level == 1):
 			contract_number = input("\n Ingrese el número de contrato del proyecto a eliminar: ")
@@ -161,6 +163,7 @@ def projects_console(db, level):
 				deleteProject(db, contract_number)
 			except:
 				print('\n Proyecto inexistente \n')
+				input('Precione cualquier tecla para volver \n')
 
 		elif(opt == '4' and level == 1):
 			opt_projects_activities = input("\n Marque una de las siguientes opciones: \n - 1: si desea ingresar datos de disponibilidad de un cliente. \
@@ -193,12 +196,14 @@ def projects_console(db, level):
 					createProjectActivity(db, project, 4, initial_year, initial_month, initial_day, end_year, end_month, end_day)
 				except ValueError as ve:
 					print(ve)
+					input('Precione cualquier tecla para volver \n')
 			elif opt_projects_activities == '2':
 				id_project_activity = input("\n Ingrese el ID de la indisponibilidad que quiere eliminar: ")
 				try:
 					deleteProjectActivity(db, id_project_activity)
 				except:
 					print('\n No existe esa indisponibilidad \n')
+					input('Precione cualquier tecla para volver \n')
 			elif opt_projects_activities == '3':
 				print('\n')
 				printProjectsActivities(db)
