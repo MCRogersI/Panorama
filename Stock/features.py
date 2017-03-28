@@ -6,13 +6,13 @@ from matplotlib.pyplot import plot, show
 from threading import Thread
 
 
-def createSku(db, ide, name, price, critical_level, real_quantity=None, estimated_quantity=None, waste_factor = None):
+def createSku(db,id, name, price, critical_level, real_quantity=None, estimated_quantity=None, waste_factor = None):
 	''' Este método crea una unidad nueva de stock, asigna automáticamente el ID de la misma.
 		La cantidad estimada es la que se ve afectada por una planificación que podría cambiarse 
 		en el futuro '''
 
 	with db_session:
-		s = db.Stock(id = ide, name=name, price=price, critical_level=critical_level,
+		s = db.Stock(id=id, name=name, price=price, critical_level=critical_level,
 					 real_quantity=real_quantity, estimated_quantity=estimated_quantity, waste_factor = waste_factor)
 
 
