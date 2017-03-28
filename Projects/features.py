@@ -1,5 +1,8 @@
 from pony.orm import *
 from datetime import date, datetime, timedelta
+from openpyxl import Workbook, load_workbook
+from openpyxl.styles import Font
+import Stock.features as Sf
 
 
 def createProject(db, contract_number, client_address, client_comuna,
@@ -31,46 +34,52 @@ def printProjects(db):
 
 def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None):
 	with db_session:
-		p = db.Projects[contract_number]
-		if new_client_address != None:
-			p.client_addres = new_client_address
-		if new_client_comuna != None:
-			p.client_comuna = new_client_comuna
-		if new_client_name != None:
-			p.client_name = new_client_name
-		if new_client_rut != None:
-			p.client_rut = new_client_rut
-		if new_linear_meters != None:
-			p.linear_meters = new_linear_meters
-		if new_deadline != None:
-			p.deadline = new_deadline
-		if new_real_linear_meters != None:
-			p.real_linear_meters = new_real_linear_meters
-		if new_estimated_cost != None:
-			p.estimated_cost = new_estimated_cost
-		if new_real_cost != None:
-			p.real_cost = new_real_cost
+		try:
+			p = db.Projects[contract_number]
+			if new_client_address != None:
+				p.client_addres = new_client_address
+			if new_client_comuna != None:
+				p.client_comuna = new_client_comuna
+			if new_client_name != None:
+				p.client_name = new_client_name
+			if new_client_rut != None:
+				p.client_rut = new_client_rut
+			if new_linear_meters != None:
+				p.linear_meters = new_linear_meters
+			if new_deadline != None:
+				p.deadline = new_deadline
+			if new_real_linear_meters != None:
+				p.real_linear_meters = new_real_linear_meters
+			if new_estimated_cost != None:
+				p.estimated_cost = new_estimated_cost
+			if new_real_cost != None:
+				p.real_cost = new_real_cost
+		except ObjectNotFound as e:
+			print('Object not found: {}'.format(e))
+		except ValueError as e:
+			print('Value error: {}'.format(e))
 			
 def deleteProject(db, contract_number):
 	with db_session:
 		db.Projects[contract_number].delete()
 
-# def getCostProject(db, contract_number, fixed_cost, variable_cost):
-# 	''' Este método entrega el costo de un proyecto considerando que hay un costo fijo y además 
-# 		un costo variable que depende de los metros lineales del proyecto, hasta el momento 
-# 		estos parámetros se ingresan cada vez que se quiera calcular el costo de un proyecto'''
-# 	with db_session:
-# 		try:	
-# 			engagements = select(e for e in db.Engagements if e.project == db.Projects[contract_number])
-# 			cost=fixed_cost+variable_cost*db.Projects[contract_number].linear_meters
-# 			for e in engagements:
-# 				cost=cost + e.sku.price*e.quantity
-# 			return cost
-# 		except ObjectNotFound as e:
-# 			print('Object not found: {}'.format(e))
-# 		except ValueError as e:
-# 			print('Value error: {}'.format(e))
+def getNumberConcurrentProjects(db, contract_number, date):
+	''' Método que entrega la cantidad de proyectos que son realizados en la misma comuna,
+	en la misma fecha, para calcular los costos de transporte si es que hay más de uno en un lugar
+	en la misma fecha '''
+	p = db.Projects[contract_number]
+	candidates = select(pr for pr in db.Projects if pr.client_comuna == p.client_comuna and pr != p)
+	quant = 1
+	for pr in candidates:
+		inst = db.Tasks.get(skill = 4, project = pr)
+		et_ins = select(et for et in db.Employees_Tasks if et.task == inst)
+		for et in et_ins:
+			if(et.planned_initial_date == date):
+				quant += 1
+	return quant
+
 def getCostRM(db, contract_number):#RM = Raw Materials
+	''' Este método obtiene el costo de las materias primas según lo especificado en el Excel'''
 	with db_session:
 		p = db.Projects[contract_number]
 		sum_crystal = 0
@@ -78,27 +87,40 @@ def getCostRM(db, contract_number):#RM = Raw Materials
 		sum_components = 0
 		for e in p.engagements:#los if van separados por si alguna vez hay una distinción por las unidades de medida
 			if e.sku.type == 'Crystal' :
-				sum_crystal += e.sku.price*e.quantity
+				sum_crystal += e.sku.price*e.quantity#*factor_segun_tipo_de_cristal (falta esa tabla)
 			if e.sku.type == 'Profile':
-				sum_profile += e.sku.price*e.quantity
+				sum_profile += e.sku.price*(e.quantity*db.Waste_Factors[6].factor)
 			if e.sku.type == 'Component':
-				sum_components += e.sku.price*e.quantity
+				sum_components += e.sku.price*(e.quantity*db.Waste_Factors[1].factor)
 		return sum_crystal + sum_components+ sum_profile
-def getCostInstallation(db, contract_number, internal = True, num_projects = 1):
+def getCostInstallation(db, contract_number, internal = True):
+	''' Cálculo de los costos de instalación según lo especificado en el excel '''
 	with db_session:
 		total_cost = 0
 		p = db.Projects[contract_number]
 		price_ml = db.Operating_Costs['Costo por metro lineal de instalacion'].cost
 		task_aux = db.Tasks.get(skill = 4, project = p)
-		print(task_aux)
+		et_ins = select(et for et in db.Employees_Tasks if et.task == task_aux)
+		aux = 1
+		for et in et_ins:
+			et_aux = et
+			aux += 1
+			if aux >= 1:
+				break
+
 		if internal:
 			total_cost += p.linear_meters*price_ml
 		else:
 			total_cost += p.linear_meters*price_ml*1.5 #suponiendo que contratar un
 			# instalador externo cuesta 1.5 veces más
+		num_projects = getNumberConcurrentProjects(db, contract_number, et_aux.planned_initial_date)
 		total_cost += db.Freight_Costs[p.client_comuna].freight_cost/num_projects
+		total_cost += db.Operating_Costs['Viatical per day'].cost*len(et_ins)
+		total_cost += db.Operating_Costs['Costo por metro lineal de instalacion'].cost*p.linear_meters
+		total_cost = total_cost*db.Waste_Factors[5].factor
 		return total_cost
 def getCostFabrication(db, contract_number):
+	'''Cálculo de costos de fabricación según lo especificado en el excel'''
 	#hay que tener los metros lineales vendidos al mes, aqui los fijo según el excel
 	monthly_selled_ml = 240
 	monthly_income = 80000000 #venta promedio mensual, basada en el año
@@ -117,9 +139,10 @@ def getCostFabrication(db, contract_number):
 
 
 def getCostProject(db, contract_number):
+	''' Obtención de los costos de un proyecto '''
 	with db_session:
 		rmc = getCostRM(db, contract_number)
-		ic = getCostInstallation(db, contract_number, internal = True, num_projects = 1)
+		ic = getCostInstallation(db, contract_number, internal = True)
 		fc = getCostFabrication(db, contract_number)
 		return rmc + ic + fc
 def createTask(db, id_skill, contract_number, original_initial_date, original_end_date, effective_initial_date = None, effective_end_date = None):
@@ -129,21 +152,26 @@ def createTask(db, id_skill, contract_number, original_initial_date, original_en
 		
 def editTask(db, id , id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
 	with db_session:
-		t = db.Tasks[id]
-		if id_skill != None:
-			t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
-		if contract_number != None: 
-			t.project = contract_number #pendiente: revisar si funciona así o si tiene que ser como t.project = db.Projects[contract_number]
-		if original_initial_date != None:
-			t.original_initial_date = original_initial_date
-		if original_end_date != None:
-			t.original_end_date = original_end_date
-		if effective_initial_date != None:
-			t.effective_initial_date = effective_initial_date
-		if effective_end_date != None:
-			t.effective_end_date = effective_end_date
-		if fail_cost != None:
-			t.fail_cost = fail_cost
+		try:
+			t = db.Tasks[id]
+			if id_skill != None:
+				t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
+			if contract_number != None: 
+				t.project = contract_number #pendiente: revisar si funciona así o si tiene que ser como t.project = db.Projects[contract_number]
+			if original_initial_date != None:
+				t.original_initial_date = original_initial_date
+			if original_end_date != None:
+				t.original_end_date = original_end_date
+			if effective_initial_date != None:
+				t.effective_initial_date = effective_initial_date
+			if effective_end_date != None:
+				t.effective_end_date = effective_end_date
+			if fail_cost != None:
+				t.fail_cost = fail_cost
+		except ObjectNotFound as e:
+			print('Object not found: {}'.format(e))
+		except ValueError as e:
+			print('Value error: {}'.format(e))
 
 def deleteTask(db, id_task):
 	with db_session:
@@ -172,27 +200,32 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 def createDelay(db, project_id, skill_id, delay):
 	'''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = project_id, alargando el end date en delay días. 		Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html '''
 	with db_session:
-		if skill_id < 4:
-			p = db.Projects[project_id]
-			t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
-			db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
-			et = db.Employees_Tasks.get(task = t)
-			et.planned_end_date = et.planned_end_date+timedelta(delay)
-			skill_aux = skill_id + 1
-			while skill_aux <= 4:#si es una actividad anterior a instalación, atrasa todas las 
-			#tareas que le siguen
-				t_aux = db.Tasks.get(skill = db.Skills[skill_aux], project = p)
-				et_aux = db.Employees_Tasks.get(task = t_aux)
-				et_aux.planned_initial_date = et_aux.planned_initial_date + timedelta(delay)
-				et_aux.planned_end_date = et_aux.planned_end_date+timedelta(delay)
-				skill_aux += 1
-		else:
-			p = db.Projects[project_id]
-			t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
-			db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
-			et = db.Employees_Tasks.get(task = t)#si es una instalación con varios trabajadores
-			#asignados podría no funcionar esta línea
-			et.planned_end_date = et.planned_end_date+timedelta(delay)
+		try:
+			if skill_id < 4:
+				p = db.Projects[project_id]
+				t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
+				db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
+				et = db.Employees_Tasks.get(task = t)
+				et.planned_end_date = et.planned_end_date+timedelta(delay)
+				skill_aux = skill_id + 1
+				while skill_aux <= 4:#si es una actividad anterior a instalación, atrasa todas las 
+				#tareas que le siguen
+					t_aux = db.Tasks.get(skill = db.Skills[skill_aux], project = p)
+					et_aux = db.Employees_Tasks.get(task = t_aux)
+					et_aux.planned_initial_date = et_aux.planned_initial_date + timedelta(delay)
+					et_aux.planned_end_date = et_aux.planned_end_date+timedelta(delay)
+					skill_aux += 1
+			else:
+				p = db.Projects[project_id]
+				t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
+				db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
+				et = db.Employees_Tasks.get(task = t)#si es una instalación con varios trabajadores
+				#asignados podría no funcionar esta línea
+				et.planned_end_date = et.planned_end_date+timedelta(delay)
+		except ObjectNotFound as e:
+			print('Object not found: {}'.format(e))
+		except ValueError as e:
+			print('Value error: {}'.format(e))
 
 
 
@@ -271,23 +304,82 @@ def deleteProjectActivity(db, id_project_activity):
 def printProjectsActivities(db):
 	with db_session:
 		db.Projects_Activities.select().show()
-#def makeInform(db):
-#	import csv
-#	import psycopg2
-#	with db_session:
-#		conn = psycopg2.connect(user='postgres', password='panorama', host='localhost', database='panorama')
-#		cur = conn.cursor()
-#		projects = db.Projects.select()		
-#		cur.execute("copy (select * from projects) to '/home/mauricio/Projects/Panorama/pepo.csv'")
-		
-#		with open('poto.csv', 'w') as f:
-#			writer = csv.writer(f, delimiter = ',')
-#			for project in projects:
-#				writer.writerow(project)
-#		print("Done")
-		
+def getListProducts(db):
+	with db_session:
+		wb = load_workbook('Products.xlsx')
+		ws = wb['Hoja2']
+		r = 13
+		while ws.cell(row = r, column = 2 ).value != None:
+			stock_id = int(ws.cell(row = r, column = 2).value)
+			stock_engname = ws.cell(row = r, column = 4).value
+			stock_europrice = ws.cell(row = r, column = 5).value
+			stock_packingquantity = int(ws.cell(row = r, column = 7).value)
+			Sf.createSku(db, stock_id, stock_engname, stock_europrice, stock_packingquantity*50)#asumimos que el nivel 
+			#crítico es 50 veces el packing level, por mientras. 0 = estaba vacío
+			r += 1
+
+
+def getProjectFeatures(db, contract_number):
+	''' Método para obtener los parámetros de un proyecto desde un archivo de excel estandarizado '''
+	wb = load_workbook('EjemploPropuestaProyecto '+str(contract_number)+'.xlsx')
+	ws = wb['Edif A_Hoja Corte']
+	with db_session:
+		glass_id = int(ws.cell(row = 16, column = 2).value)
+		glass_m2 = ws.cell(row = 50, column  = 3).value
+		Sf.createEngagement(db, contract_number, [(glass_id, glass_m2)])
+		# glass_ml = ws.cell(row = 51, column  = 3).value#no es necesario
+		upper_profile_id = int(ws.cell(row = 58, column  = 2).value)
+		upper_profile_ml = ws.cell(row = 70, column  = 3).value
+		Sf.createEngagement(db, contract_number, [(upper_profile_id, upper_profile_ml)])
+		lower_profile_id = int(ws.cell(row = 72, column  = 2).value)
+		lower_profile_ml = ws.cell(row = 84, column  = 3).value
+		Sf.createEngagement(db, contract_number, [(lower_profile_id, lower_profile_ml)])
+		teles_profile_id = int(ws.cell(row = 86, column  = 2).value)
+		teles_profile_ml = ws.cell(row = 98, column  = 3).value
+		Sf.createEngagement(db, contract_number, [(teles_profile_id, teles_profile_ml)])
+		glassing_bead_id = int(ws.cell(row = 98, column = 14).value)
+		glassing_bead_ml = ws.cell(row = 100, column  = 14).value
+		glassing_bead_price = ws.cell(row = 105, column  = 15).value#no sé donde podría utilizarse
+		Sf.createEngagement(db, contract_number, [(glassing_bead_id, glassing_bead_ml)])
+
+		#hasta acá no debería ser un problema mantener el formato.
+		#Components to glass panes:
+		c1 = 142
+		while ws.cell(row = c1, column = 1).value != None:
+			ide =  ws.cell(row = c1, column = 1).value
+			quantity  =  ws.cell(row = c1, column = 6).value
+			Sf.createEngagement(db, contract_number, [(ide, quantity)])
+			c1 +=1
+		# Components to component box or profiles:
+		c2 = c1+1
+		while  ws.cell(row = c2, column = 1).value != None:
+			ide =  ws.cell(row = c2, column = 1).value
+			quantity  =  ws.cell(row = c2, column = 6).value
+			Sf.createEngagement(db, contract_number, [(ide, quantity)])
+			c2 +=1
+		#Components to component box
+		c3 = 142
+		while  ws.cell(row = c3, column = 8).value != None:
+			ide =  ws.cell(row = c2, column = 8).value
+			quantity  =  ws.cell(row = c2, column = 14).value
+			Sf.createEngagement(db, contract_number, [(ide, quantity)])
+			c3 +=1
+		#Sealings:
+		c4 = 181
+		while ws.cell(row = c4, column = 1).value != None:
+			ide =  ws.cell(row = c4, column = 1).value
+			quantity  =  ws.cell(row = c4, column = 3).value
+			Sf.createEngagement(db, contract_number, [(ide, quantity)])
+			c4 += 1
+
+
+
+
+
+
+
 	
-	
+
 	
 	
 	

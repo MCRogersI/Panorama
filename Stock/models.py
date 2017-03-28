@@ -3,9 +3,9 @@ from datetime import date
 
 def define_models(db):
 	class Stock(db.Entity):
-		id = PrimaryKey(int, auto = True)
+		id = PrimaryKey(int, auto = False)
 		name = Required(str)
-		type = Required(str)#crystal, profile, components, etc
+		# type = Optional(str)#crystal, profile, components, etc. Según el formato de los excel, no sería necesario
 		price = Required(float)
 		critical_level = Required(float)#En el futuro este valor podría calcularse pero inicialmente debe ser fijado
 		real_quantity = Optional(float)
@@ -25,7 +25,7 @@ def define_models(db):
 		withdrawal_date = Optional(date)
 		def __repr__(self):
 			return str(self.id)
-
+	
 	class Purchases(db.Entity):
 		id = PrimaryKey(int, auto = True)
 		sku = Required('Stock')
