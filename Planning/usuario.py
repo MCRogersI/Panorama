@@ -71,7 +71,7 @@ def planning_console(db,level):
 					continue
 			if opt == '4':
 				try:
-					createGlobalReport()
+					createGlobalReport(db)
 				except:
 					print('\n estamos trabajando para usted \n')
 			if opt == '5':

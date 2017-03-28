@@ -11,7 +11,7 @@ from openpyxl.styles import Font,Alignment
 # Global report #
 #################
 
-def createGlobalReport():
+def createGlobalReport(db):
     wb = Workbook()
     by_default_sheet = wb.get_sheet_by_name('Sheet')
     by_default_sheet.title = 'Introducción del informe'
@@ -141,7 +141,26 @@ def createGlobalReport():
 
     # llenar con los datos
 
-createGlobalReport()
+
+    with db_session:
+        projects = select(p for p in db.Projects).order_by(lambda p: p.contract_number)
+        r=4
+        for p in projects:
+            #Escribe el número de contrato
+            cell = ws.cell(row=4, column=4, value=p.contract_number)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            #Escribe la fecha de venta del contrato
+            cell = ws.cell(row=4, column=5, value="-----")
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            r+=1
+    wb.save('Global Report.xlsx')
+
 
 
 
