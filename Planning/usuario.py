@@ -3,8 +3,6 @@ from pony.orm import *
 from Planning.features import changePriority, addDelayed, doPlanning
 from Planning.reports import createGlobalReport
 
->>>>>>> d1869373d89836430e2adb14e30a636928180476
-
 def planning_console(db,level):
 	if level==1:
 		while True:
