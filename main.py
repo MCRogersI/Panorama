@@ -5,6 +5,7 @@ import Employees.features as Ef, Employees.usuario as Eu
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
+import Planning.reports as PLr
 import Users.features as Uf
 import Stock.usuario as Sf
 #import Tests.Case7 as case7
@@ -161,7 +162,7 @@ signIn()
 # print(PLf.FindDatesEmployees(db, 1, 2, 3, date(2017, 3, 9)))
 # print(PLf.FindDatesEmployees(db, 1, 2, 4, date(2017, 3, 9)))
 # print(PLf.FindDatesEmployees(db, 1, 2, 5, date(2017, 3, 9)))
-# print(PLf.FindDatesEmployees(db, 1, 2, 6, date(2017, 3, 9)))
+# print(PLf.FindDatesEmployees(db, 1, 2, 6, date(2017, 3, 9)))
 
 # Pf.createTask(db, 1, 1, date(2017, 3, 9), date(2017, 3, 9))
 # print(Pf.printTasks(db))
@@ -212,4 +213,4 @@ signIn()
 # Tests de los features de Planning.features relacionados al reporte post-planificación #
 #########################################################################################
 
-# print(PLf.planningChangesPlausible(db))
+# print(PLr.planningChangesPlausible(db))
