@@ -6,13 +6,13 @@ from matplotlib.pyplot import plot, show
 from threading import Thread
 
 
-def createSku(db, name, type, price, critical_level, real_quantity=None, estimated_quantity=None, waste_factor = None):
+def createSku(db, ide, name, price, critical_level, real_quantity=None, estimated_quantity=None, waste_factor = None):
 	''' Este método crea una unidad nueva de stock, asigna automáticamente el ID de la misma.
 		La cantidad estimada es la que se ve afectada por una planificación que podría cambiarse 
 		en el futuro '''
 
 	with db_session:
-		s = db.Stock(name=name, type = type,price=price, critical_level=critical_level,
+		s = db.Stock(id = ide, name=name, price=price, critical_level=critical_level,
 					 real_quantity=real_quantity, estimated_quantity=estimated_quantity, waste_factor = waste_factor)
 
 
@@ -46,7 +46,7 @@ def deleteSku(db, id):
 		db.Stock[id].delete()
 
 
-def printStock(db):
+def printStockConsole(db):
 	''' Este método elimina una de las entradas de SKU de la tabla de Stock '''
 	with db_session:
 		db.Stock.select().show()
@@ -268,6 +268,12 @@ def displayStock(db, id_sku):
 		p.start()
 		p.join()
 
+#FUNCIÓN EN DESARROLLO
+# def displayALlSKUs(db):
+# 	with db_session:
+# 		skus = select(sku for sku in db.Stock).order_by(lambda s: s.id)
+# 		for sku in skus:
+# 			displayStock(db,sku.id)
 
 def updateEngagements(db, id_sku):
 	'''Este método actualiza los engagements una vez que se ha hecho una planificación, asignando la fecha de inicio
