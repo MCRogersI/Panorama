@@ -34,31 +34,29 @@ with db_session:
 # Stock inicial test case 2 #
 #############################
 
-Sf.createSku(db, 1,'Telescopic', 2.01, 100,real_quantity=219, waste_factor = 0.02)
-Sf.createSku(db, 2,'Glass Pane Knob', 6.43, 200,real_quantity=220, waste_factor = 0.03)
-Sf.createSku(db, 3,'Lower chamber-9', 4.77, 150,real_quantity=234, waste_factor = 0.04)
-Sf.createSku(db, 4,'Upper chamber-9', 3.07, 150,real_quantity=243, waste_factor = 0.05)
-Sf.createSku(db, 5,'Lock for latch', 12.03, 100,real_quantity=251, waste_factor = 0.03)
-Sf.createSku(db, 6,'Profile joint unit plastic bag', 4.93, 180,real_quantity=268, waste_factor = 0.03)
-Sf.createSku(db, 7, 'Screw M4x14 tx20 A2 DIN965', 0.07, 50,real_quantity=0)
-Sf.createSku(db, 8, 'Fastening Bead 10mm transparent', 2.51, 50,real_quantity=0)
-Sf.createSku(db, 9, 'Screws for Water Sill', 0.69, 50,real_quantity=0)
-Sf.createSku(db, 10, 'Lock Keeper, wall side', 6.52, 50,real_quantity=0)
-Sf.createSku(db, 11, 'Profile joint unit plastic bag',4.93, 50,real_quantity=0)
+Sf.createSku(db, 1,'Telescopic', 2.01, 100,219, waste_factor = 0.02)
+Sf.createSku(db, 2,'Glass Pane Knob', 6.43, 200,220, waste_factor = 0.03)
+Sf.createSku(db, 3,'Lower chamber-9', 4.77, 150,234, waste_factor = 0.04)
+Sf.createSku(db, 4,'Upper chamber-9', 3.07, 150,243, waste_factor = 0.05)
+Sf.createSku(db, 5,'Lock for latch', 12.03, 100,251, waste_factor = 0.03)
+Sf.createSku(db, 6,'Profile joint unit plastic bag', 4.93, 180,268, waste_factor = 0.03)
+Sf.createSku(db, 7, 'Screw M4x14 tx20 A2 DIN965', 0.07, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 8, 'Fastening Bead 10mm transparent', 2.51, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 9, 'Screws for Water Sill', 0.69, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 10, 'Lock Keeper, wall side', 6.52, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 11, 'Profile joint unit plastic bag',4.93, 50,0, waste_factor = 0.03)
 
 #########################
 # Proyectos test case 2 #
 #########################
-Pf.createProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
+Pf.createProject(db, 1, 'Manuel Montt 1235', 'Calera', 'Pedro Sánchez',
 				 '17.094.362-0', 150, 2017, 12, 30, estimated_cost = 200)
-Pf.createProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
+Pf.createProject(db, 2, 'Suecia 86', 'Arica', 'Franco Soto',
 				 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300)
-Pf.createProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
-				 '15.114.992-0',
- 320, 2017, 6, 3, estimated_cost = 150)
-Pf.createProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
-				 '14.214.392-K',
- 220, 2017, 8, 30, estimated_cost = 250)
+Pf.createProject(db, 3, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
+				 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150)
+Pf.createProject(db, 4, 'Miguel Angelo 987', 'San José', 'Miguel Devil', 
+					'14.214.392-K',220, 2017, 8, 30, estimated_cost = 250
 
 ###########################
 # Engagements test case 2 #
@@ -77,19 +75,19 @@ Sf.createPurchases(db,(1,155),date(2017, 3, 4))
 #        Lista de empleados test case 2 		#
 # ###############################################
 
-Ef.CreateEmployee(db,  "Juan", 1, perf_rect = 10)
-Ef.CreateEmployee(db,  "Pedro", 2, perf_des = 20)
-Ef.CreateEmployee(db,  "Diego", 2, perf_fab = 30)
-Ef.CreateEmployee(db,  "Miguel", 1, perf_inst = 40)
-Ef.CreateEmployee(db,  "Mario", 1, perf_rect = 50)
-Ef.CreateEmployee(db,  "Felipe", 2, perf_des = 60)
-Ef.CreateEmployee(db,  "Miguel", 1, perf_fab = 40)
-Ef.CreateEmployee(db,  "Mario", 1, perf_inst = 50)
-Ef.CreateEmployee(db,  "Felipe", 2, perf_rect = 60)
-Ef.CreateEmployee(db,  "Miguel", 1, perf_des = 40)
-Ef.CreateEmployee(db,  "Mario", 1, perf_fab = 50)
-Ef.CreateEmployee(db,  "Felipe", 1, perf_inst = 60)
-Ef.CreateEmployee(db,  "Iker", 1, perf_inst = 70)
+Ef.createEmployee(db,  "Juan", 1, perf_rect = 10)
+Ef.createEmployee(db,  "Pedro", 2, perf_des = 20)
+Ef.createEmployee(db,  "Diego", 2, perf_fab = 30)
+Ef.createEmployee(db,  "Miguel", 1, perf_inst = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_rect = 50)
+Ef.createEmployee(db,  "Felipe", 2, perf_des = 60)
+Ef.createEmployee(db,  "Miguel", 1, perf_fab = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_inst = 50)
+Ef.createEmployee(db,  "Felipe", 2, perf_rect = 60)
+Ef.createEmployee(db,  "Miguel", 1, perf_des = 40)
+Ef.createEmployee(db,  "Mario", 1, perf_fab = 50)
+Ef.createEmployee(db,  "Felipe", 1, perf_inst = 60)
+Ef.createEmployee(db,  "Iker", 1, perf_inst = 70)
 
 ##############################################
 # Lista de prueba de tasks test case 2 		 #
@@ -140,7 +138,7 @@ with db_session:
 	#Cuando una tarea ya fue fijada, no considera que el cliente pase a estar ocupado. ARREGLAR
 
 PLf.changePriority(db, 3, 1)
-PLf.DoPlanning(db, Pf.createTask, Sf.updateEngagements)
+PLf.doPlanning(db, Pf.createTask, Sf.updateEngagements)
 print('------')
 print(Sf.checkStockAlarms(db))
 Sf.printStock(db, 1)

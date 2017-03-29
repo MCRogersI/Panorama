@@ -8,9 +8,10 @@ import Planning.features as PLf
 import Planning.reports as PLr
 import Users.features as Uf
 import Stock.usuario as Sf
-#import Tests.Case7 as case7
+import Tests.Case8 as case8
 import Planning.usuario as PlanU
-Uf.createUser(db,'1', 1,'1')
+import Stock.reports as Sr
+# Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 1,'Armin')
 # Uf.createUser(db,'Piola', 2,'Cuatro')
 # Uf.createUser(db,'Pleb', 3,'00000')
@@ -45,14 +46,15 @@ def signIn():
 		else:
 			print("Usuario y/o Contraseña incorrecto(s))")
 		break
-signIn()
+# signIn()
 # Uf.createUser(db, "1", 1, "1")
 # Uf.createUser(db, "2", 2, "2")
 # Uf.createUser(db, "3", 3, "3")
 # print(PLf.GetDays(db, 1, 1, 3))
 # print(PLf.SumDays(date(2015,1,1), 1.1))
 # Pf.failedTask(db, 1, 1, 2300)
-
+# Sr.baseCreateReport()
+# PLr.createGlobalReport(db)
 
 # PLf.DoPlanning(db)
 # PLf.addDelayed(db, 1,1,1,1,1)

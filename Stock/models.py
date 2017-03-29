@@ -8,11 +8,12 @@ def define_models(db):
 		# type = Optional(str)#crystal, profile, components, etc. Según el formato de los excel, no sería necesario
 		price = Required(float)
 		critical_level = Required(float)#En el futuro este valor podría calcularse pero inicialmente debe ser fijado
-		real_quantity = Optional(float)
+		real_quantity = Required(float)# Required desde el 29/03/2017, no tiene sentido q sea opcional, y es necesario para calcular stock.
+		waste_factor = Required(float)#Required desde el 29/03/2017, todos los materiales tienen factores de pérdida
 		estimated_quantity = Optional(float)
 		engagements = Set('Engagements')
 		purchases = Set('Purchases')
-		waste_factor = Optional(float)#para perfiles y cristales, según el Excel, valor entre 0 y 1
+		
 		def __repr__(self):
 			return str(self.name)
 

@@ -16,9 +16,9 @@ import Stock.features as Sf
 #'drop schema public cascade'
 # 'create schema public'
 
-Uf.createUser(db,'Alberto',1,'123')
-Uf.createUser(db,'Juan',2,'456')
-Uf.createUser(db,'Felipe',3,'789')
+# Uf.createUser(db,'Alberto',1,'123')
+# Uf.createUser(db,'Juan',2,'456')
+# Uf.createUser(db,'Felipe',3,'789')
 
 #Aquí las Skills, las Difficulties y las Activities se crean de forma directa. Esto no se hace a través de métodos "createSkill",
 #createActivity" o "create Difficulty" dado que esas relaciones son
@@ -115,3 +115,5 @@ with db_session:
 # Pf.getCostProject(db, 1)
 Pf.getListProducts(db)
 Pf.getProjectFeatures(db,1)
+
+Sf.printStock(db, 50200302)

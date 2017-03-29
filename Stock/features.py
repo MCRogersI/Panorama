@@ -6,7 +6,7 @@ from matplotlib.pyplot import plot, show
 from threading import Thread
 
 
-def createSku(db,id, name, price, critical_level, real_quantity=None, estimated_quantity=None, waste_factor = None):
+def createSku(db,id, name, price, critical_level, real_quantity, waste_factor, estimated_quantity=None):
 	''' Este método crea una unidad nueva de stock, asigna automáticamente el ID de la misma.
 		La cantidad estimada es la que se ve afectada por una planificación que podría cambiarse 
 		en el futuro '''
@@ -275,19 +275,6 @@ def displayStock(db, id_sku):
 # 		for sku in skus:
 # 			displayStock(db,sku.id)
 
-def updateEngagements(db, id_sku):
-	'''Este método actualiza los engagements una vez que se ha hecho una planificación, asignando la fecha de inicio
-		de la instalación '''
-	with db_session:
-		# installations = select(t for t in db.Tasks if t.skill.id == 4)
-		assigned_inst = select(at for at in db.Employees_Tasks if at.task.skill.id == 4)
-		engagements = select(e for e in db.Engagements if e.sku == db.Stock[id_sku])
-		for e in engagements:
-			for at in assigned_inst:
-				if at.task.project == e.project:
-					e.withdrawal_date = at.planned_initial_date
-
-
 def checkStockAlarms(db):
 	'''Este método revisa los niveles de stock para cada sku en el futuro y verifica si están bajo el nivel crítico.
 	Retorna en una lista de tuplas, las cantidades bajo el nivel crítico detectadas y sus respectivas fechas.  '''
@@ -305,3 +292,18 @@ def checkStockAlarms(db):
 						'SKU (id = {0}) quantity below critical level {1}, on the date {2}'.format(
 							sku.id, sku_level[0], sku_level[1]))
 	return alarms
+def getStockValue(db):
+	'''Método que entrega el precio en euros del stock existente el día en que se llama el método '''
+	with db_session:
+		skus = select(sku for sku in db.Stock)
+		total_sum = 0
+		for s in skus:
+			total_sum += s.price*s.real_quantity
+		return total_sum
+def updateStock(db):
+	''' Método que realiza los cambios efectivos de stock correspondientes a la fecha en que se llama al método,
+	debería llamarse todos los días y/o cada vez que se ingrese algún movimiento efectivo '''
+	with db_session:
+		engagements = select (e for e in db.Engagements if e.withdrawal_date == date.today())
+		purchases = select( pur for pur in db.Purchases if pur.arrival_date == date.today())
+

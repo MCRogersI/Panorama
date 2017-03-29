@@ -34,17 +34,17 @@ with db_session:
 #############################
 # Stock inicial test case 2 #
 #############################
-Sf.createSku(db, 1,'Telescopic', 2.01, 100,real_quantity=219, waste_factor = 0.02)
-Sf.createSku(db, 2,'Glass Pane Knob', 6.43, 200,real_quantity=220, waste_factor = 0.03)
-Sf.createSku(db, 3,'Lower chamber-9', 4.77, 150,real_quantity=234, waste_factor = 0.04)
-Sf.createSku(db, 4,'Upper chamber-9', 3.07, 150,real_quantity=243, waste_factor = 0.05)
-Sf.createSku(db, 5,'Lock for latch', 12.03, 100,real_quantity=251, waste_factor = 0.03)
-Sf.createSku(db, 6,'Profile joint unit plastic bag', 4.93, 180,real_quantity=268, waste_factor = 0.03)
-Sf.createSku(db, 7, 'Screw M4x14 tx20 A2 DIN965', 0.07, 50,real_quantity=0)
-Sf.createSku(db, 8, 'Fastening Bead 10mm transparent', 2.51, 50,real_quantity=0)
-Sf.createSku(db, 9, 'Screws for Water Sill', 0.69, 50,real_quantity=0)
-Sf.createSku(db, 10, 'Lock Keeper, wall side', 6.52, 50,real_quantity=0)
-Sf.createSku(db, 11, 'Profile joint unit plastic bag',4.93, 50,real_quantity=0)
+Sf.createSku(db, 1,'Telescopic', 2.01, 100,219, waste_factor = 0.02)
+Sf.createSku(db, 2,'Glass Pane Knob', 6.43, 200,220, waste_factor = 0.03)
+Sf.createSku(db, 3,'Lower chamber-9', 4.77, 150,234, waste_factor = 0.04)
+Sf.createSku(db, 4,'Upper chamber-9', 3.07, 150,243, waste_factor = 0.05)
+Sf.createSku(db, 5,'Lock for latch', 12.03, 100,251, waste_factor = 0.03)
+Sf.createSku(db, 6,'Profile joint unit plastic bag', 4.93, 180,268, waste_factor = 0.03)
+Sf.createSku(db, 7, 'Screw M4x14 tx20 A2 DIN965', 0.07, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 8, 'Fastening Bead 10mm transparent', 2.51, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 9, 'Screws for Water Sill', 0.69, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 10, 'Lock Keeper, wall side', 6.52, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 11, 'Profile joint unit plastic bag',4.93, 50,0, waste_factor = 0.03)
 
 #################################################
 #        Lista de empleados test case 2 		#
