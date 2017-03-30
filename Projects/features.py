@@ -262,9 +262,10 @@ def updateEmployeeProjects(db, employee, initial_date, end_date):
 
 		
 def deleteEmployeeActivity(db, id_employee_activity):
-	with db_session:
-		db.Employees_Activities[id_employee_activity].delete()
-		
+    with db_session:
+        db.Employees_Activities[id_employee_activity].delete()
+        commit()
+        
 def printEmployeesActivities(db):
 	with db_session:
 		db.Employees_Activities.select().show()
