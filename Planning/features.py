@@ -113,6 +113,8 @@ def employeesAvailable(db, ids_employees, initial_date, end_date):
 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
 
 		for ea in emp_acts:
+			if 9 in ids_employees:
+				print(ea.initial_date + " " + ea.end_date)
 			if datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
 				return False
 		for et in emp_tasks:
@@ -171,9 +173,8 @@ def getChosenIds(possibilities, chosen):
 	
 #checked (kind of)
 def findEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date):
-	with db_session:		
+	with db_session:
 		ids_employees = employeesBySkill(db, id_skill) # elegimos a los empleados con el skill necesario
-		
 		cluster1 = employeesByStatus(db, contract_number, ids_employees, True, True) # empleados fijos en este proyecto
 		cluster2 = employeesByStatus(db, contract_number, ids_employees, True, False) # empleados vetados en este proyecto
 		cluster3 = employeesByStatus(db, contract_number, ids_employees, False, True) # empleados fijos en otros proyectos
@@ -373,7 +374,7 @@ def doPlanning(db):
 	cleanTasks(db) #Aquí se borran todas las tasks de planificaciones anteriores (las 'borrables')
 	with db_session:
 		projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
-
+		projects.show()
 		for p in projects:
 			last_release_date = date.today()
 			if not p.fixed_planning:
@@ -400,6 +401,7 @@ def doPlanning(db):
 							#	Delayed = addDelayed(db, Delayed, p.contract_number, s, num_workers, initial, ending, p.deadline)
 							
 							assignTask(db, emps, task, initial, ending)
+							commit()
 							last_release_date = ending
 						else: 	# asume que el et.planned_end_date está bien actualizado, si no, habría que calcular el last_release_days como
 								# task.effective_initial_date + los días que se demora el trabajo según la cantidad de trabajadores
@@ -435,13 +437,15 @@ def doPlanning(db):
 									Pf.createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
 									task = db.Tasks.get(skill = s, project = p)
 								assignTask(db, emps, task, initial, ending[num_workers-1])
+								commit()
 							else:
 								if task == None:
 									Pf.createTask(db, s.id, p.contract_number, initial, ending[num_workers-1])
 									task = db.Tasks.get(skill = s, project = p)
 								assignTask(db, emps, task, initial, ending[num_workers-1])
+								commit()
 			for e in p.engagements:
-				Sf.updateEngagements(db, e.sku.id)			
+				Sf.updateEngagements(db, e.sku.id)
 		# createReport(db, Delayed)
 		
 		
@@ -484,7 +488,7 @@ def doPlanning(db):
 
 ##########################################################
 # Métodos relacionados a los informes post-planificación #
-##########################################################
+########################################################## 
 
 def createReport(db, Delayed):
 	with db_session:
