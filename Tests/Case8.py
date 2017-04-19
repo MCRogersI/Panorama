@@ -67,7 +67,7 @@ with db_session:
 ################################################
 # Obtener la lista de productos desde un excel #
 ################################################
-Pf.getListProducts(db)
+# Pf.getListProducts(db)
 
 #################################################
 #        Lista de empleados test case 1 		#
@@ -113,7 +113,7 @@ with db_session:
 
 
 # Pf.getCostProject(db, 1)
-Pf.getProjectFeatures(db,1)
+# Pf.getProjectFeatures(db,1)
 # PLf.doPlanning(db)
 # print(Sf.getStockValue(db))
 # Sf.printStock(db, 50220020)

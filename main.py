@@ -12,7 +12,7 @@ import Tests.Case8 as case8
 import Planning.usuario as PlanU
 import Stock.reports as Sr
 
-# Uf.createUser(db,'1', 1,'1')
+Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 1,'Armin')
 # Uf.createUser(db,'Piola', 2,'Cuatro')
 # Uf.createUser(db,'Pleb', 3,'00000')

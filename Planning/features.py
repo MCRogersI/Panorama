@@ -212,7 +212,7 @@ def findEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
 		for _ in range(0, num_workers): last.append(1)
 		for _ in range(0, len(chosen) - num_workers): last.append(0)
 		
-		while(not employeesAvailable(db, ids_found + getChosenIds(possibilities, chosen), initial_date, end_date, activities = True)):
+		while(not employeesAvailable(db, ids_found + getChosenIds(possibilities, chosen), initial_date, end_date)):
 			if chosen == last:
 				return []
 			chosen = successor(chosen, num_workers)
@@ -651,16 +651,16 @@ def employeesRestrictionsPlausible(db, ws):
 	return True
 	
 #método auxiliar para ver si un empleado está disponible según sus Activities XOR Tasks (activities = True es Activities, si no, Tasks)
-def employeesAvailable(db, ids_employees, initial_date, end_date, activities):
-	with db_session:
-		employee_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
-
-		for ea in employee_acts:
-			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
-				return False
-		for et in emp_tasks:
-			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
-				return False
-		return True	
+# def employeesAvailable(db, ids_employees, initial_date, end_date, activities):
+# 	with db_session:
+# 		employee_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
+# 		emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
+#
+# 		for ea in employee_acts:
+# 			if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
+# 				return False
+# 		for et in emp_tasks:
+# 			if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
+# 				return False
+# 		return True
 
