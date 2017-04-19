@@ -21,12 +21,12 @@ Uf.createUser(db,'Juan',2,'456')
 Uf.createUser(db,'Felipe',3,'789')
 
 
-Sf.createSku(db, 'Telescopic', 'Profile',2.01, 100,real_quantity=219)
-Sf.createSku(db, 'Glass Pane Knob', 'Profile',6.43, 200,real_quantity=220)
-Sf.createSku(db, 'Lower chamber-9','Profile', 4.77, 150,real_quantity=234)
-Sf.createSku(db, 'Upper chamber-9','Profile', 3.07, 150,real_quantity=243)
-Sf.createSku(db, 'Lock for latch','Profile', 12.03, 100,real_quantity=251)
-Sf.createSku(db, 'Profile joint unit plastic bag','Profile', 4.93, 180,real_quantity=268)
+Sf.createSku(db, 1,'Telescopic', 2.01, 100,219, waste_factor = 0.02)
+Sf.createSku(db, 2,'Glass Pane Knob', 6.43, 200,220, waste_factor = 0.03)
+Sf.createSku(db, 3,'Lower chamber-9', 4.77, 150,234, waste_factor = 0.04)
+Sf.createSku(db, 4,'Upper chamber-9', 3.07, 150,243, waste_factor = 0.05)
+Sf.createSku(db, 5,'Lock for latch', 12.03, 100,251, waste_factor = 0.03)
+Sf.createSku(db, 6,'Profile joint unit plastic bag', 4.93, 180,268, waste_factor = 0.03)
 
 
 
@@ -69,16 +69,14 @@ Ef.createEmployee(db,  "Iker", 1, perf_inst = 70)
 # Lista de prueba de proyectos test case 1   #
 ##############################################
 
-Pf.createProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
+Pf.createProject(db, 1, 'Manuel Montt 1235', 'Calera', 'Pedro Sánchez',
 				 '17.094.362-0', 150, 2017, 12, 30, estimated_cost = 200)
-Pf.createProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
+Pf.createProject(db, 2, 'Suecia 86', 'Arica', 'Franco Soto',
 				 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300)
-Pf.createProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
-				 '15.114.992-0',
- 450, 2017, 6, 3, estimated_cost = 150)
-Pf.createProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil', '14.214.392-K',
- 220, 2017, 8, 30, estimated_cost = 250)
-
+Pf.createProject(db, 3, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
+				 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150)
+Pf.createProject(db, 4, 'Miguel Angelo 987', 'San José', 'Miguel Devil', 
+					'14.214.392-K',220, 2017, 8, 30, estimated_cost = 250
 
 Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 27))
 Sf.createEngagement(db, 2, [(1,99),(4,100),(2,30)],date(2017, 2, 25))

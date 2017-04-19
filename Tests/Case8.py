@@ -98,7 +98,7 @@ Pf.createProject(db, 2, 'Suecia 86', 'Arica', 'Franco Soto',
 Pf.createProject(db, 3, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
 				 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150)
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil', 
-					'14.214.392-K',220, 2017, 8, 30, estimated_cost = 250)                    
+					'14.214.392-K',220, 2017, 8, 30, estimated_cost = 250)
 
 
 

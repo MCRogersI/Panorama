@@ -21,12 +21,12 @@ Uf.createUser(db,'Juan',2,'456')
 Uf.createUser(db,'Felipe',3,'789')
 
 
-Sf.createSku(db, 'Telescopic','Profile', 2.01, 100,real_quantity=219)
-Sf.createSku(db, 'Glass Pane Knob', 'Profile',6.43, 200,real_quantity=220)
-Sf.createSku(db, 'Lower chamber-9', 'Profile',4.77, 150,real_quantity=234)
-Sf.createSku(db, 'Upper chamber-9','Profile', 3.07, 150,real_quantity=243)
-Sf.createSku(db, 'Lock for latch', 'Profile',12.03, 100,real_quantity=251)
-Sf.createSku(db, 'Profile joint unit plastic bag','Profile', 4.93, 180,real_quantity=268)
+Sf.createSku(db, 1,'Telescopic', 2.01, 100,219, waste_factor = 0.02)
+Sf.createSku(db, 2,'Glass Pane Knob', 6.43, 200,220, waste_factor = 0.03)
+Sf.createSku(db, 3,'Lower chamber-9', 4.77, 150,234, waste_factor = 0.04)
+Sf.createSku(db, 4,'Upper chamber-9', 3.07, 150,243, waste_factor = 0.05)
+Sf.createSku(db, 5,'Lock for latch', 12.03, 100,251, waste_factor = 0.03)
+Sf.createSku(db, 6,'Profile joint unit plastic bag', 4.93, 180,268, waste_factor = 0.03)
 
 
 

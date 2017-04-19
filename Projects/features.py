@@ -9,7 +9,7 @@ def createProject(db, contract_number, client_address, client_comuna,
 				  client_name, client_rut, linear_meters, year, month,
 				  day, real_linear_meters = None, estimated_cost = None,
 				  real_cost = None):
-	import Planning.features as Pf
+	import Planning.features as PLf
 	with db_session:
 		deadline = date(int(year), int(month), int(day))
 		p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline=deadline, estimated_cost = estimated_cost)
@@ -25,7 +25,7 @@ def createProject(db, contract_number, client_address, client_comuna,
 		#NO ES BROMA!!
 	#?????????????????????????????	
 		#############################################################
-	Pf.doPlanning(db)
+	PLf.doPlanning(db)
 	
 	
 def printProjects(db):
@@ -82,17 +82,11 @@ def getCostRM(db, contract_number):#RM = Raw Materials
 	''' Este método obtiene el costo de las materias primas según lo especificado en el Excel'''
 	with db_session:
 		p = db.Projects[contract_number]
-		sum_crystal = 0
-		sum_profile = 0
-		sum_components = 0
-		for e in p.engagements:#los if van separados por si alguna vez hay una distinción por las unidades de medida
-			if e.sku.type == 'Crystal' :
-				sum_crystal += e.sku.price*e.quantity#*factor_segun_tipo_de_cristal (falta esa tabla)
-			if e.sku.type == 'Profile':
-				sum_profile += e.sku.price*(e.quantity*db.Waste_Factors[6].factor)
-			if e.sku.type == 'Component':
-				sum_components += e.sku.price*(e.quantity*db.Waste_Factors[1].factor)
-		return sum_crystal + sum_components+ sum_profile
+		total_sum = 0
+
+		for e in p.engagements:
+			total_sum += e.sku.price*e.quantity*(1+e.sku.waste_factor)
+	return total_sum
 def getCostInstallation(db, contract_number, internal = True):
 	''' Cálculo de los costos de instalación según lo especificado en el excel '''
 	with db_session:
@@ -198,7 +192,8 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 		PLf.doPlanning(db)
 
 def createDelay(db, project_id, skill_id, delay):
-	'''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = project_id, alargando el end date en delay días. 		Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html '''
+	'''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = project_id, alargando el end date en delay días. 		
+	Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html '''
 	with db_session:
 		try:
 			if skill_id < 4:
@@ -315,8 +310,12 @@ def getListProducts(db):
 			stock_engname = ws.cell(row = r, column = 4).value
 			stock_europrice = ws.cell(row = r, column = 5).value
 			stock_packingquantity = int(ws.cell(row = r, column = 7).value)
-			Sf.createSku(db, stock_id, stock_engname, stock_europrice, stock_packingquantity*50)#asumimos que el nivel 
-			#crítico es 50 veces el packing level, por mientras. 0 = estaba vacío
+			Sf.createSku(db, stock_id, stock_engname, stock_europrice, stock_packingquantity*50, stock_packingquantity*75, 0.03)
+			#Asumimos que el nivel crítico es 50 veces el packing quantity, por mientras. 0 = estaba vacío en el excel. 
+			#Asumimos además que la cantidad real (para hacer correr el programa, en realidad al comenzar a usar el 
+			#software se debería saber las cantidades reales de todos los SKUs) es 1.5 veces el nivel crítico.
+			#Asumimos que el factor de pérdida es 0.03 para todos los SKUs, eventualmente la tabla Products debería tener 
+			#el factor de pérdida asociado al código del SKU.
 			r += 1
 
 
@@ -324,24 +323,32 @@ def getProjectFeatures(db, contract_number):
 	''' Método para obtener los parámetros de un proyecto desde un archivo de excel estandarizado '''
 	wb = load_workbook('EjemploPropuestaProyecto '+str(contract_number)+'.xlsx')
 	ws = wb['Edif A_Hoja Corte']
+	
+	
+	
 	with db_session:
+		#Asumiremos, para fijar una fecha inicial, que los engagement se realizarán al comienzo de la fabricación
+		p = db.Projects[contract_number]
+		task_aux = db.Tasks.get(skill = 3, project = p)
+		et_fab = db.Employees_Tasks.get(task = task_aux)
+		withdrawal = et_fab.planned_initial_date
 		glass_id = int(ws.cell(row = 16, column = 2).value)
 		glass_m2 = ws.cell(row = 50, column  = 3).value
-		Sf.createEngagement(db, contract_number, [(glass_id, glass_m2)])
+		Sf.createEngagement(db, contract_number, [(glass_id, glass_m2)], withdrawal_date = withdrawal)
 		# glass_ml = ws.cell(row = 51, column  = 3).value#no es necesario
 		upper_profile_id = int(ws.cell(row = 58, column  = 2).value)
 		upper_profile_ml = ws.cell(row = 70, column  = 3).value
-		Sf.createEngagement(db, contract_number, [(upper_profile_id, upper_profile_ml)])
+		Sf.createEngagement(db, contract_number, [(upper_profile_id, upper_profile_ml)], withdrawal_date = withdrawal)
 		lower_profile_id = int(ws.cell(row = 72, column  = 2).value)
 		lower_profile_ml = ws.cell(row = 84, column  = 3).value
-		Sf.createEngagement(db, contract_number, [(lower_profile_id, lower_profile_ml)])
+		Sf.createEngagement(db, contract_number, [(lower_profile_id, lower_profile_ml)], withdrawal_date = withdrawal)
 		teles_profile_id = int(ws.cell(row = 86, column  = 2).value)
 		teles_profile_ml = ws.cell(row = 98, column  = 3).value
-		Sf.createEngagement(db, contract_number, [(teles_profile_id, teles_profile_ml)])
+		Sf.createEngagement(db, contract_number, [(teles_profile_id, teles_profile_ml)], withdrawal_date = withdrawal)
 		glassing_bead_id = int(ws.cell(row = 98, column = 14).value)
 		glassing_bead_ml = ws.cell(row = 100, column  = 14).value
 		glassing_bead_price = ws.cell(row = 105, column  = 15).value#no sé donde podría utilizarse
-		Sf.createEngagement(db, contract_number, [(glassing_bead_id, glassing_bead_ml)])
+		Sf.createEngagement(db, contract_number, [(glassing_bead_id, glassing_bead_ml)], withdrawal_date = withdrawal)
 
 		#hasta acá no debería ser un problema mantener el formato.
 		#Components to glass panes:
@@ -349,28 +356,28 @@ def getProjectFeatures(db, contract_number):
 		while ws.cell(row = c1, column = 1).value != None:
 			ide =  ws.cell(row = c1, column = 1).value
 			quantity  =  ws.cell(row = c1, column = 6).value
-			Sf.createEngagement(db, contract_number, [(ide, quantity)])
+			Sf.createEngagement(db, contract_number, [(ide, quantity)], withdrawal_date = withdrawal)
 			c1 +=1
 		# Components to component box or profiles:
 		c2 = c1+1
 		while  ws.cell(row = c2, column = 1).value != None:
 			ide =  ws.cell(row = c2, column = 1).value
 			quantity  =  ws.cell(row = c2, column = 6).value
-			Sf.createEngagement(db, contract_number, [(ide, quantity)])
+			Sf.createEngagement(db, contract_number, [(ide, quantity)], withdrawal_date = withdrawal)
 			c2 +=1
 		#Components to component box
 		c3 = 142
 		while  ws.cell(row = c3, column = 8).value != None:
 			ide =  ws.cell(row = c2, column = 8).value
 			quantity  =  ws.cell(row = c2, column = 14).value
-			Sf.createEngagement(db, contract_number, [(ide, quantity)])
+			Sf.createEngagement(db, contract_number, [(ide, quantity)], withdrawal_date = withdrawal)
 			c3 +=1
 		#Sealings:
 		c4 = 181
 		while ws.cell(row = c4, column = 1).value != None:
 			ide =  ws.cell(row = c4, column = 1).value
 			quantity  =  ws.cell(row = c4, column = 3).value
-			Sf.createEngagement(db, contract_number, [(ide, quantity)])
+			Sf.createEngagement(db, contract_number, [(ide, quantity)], withdrawal_date = withdrawal)
 			c4 += 1
 
 

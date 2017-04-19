@@ -407,6 +407,9 @@ def doPlanning(db):
 								# task.effective_initial_date + los días que se demora el trabajo según la cantidad de trabajadores
 							for et in employees_tasks:
 								last_release_date = et.planned_end_date
+								# initial, ending, emps = findDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)		
+								# last_release_date = et.task.effective_initial_date + timedelta(3)
+
 						
 					elif s.id == 4:
 						task = db.Tasks.get(skill = s, project = p, failed = None)

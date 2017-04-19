@@ -10,9 +10,7 @@ import Users.features as Uf
 import Stock.usuario as Sf
 import Tests.Case8 as case8
 import Planning.usuario as PlanU
-
-
-
+import Stock.reports as Sr
 
 # Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 1,'Armin')
@@ -56,7 +54,8 @@ def signIn():
 # print(PLf.GetDays(db, 1, 1, 3))
 # print(PLf.SumDays(date(2015,1,1), 1.1))
 # Pf.failedTask(db, 1, 1, 2300)
-
+# Sr.baseCreateReport()
+# PLr.createGlobalReport(db)
 
 # PLf.DoPlanning(db)
 # PLf.addDelayed(db, 1,1,1,1,1)
