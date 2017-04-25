@@ -457,7 +457,7 @@ def doPlanning(db):
                             commit()
                             # si la tarea es de fabricación, entonces hay que considerar el tiempo en que llegan los cristales para el last_release_date:
                             if s.id == 3:
-                                crystal_release_date = sumDays(last_release_date, 1 + p.crystal_leadtime)
+                                crystal_release_date = sumDays(last_release_date, p.crystal_leadtime)
                                 last_release_date = max(ending, crystal_release_date)
                             else:
                                 last_release_date = ending
@@ -465,9 +465,9 @@ def doPlanning(db):
                                 # task.effective_initial_date + los días que se demora el trabajo según la cantidad de trabajadores
                             # si la tarea es de fabricación, entonces hay que considerar el tiempo en que llegan los cristales para el last_release_date:
                             if s.id == 3:
-                                crystal_release_date = sumDays(last_release_date, 1 + p.crystal_leadtime)
+                                crystal_release_date = sumDays(last_release_date, p.crystal_leadtime)
                                 for et in employees_tasks:
-                                    last_release_date = last_release_date = max(et.planned_end_date, crystal_release_date)
+                                    last_release_date = max(et.planned_end_date, crystal_release_date)
                             else:
                                 for et in employees_tasks:
                                     last_release_date = et.planned_end_date
