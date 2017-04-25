@@ -68,7 +68,12 @@ def projects_console(db, level):
 					date(int(year),int(month),int(day))
 				except:
 					raise ValueError('\n No se ha ingresado una fecha válida \n')
-				createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, year, month, day)
+                crystal_leadtime = input(" Ingrese la cantidad de días que demorarán en llegar los cristales (solo presione Enter si el valor es 15): ")
+				try:
+					int(crystal_leadtime)
+				except:
+					crystal_leadtime = 15
+				createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, year, month, day, crystal_leadtime)
 			except ValueError as ve:
 				print(ve)
 			except:
@@ -93,6 +98,7 @@ def projects_console(db, level):
 				new_deadline_day = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione enter si se mantiene: ")
 				new_estimated_cost = input("Ingrese el costo estimado del proyecto: ")
 				new_real_cost = input("Ingrese el costo real del proyecto, solo presione enter si no se conoce: ")
+                new_crystal_leadtime = input("Ingrese la cantidad de días que demorarán en llegar los cristales, solo presione enter si se mantiene: ")
 				if new_client_address == '':
 					new_client_address = None
 				if new_client_comuna == '':
@@ -149,7 +155,12 @@ def projects_console(db, level):
 						raise ValueError('\n Debe ingresar una fecha válida. \n')
 				else:
 					new_deadline = None
-				editProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost)
+                if new_crystal_leadtime != None:
+					try:
+						int(new_crystal_leadtime)
+					except:
+						raise ValueError('\n La cantidad de días debe ser un número entero \n')
+				editProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost, new_crystal_leadtime=new_crystal_leadtime)
 			except ValueError as ve:
 				print(ve)
 				input('Precione cualquier tecla para volver \n')

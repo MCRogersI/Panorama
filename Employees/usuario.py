@@ -49,7 +49,7 @@ def employees_console(db, level):
                         raise ValueError('\n El rendimiento debe ser un numero. \n')
                 perf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione enter si no realiza esta labor: ")
                 if(perf_des == ''):
-                    perf_des=None			
+                    perf_des=None
                 else:
                     try:
                         float(perf_des)
@@ -69,7 +69,7 @@ def employees_console(db, level):
                         raise ValueError('\n El rendimiento debe ser un numero. \n')
                 perf_ins = input(" Ingrese el rendimiento histórico en instalación del empleado, solo presione enter si no realiza esta labor: ")
                 if(perf_ins == ''):
-                    perf_ins=None	
+                    perf_ins=None
                 else:
                     try:
                         float(perf_ins)
@@ -77,7 +77,14 @@ def employees_console(db, level):
                             raise ValueError('\n El rendimiento no puede ser negativo. \n')
                     except:
                         raise ValueError('\n El rendimiento debe ser un numero. \n')
-                createEmployee(db, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins)
+                senior = None
+                if(perf_ins != None)
+                    senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
+                    try:
+                        senior = bool(senior)
+                    except:
+                        raise ValueError('\n Se debe ingresar 0 o 1. \n')
+                createEmployee(db, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins, senior)
             except ValueError as ve:
                 print(ve)
                 input('\n Presione cualquier tecla para continuar: \n')
@@ -141,7 +148,8 @@ def employees_console(db, level):
                             raise ValueError('\n El rendimiento no puede ser negativo. \n')
                     except:
                         raise ValueError('\n El rendimiento debe ser un numero. \n')
-                editEmployee(db, id_empleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins)
+                new_senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior (si no es instalador, solo presione Enter): ")
+                editEmployee(db, id_empleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins, new_senior)
             except ValueError as ve:
                 print(ve)
                 input('\n Presione cualquier tecla para continuar \n')
