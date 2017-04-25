@@ -416,7 +416,49 @@ def addDelayed(db, Delayed, contract_number, task, num_workers, initial, ending,
     Delayed =  Delayed.append({'contract number': contract_number, 'task': task, 'num workers': num_workers, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
     return Delayed
 
+def checkVeto(db, contract_number, skill_id):
+    Veto = True
+    Veto1 = True
+    with db_session:
+        project = db.Projects.get(contract_number = contract_number)
+        employees = select(es.employee for es in db.Employees_Skills if es.skill.id == skill_id)
+        if skill_id == 1:
+            for e in employees:
+                er = db.Employees_Restrictions.get(employee = e,project =project)
+                if er != None:
+                    if er.fixed == True :
+                        Veto = False
+                        break
+                else:
+                    Veto = False
+                    break
 
+        elif skill_id == 4:
+            for e in employees:
+                er = db.Employees_Restrictions.get(employee = e,project =project)
+                if er != None:
+                    if er.fixed == True and e.senior == True:
+                        Veto = False
+                        break
+                elif e.senior == True:
+                    Veto = False
+                    break
+            for e in employees:
+                er = db.Employees_Restrictions.get(employee = e,project =project)
+                if er != None:
+                    if er.fixed == True and e.senior == False:
+                        Veto1 = False
+                        break
+                elif e.senior == False:
+                    Veto1 = False
+                    break
+    if  not Veto and not Veto1 and skill_id ==4:
+        return Veto
+    elif skill_id ==4:
+        return True
+    else:
+        return Veto
+    
 
 def doPlanning(db):
     import Projects.features as Pf
@@ -482,7 +524,6 @@ def doPlanning(db):
                         
                         if len(employees_tasks) == 0 and (task == None or (task != None and task.effective_initial_date == None)):
                             initial, ending[num_workers-1], emps = findDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)
-                    
                             while(ending[num_workers-1] > p.deadline and num_workers < 4):
                                 num_workers = num_workers + 1
                                 initial, ending[num_workers-1], emps = findDatesEmployees(db, s.id, p.contract_number, num_workers, last_release_date)

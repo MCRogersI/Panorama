@@ -1,6 +1,6 @@
 from datetime import date
 from pony.orm import *
-from Planning.features import changePriority, addDelayed, doPlanning
+from Planning.features import changePriority, addDelayed, doPlanning, checkVeto
 from Planning.reports import createGlobalReport
 
 def planning_console(db,level):
@@ -43,6 +43,11 @@ def planning_console(db,level):
                             r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = True)
                         if like == '0':
                             r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = False)
+                            print (str(checkVeto(db, int(contract_number),4)) +' ,'+ str(checkVeto(db, int(contract_number),1)))
+                            if checkVeto(db, int(contract_number),4) or checkVeto(db, int(contract_number),1):
+                                db.Employees_Restrictions[db.Employees[int(employee_id)],db.Projects[int(contract_number)]].delete()
+                                print('\n La planificación se hace infactible al vetar a todos los empleados \n')
+                            
                 if opt2 == '2':
                     contract_number = input('\n Ingrese el número de contrato del proyecto que desea seleccionar: ')
                     employee_id = input(' Ingrese el ID del empleado que desea liberar: ')
