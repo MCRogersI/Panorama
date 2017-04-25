@@ -17,8 +17,6 @@ def projects_console(db, level):
             opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear un proyecto. \n - 2: Si desea editar un proyecto. \n - 3: Para ver proyectos actuales. \n - 4: Para volver atrás. \n Ingrese la alternativa elegida: ")
         if level == 3:
             opt = input("\n Marque una de las siguientes opciones: \n - 1: Para ver proyectos actuales. \n - 2: Para volver atrás. \n Ingrese la alternativa elegida: ")
-
-<<<<<<< HEAD
         if(opt == '1' and (level == 1 or level == 2)):
             try:
                 contract_number = input("\n Ingrese el número de contrato: ")
