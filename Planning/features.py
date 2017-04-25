@@ -468,7 +468,7 @@ def doPlanning(db):
     # estar encapsulado en otro método.
     cleanTasks(db) #Aquí se borran todas las tasks de planificaciones anteriores (las 'borrables')
     with db_session:
-        for i = 1 to 4:
+        for i in range(1,5):
             if i == 4:
                 employees1 = select(es.employee for es in db.Employees_Skills if es.skill.id == i and es.employee.senior == True)
                 if len(employees1) < 1:

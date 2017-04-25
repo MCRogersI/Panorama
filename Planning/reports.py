@@ -174,7 +174,7 @@ def createGlobalReport(db):
             cell.alignment = Alignment(horizontal='center')
 
             # # Escribe el precio de venta del contrato
-            # cell = ws.cell(row=4, column=7, value=p.sale_cost)
+            # cell = ws.cell(row=4, column=7, value=p.sale_price)
             # cell.font = Font(bold=True)
             # cell.border = thin_border
             # cell.alignment = Alignment(horizontal='center')
@@ -205,8 +205,9 @@ def createGlobalReportCompact(db):
     wb = Workbook()
     by_default_sheet = wb.get_sheet_by_name('Sheet')
     by_default_sheet.title = 'Introducción del informe'
+    wb.remove_sheet(by_default_sheet)
     ws = wb.create_sheet(
-        "Informe BD compacto")
+        "Informe BD compacto",index=0)
 
     widths = {"A": 5, "B": 35, "C": 5,"D": 35, "E": 35, "F": 35,
               "G": 35, "H": 35, "I": 35,"J": 35, "K": 35, "L": 35,
@@ -253,7 +254,67 @@ def createGlobalReportCompact(db):
         r=4
         for p in projects:
             #Escribe el número de contrato
-            cell = ws.cell(row=4, column=4, value=p.contract_number)
+            cell = ws.cell(row=r, column=4, value=p.contract_number)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el nombre del cliente
+            cell = ws.cell(row=r, column=5, value=p.client_name)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la prioridad del proyecto
+            cell = ws.cell(row=r, column=6, value=p.priority)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            # Escribe los metros lineales del proyecto
+            cell = ws.cell(row=r, column=7, value=p.linear_meters)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha límite del proyecto
+            cell = ws.cell(row=r, column=8, value=p.deadline)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la comuna del cliente
+            cell = ws.cell(row=r, column=9, value=p.client_comuna)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la dirección del cliente
+            cell = ws.cell(row=r, column=10, value=p.client_address)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            # Escribe los metros lineales reales
+            cell = ws.cell(row=r, column=11, value=p.real_linear_meters)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el costo estimado del proyecto
+            cell = ws.cell(row=r, column=12, value=p.estimated_cost)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el precio de venta del proyecto
+            cell = ws.cell(row=r, column=13, value=p.sale_price)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha de venta del proyecto
+            cell = ws.cell(row=r, column=14, value=p.sale_date)
             cell.font = Font(bold=True)
             cell.border = thin_border
             cell.alignment = Alignment(horizontal='center')
