@@ -427,7 +427,7 @@ def doPlanning(db):
     cleanTasks(db) #Aquí se borran todas las tasks de planificaciones anteriores (las 'borrables')
     with db_session:
         projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
-        projects.show()
+        # projects.show()
         for p in projects:
             last_release_date = date.today()
             if not p.fixed_planning:
