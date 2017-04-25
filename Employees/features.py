@@ -1,8 +1,9 @@
 from pony.orm import *
 
-def createEmployee(db,  name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_inst = None):
+
+def createEmployee(db,  name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_inst = None, senior = None):
     with db_session:
-        e = db.Employees(name = name, zone = zone )
+        e = db.Employees(name = name, zone = zone)
         if perf_rect != None:
             db.Employees_Skills(employee = e, skill = 1, performance = perf_rect)
         if perf_des != None:
@@ -11,13 +12,18 @@ def createEmployee(db,  name, zone, perf_rect = None , perf_des = None, perf_fab
             db.Employees_Skills(employee = e, skill = 3, performance = perf_fab)
         if perf_inst != None:
             db.Employees_Skills(employee = e, skill = 4, performance = perf_inst)
+            # solo para el caso de los instaladores, pueden ser senior o junior, por defecto los consideramos como senior:
+            if senior != None:
+                e.senior = senior
+            else
+                e.senior = True
         commit()
 
 def printEmployees(db):
     with db_session:
         db.Employees.select().order_by(lambda e: e.id).show()
 
-def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_inst = None):
+def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_inst = None, senior = None):
     with db_session:
         e = db.Employees[id]
         if new_zone != None:
@@ -44,6 +50,10 @@ def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, per
                 db.Employees_Skills[(id, 4)].performance = perf_inst
             else:
                 db.Employees_Skills(employee = id, skill = 4, performance = perf_inst)
+        # si es que el empleado no es instalador, no se pesca el valor de la variable senior:
+        emp_skill = select(es for es in db.Employees_Skills if es.employee == id and es.skill == 4)
+        if len(emp_skill) > 0 and senior != None:
+            e.senior = senior
 
             
 def deleteEmployee(db, id):

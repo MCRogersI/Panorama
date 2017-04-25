@@ -26,12 +26,12 @@ def createProject(db, contract_number, client_address, client_comuna,
     #?????????????????????????????    
         #############################################################
     PLf.doPlanning(db)
-    
-    
+
 def printProjects(db):
     with db_session:
         db.Projects.select().show()
 
+<<<<<<< HEAD
 def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None):
     with db_session:
         try:
@@ -59,6 +59,7 @@ def editProject(db, contract_number, new_client_address = None, new_client_comun
         except ValueError as e:
             print('Value error: {}'.format(e))
             
+
 def deleteProject(db, contract_number):
     with db_session:
         db.Projects[contract_number].delete()
