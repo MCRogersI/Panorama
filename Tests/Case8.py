@@ -76,29 +76,30 @@ with db_session:
 Ef.createEmployee(db,  "Juan", 1, perf_rect = 2)
 Ef.createEmployee(db,  "Pedro", 2, perf_des = 2)
 Ef.createEmployee(db,  "Diego", 2, perf_fab = 30)
-Ef.createEmployee(db,  "Miguel", 1, perf_inst = 40, senior = False)
-Ef.createEmployee(db,  "Mario", 1, perf_rect = 1)
-Ef.createEmployee(db,  "Felipe", 2, perf_des = 1)
+Ef.createEmployee(db,  "Miguel", 1, perf_inst = 40, senior = True)
+Ef.createEmployee(db,  "Mario", 1, perf_rect = 50)
+Ef.createEmployee(db,  "Felipe", 2, perf_des = 60)
 Ef.createEmployee(db,  "Miguel", 1, perf_fab = 40)
 Ef.createEmployee(db,  "Mario", 1, perf_inst = 50, senior = False)
-Ef.createEmployee(db,  "Felipe", 2, perf_rect = 1)
-Ef.createEmployee(db,  "Miguel", 1, perf_des = 2)
+Ef.createEmployee(db,  "Felipe", 2, perf_rect = 60)
+Ef.createEmployee(db,  "Miguel", 1, perf_des = 40)
 Ef.createEmployee(db,  "Mario", 1, perf_fab = 50)
 Ef.createEmployee(db,  "Felipe", 1, perf_inst = 60, senior = True)
-Ef.createEmployee(db,  "Iker", 1, perf_inst = 70, senior = True)
+Ef.createEmployee(db,  "Iker", 1, perf_inst = 70, senior = False)
+
 
 ##############################################
 # Lista de prueba de proyectos test case 1   #
 ##############################################
 
 Pf.createProject(db, 1, 'Cachagua 102', 'Calera', 'Pedro Sanchez',
-                 '17.094.362-0', 150, 2017, 5, 10, estimated_cost = 200)
+                 '17.094.362-0', 150, 2017, 5, 10, estimated_cost = 200, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_cost=300)
 Pf.createProject(db, 2, 'Suecia 86', 'Arica', 'Franco Soto',
-                 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300)
+                 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_cost=300)
 Pf.createProject(db, 3, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
-                 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150)
+                 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_cost=300)
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil', 
-                    '14.214.392-K',220, 2017, 8, 30, estimated_cost = 250)
+                    '14.214.392-K',220, 2017, 8, 30, estimated_cost = 250, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_cost=300)
 
 
 
