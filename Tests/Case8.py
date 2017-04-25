@@ -76,7 +76,6 @@ with db_session:
 Ef.createEmployee(db,  "Juan", 1, perf_rect = 2)
 Ef.createEmployee(db,  "Pedro", 2, perf_des = 2)
 Ef.createEmployee(db,  "Diego", 2, perf_fab = 30)
-<<<<<<< HEAD
 Ef.createEmployee(db,  "Miguel", 1, perf_inst = 40, senior = True)
 Ef.createEmployee(db,  "Mario", 1, perf_rect = 50)
 Ef.createEmployee(db,  "Felipe", 2, perf_des = 60)
