@@ -15,7 +15,7 @@ def createEmployee(db,  name, zone, perf_rect = None , perf_des = None, perf_fab
             # solo para el caso de los instaladores, pueden ser senior o junior, por defecto los consideramos como senior:
             if senior != None:
                 e.senior = senior
-            else
+            else:
                 e.senior = True
         commit()
 
