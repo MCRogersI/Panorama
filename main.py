@@ -11,42 +11,44 @@ import Stock.usuario as Sf
 import Tests.Case8 as case8
 import Planning.usuario as PlanU
 import Stock.reports as Sr
+import numpy as np
 
-Uf.createUser(db,'1', 1,'1')
+# Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 1,'Armin')
 # Uf.createUser(db,'Piola', 2,'Cuatro')
 # Uf.createUser(db,'Pleb', 3,'00000')
 
 def console(level):
-	while True:
-		opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Stock. \n - 5: Planificación \n - 6: Para salir. \n Ingrese la alternativa elegida: ")
-		if(opt == '1'):
-			# Los ids deberían ser creados automáticamente y no ingresados (para asegurarse de que sean únicos).
-			# Para el caso particular de los proyectos el contract_number puede ser ingresado porque tiene la propiedad de ser único.
-			Eu.employees_console(db, level)
-		if(opt == '2'):
-			Pu.projects_console(db, level)
-		if( opt== '3'):
-			Pu.tasks_console(db, level)
-		if (opt == '4'):
-			Sf.stock_console(db, level)
-		if (opt =='5'):
-			PlanU.planning_console(db,level)
-		if(opt == '6'):
-			print("\n Has salido del programa.")
-			break
+    while True:
+        opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Stock. \n - 5: Planificación \n - 6: Para salir. \n Ingrese la alternativa elegida: ")
+        if(opt == '1'):
+            # Los ids deberían ser creados automáticamente y no ingresados (para asegurarse de que sean únicos).
+            # Para el caso particular de los proyectos el contract_number puede ser ingresado porque tiene la propiedad de ser único.
+            Eu.employees_console(db, level)
+        if(opt == '2'):
+            Pu.projects_console(db, level)
+        if( opt== '3'):
+            Pu.tasks_console(db, level)
+        if (opt == '4'):
+            Sf.stock_console(db, level)
+        if (opt =='5'):
+            PlanU.planning_console(db,level)
+        if(opt == '6'):
+            print("\n Has salido del programa.")
+            break
 def signIn():
-	while True:
-		user = input("Ingrese su usuario: ")
-		password = input("Ingrese su contraseña: ")
-		if Uf.checkPassEntry(db, user, password):
-			with db_session:
-				level=Uf.getUserLevel(db, user)
-				console(level)
-				
-		else:
-			print("Usuario y/o Contraseña incorrecto(s))")
-		break
+    while True:
+        user = input("Ingrese su usuario: ")
+        password = input("Ingrese su contraseña: ")
+        if Uf.checkPassEntry(db, user, password):
+            with db_session:
+                level=Uf.getUserLevel(db, user)
+                console(level)
+                
+        else:
+            print("Usuario y/o Contraseña incorrecto(s))")
+        break
+
 # signIn()
 # Uf.createUser(db, "1", 1, "1")
 # Uf.createUser(db, "2", 2, "2")
@@ -108,33 +110,33 @@ def signIn():
 # print(PLf.EmployeesAvailable(db, [1, 2], date(2017, 3, 26), date(2017, 3, 31)))
 
 # with db_session:
-	# print(PLf.FindEmployees(db, 1, 1, 1, date(2017, 2, 2), date(2017, 2, 15)).show())
+    # print(PLf.FindEmployees(db, 1, 1, 1, date(2017, 2, 2), date(2017, 2, 15)).show())
 
 # print(PLf.FindEmployees(db, 1, 1, 1, date(2017, 2, 2), date(2017, 2, 15)))
 
 
 
 # def foo():
-	# return 1, True, "lalala"
+    # return 1, True, "lalala"
 # a, b, c = foo()
 # print(a)
 # print(b)
 # print(c)
 
 #with db_session:
-#	print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
+#    print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
 
 # print(PLf.EmployeesBySkill(db, 4))
 # print(PLf.EmployeesByStatus(db, 2, False, False))
 # with db_session:
-	# print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
+    # print(PLf.FindEmployees(db, 3, date(2010,1,1), date(2010,1,1)).show())
 
 # print(PLf.HasNOnes('0001111111', 7))
 # print(PLf.Successor([1,1,1,1,0,0,0,0,0,0], 4))
 # print([1,8] + [0,4,5])
 # print(PLf.GetChosenIds([12, 13, 14], [0, 1, 1]))
 
-# print(PLf.FindEmployees(db, 1, 1, 1, date(2017,3,13), date(2010,3,17)))	
+# print(PLf.FindEmployees(db, 1, 1, 1, date(2017,3,13), date(2010,3,17)))    
 # print(PLf.FindEmployees(db, 1, 1, 2, date(2010,1,1), date(2010,1,1)))
 # print(PLf.FindEmployees(db, 1, 1, 3, date(2010,1,1), date(2010,1,1)))
 # print(PLf.FindEmployees(db, 1, 1, 4, date(2010,1,1), date(2010,1,1)))
@@ -179,12 +181,12 @@ def signIn():
 # Pf.createProject(db, 2, 'cebollita', 'Las Condes', 'sub-campeon', '21.024.322-0', 20, date(2017, 3, 15), estimated_cost = 300,)
 # Pf.createProject(db, 3, 'lalala', 'Las Condes', 'sisisi', '22.024.322-0', 20, date(2017, 4, 30), estimated_cost = 150,)
 # with db_session:
-	# db.Projects[1].priority = 1
-	# db.Projects[2].priority = 2
-	# db.Projects[3].priority = 3
-	# db.Projects[4].priority = 4
-	# db.Projects[5].priority = 5
-	# db.Projects[5].fixed_priority = False
+    # db.Projects[1].priority = 1
+    # db.Projects[2].priority = 2
+    # db.Projects[3].priority = 3
+    # db.Projects[4].priority = 4
+    # db.Projects[5].priority = 5
+    # db.Projects[5].fixed_priority = False
 
 # db.Projects[5].fixed_priority = True
 # Pf.printProjects(db)
@@ -210,8 +212,34 @@ def signIn():
 
 #Pf.failedTask(db, 2, 1, 1000)
 
-			
-			
+
+#####################################
+# Probanfo el metodo fillCOmmitment #
+#####################################
+
+# with db_session:
+    # initial_date = date(2017, 1, 3)
+    # end_date = date(2017, 1, 9)
+    
+    # commitments = np.zeros( abs((end_date - initial_date).days) + 1 )
+    # print(commitments)
+    
+    # initial_date_1 = date(2017, 1, 4)
+    # end_date_1 = date(2017, 1, 6)
+    # et = db.Employees_Tasks.get(employee = 1, task = 1)
+    # et.planned_initial_date = initial_date_1
+    # et.planned_end_date = end_date_1
+    # commitments = PLf.fillCommitments(db, commitments, initial_date, end_date, et)
+    # print(commitments)
+    
+    # initial_date_1 = date(2017, 1, 5)
+    # end_date_1 = date(2017, 1, 11)
+    # et = db.Employees_Tasks.get(employee = 1, task = 1)
+    # et.planned_initial_date = initial_date_1
+    # et.planned_end_date = end_date_1
+    # commitments = PLf.fillCommitments(db, commitments, initial_date, end_date, et)
+    # print(commitments)
+
 #########################################################################################
 # Tests de los features de Planning.features relacionados al reporte post-planificación #
 #########################################################################################

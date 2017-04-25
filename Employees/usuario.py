@@ -149,6 +149,13 @@ def employees_console(db, level):
                     except:
                         raise ValueError('\n El rendimiento debe ser un numero. \n')
                 new_senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior (si no es instalador, solo presione Enter): ")
+                try:
+                    if int(new_senior) == 0:
+                        new_senior = None
+                    elif int(new_senior) != 1:
+                        raise ValueError('\n Debe ingresar 0 0 1. \n')
+                except:
+                    raise ValueError('\n Debe ingresar 0 0 1. \n')
                 editEmployee(db, id_empleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins, new_senior)
             except ValueError as ve:
                 print(ve)
@@ -157,6 +164,7 @@ def employees_console(db, level):
         if(opt == '3' and level == 1):
             idEmpleado = input("\n Ingrese el ID del empleado que desea eliminar: ")
             deleteEmployee(db, idEmpleado)
+            input(' \n Empleado eliminado. Presione una tecla para continuar. \n')
         
         if(opt == '4' and level == 1) or (opt == '3' and level == 2):
             opt_employees_activities = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de una actividad. \
@@ -191,6 +199,7 @@ def employees_console(db, level):
                     except:
                         raise ValueError('\n La fecha es inválida. \n')
                     createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day)
+                    input(' \n Actividad creada. Presione una tecla para continuar. \n')
                 except ValueError as ve:
                     print(ve)
                     input('\n Presione cualquier tecla para continuar: \n')
@@ -198,12 +207,14 @@ def employees_console(db, level):
                 try:
                     id_employee_activity = input("\n Ingrese el ID de la actividad que quiere eliminar: ")
                     deleteEmployeeActivity(db, id_employee_activity)
+                    input(' \n Actividad eliminada. Presione una tecla para continuar. \n')
                 except:
                     print('\n Actividad inexistente. \n')
-                
+                    input('\n Presione cualquier tecla para continuar: \n')
             elif opt_employees_activities == '3':
                 print('\n')
                 printEmployeesActivities(db)
+                input(' \n Presione una tecla para continuar. \n')
             
             
         if(opt == '5' and level == 1) or (opt == '4' and level == 2) or (opt == '1' and level == 3):
@@ -216,14 +227,21 @@ def employees_console(db, level):
             print('\n')
             if(opt_ver_empleados == '1'):
                 printEmployees(db)
-            if(opt_ver_empleados == '2'):
+                input(' \n Presione una tecla para continuar. \n')
+            elif(opt_ver_empleados == '2'):
                 printSelectSkill(db, 1)
-            if(opt_ver_empleados == '3'):
+                input(' \n Presione una tecla para continuar. \n')
+            elif(opt_ver_empleados == '3'):
                 printSelectSkill(db, 2)
-            if(opt_ver_empleados == '4'):
+                input(' \n Presione una tecla para continuar. \n')
+            elif(opt_ver_empleados == '4'):
                 printSelectSkill(db, 3)
-            if(opt_ver_empleados == '5'):
+                input(' \n Presione una tecla para continuar. \n')
+            elif(opt_ver_empleados == '5'):
                 printSelectSkill(db, 4)
-
+                input(' \n Presione una tecla para continuar. \n')
+            else:
+                print('No es una opción válida')
+                input('\n Presione cualquier tecla para continuar: \n')
         if(opt == '6' and level == 1) or (opt == '5' and level == 2) or (opt == '2' and level ==3):
             break

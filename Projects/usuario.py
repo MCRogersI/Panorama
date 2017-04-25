@@ -78,7 +78,6 @@ def projects_console(db, level):
                 print(ve)
             except:
                 print('\n No se pudo ingresar correctamente el proyecto \n')
-
         elif(opt == '2' and (level == 1 or level == 2)):
             try:
                 contract_number = input("\n Ingrese el número de contrato del proyecto a editar: ")
@@ -219,6 +218,7 @@ def projects_console(db, level):
                 print('\n')
                 printProjectsActivities(db)
 
+            
         elif(opt == '5' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
             printProjects(db)
 
@@ -291,6 +291,7 @@ def tasks_console(db, level):
             new_effective_initial_date = input(" Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
             if(new_effective_initial_date != ''):
                 new_effective_end_date = input(" Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
+
             else:
                 new_effective_initial_date = None
                 new_effective_end_date = None
@@ -321,7 +322,7 @@ def tasks_console(db, level):
                 failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
             except ValueError as ve:
                 print(ve)
-
+            
         elif(opt == '3' and (level == 1 or level == 2)) or (opt == '1' and level == 3):
             printTasks(db)
 
