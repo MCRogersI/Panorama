@@ -312,20 +312,25 @@ def tasks_console(db, level):
             except ValueError as ve:
                 print(ve)
         elif(opt == '2' and (level == 1 or level == 2)):
-            id_edit = input("\n Ingrese el ID de la tarea que desea editar: ")
-            new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
-            new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
-            new_effective_initial_date = input(" Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
-            if(new_effective_initial_date != ''):
-                new_effective_end_date = input(" Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
+            try:
+                id_edit = input("\n Ingrese el ID de la tarea que desea editar: ")
+                with db_session:
+                    if db.Tasks.get(id = id_edit) == None:
+                       raise ValueError('\n No existe esa tarea \n')
+                new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
+                new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
+                new_effective_initial_date = input(" Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
+                if(new_effective_initial_date != ''):
+                    new_effective_end_date = input(" Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
 
-            else:
-                new_effective_initial_date = None
-                new_effective_end_date = None
-            new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
-            new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
-            editTask(db, id_edit, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, efective_initial_date = new_effective_initial_date, efective_end_date = new_effective_end_date)
-
+                else:
+                    new_effective_initial_date = None
+                    new_effective_end_date = None
+                new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
+                new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
+                editTask(db, id_edit, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, efective_initial_date = new_effective_initial_date, efective_end_date = new_effective_end_date)
+            except ValueError as ve:
+                print(ve)
         elif(opt == '3' and (level == 1 or level == 2)):
             try:
                 contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")

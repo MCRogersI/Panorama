@@ -54,6 +54,8 @@ def planning_console(db,level):
                                 if checkVeto(db, int(contract_number),4) or checkVeto(db, int(contract_number),1):
                                     db.Employees_Restrictions[db.Employees[int(employee_id)],db.Projects[int(contract_number)]].delete()
                                     print('\n La planificación se hace infactible al vetar a todos los empleados \n')
+                            else:
+                                print('\n debe elegir entre 1 ó 0 \n')
                     except ValueError as ve:
                         print(ve)
                             
