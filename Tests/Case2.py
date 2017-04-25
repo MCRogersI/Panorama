@@ -19,16 +19,16 @@ import Stock.features as Sf
 # Inicialización de skills, dificultades y actividades, test case 2 #
 #####################################################################
 with db_session:
-	db.Skills(id=1, name='Rectification')
-	db.Skills(id=2, name='Design')
-	db.Skills(id=3, name='Fabrication')
-	db.Skills(id=4, name='Installation')
+    db.Skills(id=1, name='Rectification')
+    db.Skills(id=2, name='Design')
+    db.Skills(id=3, name='Fabrication')
+    db.Skills(id=4, name='Installation')
 
-	db.Difficulties(id=1, description='Construccion en altura')
+    db.Difficulties(id=1, description='Construccion en altura')
 
-	db.Activities(id=1, description='Licencia')
-	db.Activities(id=2, description='Vacaciones')
-	db.Activities(id=3, description='Cliente ocupado')
+    db.Activities(id=1, description='Licencia')
+    db.Activities(id=2, description='Vacaciones')
+    db.Activities(id=3, description='Cliente ocupado')
 
 #############################
 # Stock inicial test case 2 #
@@ -50,13 +50,13 @@ Sf.createSku(db, 11, 'Profile joint unit plastic bag',4.93, 50,0, waste_factor =
 # Proyectos test case 2 #
 #########################
 Pf.createProject(db, 1, 'Manuel Montt 1235', 'Calera', 'Pedro Sánchez',
-				 '17.094.362-0', 150, 2017, 12, 30, estimated_cost = 200)
+                 '17.094.362-0', 150, 2017, 12, 30, estimated_cost = 200)
 Pf.createProject(db, 2, 'Suecia 86', 'Arica', 'Franco Soto',
-				 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300)
+                 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300)
 Pf.createProject(db, 3, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
-				 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150)
+                 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150)
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'San José', 'Miguel Devil', 
-					'14.214.392-K',220, 2017, 8, 30, estimated_cost = 250)
+                    '14.214.392-K',220, 2017, 8, 30, estimated_cost = 250)
 
 ###########################
 # Engagements test case 2 #
@@ -72,7 +72,7 @@ Sf.createPurchases(db,[(3,18),(5,142)],date(2017, 3, 2))
 Sf.createPurchases(db,(1,155),date(2017, 3, 4))
 
 #################################################
-#        Lista de empleados test case 2 		#
+#        Lista de empleados test case 2         #
 # ###############################################
 
 Ef.createEmployee(db,  "Juan", 1, perf_rect = 10)
@@ -90,7 +90,7 @@ Ef.createEmployee(db,  "Felipe", 1, perf_inst = 60)
 Ef.createEmployee(db,  "Iker", 1, perf_inst = 70)
 
 ##############################################
-# Lista de prueba de tasks test case 2 		 #
+# Lista de prueba de tasks test case 2          #
 ##############################################
 
 Pf.createTask(db, 1, 1, original_initial_date=date(2017, 4, 8), original_end_date=date(2017,4,28))
@@ -119,23 +119,23 @@ Pf.createTask(db, 4, 3, original_initial_date=date(2017, 7, 9), original_end_dat
 ############################################################################################
 
 with db_session:
-	#Definición de las prioridades de los distintos proyectos
-	db.Projects[3].priority = 3
-	db.Projects[1].priority = 2
-	db.Projects[2].priority = 1
-	#Fijación de proyectos
-	db.Projects[4].fixed_planning = True
-	#Definición de fechas de inicio efectivas para algunas tareas
-	db.Tasks[1].effective_initial_date = date(2017, 4, 8)
-	db.Tasks[5].effective_initial_date = date(2017, 4, 15)
-	#Ingresar las vacaciones de un empleado
-	db.Employees_Activities(employee = db.Employees[13], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
-#	db.Employees_Activities(employee = db.Employees[12], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
-#	db.Employees_Activities(employee = db.Employees[8], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
-	#Considera bien las vacaciones
-	#Ingresar la no disponibilidad de un cliente:
-	db.Projects_Activities(project = db.Projects[1], activity = db.Activities[3], initial_date = date(2017,4,8), end_date = date(2017,5,10))
-	#Cuando una tarea ya fue fijada, no considera que el cliente pase a estar ocupado. ARREGLAR
+    #Definición de las prioridades de los distintos proyectos
+    db.Projects[3].priority = 3
+    db.Projects[1].priority = 2
+    db.Projects[2].priority = 1
+    #Fijación de proyectos
+    db.Projects[4].fixed_planning = True
+    #Definición de fechas de inicio efectivas para algunas tareas
+    db.Tasks[1].effective_initial_date = date(2017, 4, 8)
+    db.Tasks[5].effective_initial_date = date(2017, 4, 15)
+    #Ingresar las vacaciones de un empleado
+    db.Employees_Activities(employee = db.Employees[13], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
+#    db.Employees_Activities(employee = db.Employees[12], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
+#    db.Employees_Activities(employee = db.Employees[8], activity = db.Activities[2], initial_date = date(2017,3,1), end_date = date(2017,4,30))
+    #Considera bien las vacaciones
+    #Ingresar la no disponibilidad de un cliente:
+    db.Projects_Activities(project = db.Projects[1], activity = db.Activities[3], initial_date = date(2017,4,8), end_date = date(2017,5,10))
+    #Cuando una tarea ya fue fijada, no considera que el cliente pase a estar ocupado. ARREGLAR
 
 PLf.changePriority(db, 3, 1)
 PLf.doPlanning(db, Pf.createTask, Sf.updateEngagements)

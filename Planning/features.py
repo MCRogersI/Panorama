@@ -155,7 +155,7 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
                     commitments = fillCommitments(db, commitments, initial_date, end_date, et)
                 # vemos cuánto es lo máximo que puede hacer por día
                 es = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[id_skill])
-                limit = floor(es.performance)
+                limit = np.floor(es.performance)
                 for c in commitments:
                     if c > limit:
                         return False
@@ -268,7 +268,7 @@ def findEmployees(db, id_skill, contract_number, num_workers, initial_date, end_
                     return []
             else:
                 return ids_found + getChosenIds(possibilities, chosen)
-        else
+        else:
             return ids_found + getChosenIds(possibilities, chosen)
         
 #checked (kind of)
