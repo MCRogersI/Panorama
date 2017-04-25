@@ -11,9 +11,6 @@ import os
 # Global report #
 #################
 
-newpath = "C:\\Users\\Alonso\\Desktop\\EMPRENDIMIENTO\\Proyectos mubound\\Panorama\\reportes"
-if not os.path.exists(newpath):
-    os.makedirs(newpath)
 
 def createGlobalReport(db):
     wb = Workbook()
@@ -321,7 +318,13 @@ def createGlobalReportCompact(db):
 
             r+=1
 
-    wb.save("C:\\Users\\Alonso\\Desktop\\EMPRENDIMIENTO\\Proyectos mubound\\Panorama\\reportes\\Global Report Compact.xlsx")
+    module_path = os.path.dirname(__file__)
+    panorama_folder_path = os.path.abspath(os.path.join(module_path, os.pardir))
+    report_folder_path = os.path.join(panorama_folder_path,"Reportes")
+    if not os.path.exists(report_folder_path):
+        os.makedirs(report_folder_path)
+    fn = os.path.join(report_folder_path,"Global Report Compact.xlsx")
+    wb.save(fn)
 
 # # from pony.orm import *
 from database import db
