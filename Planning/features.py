@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font
-# from Planning.reports import createReport
+from Planning.reports import createReport
 
 #################################################################################################################
 # Acá empieza: varias funciones relacionadas con buscar fechas donde haya suficientes empleados para una tarea: #
@@ -149,7 +149,7 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
             emps = select(e for e in db.Employees if e.id in ids_employees)
             for e in emps:
                 # creamos un arreglo de puros 0's de largo el lapso de tiempo entre initial_date y end_date, y lo vamos llenando con las tareas que tienen
-                commitments = np.zeros( (initial_date - end_date).days + 1 )
+                commitments = np.zeros( abs((end_date - initial_date).days) + 1 )
                 emp_tasks = select(et for et in db.Employees_Tasks if et.employee == e)
                 for et in emp_tasks:
                     commitments = fillCommitments(db, commitments, initial_date, end_date, et)
@@ -157,7 +157,7 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
                 es = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[id_skill])
                 limit = np.floor(es.performance)
                 for c in commitments:
-                    if c > limit:
+                    if c >= limit:
                         return False
             return True
 
@@ -499,7 +499,7 @@ def doPlanning(db):
                             commit()
                             # si la tarea es de fabricación, entonces hay que considerar el tiempo en que llegan los cristales para el last_release_date:
                             if s.id == 3:
-                                crystal_release_date = sumDays(last_release_date, 1 + p.crystal_leadtime)
+                                crystal_release_date = sumDays(last_release_date, p.crystal_leadtime)
                                 last_release_date = max(ending, crystal_release_date)
                             else:
                                 last_release_date = ending
@@ -507,9 +507,9 @@ def doPlanning(db):
                                 # task.effective_initial_date + los días que se demora el trabajo según la cantidad de trabajadores
                             # si la tarea es de fabricación, entonces hay que considerar el tiempo en que llegan los cristales para el last_release_date:
                             if s.id == 3:
-                                crystal_release_date = sumDays(last_release_date, 1 + p.crystal_leadtime)
+                                crystal_release_date = sumDays(last_release_date, p.crystal_leadtime)
                                 for et in employees_tasks:
-                                    last_release_date = last_release_date = max(et.planned_end_date, crystal_release_date)
+                                    last_release_date = max(et.planned_end_date, crystal_release_date)
                             else:
                                 for et in employees_tasks:
                                     last_release_date = et.planned_end_date

@@ -8,9 +8,10 @@ import Planning.features as PLf
 import Planning.reports as PLr
 import Users.features as Uf
 import Stock.usuario as Sf
-# import Tests.Case8 as case8
+import Tests.Case8 as case8
 import Planning.usuario as PlanU
 import Stock.reports as Sr
+import numpy as np
 
 # Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 1,'Armin')
@@ -47,7 +48,8 @@ def signIn():
         else:
             print("Usuario y/o Contraseña incorrecto(s))")
         break
-signIn()
+
+# signIn()
 # Uf.createUser(db, "1", 1, "1")
 # Uf.createUser(db, "2", 2, "2")
 # Uf.createUser(db, "3", 3, "3")
@@ -210,8 +212,34 @@ signIn()
 
 #Pf.failedTask(db, 2, 1, 1000)
 
-            
-            
+
+#####################################
+# Probanfo el metodo fillCOmmitment #
+#####################################
+
+# with db_session:
+    # initial_date = date(2017, 1, 3)
+    # end_date = date(2017, 1, 9)
+    
+    # commitments = np.zeros( abs((end_date - initial_date).days) + 1 )
+    # print(commitments)
+    
+    # initial_date_1 = date(2017, 1, 4)
+    # end_date_1 = date(2017, 1, 6)
+    # et = db.Employees_Tasks.get(employee = 1, task = 1)
+    # et.planned_initial_date = initial_date_1
+    # et.planned_end_date = end_date_1
+    # commitments = PLf.fillCommitments(db, commitments, initial_date, end_date, et)
+    # print(commitments)
+    
+    # initial_date_1 = date(2017, 1, 5)
+    # end_date_1 = date(2017, 1, 11)
+    # et = db.Employees_Tasks.get(employee = 1, task = 1)
+    # et.planned_initial_date = initial_date_1
+    # et.planned_end_date = end_date_1
+    # commitments = PLf.fillCommitments(db, commitments, initial_date, end_date, et)
+    # print(commitments)
+
 #########################################################################################
 # Tests de los features de Planning.features relacionados al reporte post-planificación #
 #########################################################################################

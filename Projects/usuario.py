@@ -17,6 +17,7 @@ def projects_console(db, level):
             opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear un proyecto. \n - 2: Si desea editar un proyecto. \n - 3: Para ver proyectos actuales. \n - 4: Para volver atrás. \n Ingrese la alternativa elegida: ")
         if level == 3:
             opt = input("\n Marque una de las siguientes opciones: \n - 1: Para ver proyectos actuales. \n - 2: Para volver atrás. \n Ingrese la alternativa elegida: ")
+
         if(opt == '1' and (level == 1 or level == 2)):
             try:
                 contract_number = input("\n Ingrese el número de contrato: ")
@@ -67,12 +68,16 @@ def projects_console(db, level):
                     date(int(year),int(month),int(day))
                 except:
                     raise ValueError('\n No se ha ingresado una fecha válida \n')
-                createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, year, month, day)
+                crystal_leadtime = input(" Ingrese la cantidad de días que demorarán en llegar los cristales (solo presione Enter si el valor es 15): ")
+                try:
+                    int(crystal_leadtime)
+                except:
+                    crystal_leadtime = 15
+                createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, year, month, day, crystal_leadtime)
             except ValueError as ve:
                 print(ve)
             except:
                 print('\n No se pudo ingresar correctamente el proyecto \n')
-            
         elif(opt == '2' and (level == 1 or level == 2)):
             try:
                 contract_number = input("\n Ingrese el número de contrato del proyecto a editar: ")
@@ -92,6 +97,7 @@ def projects_console(db, level):
                 new_deadline_day = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione enter si se mantiene: ")
                 new_estimated_cost = input("Ingrese el costo estimado del proyecto: ")
                 new_real_cost = input("Ingrese el costo real del proyecto, solo presione enter si no se conoce: ")
+                new_crystal_leadtime = input("Ingrese la cantidad de días que demorarán en llegar los cristales, solo presione enter si se mantiene: ")
                 if new_client_address == '':
                     new_client_address = None
                 if new_client_comuna == '':
@@ -148,14 +154,19 @@ def projects_console(db, level):
                         raise ValueError('\n Debe ingresar una fecha válida. \n')
                 else:
                     new_deadline = None
-                editProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost)
+                if new_crystal_leadtime != None:
+                    try:
+                        int(new_crystal_leadtime)
+                    except:
+                        raise ValueError('\n La cantidad de días debe ser un número entero \n')
+                editProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost, new_crystal_leadtime=new_crystal_leadtime)
             except ValueError as ve:
                 print(ve)
                 input('Precione cualquier tecla para volver \n')
             except:
                 print('\n No se pudo realizar la edición. \n')
                 input('Precione cualquier tecla para volver \n')
-            
+
         elif(opt == '3' and level == 1):
             contract_number = input("\n Ingrese el número de contrato del proyecto a eliminar: ")
             try:
@@ -163,12 +174,13 @@ def projects_console(db, level):
             except:
                 print('\n Proyecto inexistente \n')
                 input('Precione cualquier tecla para volver \n')
+
         elif(opt == '4' and level == 1):
             opt_projects_activities = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de disponibilidad de un cliente. \
                                                                                        \n - 2: Si desea eliminar una indisponibilidad. \
                                                                                        \n - 3: Si desea ver la lista actual de indisponibilidades. \
                                                                                        \n Ingrese la alternativa elegida: ")
-            
+
             if opt_projects_activities == '1':
                 try:
                     project = input("\n Ingrese el número de contrato asociado al cliente: ")
@@ -205,10 +217,11 @@ def projects_console(db, level):
             elif opt_projects_activities == '3':
                 print('\n')
                 printProjectsActivities(db)
+
             
         elif(opt == '5' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
             printProjects(db)
-        
+
         elif(opt == '6' and level == 1) or (opt == '4' and level == 2) or (opt == '2' and level == 3):
             break
 
@@ -220,7 +233,7 @@ def tasks_console(db, level):
             opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea editar una tarea. \n - 2: Si desea ingresar un fallo en una tarea. \n - 3: Si desea ver las tareas actuales. \n - 4: Para volver atrás. \n")
         if level == 3:
             opt = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver las tareas actuales. \n - 2: Para volver atrás. \n")
-        
+
         if(opt == '1' and (level == 1 or level == 2)):
             #id = input("\n Ingrese el ID de la tarea: ")
             try:
@@ -239,7 +252,7 @@ def tasks_console(db, level):
                     original_initial_date = date(int(original_initial_year),int(original_initial_month),int(original_initial_day))
                 except:
                     raise ValueError('\n Fecha de inicio original inválida \n')
-                
+
                 original_end_year = input("\n Ingrese el año estimado de término: ")
                 original_end_month = input("\n Ingrese el mes estimado de término: ")
                 original_end_day = input("\n Ingrese el dia estimado de término: ")
@@ -278,13 +291,14 @@ def tasks_console(db, level):
             new_effective_initial_date = input(" Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
             if(new_effective_initial_date != ''):
                 new_effective_end_date = input(" Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
-            else: 
+
+            else:
                 new_effective_initial_date = None
                 new_effective_end_date = None
             new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
             new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
             editTask(db, id_edit, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, efective_initial_date = new_effective_initial_date, efective_end_date = new_effective_end_date)
-            
+
         elif(opt == '3' and (level == 1 or level == 2)):
             try:
                 contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
@@ -311,7 +325,7 @@ def tasks_console(db, level):
             
         elif(opt == '3' and (level == 1 or level == 2)) or (opt == '1' and level == 3):
             printTasks(db)
-            
+
         elif(opt == '4' and (level == 1 or level == 2)) or (opt == '2' and level == 3):
             break
 

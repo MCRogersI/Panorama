@@ -73,9 +73,10 @@ with db_session:
 #        Lista de empleados test case 1         #
 # ###############################################
 
-Ef.createEmployee(db,  "Juan", 1, perf_rect = 10)
-Ef.createEmployee(db,  "Pedro", 2, perf_des = 20)
+Ef.createEmployee(db,  "Juan", 1, perf_rect = 2)
+Ef.createEmployee(db,  "Pedro", 2, perf_des = 2)
 Ef.createEmployee(db,  "Diego", 2, perf_fab = 30)
+<<<<<<< HEAD
 Ef.createEmployee(db,  "Miguel", 1, perf_inst = 40, senior = True)
 Ef.createEmployee(db,  "Mario", 1, perf_rect = 50)
 Ef.createEmployee(db,  "Felipe", 2, perf_des = 60)
@@ -86,6 +87,7 @@ Ef.createEmployee(db,  "Miguel", 1, perf_des = 40)
 Ef.createEmployee(db,  "Mario", 1, perf_fab = 50)
 Ef.createEmployee(db,  "Felipe", 1, perf_inst = 60, senior = True)
 Ef.createEmployee(db,  "Iker", 1, perf_inst = 70, senior = False)
+
 
 ##############################################
 # Lista de prueba de proyectos test case 1   #
