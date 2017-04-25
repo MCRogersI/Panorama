@@ -36,19 +36,19 @@ Sf.createSku(db, 6,'Profile joint unit plastic bag', 4.93, 180,268, waste_factor
 #createActivity" o "create Difficulty" dado que esas relaciones son
 # constantes en las base de datos y no es necesario volver a crearlas en el futuro.
 with db_session:
-	db.Skills(id=1, name='Rectification')
-	db.Skills(id=2, name='Design')
-	db.Skills(id=3, name='Fabrication')
-	db.Skills(id=4, name='Installation')
+    db.Skills(id=1, name='Rectification')
+    db.Skills(id=2, name='Design')
+    db.Skills(id=3, name='Fabrication')
+    db.Skills(id=4, name='Installation')
 
-	db.Difficulties(id=1, description='Construccion en altura')
+    db.Difficulties(id=1, description='Construccion en altura')
 
-	db.Activities(id=1, description='Licencia')
-	db.Activities(id=2, description='Vacaciones')
-	db.Activities(id=3, description='Cliente ocupado')
+    db.Activities(id=1, description='Licencia')
+    db.Activities(id=2, description='Vacaciones')
+    db.Activities(id=3, description='Cliente ocupado')
 
 #################################################
-#        Lista de empleados test case 1 		#
+#        Lista de empleados test case 1         #
 # ###############################################
 
 Ef.createEmployee(db,  "Juan", 1, perf_rect = 10)
@@ -70,13 +70,13 @@ Ef.createEmployee(db,  "Iker", 1, perf_inst = 70)
 ##############################################
 
 Pf.createProject(db, 1, 'Manuel Montt 1235', 'Calera', 'Pedro Sánchez',
-				 '17.094.362-0', 150, 2017, 12, 30, estimated_cost = 200)
+                 '17.094.362-0', 150, 2017, 12, 30, estimated_cost = 200)
 Pf.createProject(db, 2, 'Suecia 86', 'Arica', 'Franco Soto',
-				 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300)
+                 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300)
 Pf.createProject(db, 3, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
-				 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150)
+                 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150)
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'San José', 'Miguel Devil', 
-					'14.214.392-K',220, 2017, 8, 30, estimated_cost = 250
+                    '14.214.392-K',220, 2017, 8, 30, estimated_cost = 250
 
 Sf.createEngagement(db, 2, [(1,10),(2,2),(3,20),(5,16),(6,38)],date(2017, 2, 27))
 Sf.createEngagement(db, 2, [(1,99),(4,100),(2,30)],date(2017, 2, 25))
@@ -95,12 +95,12 @@ aux_check_debug_variable_stock_calculation = Sf.calculateStock(db,1)
 
 
 with db_session:
-	#Definición de las prioridades de los distintos proyectos
-	db.Projects[3].priority = 3
-	db.Projects[1].priority = 2
-	db.Projects[2].priority = 1
-	#Fijación de proyectos
-	db.Projects[4].fixed_planning = True
+    #Definición de las prioridades de los distintos proyectos
+    db.Projects[3].priority = 3
+    db.Projects[1].priority = 2
+    db.Projects[2].priority = 1
+    #Fijación de proyectos
+    db.Projects[4].fixed_planning = True
 
 #################
 # Crear atrasos #
