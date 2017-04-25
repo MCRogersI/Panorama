@@ -78,7 +78,7 @@ def employees_console(db, level):
                     except:
                         raise ValueError('\n El rendimiento debe ser un numero. \n')
                 senior = None
-                if(perf_ins != None)
+                if(perf_ins != None):
                     senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
                     try:
                         senior = bool(senior)
