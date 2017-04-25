@@ -54,7 +54,7 @@ def editProject(db, contract_number, new_client_address = None, new_client_comun
             if new_real_cost != None:
                 p.real_cost = new_real_cost
             if new_crystal_leadtime != None:
-                p.crystal_leadtime = crystal_leadtime
+                p.crystal_leadtime = new_crystal_leadtime
         except ObjectNotFound as e:
             print('Object not found: {}'.format(e))
         except ValueError as e:
