@@ -35,18 +35,27 @@ def planning_console(db,level):
             if opt == '3':
                 opt2 = input('\n Marque una de las siguientes opciones: \n - 1: Agregar una restricción de asignación. \n - 2: Eliminar una restricción de asignación. \n - 3: Agregar una restricción de tiempo. \n - 4: Eliminar una restricción de tiempo. \n - 5: Ver restricciones actuales. \n Ingrese la alternativa elegida: ')
                 if opt2 == '1':
-                    contract_number = input('\n Ingrese el número de contrato del proyecto que desea seleccionar: ')
-                    employee_id = input(' Ingrese el ID del empleado que desea asociar o vetar del proyecto: ')
-                    like = input(' Marque una de las siguientes opciones: \n - 1: Si quiere asociar al empleado con el proyecto. \n - 0: Si quiere vetar a este empleado del proyecto. \n Ingrese la alternativa elegida: ')
-                    with db_session:
-                        if like == '1':
-                            r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = True)
-                        if like == '0':
-                            r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = False)
-                            print (str(checkVeto(db, int(contract_number),4)) +' ,'+ str(checkVeto(db, int(contract_number),1)))
-                            if checkVeto(db, int(contract_number),4) or checkVeto(db, int(contract_number),1):
-                                db.Employees_Restrictions[db.Employees[int(employee_id)],db.Projects[int(contract_number)]].delete()
-                                print('\n La planificación se hace infactible al vetar a todos los empleados \n')
+                    try:
+                        contract_number = input('\n Ingrese el número de contrato del proyecto que desea seleccionar: ')
+                            with db_session:
+                                if db.Projects.get(contract_number = contract_number) != None:
+                                raise ValueError('\n El proyecto no existe \n')
+                        employee_id = input(' Ingrese el ID del empleado que desea asociar o vetar del proyecto: ')
+                            with db_session:
+                                if db.Employees.get(employee_id = id) != None:
+                                raise ValueError('\n El empleado no existe \n')
+                        like = input(' Marque una de las siguientes opciones: \n - 1: Si quiere asociar al empleado con el proyecto. \n - 0: Si quiere vetar a este empleado del proyecto. \n Ingrese la alternativa elegida: ')
+                        with db_session:
+                            if like == '1':
+                                r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = True)
+                            if like == '0':
+                                r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = False)
+                                print (str(checkVeto(db, int(contract_number),4)) +' ,'+ str(checkVeto(db, int(contract_number),1)))
+                                if checkVeto(db, int(contract_number),4) or checkVeto(db, int(contract_number),1):
+                                    db.Employees_Restrictions[db.Employees[int(employee_id)],db.Projects[int(contract_number)]].delete()
+                                    print('\n La planificación se hace infactible al vetar a todos los empleados \n')
+                    except ValueError as ve:
+                        print(ve)
                             
                 if opt2 == '2':
                     contract_number = input('\n Ingrese el número de contrato del proyecto que desea seleccionar: ')
