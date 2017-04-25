@@ -26,8 +26,7 @@ def createProject(db, contract_number, client_address, client_comuna,
     #?????????????????????????????    
         #############################################################
     PLf.doPlanning(db)
-    
-    
+
 def printProjects(db):
     with db_session:
         db.Projects.select().show()
@@ -60,7 +59,7 @@ def editProject(db, contract_number, new_client_address = None, new_client_comun
             print('Object not found: {}'.format(e))
         except ValueError as e:
             print('Value error: {}'.format(e))
-            
+
 def deleteProject(db, contract_number):
     with db_session:
         db.Projects[contract_number].delete()

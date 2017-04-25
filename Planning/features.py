@@ -211,6 +211,7 @@ def getChosenIds(possibilities, chosen):
     return ids
     
 #checked (kind of)
+
 def findEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date, senior):
     with db_session:
         ids_employees = employeesBySkill(db, id_skill, senior) # elegimos a los empleados con el skill necesario
@@ -550,8 +551,6 @@ def doPlanning(db):
         
         
         
-
-
 ###########################################################
 ##Métodos relacionados a los informes post-planificación #
 ########################################################### 
@@ -647,11 +646,13 @@ def doPlanning(db):
             # for c in range(1, len(columns)):
                 # ws.cell(row = next_row, column = columns[c], value = values[c-1])
             # next_row = next_row + 1
+
             
             
             
 
             
+
 ##############################################################################
 ##Métodos relacionados con cambiar empleados manualmente post-planificación #
 ##############################################################################
@@ -713,16 +714,7 @@ def doPlanning(db):
 # def employeesRestrictionsPlausible(db, ws):
     # return True
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
 #método auxiliar para ver si un empleado está disponible según sus Activities XOR Tasks (activities = True es Activities, si no, Tasks)
 # def employeesAvailable(db, ids_employees, initial_date, end_date, activities):
