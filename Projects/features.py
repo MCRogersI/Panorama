@@ -8,11 +8,11 @@ import Stock.features as Sf
 def createProject(db, contract_number, client_address, client_comuna,
 				  client_name, client_rut, linear_meters, year, month,
 				  day, real_linear_meters = None, estimated_cost = None,
-				  real_cost = None):
+				  real_cost = None, crystal_leadtime = 15):
 	import Planning.features as PLf
 	with db_session:
 		deadline = date(int(year), int(month), int(day))
-		p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline=deadline, estimated_cost = estimated_cost)
+		p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline=deadline, estimated_cost = estimated_cost, crystal_leadtime = crystal_leadtime)
 		if real_linear_meters != None:
 			p.real_linear_meters = real_linear_meters
 		if real_cost != None:
@@ -32,7 +32,7 @@ def printProjects(db):
     with db_session:
         db.Projects.select().show()
 
-def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None):
+def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None):
 	with db_session:
 		try:
 			p = db.Projects[contract_number]
@@ -54,6 +54,8 @@ def editProject(db, contract_number, new_client_address = None, new_client_comun
 				p.estimated_cost = new_estimated_cost
 			if new_real_cost != None:
 				p.real_cost = new_real_cost
+            if new_crystal_leadtime != None:
+				p.crystal_leadtime = crystal_leadtime
 		except ObjectNotFound as e:
 			print('Object not found: {}'.format(e))
 		except ValueError as e:

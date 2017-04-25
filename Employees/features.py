@@ -1,23 +1,28 @@
 from pony.orm import *
 
-def createEmployee(db,  name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_inst = None):
-	with db_session:
-		e = db.Employees(name = name, zone = zone )
-		if perf_rect != None:
-			db.Employees_Skills(employee = e, skill = 1, performance = perf_rect)
-		if perf_des != None:
-			db.Employees_Skills(employee = e, skill = 2, performance = perf_des)
-		if perf_fab != None:
-			db.Employees_Skills(employee = e, skill = 3, performance = perf_fab)
-		if perf_inst != None:
-			db.Employees_Skills(employee = e, skill = 4, performance = perf_inst)
-		commit()
+def createEmployee(db,  name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_inst = None, senior = None):
+    with db_session:
+        e = db.Employees(name = name, zone = zone)
+        if perf_rect != None:
+            db.Employees_Skills(employee = e, skill = 1, performance = perf_rect)
+        if perf_des != None:
+            db.Employees_Skills(employee = e, skill = 2, performance = perf_des)
+        if perf_fab != None:
+            db.Employees_Skills(employee = e, skill = 3, performance = perf_fab)
+        if perf_inst != None:
+            db.Employees_Skills(employee = e, skill = 4, performance = perf_inst)
+            # solo para el caso de los instaladores, pueden ser senior o junior, por defecto los consideramos como senior:
+            if senior != None:
+                e.senior = senior
+            else
+                e.senior = True
+        commit()
 
 def printEmployees(db):
-	with db_session:
-		db.Employees.select().order_by(lambda e: e.id).show()
+    with db_session:
+        db.Employees.select().order_by(lambda e: e.id).show()
 
-def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_inst = None):
+def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_inst = None, senior = None):
     with db_session:
         e = db.Employees[id]
         if new_zone != None:
@@ -44,8 +49,12 @@ def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, per
                 db.Employees_Skills[(id, 4)].performance = perf_inst
             else:
                 db.Employees_Skills(employee = id, skill = 4, performance = perf_inst)
+        # si es que el empleado no es instalador, no se pesca el valor de la variable senior:
+        emp_skill = select(es for es in db.Employees_Skills if es.employee == id and es.skill == 4)
+        if len(emp_skill) > 0 and senior != None:
+            e.senior = senior
 
-			
+            
 def deleteEmployee(db, id):
     import Planning.features as Pf
     with db_session:
@@ -59,19 +68,19 @@ def deleteEmployee(db, id):
 
 
 def printEmployeesSkills(db):
-	with db_session:
-		db.Employees_Skills.select().order_by(lambda es: es.employee).show()
-		
+    with db_session:
+        db.Employees_Skills.select().order_by(lambda es: es.employee).show()
+        
 def printSkills(db):
-	with db_session:
-		db.Skills.select().order_by(lambda s: s.id).show()
-	
+    with db_session:
+        db.Skills.select().order_by(lambda s: s.id).show()
+    
 def printSelectSkill(db, id_skill):
-	with db_session:
-		ids = []
-		emps = select(e for e in db.Employees)
-		for e in emps:
-			es = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[id_skill])
-			if es != None and es.performance > 0:
-				ids.append(e.id)
-		select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id).show()
+    with db_session:
+        ids = []
+        emps = select(e for e in db.Employees)
+        for e in emps:
+            es = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[id_skill])
+            if es != None and es.performance > 0:
+                ids.append(e.id)
+        select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id).show()
