@@ -78,7 +78,6 @@ def projects_console(db, level):
                 print(ve)
             except:
                 print('\n No se pudo ingresar correctamente el proyecto \n')
-            
         elif(opt == '2' and (level == 1 or level == 2)):
             try:
                 contract_number = input("\n Ingrese el número de contrato del proyecto a editar: ")
@@ -167,7 +166,7 @@ def projects_console(db, level):
             except:
                 print('\n No se pudo realizar la edición. \n')
                 input('Precione cualquier tecla para volver \n')
-            
+
         elif(opt == '3' and level == 1):
             contract_number = input("\n Ingrese el número de contrato del proyecto a eliminar: ")
             try:
@@ -181,7 +180,7 @@ def projects_console(db, level):
                                                                                        \n - 2: Si desea eliminar una indisponibilidad. \
                                                                                        \n - 3: Si desea ver la lista actual de indisponibilidades. \
                                                                                        \n Ingrese la alternativa elegida: ")
-            
+
             if opt_projects_activities == '1':
                 try:
                     project = input("\n Ingrese el número de contrato asociado al cliente: ")
@@ -218,10 +217,11 @@ def projects_console(db, level):
             elif opt_projects_activities == '3':
                 print('\n')
                 printProjectsActivities(db)
+
             
         elif(opt == '5' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
             printProjects(db)
-        
+
         elif(opt == '6' and level == 1) or (opt == '4' and level == 2) or (opt == '2' and level == 3):
             break
 
@@ -233,7 +233,7 @@ def tasks_console(db, level):
             opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea editar una tarea. \n - 2: Si desea ingresar un fallo en una tarea. \n - 3: Si desea ver las tareas actuales. \n - 4: Para volver atrás. \n")
         if level == 3:
             opt = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver las tareas actuales. \n - 2: Para volver atrás. \n")
-        
+
         if(opt == '1' and (level == 1 or level == 2)):
             #id = input("\n Ingrese el ID de la tarea: ")
             try:
@@ -252,7 +252,7 @@ def tasks_console(db, level):
                     original_initial_date = date(int(original_initial_year),int(original_initial_month),int(original_initial_day))
                 except:
                     raise ValueError('\n Fecha de inicio original inválida \n')
-                
+
                 original_end_year = input("\n Ingrese el año estimado de término: ")
                 original_end_month = input("\n Ingrese el mes estimado de término: ")
                 original_end_day = input("\n Ingrese el dia estimado de término: ")
@@ -291,13 +291,14 @@ def tasks_console(db, level):
             new_effective_initial_date = input(" Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
             if(new_effective_initial_date != ''):
                 new_effective_end_date = input(" Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
-            else: 
+
+            else:
                 new_effective_initial_date = None
                 new_effective_end_date = None
             new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
             new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
             editTask(db, id_edit, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, efective_initial_date = new_effective_initial_date, efective_end_date = new_effective_end_date)
-            
+
         elif(opt == '3' and (level == 1 or level == 2)):
             try:
                 contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
@@ -324,7 +325,7 @@ def tasks_console(db, level):
             
         elif(opt == '3' and (level == 1 or level == 2)) or (opt == '1' and level == 3):
             printTasks(db)
-            
+
         elif(opt == '4' and (level == 1 or level == 2)) or (opt == '2' and level == 3):
             break
 

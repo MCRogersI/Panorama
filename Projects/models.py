@@ -14,6 +14,7 @@ def define_models(db):
         real_linear_meters = Optional(float)
         estimated_cost = Optional(int)
         real_cost = Optional(int)
+        sale_cost = Optional(int)
         difficulties = Set('Difficulties')
         tasks = Set('Tasks')
         employees = Set('Employees_Restrictions')
@@ -23,6 +24,7 @@ def define_models(db):
         fixed_priority = Optional(bool)
         engagements = Set('Engagements')
         crystal_leadtime = Optional(int, default = 15)
+        sale_date = Optional(date)
 
 
         def __repr__(self):
