@@ -14,7 +14,7 @@ def define_models(db):
         real_linear_meters = Optional(float)
         estimated_cost = Optional(int)
         real_cost = Optional(int)
-        sale_cost = Optional(int)
+        sale_price = Optional(int)
         difficulties = Set('Difficulties')
         tasks = Set('Tasks')
         employees = Set('Employees_Restrictions')
