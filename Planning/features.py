@@ -477,7 +477,7 @@ def doPlanning(db):
                 if len(employees2) < 1:
                     return('\n No se puede hacer la planificación porque no hay instaladores junior \n')
             else:
-                employees = select(e.employee from db.Employees_Skills if e.skill.id == i)
+                employees = select(es.employee for es in db.Employees_Skills if es.skill.id == i)
                 if len(employees) < 1:
                     return('\n No se puede hacer la planificación porque hay tareas que nadie sabe hacer \n')
             
