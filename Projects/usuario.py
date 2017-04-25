@@ -73,7 +73,34 @@ def projects_console(db, level):
                     int(crystal_leadtime)
                 except:
                     crystal_leadtime = 15
-                createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, year, month, day, crystal_leadtime)
+                sale_year = input("ingrese el año de la fecha de venta del proyecto: ")
+                try:
+                    int(sale_year)
+                except:
+                    raise ValueError('\n El año debe ser un número entero \n')
+                sale_month = input("ingrese el mes de la fecha de venta del proyecto: ")
+                try:
+                    int(sale_month)
+                except:
+                    raise ValueError('\n ser un número entero \n')
+                if int(sale_month) >12 or int(sale_month) < 1:
+                    raise ValueError('\n El mes debe ser un número entero entre 1 y 12 \n')
+                sale_day = input("ingrese el día de la fecha de venta del proyecto: ")
+                try:
+                    int(sale_day)
+                except:
+                    raise ValueError('\n El día debe ser un número entero \n')
+                try:
+                    sale_date =date(int(sale_year),int(sale_month),int(sale_day))
+                except:
+                    raise ValueError('\n No se ha ingresado una fecha válida \n')
+                sale_cost = input('\n Ingrese el precio de venta del proyecto \n')
+                try:
+                    if int(sale_cost) < 0:
+                        raise ValueError('\n El precio de venta debe ser un número posititvo \n')
+                except:
+                    raise ValueError('\n El precio debe ser un número entero \n')
+                createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, year, month, day, crystal_leadtime,sale_date, sale_cost)
             except ValueError as ve:
                 print(ve)
             except:
