@@ -608,7 +608,7 @@ def employeesActivitiesPlausible(db, ws, max_row):
 
 #revisa factibilidad en cuanto a que dos tareas del mismo empleado no se topen 
 def employeesTasksPlausible(db, ws, max_row):
-    from Planning.features import datesOverlap
+    from Planning.features import datesOverlap, fillCommitments
     with db_session:
         #recorremos para cada empleado el reporte de planificación, guardando todas las veces en que aparece asignado para una tarea
         employees = select(e for e in db.Employees)
@@ -616,29 +616,72 @@ def employeesTasksPlausible(db, ws, max_row):
             id = e.id
             initial_date_rows = []
             initial_date_columns = []
+            skills = []
             for next_row in range(4, max_row + 1):
                 if id == ws.cell(row = next_row, column = 4).value:
                     initial_date_rows.append(next_row)
                     initial_date_columns.append(2)
+                    skills.append(1)
                 if id == ws.cell(row = next_row, column = 7).value:
                     initial_date_rows.append(next_row)
                     initial_date_columns.append(5)
+                    skills.append(2)
                 if id == ws.cell(row = next_row, column = 10).value:
                     initial_date_rows.append(next_row)
                     initial_date_columns.append(8)
+                    skills.append(3)
                 if str(id) in str(ws.cell(row = next_row, column = 13).value).split(';'):
                     initial_date_rows.append(next_row)
                     initial_date_columns.append(11)
+                    skills.append(4)
             #teniendo esa información guardada, ahora revisamos si calzan entre ellas
             dates = len(initial_date_columns)
             for i in range(0, dates):
-                for j in (k for k in range(0, dates) if k != i):
+                #si el Skill es 3 o 4, entonces su fecha no puede calzar con ninguna otra
+                if skills[i] == 3 or skills[i] == 4:
+                    for j in (k for k in range(0, dates) if k != i):
+                        initial_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i]).value.date()
+                        end_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i] + 1).value.date()
+                        initial_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j]).value.date()
+                        end_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j] + 1).value.date()
+                        if datesOverlap(initial_date_1, end_date_1, initial_date_2, end_date_2):
+                            return False
+                #si el Skill es 1 o 2, nos fijamos solamente en las otras fechas con Skill 1 o 2, los otros Skills estan cubiertos por el IF de arriba
+                else:
                     initial_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i]).value.date()
                     end_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i] + 1).value.date()
-                    initial_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j]).value.date()
-                    end_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j] + 1).value.date()
-                    if datesOverlap(initial_date_1, end_date_1, initial_date_2, end_date_2):
-                        return False
+                    # creamos un arreglo de puros 0's de largo el lapso de tiempo entre initial_date y end_date, y lo vamos llenando con las tareas que tienen
+                    commitments_skill_1 = np.zeros( abs((end_date - initial_date).days) + 1 )
+                    commitments_skill_2 = np.zeros( abs((end_date - initial_date).days) + 1 )
+                    for j in (k for k in range(0, dates) if k != i and skills[k] == 1):
+                        initial_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j]).value.date()
+                        end_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j] + 1).value.date()
+                        commitments_skill_1 = fillCommitments(commitments_skill_1, initial_date_1, end_date_1, et.planned_initial_date_2, et.planned_end_date_2)
+                    for j in (k for k in range(0, dates) if k != i and skills[k] == 2):
+                        initial_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j]).value.date()
+                        end_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j] + 1).value.date()
+                        commitments_skill_2 = fillCommitments(commitments_skill_2, initial_date_1, end_date_1, et.planned_initial_date_2, et.planned_end_date_2)    
+                    # vemos cuánto es lo máximo que puede hacer por día, entre ambos Skills (si alguno es 0, solo entre un Skill)
+                    es_skill_1 = db.Employees_Skills.get(employee = db.Employees[id], skill = db.Skills[1])
+                    limit_skill_1 = np.floor(es_skill_1.performance)
+                    es_skill_2 = db.Employees_Skills.get(employee = db.Employees[id], skill = db.Skills[2])
+                    limit_skill_2 = np.floor(es_skill_2.performance)
+                    # en este caso nos fijamos solo en los Tasks del Skill 2
+                    if limit_skill_1 == 0:
+                        for c in commitments_skill_2:
+                            if c > limit_skill_2:
+                                return False
+                    # en este caso nos fijamos solo en los Tasks del Skill 1
+                    elif limit_skill_2 == 0:
+                        for c in commitments_skill_1:
+                            if c > limit_skill_1:
+                                return False
+                    # en este caso nos fijamos en los Tasks del Skill 1 y tambien del Skill 2
+                    else:
+                        for i in range(0, len(commitments_skill_1)):
+                            proportion = commitments_skill_1[i]/limit_skill_1 + commitments_skill_2[i]/limit_skill_2
+                            if proportion > 1:
+                                return False
     return True
 
 #revisa factibilidad en cuanto a empleados fijos/baneados de proyectos
