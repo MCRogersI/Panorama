@@ -148,7 +148,7 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
         else:
             emps = select(e for e in db.Employees if e.id in ids_employees)
             # los Tasks asociados a Skills 3 y 4 no pueden solaparse nunca con otros Tasks, asi que eso lo revisamos primero
-            emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees and et.task.skill >= 3)
+            emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees and et.task.skill.id >= 3)
             for et in emp_tasks:
                 if datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
                     return False
@@ -157,8 +157,8 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
                 # creamos un arreglo de puros 0's de largo el lapso de tiempo entre initial_date y end_date, y lo vamos llenando con las tareas que tienen
                 commitments_skill_1 = np.zeros( abs((end_date - initial_date).days) + 1 )
                 commitments_skill_2 = np.zeros( abs((end_date - initial_date).days) + 1 )
-                emp_tasks_skill_1 = select(et for et in db.Employees_Tasks if et.employee == e and et.task.skill == 1)
-                emp_tasks_skill_2 = select(et for et in db.Employees_Tasks if et.employee == e and et.task.skill == 2)
+                emp_tasks_skill_1 = select(et for et in db.Employees_Tasks if et.employee == e and et.task.skill.id == 1)
+                emp_tasks_skill_2 = select(et for et in db.Employees_Tasks if et.employee == e and et.task.skill.id == 2)
                 for et in emp_tasks_skill_1:
                     commitments_skill_1 = fillCommitments(commitments_skill_1, initial_date, end_date, et.planned_initial_date, et.planned_end_date)
                 for et in emp_tasks_skill_2:
@@ -168,16 +168,16 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
                 es = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[id_skill])
                 limit = np.floor(es.performance)
                 es_skill_1 = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[1])
-                limit_skill_1 = np.floor(es_skill_1.performance)
                 es_skill_2 = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[2])
-                limit_skill_2 = np.floor(es_skill_2.performance)
                 # en este caso nos fijamos solo en los Tasks del Skill 2
-                if limit_skill_1 == 0:
+                if es_skill_1 == None:
+                    limit_skill_2 = np.floor(es_skill_2.performance)
                     for c in commitments_skill_2:
                         if c >= limit_skill_2:
                             return False
                 # en este caso nos fijamos solo en los Tasks del Skill 1
-                elif limit_skill_2 == 0:
+                elif es_skill_2 == None:
+                    limit_skill_1 = np.floor(es_skill_1.performance)
                     for c in commitments_skill_1:
                         if c >= limit_skill_1:
                             return False
