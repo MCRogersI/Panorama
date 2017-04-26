@@ -764,7 +764,7 @@ def planningChangesPlausible(db):
         max_row = max_row + 1
     #ahora revisamos que la planificación sea factible en distintos sentidos
     if not employeesSkillsPlausible(db, ws, max_row):
-        return False, " Uno de los empleados fue asignado a una tarea para la cual no está capacitado."
+        return False, " Uno de los empleados fue asignado a una tarea para la cual no está capacitado, o bien la cantidad de isntaladores senior y junior para un proyecto no coincide."
     if not employeesActivitiesPlausible(db, ws, max_row):
         return False, " Uno de los empleados fue asignado a una tarea en fecha que coincide con sus vacaciones o alguna licencia."
     if not employeesTasksPlausible(db, ws, max_row):
@@ -792,10 +792,19 @@ def employeesSkillsPlausible(db, ws, max_row):
             
             #ahora revisamos para el Skill 4
             installers = str(ws.cell(row = next_row, column = 13).value).split(';')
+            num_seniors = 0
+            num_juniors = 0
             for i in installers:
                 installer_skill = db.Employees_Skills.get(employee = db.Employees[i], skill = db.Skills[4])
                 if installer_skill == None or installer_skill.performance == 0:
                     return False
+                #revisamos también que por cada Installer Senior haya un Installer Junior
+                if db.Employees[i].senior:
+                    num_seniors = num_seniors + 1
+                else:
+                    num_juniors = num_juniors + 1
+            if num_seniors != num_juniors:
+                return False
         return True
         
 #revisa factibilidad en cuanto a que una tarea no tope con actividades (licencia/vacaciones)
