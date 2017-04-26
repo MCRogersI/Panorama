@@ -13,6 +13,7 @@ import os
 
 
 def createGlobalReport(db):
+    ''' Este método crea un informe en Excel completo con la información de la base de datos. '''
     wb = Workbook()
     by_default_sheet = wb.get_sheet_by_name('Sheet')
     by_default_sheet.title = 'Introducción del informe'
@@ -205,6 +206,7 @@ def createGlobalReport(db):
 # createGlobalReport(db)
 
 def createGlobalReportCompact(db):
+    ''' Este método crea un informe en Excel compacto con una proción de la información de la base de datos. '''
     wb = Workbook()
     by_default_sheet = wb.get_sheet_by_name('Sheet')
     by_default_sheet.title = 'Introducción del informe'
@@ -249,7 +251,8 @@ def createGlobalReportCompact(db):
         cell.border = thin_border
         cell.alignment = Alignment(horizontal='center')
 
-    # llenar con los datos
+
+    # A continuación llenamos con los datos
 
 
     with db_session:
