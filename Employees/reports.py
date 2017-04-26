@@ -83,6 +83,32 @@ def createEmployeeReport(db,id_employee):
             cell.border = thin_border
             cell.alignment = Alignment(horizontal='center')
 
+        # Escribe la zona geográfica del empleado
+        if e.zone != None:
+            cell = ws.cell(row=r, column=6, value=e.zone)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+        else:
+            cell = ws.cell(row=r, column=6, value="Dato no disponible")
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
+        # Escribe la competencia del empleado (por el momento se asume que solo es una)
+        es = db.Employees_Skills.get(employee = e)
+        if es.skill != None:
+            skill_name = es.skill.name
+            cell = ws.cell(row=r, column=6, value=skill_name)
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+        else:
+            cell = ws.cell(row=r, column=6, value="Dato no disponible")
+            cell.font = Font(bold=True)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+
         r+=1
 
     module_path = os.path.dirname(__file__)

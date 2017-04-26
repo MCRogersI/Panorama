@@ -103,14 +103,14 @@ Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil',
 
 
 
-with db_session:
-    #Definicion de las prioridades de los distintos proyectos
-    db.Projects[3].priority = 3
-    db.Projects[1].priority = 2
-    db.Projects[2].priority = 1
-    #Fijacion de proyectos
-    db.Projects[4].fixed_planning = True
-    db.Tasks[1].effective_initial_date = date(2017, 3, 28)
+# with db_session:
+#     #Definicion de las prioridades de los distintos proyectos
+#     db.Projects[3].priority = 3
+#     db.Projects[1].priority = 2
+#     db.Projects[2].priority = 1
+#     #Fijacion de proyectos
+#     db.Projects[4].fixed_planning = True
+#     db.Tasks[1].effective_initial_date = date(2017, 3, 28)
 
 
 # Pf.getCostProject(db, 1)
