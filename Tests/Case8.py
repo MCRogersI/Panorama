@@ -25,10 +25,10 @@ import Stock.features as Sf
 #createActivity" o "create Difficulty" dado que esas relaciones son
 # constantes en las base de datos y no es necesario volver a crearlas en el futuro.
 with db_session:
-    db.Skills(id=1, name='Rectification')
-    db.Skills(id=2, name='Design')
-    db.Skills(id=3, name='Fabrication')
-    db.Skills(id=4, name='Installation')
+    db.Skills(id=1, name='Rectificación')
+    db.Skills(id=2, name='Diseño')
+    db.Skills(id=3, name='Fabricación')
+    db.Skills(id=4, name='Instalación')
 
     db.Difficulties(id=1, description='Construccion en altura')
 
