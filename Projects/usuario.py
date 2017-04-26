@@ -1,7 +1,7 @@
 from datetime import date
 from pony.orm import *
 from Projects.features import createProject, printProjects, editProject, deleteProject, createTask, editTask, printTasks, failedTask, createProjectActivity, deleteProjectActivity, printProjectsActivities
-
+# from Projects.costs import estimateCost
 
 def projects_console(db, level):
     while True:
@@ -11,12 +11,20 @@ def projects_console(db, level):
                                                                   \n - 3: Eliminar un proyecto. \
                                                                   \n - 4: Si desea manejar datos sobre disponibilidad de un cliente. \
                                                                   \n - 5: Para ver proyectos actuales. \
-                                                                  \n - 6: Para volver atrás. \
+                                                                  \n - 6: Para estimar costos del proyecto. \
+                                                                  \n - 7: Para volver atrás. \
                                                                   \n Ingrese la alternativa elegida: ")
         if level == 2:
-            opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear un proyecto. \n - 2: Si desea editar un proyecto. \n - 3: Para ver proyectos actuales. \n - 4: Para volver atrás. \n Ingrese la alternativa elegida: ")
+            opt = input("\n Marque una de las siguientes opciones: \n - 1: Si desea crear un proyecto.\
+                                                                   \n - 2: Si desea editar un proyecto.\
+                                                                   \n - 3: Para ver proyectos actuales. \
+                                                                   \n - 4 : Para estimar costos del proyecto. \
+                                                                   \n - 5: Para volver atrás. \
+                                                                   \n Ingrese la alternativa elegida: ")
         if level == 3:
-            opt = input("\n Marque una de las siguientes opciones: \n - 1: Para ver proyectos actuales. \n - 2: Para volver atrás. \n Ingrese la alternativa elegida: ")
+            opt = input("\n Marque una de las siguientes opciones:  \n - 1: Para ver proyectos actuales.\
+                                                                    \n - 2: Para volver atrás. \
+                                                                    \n Ingrese la alternativa elegida: ")
 
         if(opt == '1' and (level == 1 or level == 2)):
             try:
@@ -248,8 +256,27 @@ def projects_console(db, level):
             
         elif(opt == '5' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
             printProjects(db)
-
-        elif(opt == '6' and level == 1) or (opt == '4' and level == 2) or (opt == '2' and level == 3):
+        elif (opt =='6' and level == 1) or (opt== '4' and level == 2):
+            print('\n Estamos trabajando para usted. \n')
+            input('\n Presione cualquier tecla para continuar. \n')
+            # try:
+                # contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo \n')
+                # if int(contract_number)  < 0:
+                    # raise ValueError('\n El número de contrato debe ser un número entero positivo. \n')
+                # with db_session:
+                    # if db.Projects.get(contract_number = contract_number) == None:
+                        # raise ValueError('\n Número de contrato no existente. \n')
+                # file_name = input('\n Ingrese el nombre del archivo de la hoja de corte \n')
+                # file_dir = file_name + ".xls"
+                # if os.path.isfile(file_dir):
+                    # estimateCost(db, contract_number, file_name)
+                    # input('\n Costo estimado exitosamente. Presione una tecla para continuar.\n')
+                # else:
+                    # raise ValueError('\n Archivo no encontrado. \n')
+            # except ValueError as ve:
+                # print(ve)
+                # input('\n Presione una tecla para continuar. \n')
+        elif(opt == '7' and level == 1) or(opt == '5' and level == 2) or (opt == '2' and level == 3):
             break
 
 def tasks_console(db, level):
@@ -377,7 +404,7 @@ def tasks_console(db, level):
         elif(opt == '3' and (level == 1 or level == 2)) or (opt == '1' and level == 3):
             printTasks(db)
 
-        elif(opt == '4' and (level == 1 or level == 2)) or (opt == '2' and level == 3):
+        elif(opt == '7' and (level == 1 or level == 2)) or (opt == '2' and level == 3):
             break
 
 

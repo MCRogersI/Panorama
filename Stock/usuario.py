@@ -6,13 +6,19 @@ def stock_console(db, level):
     while True:
         if level == 1:
             opt = input(
-                "\n Marque una de las siguientes opciones:\n - 1: Agregar un SKU. \n - 2: Editar la información de un SKU.  \n - 3: Eliminar un SKU. \n - 4: Ver el Inventario. \n - 5: Para volver atrás. \n Ingrese la alternativa elegida: ")
-        if level == 2:
+                "\n Marque una de las siguientes opciones:\n - 1: Agregar un SKU. \
+                                                          \n - 2: Editar la información de un SKU. \
+                                                          \n - 3: Eliminar un SKU.\
+                                                          \n - 4: Ver el Inventario. \
+                                                          \n - 5: Generar reporte global de stock. \
+                                                          \n - 6: Para volver atrás.\
+                                                          \n Ingrese la alternativa elegida: ")
+        if level == 2 or level == 3:
             opt = input(
-                "\n Marque una de las siguientes opciones:\n - 1: Ver SKU. \n - 2: Para volver atrás. \n Ingrese la alternativa elegida: ")
-        if level == 3:
-            opt = input(
-                "\n Marque una de las siguientes opciones:\n - 1: Ver SKU. \n - 2: Para volver atrás. \n Ingrese la alternativa elegida: ")
+                "\n Marque una de las siguientes opciones:\n - 1: Ver SKU.\
+                                                          \n - 2: Para volver atrás.\
+                                                          \n Ingrese la alternativa elegida: ")
+
         if (opt == '1' and level == 1):
             try:
                 id = input("\n Ingrese el ID del producto: ")
@@ -108,7 +114,9 @@ def stock_console(db, level):
                 opt == '1' and level == 3):
             printStockConsole(db)
             input('\n Presione una tecla para continuar \n')
-
-        if (opt == '5' and level == 1) or (opt == '2' and level == 2) or (
+        if opt =='5' and level ==1:
+            print('\n Estamos trabajando para usted. \n')
+            input('\n Presione cualquier tecla para continuar. \n')
+        if (opt == '6' and level == 1) or (opt == '2' and level == 2) or (
                 opt == '2' and level == 3):
             break
