@@ -257,70 +257,137 @@ def createGlobalReportCompact(db):
         r=4
         for p in projects:
             #Escribe el número de contrato
-            cell = ws.cell(row=r, column=4, value=p.contract_number)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.contract_number != None:
+                cell = ws.cell(row=r, column=4, value=p.contract_number)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=4, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe el nombre del cliente
-            cell = ws.cell(row=r, column=5, value=p.client_name)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.client_name != None:
+                cell = ws.cell(row=r, column=5, value=p.client_name)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=5, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe la prioridad del proyecto
-            cell = ws.cell(row=r, column=6, value=p.priority)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.priority != None:
+                cell = ws.cell(row=r, column=6, value=p.priority)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=6, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe los metros lineales del proyecto
-            cell = ws.cell(row=r, column=7, value=p.linear_meters)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.linear_meters != None:
+                cell = ws.cell(row=r, column=7, value=p.linear_meters)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            else:
+                cell = ws.cell(row=r, column=7, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha límite del proyecto
-            cell = ws.cell(row=r, column=8, value=p.deadline)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.deadline != None:
+                cell = ws.cell(row=r, column=8, value=p.deadline)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=8, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe la comuna del cliente
-            cell = ws.cell(row=r, column=9, value=p.client_comuna)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.client_comuna != None:
+                cell = ws.cell(row=r, column=9, value=p.client_comuna)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=9, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe la dirección del cliente
-            cell = ws.cell(row=r, column=10, value=p.client_address)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.client_address != None:
+                cell = ws.cell(row=r, column=10, value=p.client_address)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=10, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe los metros lineales reales
-            cell = ws.cell(row=r, column=11, value=p.real_linear_meters)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.real_linear_meters != None:
+                cell = ws.cell(row=r, column=11, value=p.real_linear_meters)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=11, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe el costo estimado del proyecto
-            cell = ws.cell(row=r, column=12, value=p.estimated_cost)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.estimated_cost != None:
+                cell = ws.cell(row=r, column=12, value=p.estimated_cost)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=12, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe el precio de venta del proyecto
-            cell = ws.cell(row=r, column=13, value=p.sale_price)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.sale_price != None:
+                cell = ws.cell(row=r, column=13, value=p.sale_price)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=13, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de venta del proyecto
-            cell = ws.cell(row=r, column=14, value=p.sale_date)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.sale_date != None:
+                cell = ws.cell(row=r, column=14, value=p.sale_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=14, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             r+=1
 
