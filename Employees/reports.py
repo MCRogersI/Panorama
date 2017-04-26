@@ -174,7 +174,7 @@ def createEmployeeReportV1(db,id_employee):
 
 # # from pony.orm import *
 from database import db
-createEmployeeReportV1(db,3)
+# createEmployeeReportV1(db,3)
 
 def createEmployeeReportV2(db,id_employee):
     ''' Este método crea un informe en Excel compacto con una proción de la información de la base de datos. '''
@@ -279,33 +279,35 @@ def createEmployeeReportV2(db,id_employee):
             cell.alignment = Alignment(horizontal='left')
 
         # Escribe si el empleado es senior o no (Sí o No)
-        if e.senior != None:
-            if es.senior:
-                value = "Sí"
+        if(es.skill.id == 4):
+            if e.senior != None:
+                if es.senior:
+                    value = "Sí"
+                else:
+                    value = "No"
+                cell = ws.cell(row=r+4, column=4, value = value)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='left')
             else:
-                value = "No"
-            cell = ws.cell(row=r+4, column=4, value = value)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='left')
-        else:
-            cell = ws.cell(row=r+4, column=4, value="Dato no disponible")
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='left')
+                cell = ws.cell(row=r+4, column=4, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='left')
 
-        if es.performance != None:
-            cell = ws.cell(row=r+5, column=4, value = es.performance)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='left')
-        else:
-            cell = ws.cell(row=r+5, column=4, value="Dato no disponible")
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='left')
+        # # Escribe el rendimiento del trabajador
+        # if es.performance != None:
+        #     cell = ws.cell(row=r+5, column=4, value = es.performance)
+        #     cell.font = Font(bold=True)
+        #     cell.border = thin_border
+        #     cell.alignment = Alignment(horizontal='left')
+        # else:
+        #     cell = ws.cell(row=r+5, column=4, value="Dato no disponible")
+        #     cell.font = Font(bold=True)
+        #     cell.border = thin_border
+        #     cell.alignment = Alignment(horizontal='left')
 
-        #Imprimir el horario del trabajador
+        #Preparar el formato del horario/calendario del trabajador
         cell = ws.cell(row=r+9, column=3, value="SEMANA")
         cell.font = Font(bold=True)
         cell.border = thin_border
@@ -331,8 +333,70 @@ def createEmployeeReportV2(db,id_employee):
             cell.alignment = Alignment(horizontal='center')
             calendar_r+=1
 
-    for r in [i for i in range(14,28)]:
-        ws.row_dimensions[r].height = 40
+        for f in [i for i in range(14, 14+len(dates))]:
+            ws.row_dimensions[f].height = 40
+            for c in [i for i in range(4,9)]:
+                cell = ws.cell(row=f, column=c)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+
+
+        #Imprimir las tareas del trabajador
+        from Planning.features import isHoliday,isNotWorkday #Es realmente necesario importar isHoliday
+
+        tareas = select(et for et in db.Employees_Tasks if et.employee == e)
+        for tarea in tareas:
+            task_initial_d = tarea.planned_initial_date
+            task_final_d = tarea.planned_end_date
+            task = db.Tasks.get(id=tarea.task.id)
+            # Ajustar para que solo tome fechas de trabajo en días hábiles
+            working_days = (task_final_d-task_initial_d).days
+            working_days_span = working_days
+            working_dates = []
+            # working_dates = [task_initial_d + i*timedelta(days=1) for i in range(0,working_days)]
+            working_days_counter = 0
+            while(working_days_counter<working_days_span):
+                if(not isNotWorkday(task_initial_d + working_days_counter*timedelta(days=1))):
+                    working_dates.append(task_initial_d + working_days_counter*timedelta(days=1))
+                else:
+                    working_days_span+=1
+                working_days_counter+=1
+
+
+            for i in range(0,len(dates)-1):
+                # if(dates[i]<=task_initial_d<dates[i+1]):
+                #     # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                #     cell = ws.cell(row=r + 10 + i, column=4 + task_initial_d.weekday(),value="Proyecto {}".format(task.project))
+                #     cell.font = Font(bold=True)
+                #     cell.border = thin_border
+                #     cell.alignment = Alignment(horizontal='center')
+                #     # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                #     # create alignment style
+                #     wrap_alignment = Alignment(wrap_text=True,horizontal="center",vertical="center")
+                #     # assign
+                #     cell.alignment = wrap_alignment
+                for d in working_dates:
+                    if (dates[i] <= d < dates[i + 1]):
+                        # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                        cell = ws.cell(row=r + 10 + i, column=4 + d.weekday(),
+                                       value="Proyecto {}".format(task.project))
+                        cell.font = Font(bold=True)
+                        cell.border = thin_border
+                        cell.alignment = Alignment(horizontal='center')
+                        # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                        # create alignment style
+                        wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                                                   vertical="center")
+                        # assign
+                        cell.alignment = wrap_alignment
+
+
+
+
+
+
 
 
     module_path = os.path.dirname(__file__)
