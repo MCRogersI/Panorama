@@ -25,10 +25,10 @@ import Stock.features as Sf
 #createActivity" o "create Difficulty" dado que esas relaciones son
 # constantes en las base de datos y no es necesario volver a crearlas en el futuro.
 with db_session:
-    db.Skills(id=1, name='Rectification')
-    db.Skills(id=2, name='Design')
-    db.Skills(id=3, name='Fabrication')
-    db.Skills(id=4, name='Installation')
+    db.Skills(id=1, name='Rectificación')
+    db.Skills(id=2, name='Diseño')
+    db.Skills(id=3, name='Fabricación')
+    db.Skills(id=4, name='Instalación')
 
     db.Difficulties(id=1, description='Construccion en altura')
 
@@ -77,12 +77,12 @@ Ef.createEmployee(db,  "Juan", 1, perf_rect = 2)
 Ef.createEmployee(db,  "Pedro", 2, perf_des = 2)
 Ef.createEmployee(db,  "Diego", 2, perf_fab = 30)
 Ef.createEmployee(db,  "Miguel", 1, perf_inst = 40, senior = True)
-Ef.createEmployee(db,  "Mario", 1, perf_rect = 50)
-Ef.createEmployee(db,  "Felipe", 2, perf_des = 60)
+Ef.createEmployee(db,  "Mario", 1, perf_rect = 1)
+Ef.createEmployee(db,  "Felipe", 2, perf_des = 1)
 Ef.createEmployee(db,  "Miguel", 1, perf_fab = 40)
 Ef.createEmployee(db,  "Mario", 1, perf_inst = 50, senior = False)
-Ef.createEmployee(db,  "Felipe", 2, perf_rect = 60)
-Ef.createEmployee(db,  "Miguel", 1, perf_des = 40)
+Ef.createEmployee(db,  "Felipe", 2, perf_rect = 2)
+Ef.createEmployee(db,  "Miguel", 1, perf_des = 1)
 Ef.createEmployee(db,  "Mario", 1, perf_fab = 50)
 Ef.createEmployee(db,  "Felipe", 1, perf_inst = 60, senior = True)
 Ef.createEmployee(db,  "Iker", 1, perf_inst = 70, senior = False)
@@ -103,14 +103,14 @@ Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil',
 
 
 
-with db_session:
-    #Definicion de las prioridades de los distintos proyectos
-    db.Projects[3].priority = 3
-    db.Projects[1].priority = 2
-    db.Projects[2].priority = 1
-    #Fijacion de proyectos
-    db.Projects[4].fixed_planning = True
-    db.Tasks[1].effective_initial_date = date(2017, 3, 28)
+# with db_session:
+#     #Definicion de las prioridades de los distintos proyectos
+#     db.Projects[3].priority = 3
+#     db.Projects[1].priority = 2
+#     db.Projects[2].priority = 1
+#     #Fijacion de proyectos
+#     db.Projects[4].fixed_planning = True
+#     db.Tasks[1].effective_initial_date = date(2017, 3, 28)
 
 
 # Pf.getCostProject(db, 1)

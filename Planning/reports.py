@@ -13,6 +13,7 @@ import os
 
 
 def createGlobalReport(db):
+    ''' Este método crea un informe en Excel completo con la información de la base de datos. '''
     wb = Workbook()
     by_default_sheet = wb.get_sheet_by_name('Sheet')
     by_default_sheet.title = 'Introducción del informe'
@@ -205,6 +206,7 @@ def createGlobalReport(db):
 # createGlobalReport(db)
 
 def createGlobalReportCompact(db):
+    ''' Este método crea un informe en Excel compacto con una proción de la información de la base de datos. '''
     wb = Workbook()
     by_default_sheet = wb.get_sheet_by_name('Sheet')
     by_default_sheet.title = 'Introducción del informe'
@@ -249,7 +251,8 @@ def createGlobalReportCompact(db):
         cell.border = thin_border
         cell.alignment = Alignment(horizontal='center')
 
-    # llenar con los datos
+
+    # A continuación llenamos con los datos
 
 
     with db_session:
@@ -257,70 +260,137 @@ def createGlobalReportCompact(db):
         r=4
         for p in projects:
             #Escribe el número de contrato
-            cell = ws.cell(row=r, column=4, value=p.contract_number)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.contract_number != None:
+                cell = ws.cell(row=r, column=4, value=p.contract_number)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=4, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe el nombre del cliente
-            cell = ws.cell(row=r, column=5, value=p.client_name)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.client_name != None:
+                cell = ws.cell(row=r, column=5, value=p.client_name)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=5, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe la prioridad del proyecto
-            cell = ws.cell(row=r, column=6, value=p.priority)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.priority != None:
+                cell = ws.cell(row=r, column=6, value=p.priority)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=6, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe los metros lineales del proyecto
-            cell = ws.cell(row=r, column=7, value=p.linear_meters)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.linear_meters != None:
+                cell = ws.cell(row=r, column=7, value=p.linear_meters)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            else:
+                cell = ws.cell(row=r, column=7, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha límite del proyecto
-            cell = ws.cell(row=r, column=8, value=p.deadline)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.deadline != None:
+                cell = ws.cell(row=r, column=8, value=p.deadline)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=8, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe la comuna del cliente
-            cell = ws.cell(row=r, column=9, value=p.client_comuna)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.client_comuna != None:
+                cell = ws.cell(row=r, column=9, value=p.client_comuna)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=9, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe la dirección del cliente
-            cell = ws.cell(row=r, column=10, value=p.client_address)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.client_address != None:
+                cell = ws.cell(row=r, column=10, value=p.client_address)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=10, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe los metros lineales reales
-            cell = ws.cell(row=r, column=11, value=p.real_linear_meters)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.real_linear_meters != None:
+                cell = ws.cell(row=r, column=11, value=p.real_linear_meters)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=11, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe el costo estimado del proyecto
-            cell = ws.cell(row=r, column=12, value=p.estimated_cost)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.estimated_cost != None:
+                cell = ws.cell(row=r, column=12, value=p.estimated_cost)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=12, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe el precio de venta del proyecto
-            cell = ws.cell(row=r, column=13, value=p.sale_price)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.sale_price != None:
+                cell = ws.cell(row=r, column=13, value=p.sale_price)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=13, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de venta del proyecto
-            cell = ws.cell(row=r, column=14, value=p.sale_date)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
+            if p.sale_date != None:
+                cell = ws.cell(row=r, column=14, value=p.sale_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=14, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
 
             r+=1
 
@@ -337,6 +407,214 @@ from database import db
 createGlobalReportCompact(db)
 
 
+def createGlobalReportModified(db):
+    ''' Este método crea un informe en Excel compacto con una proción de la información de la base de datos. '''
+    wb = Workbook()
+    by_default_sheet = wb.get_sheet_by_name('Sheet')
+    by_default_sheet.title = 'Introducción del informe'
+    wb.remove_sheet(by_default_sheet)
+    ws = wb.create_sheet(
+        "Informe BD compacto",index=0)
+
+    widths = {"A": 5, "B": 35, "C": 5,"D": 35, "E": 35, "F": 35,
+              "G": 35, "H": 35, "I": 35,"J": 35, "K": 35, "L": 35,
+              "M": 35, "N": 35, "O": 45,"P": 45, "Q": 45, "R": 45,
+              "S": 45, "T": 45, "U": 45,"V": 45, "W": 45, "X": 45,
+              "Y": 45, "Z": 45, "AA": 45, "AB": 45, "AC": 45}
+
+    heights = {"A": 10, "B": 10, "C": 10, "D": 10, "E": 10, "F": 10,
+              "G": 10, "H": 10, "I": 10, "J": 10, "K": 10, "L": 10,
+              "M": 10, "N": 10, "O": 10,"P": 10, "Q": 10, "R": 10,
+              "S": 10, "T": 10, "U": 10,"V": 10, "W": 10, "X": 10,
+              "Y": 10, "Z": 10, "AA": 10, "AB": 10, "AC": 10}
+
+    thin_border = Border(left=Side(style='thin'),
+                         right=Side(style='thin'),
+                         top=Side(style='thin'),
+                         bottom=Side(style='thin'))
+
+
+    columns = ["A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB",
+               "AC"]
+    for c in columns:
+        ws.column_dimensions[c].width = widths[c]
+        ws.column_dimensions[c].height = heights[c]
+
+
+    num_columns, letter_columns = zip(*list(enumerate(columns)))
+    num_columns = list(num_columns)
+    num_columns = [x + 1 for x in num_columns] #Desplazamos los valores en 1 porque Excel está indexado desde el 1 y no desde el 0
+    letter_columns = list(letter_columns)
+
+    # escribir los títulos de las columnas, en negrita
+
+    texts = ["","","","NUMERO DE CONTRATO", "NOMBRE CLIENTE", "PRIORIDAD", "METROS LINEALES",
+             "FECHA LÍMITE","COMUNA CLIENTE", "DIRECCIÓN CLIENTE", "METROS LINEALES REALES", "COSTO ESTIMADO",
+             "PRECIO DE VENTA", "FECHA DE VENTA","FECHA ORIGINAL INICIO RECTIFICACIÓN","FECHA ORIGINAL TÉRMINO RECTIFICACIÓN",
+             "FECHA EFECTIVA INICIO RECTIFICACIÓN","FECHA EFECTIVA TÉRMINO RECTIFICACIÓN","FECHA ORIGINAL INICIO DISEÑO"
+        ,"FECHA ORIGINAL TÉRMINO DISEÑO","FECHA EFECTIVA INICIO DISEÑO","FECHA EFECTIVA TÉRMINO DISEÑO",
+             "FECHA ORIGINAL INICIO FABRICACIÓN","FECHA ORIGINAL TÉRMINO FABRICACIÓN","FECHA EFECTIVA INICIO FABRICACIÓN",
+             "FECHA EFECTIVA TÉRMINO FABRICACIÓN","FECHA ORIGINAL INICIO INSTALACIÓN","FECHA ORIGINAL TÉRMINO INSTALACIÓN",
+             "FECHA EFECTIVA INICIO INSTALACIÓN","FECHA EFECTIVA TÉRMINO INSTALACIÓN"]
+
+    for i in range(4,len(num_columns)+1):
+        cell = ws.cell(row=3, column=i, value=texts[i-1])
+        cell.font = Font(bold=True,)
+        cell.border = thin_border
+        cell.alignment = Alignment(horizontal='center')
+
+
+    # A continuación llenamos con los datos
+
+    with db_session:
+        projects = select(p for p in db.Projects).order_by(lambda p: p.contract_number)
+        r=4
+        for p in projects:
+            #Escribe el número de contrato
+            if p.contract_number != None:
+                cell = ws.cell(row=r, column=4, value=p.contract_number)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=4, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el nombre del cliente
+            if p.client_name != None:
+                cell = ws.cell(row=r, column=5, value=p.client_name)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=5, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la prioridad del proyecto
+            if p.priority != None:
+                cell = ws.cell(row=r, column=6, value=p.priority)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=6, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe los metros lineales del proyecto
+            if p.linear_meters != None:
+                cell = ws.cell(row=r, column=7, value=p.linear_meters)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            else:
+                cell = ws.cell(row=r, column=7, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha límite del proyecto
+            if p.deadline != None:
+                cell = ws.cell(row=r, column=8, value=p.deadline)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=8, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la comuna del cliente
+            if p.client_comuna != None:
+                cell = ws.cell(row=r, column=9, value=p.client_comuna)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=9, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la dirección del cliente
+            if p.client_address != None:
+                cell = ws.cell(row=r, column=10, value=p.client_address)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=10, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe los metros lineales reales
+            if p.real_linear_meters != None:
+                cell = ws.cell(row=r, column=11, value=p.real_linear_meters)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=11, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el costo estimado del proyecto
+            if p.estimated_cost != None:
+                cell = ws.cell(row=r, column=12, value=p.estimated_cost)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=12, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el precio de venta del proyecto
+            if p.sale_price != None:
+                cell = ws.cell(row=r, column=13, value=p.sale_price)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=13, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha de venta del proyecto
+            if p.sale_date != None:
+                cell = ws.cell(row=r, column=14, value=p.sale_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=14, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            r+=1
+
+    module_path = os.path.dirname(__file__)
+    panorama_folder_path = os.path.abspath(os.path.join(module_path, os.pardir))
+    report_folder_path = os.path.join(panorama_folder_path,"Reportes")
+    if not os.path.exists(report_folder_path):
+        os.makedirs(report_folder_path)
+    fn = os.path.join(report_folder_path,"Global Report Modified.xlsx")
+    wb.save(fn)
+
+
+createGlobalReportModified(db)
 
 
 
@@ -486,7 +764,7 @@ def planningChangesPlausible(db):
         max_row = max_row + 1
     #ahora revisamos que la planificación sea factible en distintos sentidos
     if not employeesSkillsPlausible(db, ws, max_row):
-        return False, " Uno de los empleados fue asignado a una tarea para la cual no está capacitado."
+        return False, " Uno de los empleados fue asignado a una tarea para la cual no está capacitado, o bien la cantidad de isntaladores senior y junior para un proyecto no coincide."
     if not employeesActivitiesPlausible(db, ws, max_row):
         return False, " Uno de los empleados fue asignado a una tarea en fecha que coincide con sus vacaciones o alguna licencia."
     if not employeesTasksPlausible(db, ws, max_row):
@@ -514,10 +792,19 @@ def employeesSkillsPlausible(db, ws, max_row):
             
             #ahora revisamos para el Skill 4
             installers = str(ws.cell(row = next_row, column = 13).value).split(';')
+            num_seniors = 0
+            num_juniors = 0
             for i in installers:
                 installer_skill = db.Employees_Skills.get(employee = db.Employees[i], skill = db.Skills[4])
                 if installer_skill == None or installer_skill.performance == 0:
                     return False
+                #revisamos también que por cada Installer Senior haya un Installer Junior
+                if db.Employees[i].senior:
+                    num_seniors = num_seniors + 1
+                else:
+                    num_juniors = num_juniors + 1
+            if num_seniors != num_juniors:
+                return False
         return True
         
 #revisa factibilidad en cuanto a que una tarea no tope con actividades (licencia/vacaciones)
@@ -538,7 +825,7 @@ def employeesActivitiesPlausible(db, ws, max_row):
 
 #revisa factibilidad en cuanto a que dos tareas del mismo empleado no se topen 
 def employeesTasksPlausible(db, ws, max_row):
-    from Planning.features import datesOverlap
+    from Planning.features import datesOverlap, fillCommitments
     with db_session:
         #recorremos para cada empleado el reporte de planificación, guardando todas las veces en que aparece asignado para una tarea
         employees = select(e for e in db.Employees)
@@ -546,29 +833,72 @@ def employeesTasksPlausible(db, ws, max_row):
             id = e.id
             initial_date_rows = []
             initial_date_columns = []
+            skills = []
             for next_row in range(4, max_row + 1):
                 if id == ws.cell(row = next_row, column = 4).value:
                     initial_date_rows.append(next_row)
                     initial_date_columns.append(2)
+                    skills.append(1)
                 if id == ws.cell(row = next_row, column = 7).value:
                     initial_date_rows.append(next_row)
                     initial_date_columns.append(5)
+                    skills.append(2)
                 if id == ws.cell(row = next_row, column = 10).value:
                     initial_date_rows.append(next_row)
                     initial_date_columns.append(8)
+                    skills.append(3)
                 if str(id) in str(ws.cell(row = next_row, column = 13).value).split(';'):
                     initial_date_rows.append(next_row)
                     initial_date_columns.append(11)
+                    skills.append(4)
             #teniendo esa información guardada, ahora revisamos si calzan entre ellas
             dates = len(initial_date_columns)
             for i in range(0, dates):
-                for j in (k for k in range(0, dates) if k != i):
+                #si el Skill es 3 o 4, entonces su fecha no puede calzar con ninguna otra
+                if skills[i] == 3 or skills[i] == 4:
+                    for j in (k for k in range(0, dates) if k != i):
+                        initial_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i]).value.date()
+                        end_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i] + 1).value.date()
+                        initial_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j]).value.date()
+                        end_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j] + 1).value.date()
+                        if datesOverlap(initial_date_1, end_date_1, initial_date_2, end_date_2):
+                            return False
+                #si el Skill es 1 o 2, nos fijamos solamente en las otras fechas con Skill 1 o 2, los otros Skills estan cubiertos por el IF de arriba
+                else:
                     initial_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i]).value.date()
                     end_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i] + 1).value.date()
-                    initial_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j]).value.date()
-                    end_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j] + 1).value.date()
-                    if datesOverlap(initial_date_1, end_date_1, initial_date_2, end_date_2):
-                        return False
+                    # creamos un arreglo de puros 0's de largo el lapso de tiempo entre initial_date y end_date, y lo vamos llenando con las tareas que tienen
+                    commitments_skill_1 = np.zeros(abs((end_date - initial_date).days) + 1 )
+                    commitments_skill_2 = np.zeros(abs((end_date - initial_date).days) + 1 )
+                    for j in (k for k in range(0, dates) if k != i and skills[k] == 1):
+                        initial_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j]).value.date()
+                        end_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j] + 1).value.date()
+                        commitments_skill_1 = fillCommitments(commitments_skill_1, initial_date_1, end_date_1, et.planned_initial_date_2, et.planned_end_date_2)
+                    for j in (k for k in range(0, dates) if k != i and skills[k] == 2):
+                        initial_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j]).value.date()
+                        end_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j] + 1).value.date()
+                        commitments_skill_2 = fillCommitments(commitments_skill_2, initial_date_1, end_date_1, et.planned_initial_date_2, et.planned_end_date_2)    
+                    # vemos cuánto es lo máximo que puede hacer por día, entre ambos Skills (si alguno es 0, solo entre un Skill)
+                    es_skill_1 = db.Employees_Skills.get(employee = db.Employees[id], skill = db.Skills[1])
+                    limit_skill_1 = np.floor(es_skill_1.performance)
+                    es_skill_2 = db.Employees_Skills.get(employee = db.Employees[id], skill = db.Skills[2])
+                    limit_skill_2 = np.floor(es_skill_2.performance)
+                    # en este caso nos fijamos solo en los Tasks del Skill 2
+                    if limit_skill_1 == 0:
+                        for c in commitments_skill_2:
+                            if c > limit_skill_2:
+                                return False
+                    # en este caso nos fijamos solo en los Tasks del Skill 1
+                    elif limit_skill_2 == 0:
+                        for c in commitments_skill_1:
+                            if c > limit_skill_1:
+                                return False
+                    # en este caso nos fijamos en los Tasks del Skill 1 y tambien del Skill 2
+                    else:
+                        for i in range(0, len(commitments_skill_1)):
+                            proportion = commitments_skill_1[i]/limit_skill_1 + commitments_skill_2[i]/limit_skill_2
+                            if proportion > 1:
+                                return False
     return True
 
 #revisa factibilidad en cuanto a empleados fijos/baneados de proyectos
