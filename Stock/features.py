@@ -261,12 +261,72 @@ def displayStock(db, id_sku):
                 days=7))  # Se agregan 7 días 'extras/ficticios' para un mejor display
             plt.ylim(min_quantity - (span_quantities / 10), max_quantity + (span_quantities / 10))
             # plt.ylim(0, max_quantity + (span_quantities / 10))
+            # plt.savefig("SKU{}.png".format(id_sku))
             plt.tight_layout()
             plt.show(block=True)
 
         p = Thread(target=plot_graph(quantities=quantities, dates=dates))
         p.start()
         p.join()
+
+def displayStockForExcel(db, id_sku):
+    '''Este método grafica el comportamiento de un SKU hasta el último de los movimientos registrados '''
+    with db_session:
+        sku = db.Stock.get(id=id_sku)
+        critical_level = sku.critical_level
+        values = calculateStock(db, id_sku)
+        quantities, dates = zip(*values)  # <-- wooowowooo (que bonita función)
+
+        def plot_graph(quantities, dates):
+            plt.figure()
+            plt.ylabel('Quantity')
+            plt.xlabel('Date')
+            plt.title(
+                'Inventory prediction of unit ' + str(db.Stock[id_sku]) + ', code: ' + str(
+                    id_sku))
+            min_date = min(dates)
+            max_date = max(dates)
+            min_quantity = min(quantities)
+            max_quantity = max(quantities)
+            span_quantities = max_quantity - min_quantity
+            delta = max_date - min_date
+            delta = delta.days
+            aux_quantity = []
+            aux_dates = []
+            virtual_extra_days = 7
+
+            def get_set_from_dates(quantities,
+                                   dates):  # Método auxiliar para generar un 'set' de los datos en values
+                result = []
+                for i in range(1, len(dates)):
+                    if dates[i - 1] != dates[i]:
+                        result.append((quantities[i - 1], dates[i - 1]))
+                    if i == len(dates) - 1:
+                        result.append((quantities[i], dates[i]))
+                return result
+
+            set_of_quantities, set_of_dates = zip(*get_set_from_dates(quantities, dates))
+
+            for i in range(0, delta + virtual_extra_days):
+                aux_dates.append(min_date + timedelta(days=i))
+                aux_quantity.append(0)
+
+            d = 0
+            for i in range(0, len(aux_dates)):
+                if d < len(set_of_dates) - 1:
+                    if aux_dates[i] < set_of_dates[d + 1]:
+                        aux_quantity[i] = set_of_quantities[d]
+
+                    elif d < len(set_of_dates) - 1:
+                        aux_quantity[i] = set_of_quantities[d + 1]
+                        d += 1
+
+                else:
+                    aux_quantity[i] = set_of_quantities[d]
+
+            width = 1
+            return  aux_dates,aux_quantity
+        plot_graph(quantities,dates)
 
 #FUNCIÓN EN DESARROLLO
 # def displayALlSKUs(db):

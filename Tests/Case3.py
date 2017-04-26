@@ -69,15 +69,15 @@ Ef.createEmployee(db,  "Iker", 1, perf_inst = 70)
 # Proyectos test case 2 #
 #########################
 Pf.createProject(db, 1, 'Manuel Montt 1235', 'Providencia', 'Pedro Sánchez',
-				 '17.094.362-0', 150, 2017, 12, 30, estimated_cost = 200)
+				 '17.094.362-0', 150, 2017, 12, 30, estimated_cost = 200, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
 Pf.createProject(db, 2, 'Suecia 86', 'Las Condes', 'Franco Soto',
-				 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300)
+				 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
 Pf.createProject(db, 3, 'Barros Luco 997', 'Puente Alto', 'Miguel Acevedo',
 				 '15.114.992-0',
- 320, 2017, 6, 3, estimated_cost = 150)
+ 320, 2017, 6, 3, estimated_cost = 150, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'María Pinto', 'Miguel Devil',
 				 '14.214.392-K',
- 220, 2017, 8, 30, estimated_cost = 250)
+ 220, 2017, 8, 30, estimated_cost = 250, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
 
 ###########################
 # Engagements test case 2 #
@@ -163,5 +163,7 @@ with db_session:
 	#Considera bien las vacaciones.
 
 print(Sf.checkStockAlarms(db))
-Sf.printStock(db, 1)
-Sf.displayStock(db,1)
+# Sf.printStock(db, 1) #El print stock no funciona bien al parecer
+# Sf.displayStock(db,1)
+print("whaat?")
+print(Sf.displayStockForExcel(db,3))
