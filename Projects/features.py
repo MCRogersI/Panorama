@@ -26,7 +26,7 @@ def createProject(db, contract_number, client_address, client_comuna,
 		#NO ES BROMA!!
 	#?????????????????????????????	
 		#############################################################
-	# PLf.doPlanning(db)
+	PLf.doPlanning(db)
 
 def printProjects(db):
     with db_session:

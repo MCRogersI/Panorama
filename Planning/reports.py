@@ -645,8 +645,8 @@ def createReport(db, Delayed):
         while(True):
             print('\n El reporte de la última planificación se encuentra en el archivo ReportePlanificacion.xlsx.')
             opt = input(" Marque una de las siguientes opciones:\n - 1: si acepta la planificación propuesta. \
-                                                                  \n - 2: si desea cambiar la asignación de empleados. \
-                                                                  \n Ingrese la alternativa elegida: ")
+                                                                \n - 2: si desea cambiar la asignación de empleados. \
+                                                                \n Ingrese la alternativa elegida: ")
             if opt == '1':
                 break
             elif opt == '2':
@@ -768,7 +768,7 @@ def planningChangesPlausible(db):
     if not employeesActivitiesPlausible(db, ws, max_row):
         return False, " Uno de los empleados fue asignado a una tarea en fecha que coincide con sus vacaciones o alguna licencia."
     if not employeesTasksPlausible(db, ws, max_row):
-        return False, " Uno de los empleados fue asignado a más de una tarea en la misma fecha."
+        return False, " Uno de los empleados fue asignado a demasiadas tareas en la misma fecha."
     if not employeesRestrictionsPlausible(db, ws, max_row):
         return False, str(employeesRestrictionsPlausible(db, ws, max_row))
     return True, " Los cambios hechos a la planificación son válidos, por lo tanto, serán aplicados."
@@ -795,11 +795,12 @@ def employeesSkillsPlausible(db, ws, max_row):
             num_seniors = 0
             num_juniors = 0
             for i in installers:
-                installer_skill = db.Employees_Skills.get(employee = db.Employees[i], skill = db.Skills[4])
+                id = int(i)
+                installer_skill = db.Employees_Skills.get(employee = db.Employees[id], skill = db.Skills[4])
                 if installer_skill == None or installer_skill.performance == 0:
                     return False
                 #revisamos también que por cada Installer Senior haya un Installer Junior
-                if db.Employees[i].senior:
+                if db.Employees[id].senior:
                     num_seniors = num_seniors + 1
                 else:
                     num_juniors = num_juniors + 1
@@ -868,33 +869,35 @@ def employeesTasksPlausible(db, ws, max_row):
                     initial_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i]).value.date()
                     end_date_1 = ws.cell(row = initial_date_rows[i], column = initial_date_columns[i] + 1).value.date()
                     # creamos un arreglo de puros 0's de largo el lapso de tiempo entre initial_date y end_date, y lo vamos llenando con las tareas que tienen
-                    commitments_skill_1 = np.zeros(abs((end_date - initial_date).days) + 1 )
-                    commitments_skill_2 = np.zeros(abs((end_date - initial_date).days) + 1 )
-                    for j in (k for k in range(0, dates) if k != i and skills[k] == 1):
+                    commitments_skill_1 = np.zeros(abs((end_date_1 - initial_date_1).days) + 1 )
+                    commitments_skill_2 = np.zeros(abs((end_date_1 - initial_date_1).days) + 1 )
+                    for j in (k for k in range(0, dates) if skills[k] == 1):
                         initial_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j]).value.date()
                         end_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j] + 1).value.date()
-                        commitments_skill_1 = fillCommitments(commitments_skill_1, initial_date_1, end_date_1, et.planned_initial_date_2, et.planned_end_date_2)
-                    for j in (k for k in range(0, dates) if k != i and skills[k] == 2):
+                        commitments_skill_1 = fillCommitments(commitments_skill_1, initial_date_1, end_date_1, initial_date_2, end_date_2)
+                    for j in (k for k in range(0, dates) if skills[k] == 2):
                         initial_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j]).value.date()
                         end_date_2 = ws.cell(row = initial_date_rows[j], column = initial_date_columns[j] + 1).value.date()
-                        commitments_skill_2 = fillCommitments(commitments_skill_2, initial_date_1, end_date_1, et.planned_initial_date_2, et.planned_end_date_2)    
+                        commitments_skill_2 = fillCommitments(commitments_skill_2, initial_date_1, end_date_1, initial_date_2, end_date_2)    
                     # vemos cuánto es lo máximo que puede hacer por día, entre ambos Skills (si alguno es 0, solo entre un Skill)
                     es_skill_1 = db.Employees_Skills.get(employee = db.Employees[id], skill = db.Skills[1])
-                    limit_skill_1 = np.floor(es_skill_1.performance)
                     es_skill_2 = db.Employees_Skills.get(employee = db.Employees[id], skill = db.Skills[2])
-                    limit_skill_2 = np.floor(es_skill_2.performance)
                     # en este caso nos fijamos solo en los Tasks del Skill 2
-                    if limit_skill_1 == 0:
+                    if es_skill_1 == None:
+                        limit_skill_2 = np.floor(es_skill_2.performance)
                         for c in commitments_skill_2:
                             if c > limit_skill_2:
                                 return False
                     # en este caso nos fijamos solo en los Tasks del Skill 1
-                    elif limit_skill_2 == 0:
+                    elif es_skill_2 == None:
+                        limit_skill_1 = np.floor(es_skill_1.performance)
                         for c in commitments_skill_1:
                             if c > limit_skill_1:
                                 return False
                     # en este caso nos fijamos en los Tasks del Skill 1 y tambien del Skill 2
-                    else:
+                    else:                        
+                        limit_skill_1 = np.floor(es_skill_1.performance)
+                        limit_skill_2 = np.floor(es_skill_2.performance)
                         for i in range(0, len(commitments_skill_1)):
                             proportion = commitments_skill_1[i]/limit_skill_1 + commitments_skill_2[i]/limit_skill_2
                             if proportion > 1:
