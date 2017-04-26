@@ -28,10 +28,10 @@ def baseCreateReport():
     #Llenar con los datos
 
     #Insertar imagen
-    ws = wb.worksheets[0]
-    img = openpyxl.drawing.Image('sku_plot.png')
-    img.anchor(ws.cell('A1'))
-    ws.add_image(img)
+    # ws = wb.worksheets[0]
+    # img = openpyxl.drawing.Image('sku_plot.png')
+    # img.anchor(ws.cell('A1'))
+    # ws.add_image(img)
 
     #Guardar el archivo
     module_path = os.path.dirname(__file__)

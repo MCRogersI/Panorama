@@ -162,9 +162,21 @@ def employees_console(db, level):
                 input('\n Presione cualquier tecla para continuar \n')
 
         if(opt == '3' and level == 1):
-            idEmpleado = input("\n Ingrese el ID del empleado que desea eliminar: ")
-            deleteEmployee(db, idEmpleado)
-            input(' \n Empleado eliminado. Presione una tecla para continuar. \n')
+            try:
+                idEmpleado = input("\n Ingrese el ID del empleado que desea eliminar: ")
+                with db_session:
+                    try:
+                        int(idEmpleado)
+                    except:
+                        raise ValueError('\n El ID de un empleado debe ser un número entero \n')
+                    if db.Employees.get(id = int(idEmpleado)) == None:
+                        raise ValueError('\n Empleado inexistente \n')
+                deleteEmployee(db, idEmpleado)
+                input(' \n Empleado eliminado. Presione una tecla para continuar. \n')
+            except ValueError as ve:
+                print(ve)
+                input('\n Presione cualquier tecla para continuar \n')
+
         
         if(opt == '4' and level == 1) or (opt == '3' and level == 2):
             opt_employees_activities = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de una actividad. \
