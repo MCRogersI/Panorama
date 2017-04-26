@@ -1,7 +1,7 @@
 from datetime import date
 from pony.orm import *
 from Planning.features import changePriority, addDelayed, doPlanning, checkVeto
-from Planning.reports import createGlobalReport
+from Planning.reports import createGlobalReportCompact
 
 def planning_console(db,level):
     if level==1:
@@ -37,12 +37,12 @@ def planning_console(db,level):
                 if opt2 == '1':
                     try:
                         contract_number = input('\n Ingrese el número de contrato del proyecto que desea seleccionar: ')
-                            with db_session:
-                                if db.Projects.get(contract_number = contract_number) != None:
+                        with db_session:
+                            if db.Projects.get(contract_number = contract_number) != None:
                                 raise ValueError('\n El proyecto no existe \n')
                         employee_id = input(' Ingrese el ID del empleado que desea asociar o vetar del proyecto: ')
-                            with db_session:
-                                if db.Employees.get(employee_id = id) != None:
+                        with db_session:
+                            if db.Employees.get(employee_id = id) != None:
                                 raise ValueError('\n El empleado no existe \n')
                         like = input(' Marque una de las siguientes opciones: \n - 1: Si quiere asociar al empleado con el proyecto. \n - 0: Si quiere vetar a este empleado del proyecto. \n Ingrese la alternativa elegida: ')
                         with db_session:
@@ -86,7 +86,7 @@ def planning_console(db,level):
                     continue
             if opt == '4':
                 try:
-                    createGlobalReport(db)
+                    createGlobalReportCompact(db)
                 except:
                     print(' Estamos trabajando para usted.')
             if opt == '5':

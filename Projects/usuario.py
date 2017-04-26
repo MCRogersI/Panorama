@@ -316,29 +316,48 @@ def tasks_console(db, level):
                 id_edit = input("\n Ingrese el ID de la tarea que desea editar: ")
                 with db_session:
                     if db.Tasks.get(id = id_edit) == None:
-                       raise ValueError('\n No existe esa tarea \n')
+                       raise ValueError('\n No existe esa tarea. \n')
                 new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
+                if int(new_id_skill) != 1 and int(new_id_skill) != 2 and int(new_id_skill) != 3 and int(new_id_skill) != 4:
+                    raise ValueError('\n ID de habilidad no válida. \n')
                 new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
-                new_effective_initial_date = input(" Ingrese la fecha efectiva de inicio, solo presione enter si no ha comenzado: ")
-                if(new_effective_initial_date != ''):
-                    new_effective_end_date = input(" Ingrese la fecha efectiva de término, solo presione enter si no ha terminado: ")
+                with db_session:
+                    if db.Projects.get(contract_number = new_contract_number) != None:
+                        raise ValueError('\n Proyecto inexistente. \n')
+                new_effective_initial_year = input(" Ingrese el año efectivo de inicio, solo presione enter si no ha comenzado: ")
+                if new_effective_initial_year != '':
+                    new_effective_initial_month = input(" Ingrese el mes efectivo de inicio: ")
+                    new_effective_initial_day = input(" Ingrese el dia efectivo de inicio: ")
+                    try:
+                        new_effective_initial_date = date(new_effective_initial_year,new_effective_initial_month,new_effective_initial_day)
+                    except:
+                        raise ValueError('\n No es una fecha válida \n')
+                if(new_effective_initial_year != ''):
+                    new_effective_end_year = input(" Ingrese el año efectivo de término, solo presione enter si no ha terminado: ")
+                    if new_effective_end_year != '':
+                        new_effective_end_month = input(" Ingrese el mes efectivo de término, solo presione enter si no ha terminado: ")
+                        new_effective_end_day = input(" Ingrese el día efectivo de término, solo presione enter si no ha terminado: ")
+                        try:
+                            new_effective_end_date = date(new_effective_end_year,new_effective_end_month,new_effective_end_day)
+                        except:
+                            raise ValueError('\n Fecha de término inválida. \n')
+                    else:
+                        new_effective_end_date = None
 
                 else:
                     new_effective_initial_date = None
                     new_effective_end_date = None
-                new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
-                new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
+                # new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
+                # new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
                 editTask(db, id_edit, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, efective_initial_date = new_effective_initial_date, efective_end_date = new_effective_end_date)
             except ValueError as ve:
                 print(ve)
         elif(opt == '3' and (level == 1 or level == 2)):
             try:
                 contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
-                try:
-                    with db_session:
-                        db.Tasks[int(contract_number_fail)].contract_number
-                except:
-                    raise ValueError('\n Número de contrato inexistente \n')
+                with db_session:
+                    if db.Tasks.get(contract_number = contract_number_fail) != None:
+                        raise ValueError('\n Número de contrato inexistente \n')
                 id_skill_fail = input("\n Ingrese el ID de la habilidad asociada a la tarea (1: rect, 2: dis, 3: fab, 4: ins): ")
                 try:
                     if 0 > int(id_skill_fail) or int(id_skill_fail) > 4:
