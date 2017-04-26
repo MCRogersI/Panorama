@@ -183,6 +183,8 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
                             return False
                 # en este caso nos fijamos en los Tasks del Skill 1 y tambien del Skill 2
                 else:
+                    limit_skill_1 = np.floor(es_skill_1.performance)
+                    limit_skill_2 = np.floor(es_skill_2.performance)
                     for i in range(0, len(commitments_skill_1)):
                         proportion = commitments_skill_1[i]/limit_skill_1 + commitments_skill_2[i]/limit_skill_2 + 1/limit
                         if proportion > 1:
@@ -595,7 +597,7 @@ def doPlanning(db):
                                 commit()
             for e in p.engagements:
                 Sf.updateEngagements(db, e.sku.id)
-        # createReport(db, Delayed)
+        createReport(db, Delayed)
         
         
 
