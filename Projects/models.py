@@ -97,8 +97,7 @@ def define_models(db):
         #se debería fijar una sola vez el costo para todas las comunas de chile. El nombre de la comuna
         #en name, y la región en region. Se podría también tratar a la región como un int
         # id = PrimaryKey(int, auto = False)
-        name = PrimaryKey(str)
-        region = Required(str)        
+        comuna_to = PrimaryKey(str)
         freight_cost = Required(float)
         
     class Operating_Costs(db.Entity):#Cantidades utilizadas en el cálculo del costo de fabricación del
@@ -109,3 +108,16 @@ def define_models(db):
         name = PrimaryKey(str)
         cost = Required(float)
         
+    class Viatic_Costs(db.Entity):#
+        # viaticos para los trabajadores que deben viajar para hacer la instalacion
+        comuna_from = Required(str)
+        comuna_to = Required(str)
+        PrimaryKey(comuna_from, comuna_to)        
+        viatic_cost = Required(float)
+        
+    class Movilization_Costs(db.Entity):#
+        # asignacion de movilizacion para los trabajadores que deben moverse entre comunas cercanas para hacer la instalacion
+        comuna_from = Required(str)
+        comuna_to = Required(str)
+        PrimaryKey(comuna_from, comuna_to)        
+        movilization_cost = Required(float)
