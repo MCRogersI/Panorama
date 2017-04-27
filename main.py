@@ -1,20 +1,19 @@
 from pony.orm import *
 from database import db
 from datetime import date
-import Employees.features as Ef, Employees.usuario as Eu
+import Employees.features as Ef, Employees.usuario as Eu   #, Employees.reports as Er
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
 import Planning.reports as PLr
 import Users.features as Uf
 import Stock.usuario as Sf
-import Tests.Case8 as case9
+# import Tests.Case8 as case8
 import Planning.usuario as PlanU
 import Stock.reports as Sr
 import numpy as np
-import Employees.reports as Er
 
-Uf.createUser(db,'1', 1,'1')
+# Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 11,'Armin')
 # Uf.createUser(db,'Piola', 2,'Cuatro')
 # Uf.createUser(db,'Pleb', 3,'00000')
@@ -50,7 +49,7 @@ def signIn():
             print("Usuario y/o Contraseña incorrecto(s))")
         break
 
-# signIn()
+signIn()
 # Uf.createUser(db, "1", 1, "1")
 # Uf.createUser(db, "2", 2, "2")
 # Uf.createUser(db, "3", 3, "3")
