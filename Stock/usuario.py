@@ -1,5 +1,6 @@
-from Stock.features import createSku, editSku, deleteSku, printStockConsole 
+from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases
 from Stock.reports import createStockReport
+import os
 
 
 #Entiéndase SKU como el producto en si mismo (aunque en realidad significa el código del producto)
@@ -11,8 +12,9 @@ def stock_console(db, level):
                                                           \n - 2: Editar la información de un SKU. \
                                                           \n - 3: Eliminar un SKU.\
                                                           \n - 4: Ver el Inventario. \
-                                                          \n - 5: Generar reporte global de stock. \
-                                                          \n - 6: Para volver atrás.\
+                                                          \n - 5: Para agregar ordenes de compra. \
+                                                          \n - 6: Generar reporte global de stock. \
+                                                          \n - 7: Para volver atrás.\
                                                           \n Ingrese la alternativa elegida: ")
         if level == 2 or level == 3:
             opt = input(
@@ -115,9 +117,21 @@ def stock_console(db, level):
                 opt == '1' and level == 3):
             printStockConsole(db)
             input('\n Presione una tecla para continuar \n')
-        if opt =='5' and level ==1:
+        if (opt =='5' and level == 1) :
+            try:
+                file_name = input(' Ingrese el nombre del archivo de la orden de compra: ')
+                file_dir = file_name + ".xlsx"
+                if os.path.isfile(file_dir):
+                    makePurchases(db, file_name)
+                    input('\n Orden de compra ingresada exitosamente. Presione una tecla para continuar.')
+                else:
+                    raise ValueError('\n Archivo no encontrado.')
+            except ValueError as ve:
+                print(ve)
+                input(' Presione una tecla para continuar.')
+        if opt =='6' and level ==1:
             createStockReport(db)
             input('\n Presione cualquier tecla para continuar. \n')
-        if (opt == '6' and level == 1) or (opt == '2' and level == 2) or (
+        if (opt == '7' and level == 1) or (opt == '2' and level == 2) or (
                 opt == '2' and level == 3):
             break
