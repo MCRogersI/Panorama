@@ -376,7 +376,7 @@ def createEmployeeReportV2(db,id_employee):
             working_dates = []
             # working_dates = [task_initial_d + i*timedelta(days=1) for i in range(0,working_days)]
             working_days_counter = 0
-            while(working_days_counter<working_days_span):
+            while(working_days_counter<working_days_span+1): #Ojo con el +1 que es para tomar el intervalo cerrado de la fecha de término
                 if(not isNotWorkday(task_initial_d + working_days_counter*timedelta(days=1))):
                     working_dates.append(task_initial_d + working_days_counter*timedelta(days=1))
                 else:

@@ -23,6 +23,7 @@ def define_models(db):
         fixed_planning = Optional(bool)
         fixed_priority = Optional(bool)
         engagements = Set('Engagements')
+        costs = Set('Projects_Costs')
         crystal_leadtime = Optional(int, default = 15)
         sale_date = Optional(date)
 
@@ -122,7 +123,7 @@ def define_models(db):
         PrimaryKey(comuna_from, comuna_to)        
         movilization_cost = Required(float)
         
-    class Project_Costs(db.Entity):
+    class Projects_Costs(db.Entity):
         project = PrimaryKey(Projects)
         standard_cost_profiles = Optional(float) # costo estandar perfiles
         standard_cost_fittings = Optional(float) # costo estandar herrajes

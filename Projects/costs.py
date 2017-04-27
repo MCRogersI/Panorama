@@ -27,7 +27,8 @@ def estimateCost(db, contract_number, file_name):
     num_installers = 0
     for i in installers:
         num_installers = num_installers + 1
-        
+        viatic_cost = viatic_cost + db.Viatic_Costs[(i.zone, comuna_to)].viatic_cost
+        movilization_cost = movilization_cost + db.Movilization_Costs[(i.zone, comuna_to)].movilization_cost
         
     
     parameters = viatic_cost, movilization_cost, , freight_cost, num_installers, file_name
