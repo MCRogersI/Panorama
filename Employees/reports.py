@@ -183,9 +183,33 @@ def createEmployeeReportV2(db,id_employee):
     with db_session:
         e = db.Employees.get(id=id_employee)
         es = db.Employees_Skills.get(employee=e)
-        # ea = select(ea for ea in db.Employees_Activities if ea.employee == e)
-        # ea = db.Employees_Activities.get(employee=e)
-        # print(ea.id) #Revisar creación de activities en consola
+
+        # # ea = db.Employees_Activities.get(employee=e)
+        # e_activities = select(ea for ea in db.Employees_Activities if ea.employee == e)
+        # e_has_activity = False
+        # if e_activities!=None:
+        #     # print(ea.id)  # Revisar creación de activities en consola
+        #     e_has_activity = True
+        #     # print(e_activities)
+        #     # for eact in e_activities:
+        #     #     print(eact.id)
+        # else:
+        #     # print(e_activities)
+        #     # for eact in e_activities:
+        #     #     print(eact.id)
+        #     pass
+
+        # try:
+        #     # ea = select(ea for ea in db.Employees_Activities if ea.employee == e)
+        #     ea = db.Employees_Activities.get(employee=e)
+        #     print(ea.id) #Revisar creación de activities en consola
+        # except ObjectNotFound as e:
+        #     print('Object not found: {}'.format(e))
+        # except ValueError as e:
+        #     print('Value error: {}'.format(e))
+        # except AttributeError as e:
+        #     print('Value error: {}'.format(e))
+
         wb = Workbook()
         by_default_sheet = wb.get_sheet_by_name('Sheet')
         by_default_sheet.title = 'Introducción del informe'
@@ -384,6 +408,26 @@ def createEmployeeReportV2(db,id_employee):
                     pass
                 working_days_counter+=1
 
+        # #Adición de funcionalidad para las vacaciones y licencias (Atención)
+        # for e_act in e_activities:
+        #     ea_initial_d = e_act.initial_date
+        #     ea_final_d = e_act.end_date
+        #     # Ajustar para que solo tome fechas de trabajo en días hábiles
+        #     ea_days = (ea_final_d - ea_initial_d).days
+        #     ea_days_span = working_days
+        #     ea_dates = []
+        #     # working_dates = [task_initial_d + i*timedelta(days=1) for i in range(0,working_days)]
+        #     ea_days_counter = 0
+        #     while (ea_days_counter < ea_days_span + 1):  # Ojo con el +1 que es para tomar el intervalo cerrado de la fecha de término
+        #         if (
+        #         not isNotWorkday(ea_initial_d + ea_days_counter * timedelta(days=1))):
+        #             ea_dates.append(task_initial_d + ea_days_counter * timedelta(days=1))
+        #         else:
+        #             # working_days_span+=1 #Ya está considerado en el Planning
+        #             pass
+        #         ea_days_counter += 1
+        # #Adición de funcionalidad para las vacaciones y licencias (Atención)
+
 
             for i in range(0,len(dates)-1):
                 # if(dates[i]<=task_initial_d<dates[i+1]):
@@ -427,6 +471,39 @@ def createEmployeeReportV2(db,id_employee):
                         # assign
                         cell.alignment = wrap_alignment
                         cell.fill = PatternFill("solid", fgColor="ffff00")
+
+
+                # # Adición de funcionalidad para las vacaciones y licencias (Atención)
+                # for d in ea_dates:
+                #     if (dates[i] <= d < dates[i + 1]):
+                #         # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                #         cell = ws.cell(row=r + 10 + i, column=4 + d.weekday(),
+                #                        value="Vacaciones")
+                #         cell.font = Font(bold=True)
+                #         cell.border = thin_border
+                #         cell.alignment = Alignment(horizontal='center')
+                #         # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                #         # create alignment style
+                #         wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                #                                    vertical="center")
+                #         # assign
+                #         cell.alignment = wrap_alignment
+                #         cell.fill = PatternFill("solid", fgColor="ff00bf")
+                #     elif (dates[len(dates) - 1] <= d):
+                #         # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                #         cell = ws.cell(row=r + 10 + i + 1, column=4 + d.weekday(),
+                #                        value="Vacaciones")
+                #         cell.font = Font(bold=True)
+                #         cell.border = thin_border
+                #         cell.alignment = Alignment(horizontal='center')
+                #         # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                #         # create alignment style
+                #         wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                #                                    vertical="center")
+                #         # assign
+                #         cell.alignment = wrap_alignment
+                #         cell.fill = PatternFill("solid", fgColor="ff00bf")
+                # # Adición de funcionalidad para las vacaciones y licencias (Atención)
 
         # Imprimir los días feriados
         all_the_days_on_display = []
@@ -486,16 +563,16 @@ def createEmployeeReportV2(db,id_employee):
     fn = os.path.join(report_folder_path,report_file_name)
     wb.save(fn)
 #
-# createEmployeeReportV2(db,1)
-# createEmployeeReportV2(db,2)
-# createEmployeeReportV2(db,3)
-# createEmployeeReportV2(db,4)
-# createEmployeeReportV2(db,5)
-# createEmployeeReportV2(db,6)
-# createEmployeeReportV2(db,7)
-# createEmployeeReportV2(db,8)
-# createEmployeeReportV2(db,9)
-# createEmployeeReportV2(db,10)
-# createEmployeeReportV2(db,11)
-# createEmployeeReportV2(db,12)
-# createEmployeeReportV2(db,13)
+createEmployeeReportV2(db,1)
+createEmployeeReportV2(db,2)
+createEmployeeReportV2(db,3)
+createEmployeeReportV2(db,4)
+createEmployeeReportV2(db,5)
+createEmployeeReportV2(db,6)
+createEmployeeReportV2(db,7)
+createEmployeeReportV2(db,8)
+createEmployeeReportV2(db,9)
+createEmployeeReportV2(db,10)
+createEmployeeReportV2(db,11)
+createEmployeeReportV2(db,12)
+createEmployeeReportV2(db,13)

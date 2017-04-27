@@ -1,7 +1,7 @@
 from datetime import date
 from pony.orm import *
 from Planning.features import changePriority, addDelayed, doPlanning, checkVeto
-from Planning.reports import createGlobalReportCompact
+from Planning.reports import createGlobalReportCompact, createGlobalReportModified
 
 def planning_console(db,level):
     if level==1:
@@ -86,7 +86,9 @@ def planning_console(db,level):
                     continue
             if opt == '4':
                 try:
-                    createGlobalReportCompact(db)
+                    # createGlobalReportCompact(db)
+                    createGlobalReportModified(db)
+                    input('\n Reporte global creado con éxit. Presione una tecla para continuar: ')
                 except:
                     print(' Estamos trabajando para usted.')
             if opt == '5':
