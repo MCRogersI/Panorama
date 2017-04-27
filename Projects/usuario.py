@@ -240,7 +240,8 @@ def projects_console(db, level):
                         date(int(end_year),int(end_month),int(end_day))
                     except:
                         raise ValueError('\n Fecha de término inválida \n')
-                    createProjectActivity(db, project, 4, initial_year, initial_month, initial_day, end_year, end_month, end_day)
+                    createProjectActivity(db, project, 3, initial_year, initial_month, initial_day, end_year, end_month, end_day)
+                    input('\n Indisponibilidad ingresada. Presione una tecla para continuar: ')
                 except ValueError as ve:
                     print(ve)
                     input('Precione cualquier tecla para volver \n')

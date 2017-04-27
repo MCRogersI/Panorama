@@ -184,11 +184,12 @@ def employees_console(db, level):
                                                                                         \n Ingrese la alternativa elegida: ")
             
             if opt_employees_activities == '1':
-                activity = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de vacaciones. \
-                                                                            \n - 2: Si desea ingresar datos de licencia. \
-                                                                            \n - 3: Si desea ingresar otro tipo de dato. \
+                activity = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de licencia. \
+                                                                            \n - 2: Si desea ingresar datos de vacaciones. \
                                                                             \n Ingrese la alternativa elegida: ")
                 try:
+                    if int(activity) != 1 and int(activity)!=2:
+                        raise ValueError('\n Debe elegir entre licencia y vacaciones. \n')
                     employee = input(" Ingrese el ID del empleado asociado a la actividad elegida: ")
                     try:
                         with db_session:
@@ -199,14 +200,14 @@ def employees_console(db, level):
                     initial_month = input(" Ingrese el mes en que comienza la actividad: ")
                     initial_day = input(" Ingrese el día en que comienza la actividad: ")
                     try:
-                        date(initial_year,initial_month,initial_day)
+                        date(int(initial_year),int(initial_month),int(initial_day))
                     except:
                         raise ValueError('\n No es una fecha válida \n')
                     end_year = input(" Ingrese el año en que termina la actividad: ")
                     end_month = input(" Ingrese el mes en que termina la actividad: ")
                     end_day = input(" Ingrese el día en que termina la actividad: ")
                     try:
-                        date(end_year,end_month,end_day)
+                        date(int(end_year),int(end_month),int(end_day))
                     except:
                         raise ValueError('\n La fecha es inválida. \n')
                     createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day)

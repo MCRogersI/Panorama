@@ -1,4 +1,4 @@
-#Caso de prueba 8
+#Caso de prueba 9
 #Se inicializan las siguientes entidades (tablas) : 
 #Se prueban la(s) siguiente(s) funcionalidad(es): ingreso de las caracteristicas de un proyecto desde excel, buscando un funcionamiento
 #lo mas parecido al real.
@@ -36,24 +36,13 @@ with db_session:
     db.Activities(id=2, description='Vacaciones')
     db.Activities(id=3, description='Cliente ocupado')
     #Las siguientes tres tablas se inicializan al estilo Skills.
-    #####################################################
-    # Relleno de costos de flete de algunas localidades #
-    #####################################################
-    db.Freight_Costs(comuna_to = 'Vitacura', freight_cost = 50000)
+    ############################################
+    # Relleno de costos de algunas localidades #
+    ############################################
     db.Freight_Costs(comuna_to = 'Calera', freight_cost = 50000)
-    db.Freight_Costs(comuna_to = 'Curepto' , freight_cost = 100000)
+    db.Freight_Costs(comuna_to = 'Curepto', freight_cost = 100000)
     db.Freight_Costs(comuna_to = 'Arica',  freight_cost = 200000)
     db.Freight_Costs(comuna_to = 'San Jose', freight_cost = 350000)
-    #######################################################
-    # Relleno de costos de viatico de algunas localidades #
-    #######################################################
-    db.Viatic_Costs(comuna_from = 1, comuna_to = 'Vitacura', viatic_cost = 0)
-    db.Viatic_Costs(comuna_from = 2, comuna_to = 'Vitacura', viatic_cost = 0)
-    ############################################################
-    # Relleno de costos de movilizacion de algunas localidades #
-    ############################################################
-    db.Movilization_Costs(comuna_from = 1, comuna_to = 'Vitacura', movilization_cost = 6000)
-    db.Movilization_Costs(comuna_from = 2, comuna_to = 'Vitacura', movilization_cost = 6000)
     ###########################################
     # Fijacion de algunos costos de operacion #
     ###########################################
@@ -103,6 +92,19 @@ Ef.createEmployee(db,  "Iker", 1, perf_inst = 70, senior = False)
 # Lista de prueba de proyectos test case 1   #
 ##############################################
 
+Sf.createSku(db, 1,'Telescopic', 2.01, 100,219, waste_factor = 0.02)
+Sf.createSku(db, 2,'Glass Pane Knob', 6.43, 200,220, waste_factor = 0.03)
+Sf.createSku(db, 3,'Lower chamber-9', 4.77, 150,234, waste_factor = 0.04)
+Sf.createSku(db, 4,'Upper chamber-9', 3.07, 150,243, waste_factor = 0.05)
+Sf.createSku(db, 5,'Lock for latch', 12.03, 100,251, waste_factor = 0.03)
+Sf.createSku(db, 6,'Profile joint unit plastic bag', 4.93, 180,268, waste_factor = 0.03)
+Sf.createSku(db, 7, 'Screw M4x14 tx20 A2 DIN965', 0.07, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 8, 'Fastening Bead 10mm transparent', 2.51, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 9, 'Screws for Water Sill', 0.69, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 10, 'Lock Keeper, wall side', 6.52, 50,0, waste_factor = 0.03)
+Sf.createSku(db, 11, 'Profile joint unit plastic bag',4.93, 50,0, waste_factor = 0.03)
+
+
 Pf.createProject(db, 1, 'Cachagua 102', 'Calera', 'Pedro Sanchez',
                  '17.094.362-0', 150, 2017, 5, 10, estimated_cost = 200, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
 Pf.createProject(db, 2, 'Suecia 86', 'Arica', 'Franco Soto',
@@ -114,6 +116,38 @@ Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil',
 
 
 
+Sf.createEngagement(db, 1, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 1))
+Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 1))
+Sf.createEngagement(db, 3, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 1))
+Sf.createEngagement(db, 1, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 2))
+Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 2))
+Sf.createEngagement(db, 3, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 3))
+Sf.createEngagement(db, 1, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 4))
+Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 5))
+Sf.createEngagement(db, 3, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 6))
+Sf.createEngagement(db, 1, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 6))
+Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 6))
+Sf.createEngagement(db, 3, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 1))
+Sf.createEngagement(db, 1, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 1))
+Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 1))
+Sf.createEngagement(db, 3, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 1))
+Sf.createEngagement(db, 1, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 2))
+Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 2))
+Sf.createEngagement(db, 3, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 3))
+Sf.createEngagement(db, 1, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 4))
+Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 5))
+Sf.createEngagement(db, 3, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 6))
+Sf.createEngagement(db, 1, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 6))
+Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 6))
+Sf.createEngagement(db, 3, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 6))
+
+
+Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 4, 4))
+Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 4, 4))
+Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 5, 15))
+Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 5, 16))
+Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 5, 20))
+Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 9, 2))
 # with db_session:
 #     #Definicion de las prioridades de los distintos proyectos
 #     db.Projects[3].priority = 3
