@@ -1,14 +1,14 @@
 from pony.orm import *
 from database import db
 from datetime import date
-import Employees.features as Ef, Employees.usuario as Eu, Employees.reports as Er
+import Employees.features as Ef, Employees.usuario as Eu#, Employees.reports as Er
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
 import Planning.reports as PLr
 import Users.features as Uf
 import Stock.usuario as Sf
-# import Tests.Case8 as case8
+import Tests.Case8 as case8
 import Planning.usuario as PlanU
 import Stock.reports as Sr
 import numpy as np
@@ -245,16 +245,16 @@ def signIn():
 #########################################################################################
 
 # print(PLr.planningChangesPlausible(db))
-Er.createEmployeeReportV2(db,1)
-Er.createEmployeeReportV2(db,2)
-Er.createEmployeeReportV2(db,3)
-Er.createEmployeeReportV2(db,4)
-Er.createEmployeeReportV2(db,5)
-Er.createEmployeeReportV2(db,6)
-Er.createEmployeeReportV2(db,7)
-Er.createEmployeeReportV2(db,8)
-Er.createEmployeeReportV2(db,9)
-Er.createEmployeeReportV2(db,10)
-Er.createEmployeeReportV2(db,11)
-Er.createEmployeeReportV2(db,12)
-Er.createEmployeeReportV2(db,13)
+# Er.createEmployeeReportV2(db,1)
+# Er.createEmployeeReportV2(db,2)
+# Er.createEmployeeReportV2(db,3)
+# Er.createEmployeeReportV2(db,4)
+# Er.createEmployeeReportV2(db,5)
+# Er.createEmployeeReportV2(db,6)
+# Er.createEmployeeReportV2(db,7)
+# Er.createEmployeeReportV2(db,8)
+# Er.createEmployeeReportV2(db,9)
+# Er.createEmployeeReportV2(db,10)
+# Er.createEmployeeReportV2(db,11)
+# Er.createEmployeeReportV2(db,12)
+# Er.createEmployeeReportV2(db,13)
