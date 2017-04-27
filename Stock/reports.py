@@ -68,7 +68,7 @@ def createStockReport(db):
     #     (7, 50, 30),
     # ]
     # vals = [(i,np.sqrt(i)) for i in range(0,20)]
-    vals = [(i, np.sqrt(i)) for i in range(0, 20)]
+    vals = zip(dates,values)
     rows = [('Fechas', 'Cantidad')]
     rows.extend(vals)
 
@@ -83,12 +83,19 @@ def createStockReport(db):
     chart1.x_axis.title = 'Fecha'
 
     # data = Reference(ws, min_col=2, min_row=1, max_row=7, max_col=3)
-    data = Reference(ws, min_col=2, min_row=1, max_row=21)
-    cats = Reference(ws, min_col=1, min_row=2, max_row=21)
+    data = Reference(ws, min_col=2, min_row=1, max_row=len(dates)+1)
+    cats = Reference(ws, min_col=1, min_row=2, max_row=len(dates)+1)
     chart1.add_data(data, titles_from_data=True)
     chart1.set_categories(cats)
     chart1.shape = 4
+    chart1.width = 50
     ws.add_chart(chart1, "A10")
+
+    from copy import deepcopy
+    chart2 = deepcopy(chart1)
+
+    ws.add_chart(chart2, "A25")
+    # ws.insert_chart('C1', chart1) #Alternativa para insertar el gráfico
 
     # from copy import deepcopy
     #
