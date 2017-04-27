@@ -368,4 +368,4 @@ def createStockReportExtended(db):
 
 from database import db
 # createStockReport(db)
-createStockReportExtended(db)
+# createStockReportExtended(db)
