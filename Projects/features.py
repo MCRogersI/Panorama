@@ -236,8 +236,10 @@ def createEmployeeActivity(db, employee, activity, initial_year, initial_month, 
     end_date = date(int(end_year), int(end_month), int(end_day))
     with db_session:
         db.Employees_Activities(employee = employee, activity = activity, initial_date = initial_date, end_date = end_date)
+        commit()
     if updateEmployeeProjects(db, employee, initial_date, end_date):
         PLf.doPlanning(db)
+
         
 def updateEmployeeProjects(db, employee, initial_date, end_date):
     '''

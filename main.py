@@ -1,7 +1,7 @@
 from pony.orm import *
 from database import db
 from datetime import date
-import Employees.features as Ef, Employees.usuario as Eu
+import Employees.features as Ef, Employees.usuario as Eu   #, Employees.reports as Er
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
@@ -13,7 +13,6 @@ import Planning.usuario as PlanU
 import Stock.reports as Sr
 import Stock.features as Sf
 import numpy as np
-import Employees.reports as Er
 
 # Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 11,'Armin')
@@ -263,4 +262,4 @@ signIn()
 
 # Sr.createStockReportExtended(db)
 
-Sf.makePurchases(db, 'Purchases')
+# Sf.makePurchases(db, 'Purchases')
