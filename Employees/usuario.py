@@ -43,41 +43,37 @@ def employees_console(db, level):
                     perf_rect=None
                 else:
                     try:
-                        float(perf_rect)
-                        if float(perf_rect) < 0:
+                        if int(perf_rect) < 0:
                             raise ValueError('\n El rendimiento no puede ser negativo \n')
                     except:
-                        raise ValueError('\n El rendimiento debe ser un numero. \n')
+                        raise ValueError('\n El rendimiento debe ser un numero entero. \n')
                 perf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione enter si no realiza esta labor: ")
                 if(perf_des == ''):
                     perf_des=None
                 else:
                     try:
-                        float(perf_des)
-                        if float(perf_des) < 0:
+                        if int(perf_des) < 0:
                             raise ValueError('\n El rendimiento no puede ser negativo. \n')
                     except:
-                        raise ValueError('\n El rendimiento debe ser un numero. \n')                    
+                        raise ValueError('\n El rendimiento debe ser un numero entero. \n')                    
                 perf_fab = input(" Ingrese el rendimiento histórico en fabricación del empleado, solo presione enter si no realiza esta labor: ")
                 if(perf_fab == ''):
                     perf_fab=None
                 else:
                     try:
-                        float(perf_fab)
-                        if float(perf_fab) < 0:
+                        if int(perf_fab) < 0:
                             raise ValueError('\n El rendimiento no puede ser negativo. \n')
                     except:
-                        raise ValueError('\n El rendimiento debe ser un numero. \n')
+                        raise ValueError('\n El rendimiento debe ser un numero entero. \n')
                 perf_ins = input(" Ingrese el rendimiento histórico en instalación del empleado, solo presione enter si no realiza esta labor: ")
                 if(perf_ins == ''):
                     perf_ins=None
                 else:
                     try:
-                        float(perf_ins)
-                        if float(perf_ins) < 0:
+                        if int(perf_ins) < 0:
                             raise ValueError('\n El rendimiento no puede ser negativo. \n')
                     except:
-                        raise ValueError('\n El rendimiento debe ser un numero. \n')
+                        raise ValueError('\n El rendimiento debe ser un numero entero. \n')
                 senior = None
                 if(perf_ins != None):
                     senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
@@ -86,6 +82,7 @@ def employees_console(db, level):
                     except:
                         raise ValueError('\n Se debe ingresar 0 o 1. \n')
                 createEmployee(db, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins, senior)
+                input('\n Empleado creado con éxito. Presione una tecla para continuar: ')
             except ValueError as ve:
                 print(ve)
                 input('\n Presione cualquier tecla para continuar: \n')
@@ -120,44 +117,45 @@ def employees_console(db, level):
                     newPerf_rect=None
                 else:
                     try:
-                        if float(newPerf_rect) < 0:
+                        if int(newPerf_rect) < 0:
                             raise ValueError('\n El rendimiento no puede ser negativo. \n')
                     except:
-                        raise ValueError('\n El rendimiento debe ser un numero. \n')
+                        raise ValueError('\n El rendimiento debe ser un numero entero. \n')
                 if newPerf_des == '':
                     newPerf_des = None
                 else:
                     try:
-                        if float(newPerf_des) < 0:
+                        if int(newPerf_des) < 0:
                             raise ValueError('\n El rendimiento no puede ser negativo. \n')
                     except:
-                        raise ValueError('\n El rendimiento debe ser un numero. \n')
+                        raise ValueError('\n El rendimiento debe ser un numero entero. \n')
                    
                 if newPerf_fab == '':
                     newPerf_fab = None
                 else:
                     try:
-                        if float(newPerf_fab) < 0:
+                        if int(newPerf_fab) < 0:
                             raise ValueError('\n El rendimiento no puede ser negativo. \n')
                     except:
-                        raise ValueError('\n El rendimiento debe ser un numero. \n')
+                        raise ValueError('\n El rendimiento debe ser un numero entero. \n')
                 if newPerf_ins == '':
                     newPerf_ins = None
                 else:
                     try:
-                        if float(newPerf_ins) < 0:
+                        if int(newPerf_ins) < 0:
                             raise ValueError('\n El rendimiento no puede ser negativo. \n')
                     except:
-                        raise ValueError('\n El rendimiento debe ser un numero. \n')
+                        raise ValueError('\n El rendimiento debe ser un numero entero. \n')
                 new_senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior (si no es instalador, solo presione Enter): ")
                 try:
                     if int(new_senior) == 0:
-                        new_senior = None
+                        new_senior = False
                     elif int(new_senior) != 1:
                         raise ValueError('\n Debe ingresar 0 0 1. \n')
                 except:
                     raise ValueError('\n Debe ingresar 0 0 1. \n')
-                editEmployee(db, id_empleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins, new_senior)
+                editEmployee(db, id_empleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins, bool(new_senior))
+                input('\n Empleado editado exitosamente. Presione una tecla para continuar: ')
             except ValueError as ve:
                 print(ve)
                 input('\n Presione cualquier tecla para continuar \n')
@@ -173,7 +171,7 @@ def employees_console(db, level):
                     if db.Employees.get(id = int(idEmpleado)) == None:
                         raise ValueError('\n Empleado inexistente \n')
                 deleteEmployee(db, idEmpleado)
-                input(' \n Empleado eliminado. Presione una tecla para continuar. \n')
+                input(' \n Empleado eliminado. Presione una tecla para continuar: ')
             except ValueError as ve:
                 print(ve)
                 input('\n Presione cualquier tecla para continuar \n')
@@ -212,22 +210,22 @@ def employees_console(db, level):
                     except:
                         raise ValueError('\n La fecha es inválida. \n')
                     createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day)
-                    input(' \n Actividad creada. Presione una tecla para continuar. \n')
+                    input(' \n Actividad creada. Presione una tecla para continuar: ')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione cualquier tecla para continuar: \n')
+                    input('\n Presione cualquier tecla para continuar: ')
             elif opt_employees_activities == '2':
                 try:
                     id_employee_activity = input("\n Ingrese el ID de la actividad que quiere eliminar: ")
                     deleteEmployeeActivity(db, id_employee_activity)
-                    input(' \n Actividad eliminada. Presione una tecla para continuar. \n')
+                    input(' \n Actividad eliminada. Presione una tecla para continuar: ')
                 except:
                     print('\n Actividad inexistente. \n')
-                    input('\n Presione cualquier tecla para continuar: \n')
+                    input('\n Presione cualquier tecla para continuar: ')
             elif opt_employees_activities == '3':
                 print('\n')
                 printEmployeesActivities(db)
-                input(' \n Presione una tecla para continuar. \n')
+                input(' \n Presione una tecla para continuar: ')
             
             
         if(opt == '5' and level == 1) or (opt == '4' and level == 2) or (opt == '1' and level == 3):
@@ -240,21 +238,21 @@ def employees_console(db, level):
             print('\n')
             if(opt_ver_empleados == '1'):
                 printEmployees(db)
-                input(' \n Presione una tecla para continuar. \n')
+                input(' \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '2'):
                 printSelectSkill(db, 1)
-                input(' \n Presione una tecla para continuar. \n')
+                input(' \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '3'):
                 printSelectSkill(db, 2)
-                input(' \n Presione una tecla para continuar. \n')
+                input(' \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '4'):
                 printSelectSkill(db, 3)
-                input(' \n Presione una tecla para continuar. \n')
+                input(' \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '5'):
                 printSelectSkill(db, 4)
-                input(' \n Presione una tecla para continuar. \n')
+                input(' \n Presione una tecla para continuar: ')
             else:
-                print('No es una opción válida')
-                input('\n Presione cualquier tecla para continuar: \n')
+                print('\n No es una opción válida. \n')
+                input('\n Presione cualquier tecla para continuar: ')
         if(opt == '6' and level == 1) or (opt == '5' and level == 2) or (opt == '2' and level ==3):
             break
