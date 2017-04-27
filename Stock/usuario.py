@@ -1,5 +1,5 @@
 from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases
-from Stock.reports import createStockReport
+from Stock.reports import createStockReportExtended
 import os
 
 
@@ -130,8 +130,8 @@ def stock_console(db, level):
                 print(ve)
                 input(' Presione una tecla para continuar.')
         if opt =='6' and level ==1:
-            createStockReport(db)
-            input('\n Presione cualquier tecla para continuar. \n')
+            createStockReportExtended(db)
+            input('\n Informe creado con éxit. Presione cualquier tecla para continuar. \n')
         if (opt == '7' and level == 1) or (opt == '2' and level == 2) or (
                 opt == '2' and level == 3):
             break
