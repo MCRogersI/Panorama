@@ -220,7 +220,7 @@ def displayStock(db, id_sku):
                         result.append((quantities[i], dates[i]))
                 return result
 
-            set_of_quantities, set_of_dates = zip(*get_set_from_dates(quantities,dates))
+            set_of_quantities, set_of_dates = zip(*get_set_from_dates(quantities,dates)) #Revisar que sucede cuando no hay engagements y/o no hay purchases
 
 
             for i in range(0,delta + virtual_extra_days):
@@ -269,8 +269,92 @@ def displayStock(db, id_sku):
         p.start()
         p.join()
 
+def calculateStockForExcel(db, id_sku):
+    '''Este método calcula el comportamiento de un SKU hasta el último de los movimientos registrados HECHO PARA EXCEL'''
+    with db_session:
+        sku = db.Stock.get(id=id_sku)
+        critical_level = sku.critical_level
+        values = calculateStock(db, id_sku)
+        quantities, dates = zip(*values)#<-- wooowowooo (que bonita función)
+
+        def intermediate_calculation(quantities, dates):
+            # plt.figure()
+            # plt.ylabel('Quantity')
+            # plt.xlabel('Date')
+            # plt.title(
+            #     'Inventory prediction of unit ' + str(db.Stock[id_sku]) + ', code: ' + str(id_sku))
+            min_date = min(dates)
+            max_date = max(dates)
+            min_quantity = min(quantities)
+            max_quantity = max(quantities)
+            span_quantities = max_quantity - min_quantity
+            delta = max_date - min_date
+            delta = delta.days
+            aux_quantity = []
+            aux_dates = []
+            virtual_extra_days = 7
+
+            def get_set_from_dates(quantities,dates): #Método auxiliar para generar un 'set' de los datos en values
+                result = []
+                for i in range(1,len(dates)):
+                    if dates[i-1]!=dates[i]:
+                        result.append((quantities[i-1],dates[i-1]))
+                    if i == len(dates)-1:
+                        result.append((quantities[i], dates[i]))
+                return result
+
+            set_of_quantities, set_of_dates = zip(*get_set_from_dates(quantities,dates)) #Revisar que sucede cuando no hay engagements y/o no hay purchases
+
+
+            for i in range(0,delta + virtual_extra_days):
+                aux_dates.append(min_date+timedelta(days=i))
+                aux_quantity.append(0)
+
+            d = 0
+            for i in range(0,len(aux_dates)):
+                if d < len(set_of_dates)-1:
+                    if aux_dates[i] < set_of_dates[d+1]:
+                        aux_quantity[i] = set_of_quantities[d]
+
+                    elif d<len(set_of_dates)-1:
+                        aux_quantity[i] = set_of_quantities[d+1]
+                        d += 1
+
+                else:
+                    aux_quantity[i] = set_of_quantities[d]
+
+            # width = 1
+            # p1 = plt.bar(aux_dates, aux_quantity, width=width, color='#0000FF', align='center')
+
+            # for i in range(0,len(aux_dates)): #Para colorear los días con stock bajo el nivel crítico.
+            #     if aux_quantity[i] <= critical_level:
+            #         p1[i].set_color('r')
+                    ##p1[i].set_linewidth(1)
+                    ##p1[i].set_edgecolor('k')
+                # p1[i].set_linewidth(1.1)
+                # p1[i].set_edgecolor('k')
+
+            # plt.xticks(dates, dates, rotation='vertical') #Con esta configuración solo aparecen los labels de las fechas con cambios
+            # plt.xticks(aux_dates, aux_dates, rotation='vertical')  # Con esta configuración aparecen los labels de todos los días
+            # plt.grid()
+            # plt.axhline(y=db.Stock[id_sku].critical_level, color='r', linestyle='dashed',
+            #             linewidth=2.5)
+            # plt.axvline(x=max_date, color='k', linestyle='dashed', linewidth=1.5)
+            # plt.xlim(min_date, max_date + timedelta(
+            #     days=7))  # Se agregan 7 días 'extras/ficticios' para un mejor display
+            # plt.ylim(min_quantity - (span_quantities / 10), max_quantity + (span_quantities / 10))
+            ## plt.ylim(0, max_quantity + (span_quantities / 10))
+            ## plt.savefig("SKU{}.png".format(id_sku))
+            # plt.tight_layout()
+            # plt.show(block=True)
+
+        # p = Thread(target=plot_graph(quantities=quantities, dates=dates))
+        # p.start()
+        # p.join()
+            return (aux_dates, aux_quantity)
+        return intermediate_calculation(quantities=quantities,dates=dates)
 def displayStockForExcel(db, id_sku):
-    '''Este método grafica el comportamiento de un SKU hasta el último de los movimientos registrados '''
+    '''Este método grafica el comportamiento de un SKU hasta el último de los movimientos registrados HECHO PARA EXCEL'''
     with db_session:
         sku = db.Stock.get(id=id_sku)
         critical_level = sku.critical_level
