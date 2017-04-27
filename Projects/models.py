@@ -121,3 +121,21 @@ def define_models(db):
         comuna_to = Required(str)
         PrimaryKey(comuna_from, comuna_to)        
         movilization_cost = Required(float)
+        
+    class Project_Costs(db.Entity):
+        project = PrimaryKey(Projects)
+        standard_cost_profiles = Optional(float) # costo estandar perfiles
+        standard_cost_fittings = Optional(float) # costo estandar herrajes
+        standard_cost_crystals = Optional(float) # costo estandar cristales
+        standard_cost_material = Optional(float) # costo estandar materias primas
+        standard_cost_fabrication = Optional(float) # costo estandar fabricacion (segun yo debiera ser "manufacturing" pero es para ser consistente por mientras, hemos usado "fabricator" en el resto del codigo
+        standard_cost_installation = Optional(float) # costo estandar instalacion
+        standard_cost_additionals = Optional(float) # costos estandares adicionales
+        standard_cost_total = Optional(float) # costo estandar total
+        
+        effective_cost_material = Optional(float) # costo efectivo materias primas
+        effective_cost_fabrication = Optional(float) # costo efectivo fabricacion
+        effective_cost_installation = Optional(float) # costo efectivo instalacion
+        effective_cost_complements = Optional(float) # costo efectivo complementos
+        
+        

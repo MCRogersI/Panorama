@@ -128,4 +128,4 @@ def createStockReport(db):
 
 
 from database import db
-createStockReport(db)
+# createStockReport(db)
