@@ -36,13 +36,24 @@ with db_session:
     db.Activities(id=2, description='Vacaciones')
     db.Activities(id=3, description='Cliente ocupado')
     #Las siguientes tres tablas se inicializan al estilo Skills.
-    ############################################
-    # Relleno de costos de algunas localidades #
-    ############################################
+    #####################################################
+    # Relleno de costos de flete de algunas localidades #
+    #####################################################
+    db.Freight_Costs(comuna_to = 'Vitacura', freight_cost = 50000)
     db.Freight_Costs(comuna_to = 'Calera', freight_cost = 50000)
     db.Freight_Costs(comuna_to = 'Curepto' , freight_cost = 100000)
     db.Freight_Costs(comuna_to = 'Arica',  freight_cost = 200000)
     db.Freight_Costs(comuna_to = 'San Jose', freight_cost = 350000)
+    #######################################################
+    # Relleno de costos de viatico de algunas localidades #
+    #######################################################
+    db.Viatic_Costs(comuna_from = 1, comuna_to = 'Vitacura', viatic_cost = 0)
+    db.Viatic_Costs(comuna_from = 2, comuna_to = 'Vitacura', viatic_cost = 0)
+    ############################################################
+    # Relleno de costos de movilizacion de algunas localidades #
+    ############################################################
+    db.Movilization_Costs(comuna_from = 1, comuna_to = 'Vitacura', movilization_cost = 6000)
+    db.Movilization_Costs(comuna_from = 2, comuna_to = 'Vitacura', movilization_cost = 6000)
     ###########################################
     # Fijacion de algunos costos de operacion #
     ###########################################
