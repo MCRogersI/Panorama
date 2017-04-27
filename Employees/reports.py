@@ -482,10 +482,10 @@ def createEmployeeReportV2(db,id_employee):
     report_folder_path = os.path.join(panorama_folder_path,"Reportes")
     if not os.path.exists(report_folder_path):
         os.makedirs(report_folder_path)
-    report_file_name = "Versión 2 Reporte empleado {}.xlsx".format(id_employee)
+    report_file_name = "Reporte empleado {}.xlsx".format(id_employee)
     fn = os.path.join(report_folder_path,report_file_name)
     wb.save(fn)
-
+#
 # createEmployeeReportV2(db,1)
 # createEmployeeReportV2(db,2)
 # createEmployeeReportV2(db,3)

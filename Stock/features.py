@@ -1,4 +1,5 @@
 from pony.orm import *
+from openpyxl import load_workbook
 from datetime import date, timedelta
 import matplotlib.pyplot as plt
 from operator import itemgetter
@@ -138,10 +139,10 @@ def calculateStock(db, id_sku):
         except ValueError as e:
             print('Value error: {}'.format(e))
 
-def calculateStockFix(db, id_sku,final_date):
+def calculateStockFix(db, id_sku,final_date): #Las fechas de engagements y purchases deben ser futuras (con una fecha mayor al día de hoy) !
     ''' Este método retorna una tupla con los valores (fecha,cantidad) de stock (considerando las fechas en las que se presentan cambios)'''
     with db_session:
-        createEngagement(db, 1, [(id_sku, 0)], final_date) #Fix, engagement ficticio
+        createEngagement(db, 1, [(id_sku, 0)], final_date) #Fix, engagement ficticio. Los Engagements (o Purchases) de la BD no deben tener una fecha superior a final_date
         try:
             engagements = select(
                 en for en in db.Engagements if en.sku.id == id_sku).order_by(
@@ -163,6 +164,7 @@ def calculateStockFix(db, id_sku,final_date):
             values = [(beginning_quantity, beginning_date)]
             for i in range(1, len(fluxes)):
                 values.append((values[i - 1][0] + fluxes[i][0], fluxes[i][1]))
+            values = [v for v in values if v[1]>=beginning_date] #Para tomar en cuenta desde hoy
             return values
 
         except ObjectNotFound as e:
@@ -345,7 +347,7 @@ def calculateStockForExcel(db, id_sku):
     with db_session:
         sku = db.Stock.get(id=id_sku)
         critical_level = sku.critical_level
-        values = calculateStockFix(db, id_sku,date(2017,10,1))
+        values = calculateStockFix(db, id_sku,date(2017,10,1)) #Fecha final del display de los gráficos
         # values = calculateStock(db, id_sku) #Función sin el fix
         quantities, dates = zip(*values)#<-- wooowowooo (que bonita función)
 
@@ -523,3 +525,33 @@ def updateStock(db):
         engagements = select (e for e in db.Engagements if e.withdrawal_date == date.today())
         purchases = select( pur for pur in db.Purchases if pur.arrival_date == date.today())
 
+        
+# para poder indicar un Purchase desde un Excel, en un formato cómodo       
+def makePurchases(db, file_name):
+    #primero cargamos la hoja donde esta la informacion
+    file_read = file_name + ".xlsx"
+    wb_read = load_workbook(file_read, data_only=True)
+    ws_read_purchases = wb_read["OC"]
+    
+    #ahora creamos la lista que luego pasaremos al createPurchase, y obtenemos la fecha
+    skus_list = []
+    
+    year = ws_read_purchases.cell(row = 3, column = 4).value
+    month = ws_read_purchases.cell(row = 3, column = 5).value
+    day = ws_read_purchases.cell(row = 3, column = 6).value
+    arrival_date = date(year, month, day)
+    
+    #ahora recorremos la hoja cargada, llenando la informacion en las listas
+    cell = ws_read_purchases.cell(row = 3, column = 2)
+    next_row = 4
+    while(cell.value):
+        #si la celda correspondiente a Code no esta vacia, seguimos sacando informacion de la hoja cargada
+        code = cell.value
+        quantity = float(ws_read_purchases.cell(row = next_row - 1, column = 3).value)
+        #agregamos la informacion a la lista
+        skus_list.append([code, quantity])
+        #pasamos a la siguiente fila y el While revisara si esta vacia, o si bien hay que seguir sacando informacion
+        cell = ws_read_purchases.cell(row = next_row, column = 2)
+        next_row = next_row + 1
+    
+    createPurchases(db, skus_list, arrival_date)

@@ -8,9 +8,10 @@ import Planning.features as PLf
 import Planning.reports as PLr
 import Users.features as Uf
 import Stock.usuario as Sf
-# import Tests.Case8 as case8
+# import Tests.Case9 as case9
 import Planning.usuario as PlanU
 import Stock.reports as Sr
+import Stock.features as Sf
 import numpy as np
 
 # Uf.createUser(db,'1', 1,'1')
@@ -258,3 +259,7 @@ signIn()
 # Er.createEmployeeReportV2(db,11)
 # Er.createEmployeeReportV2(db,12)
 # Er.createEmployeeReportV2(db,13)
+
+# Sr.createStockReportExtended(db)
+
+# Sf.makePurchases(db, 'Purchases')
