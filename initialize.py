@@ -21,6 +21,7 @@ import Stock.features as Sf
     # db.Activities(id=2, description='Vacaciones')
     # db.Activities(id=3, description='Cliente ocupado')
     
-import Tests.Case9
+import Stock.reports
+# import Tests.Case9
 
 
