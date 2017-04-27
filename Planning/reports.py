@@ -403,10 +403,24 @@ def createGlobalReportCompact(db):
     wb.save(fn)
 
 # # from pony.orm import *
-from database import db
-createGlobalReportCompact(db)
+# from database import db
+# createGlobalReportCompact(db)
 
-
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
 def createGlobalReportModified(db):
     ''' Este método crea un informe en Excel compacto con una proción de la información de la base de datos. '''
     wb = Workbook()
@@ -420,13 +434,13 @@ def createGlobalReportModified(db):
               "G": 35, "H": 35, "I": 35,"J": 35, "K": 35, "L": 35,
               "M": 35, "N": 35, "O": 45,"P": 45, "Q": 45, "R": 45,
               "S": 45, "T": 45, "U": 45,"V": 45, "W": 45, "X": 45,
-              "Y": 45, "Z": 45, "AA": 45, "AB": 45, "AC": 45}
+              "Y": 45, "Z": 45, "AA": 45, "AB": 45, "AC": 45,"AD":45}
 
     heights = {"A": 10, "B": 10, "C": 10, "D": 10, "E": 10, "F": 10,
               "G": 10, "H": 10, "I": 10, "J": 10, "K": 10, "L": 10,
               "M": 10, "N": 10, "O": 10,"P": 10, "Q": 10, "R": 10,
               "S": 10, "T": 10, "U": 10,"V": 10, "W": 10, "X": 10,
-              "Y": 10, "Z": 10, "AA": 10, "AB": 10, "AC": 10}
+              "Y": 10, "Z": 10, "AA": 10, "AB": 10, "AC": 10,"AD":10}
 
     thin_border = Border(left=Side(style='thin'),
                          right=Side(style='thin'),
@@ -435,7 +449,7 @@ def createGlobalReportModified(db):
 
 
     columns = ["A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB",
-               "AC"]
+               "AC","AD"]
     for c in columns:
         ws.column_dimensions[c].width = widths[c]
         ws.column_dimensions[c].height = heights[c]
@@ -471,6 +485,16 @@ def createGlobalReportModified(db):
         r=4
         for p in projects:
             #Escribe el número de contrato
+            project_tasks = select(t for t in db.Tasks if t.project == p)
+            project_tasks = list(project_tasks)
+            rectification = project_tasks[0]
+            design = project_tasks[1]
+            fabrication = project_tasks[2]
+            installation = project_tasks[3]
+
+            # for t in project_tasks:
+            #     print(t.skill.name)
+
             if p.contract_number != None:
                 cell = ws.cell(row=r, column=4, value=p.contract_number)
                 cell.font = Font(bold=True)
@@ -603,6 +627,198 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
+            # Escribe la fecha de original de inicio de diseño
+            if design.original_initial_date != None:
+                cell = ws.cell(row=r, column=15, value=design.original_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=15, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha de original de término de diseño
+            if design.original_end_date != None:
+                cell = ws.cell(row=r, column=16, value=design.original_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=16, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha efectiva de inicio de diseño
+            if design.effective_initial_date != None:
+                cell = ws.cell(row=r, column=17, value=design.effective_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=17, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha efectiva de término de diseño
+            if design.effective_end_date != None:
+                cell = ws.cell(row=r, column=18, value=design.effective_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=18, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha de original de inicio de rectificación
+            if rectification.original_initial_date != None:
+                cell = ws.cell(row=r, column=19, value=rectification.original_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=19, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha de original de término de rectificación
+            if rectification.original_end_date != None:
+                cell = ws.cell(row=r, column=20, value=rectification.original_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=20, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha efectiva inicio de rectificación
+            if rectification.effective_initial_date != None:
+                cell = ws.cell(row=r, column=21, value=rectification.effective_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=21, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha efectiva de término de rectificación
+            if rectification.effective_end_date != None:
+                cell = ws.cell(row=r, column=22, value=rectification.effective_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=22, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha de original de inicio de fabricación
+            if fabrication.original_initial_date != None:
+                cell = ws.cell(row=r, column=23, value=fabrication.original_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=23, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha de original de término de fabricación
+            if fabrication.original_end_date != None:
+                cell = ws.cell(row=r, column=24, value=fabrication.original_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=24, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha efectiva de inicio de fabricación
+            if fabrication.effective_initial_date != None:
+                cell = ws.cell(row=r, column=25, value=fabrication.effective_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=25, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha efectiva de término de fabricación
+            if fabrication.effective_end_date != None:
+                cell = ws.cell(row=r, column=26, value=fabrication.effective_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=26, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha de original de inicio de instalación
+            if installation.original_initial_date != None:
+                cell = ws.cell(row=r, column=27, value=installation.original_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=27, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha de original de término de instalación
+            if installation.original_end_date != None:
+                cell = ws.cell(row=r, column=28, value=installation.original_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=28, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha efectiva de inicio de instalación
+            if installation.effective_initial_date != None:
+                cell = ws.cell(row=r, column=29, value=installation.effective_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=29, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha efectiva de término de instalación
+            if installation.effective_end_date != None:
+                cell = ws.cell(row=r, column=30, value=installation.effective_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=30, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
             r+=1
 
     module_path = os.path.dirname(__file__)
@@ -610,12 +826,27 @@ def createGlobalReportModified(db):
     report_folder_path = os.path.join(panorama_folder_path,"Reportes")
     if not os.path.exists(report_folder_path):
         os.makedirs(report_folder_path)
-    fn = os.path.join(report_folder_path,"Global Report Modified.xlsx")
+    fn = os.path.join(report_folder_path,"Reporte global de planificación.xlsx")
     wb.save(fn)
 
+# from database import db
+# createGlobalReportModified(db)
 
-createGlobalReportModified(db)
-
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
 
 
 
@@ -951,3 +1182,6 @@ def implementChanges(db):
                     #el commit() es clave, si no, el empleado no se considera borrado aún, y la línea de assignTask() tira un error
                     commit()
                     assignTask(db, [new_employee], task.id, initial_date, end_date)
+
+
+
