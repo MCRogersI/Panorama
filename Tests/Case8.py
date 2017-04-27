@@ -39,10 +39,10 @@ with db_session:
     ############################################
     # Relleno de costos de algunas localidades #
     ############################################
-    db.Freight_Costs(name = 'Calera', region = 'Valparaiso', freight_cost = 50000)
-    db.Freight_Costs(name = 'Curepto', region = 'Talca', freight_cost = 100000)
-    db.Freight_Costs(name = 'Arica', region = 'Arica', freight_cost = 200000)
-    db.Freight_Costs(name = 'San Jose', region = 'Valdivia', freight_cost = 350000)
+    db.Freight_Costs(comuna_to = 'Calera', freight_cost = 50000)
+    db.Freight_Costs(comuna_to = 'Curepto' , freight_cost = 100000)
+    db.Freight_Costs(comuna_to = 'Arica',  freight_cost = 200000)
+    db.Freight_Costs(comuna_to = 'San Jose', freight_cost = 350000)
     ###########################################
     # Fijacion de algunos costos de operacion #
     ###########################################
