@@ -1,7 +1,7 @@
 from pony.orm import *
 from database import db
 from datetime import date
-import Employees.features as Ef, Employees.usuario as Eu#, Employees.reports as Er
+import Employees.features as Ef, Employees.usuario as Eu   #, Employees.reports as Er
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
