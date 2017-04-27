@@ -88,14 +88,14 @@ def projects_console(db, level):
                     int(sale_year)
                 except:
                     raise ValueError('\n El año debe ser un número entero \n')
-                sale_month = input("ingrese el mes de la fecha de venta del proyecto: ")
+                sale_month = input(" Ingrese el mes de la fecha de venta del proyecto: ")
                 try:
                     int(sale_month)
                 except:
                     raise ValueError('\n ser un número entero \n')
                 if int(sale_month) >12 or int(sale_month) < 1:
                     raise ValueError('\n El mes debe ser un número entero entre 1 y 12 \n')
-                sale_day = input("ingrese el día de la fecha de venta del proyecto: ")
+                sale_day = input(" Ingrese el día de la fecha de venta del proyecto: ")
                 try:
                     int(sale_day)
                 except:

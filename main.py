@@ -11,6 +11,7 @@ import Stock.usuario as Sf
 # import Tests.Case9 as case9
 import Planning.usuario as PlanU
 import Stock.reports as Sr
+import Stock.features as Sf
 import numpy as np
 import Employees.reports as Er
 
@@ -260,4 +261,6 @@ signIn()
 # Er.createEmployeeReportV2(db,12)
 # Er.createEmployeeReportV2(db,13)
 
-# Sr.createStockReport(db)
+# Sr.createStockReportExtended(db)
+
+Sf.makePurchases(db, 'Purchases')

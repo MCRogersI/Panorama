@@ -1,4 +1,5 @@
 from pony.orm import *
+from openpyxl import load_workbook
 from datetime import date, timedelta
 import matplotlib.pyplot as plt
 from operator import itemgetter
@@ -524,3 +525,33 @@ def updateStock(db):
         engagements = select (e for e in db.Engagements if e.withdrawal_date == date.today())
         purchases = select( pur for pur in db.Purchases if pur.arrival_date == date.today())
 
+        
+# para poder indicar un Purchase desde un Excel, en un formato cómodo       
+def makePurchases(db, file_name):
+    #primero cargamos la hoja donde esta la informacion
+    file_read = file_name + ".xlsx"
+    wb_read = load_workbook(file_read, data_only=True)
+    ws_read_purchases = wb_read["OC"]
+    
+    #ahora creamos la lista que luego pasaremos al createPurchase, y obtenemos la fecha
+    skus_list = []
+    
+    year = ws_read_purchases.cell(row = 3, column = 4).value
+    month = ws_read_purchases.cell(row = 3, column = 5).value
+    day = ws_read_purchases.cell(row = 3, column = 6).value
+    arrival_date = date(year, month, day)
+    
+    #ahora recorremos la hoja cargada, llenando la informacion en las listas
+    cell = ws_read_purchases.cell(row = 3, column = 2)
+    next_row = 4
+    while(cell.value):
+        #si la celda correspondiente a Code no esta vacia, seguimos sacando informacion de la hoja cargada
+        code = cell.value
+        quantity = float(ws_read_purchases.cell(row = next_row - 1, column = 3).value)
+        #agregamos la informacion a la lista
+        skus_list.append([code, quantity])
+        #pasamos a la siguiente fila y el While revisara si esta vacia, o si bien hay que seguir sacando informacion
+        cell = ws_read_purchases.cell(row = next_row, column = 2)
+        next_row = next_row + 1
+    
+    createPurchases(db, skus_list, arrival_date)
