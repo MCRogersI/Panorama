@@ -249,7 +249,7 @@ def createStockReportExtended(db):
 
         chart1 = BarChart()
         chart1.type = "col"
-        chart1.style = 10
+        chart1.style = 2
         chart1.title = "Status del SKU: {}".format(current_sku_id)
         chart1.y_axis.title = 'Cantidad'
         chart1.x_axis.title = 'Fecha'
