@@ -97,8 +97,7 @@ def define_models(db):
         #se debería fijar una sola vez el costo para todas las comunas de chile. El nombre de la comuna
         #en name, y la región en region. Se podría también tratar a la región como un int
         # id = PrimaryKey(int, auto = False)
-        name = PrimaryKey(str)
-        region = Required(str)        
+        comuna_to = PrimaryKey(str)
         freight_cost = Required(float)
         
     class Operating_Costs(db.Entity):#Cantidades utilizadas en el cálculo del costo de fabricación del
@@ -108,4 +107,35 @@ def define_models(db):
         # La depreciación podría ir aquí o ser ingresada cuando se necesite calcular el costo de fab.
         name = PrimaryKey(str)
         cost = Required(float)
+        
+    class Viatic_Costs(db.Entity):#
+        # viaticos para los trabajadores que deben viajar para hacer la instalacion
+        comuna_from = Required(str)
+        comuna_to = Required(str)
+        PrimaryKey(comuna_from, comuna_to)        
+        viatic_cost = Required(float)
+        
+    class Movilization_Costs(db.Entity):#
+        # asignacion de movilizacion para los trabajadores que deben moverse entre comunas cercanas para hacer la instalacion
+        comuna_from = Required(str)
+        comuna_to = Required(str)
+        PrimaryKey(comuna_from, comuna_to)        
+        movilization_cost = Required(float)
+        
+    class Project_Costs(db.Entity):
+        project = PrimaryKey(Projects)
+        standard_cost_profiles = Optional(float) # costo estandar perfiles
+        standard_cost_fittings = Optional(float) # costo estandar herrajes
+        standard_cost_crystals = Optional(float) # costo estandar cristales
+        standard_cost_material = Optional(float) # costo estandar materias primas
+        standard_cost_fabrication = Optional(float) # costo estandar fabricacion (segun yo debiera ser "manufacturing" pero es para ser consistente por mientras, hemos usado "fabricator" en el resto del codigo
+        standard_cost_installation = Optional(float) # costo estandar instalacion
+        standard_cost_additionals = Optional(float) # costos estandares adicionales
+        standard_cost_total = Optional(float) # costo estandar total
+        
+        effective_cost_material = Optional(float) # costo efectivo materias primas
+        effective_cost_fabrication = Optional(float) # costo efectivo fabricacion
+        effective_cost_installation = Optional(float) # costo efectivo instalacion
+        effective_cost_complements = Optional(float) # costo efectivo complementos
+        
         
