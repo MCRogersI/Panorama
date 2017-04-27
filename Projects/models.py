@@ -111,14 +111,14 @@ def define_models(db):
         
     class Viatic_Costs(db.Entity):#
         # viaticos para los trabajadores que deben viajar para hacer la instalacion
-        comuna_from = Required(str)
+        comuna_from = Required(int)
         comuna_to = Required(str)
         PrimaryKey(comuna_from, comuna_to)        
         viatic_cost = Required(float)
         
     class Movilization_Costs(db.Entity):#
         # asignacion de movilizacion para los trabajadores que deben moverse entre comunas cercanas para hacer la instalacion
-        comuna_from = Required(str)
+        comuna_from = Required(int)
         comuna_to = Required(str)
         PrimaryKey(comuna_from, comuna_to)        
         movilization_cost = Required(float)

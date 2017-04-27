@@ -1,6 +1,8 @@
 from datetime import date
 from pony.orm import *
 from Projects.features import createProject, printProjects, editProject, deleteProject, createTask, editTask, printTasks, failedTask, createProjectActivity, deleteProjectActivity, printProjectsActivities
+from Projects.costs import estimateCost
+import os
 # from Projects.costs import estimateCost
 
 def projects_console(db, level):
@@ -258,25 +260,23 @@ def projects_console(db, level):
         elif(opt == '5' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
             printProjects(db)
         elif (opt =='6' and level == 1) or (opt== '4' and level == 2):
-            print('\n Estamos trabajando para usted. \n')
-            input('\n Presione cualquier tecla para continuar. \n')
             try:
-                contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo \n')
+                contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo: ')
                 if int(contract_number)  < 0:
-                    raise ValueError('\n El número de contrato debe ser un número entero positivo. \n')
+                    raise ValueError('\n El número de contrato debe ser un número entero positivo.')
                 with db_session:
                     if db.Projects.get(contract_number = contract_number) == None:
-                        raise ValueError('\n Número de contrato no existente. \n')
-                file_name = input('\n Ingrese el nombre del archivo de la hoja de corte \n')
+                        raise ValueError('\n Número de contrato no existente.')
+                file_name = input(' Ingrese el nombre del archivo de la hoja de corte: ')
                 file_dir = file_name + ".xlsx"
                 if os.path.isfile(file_dir):
                     estimateCost(db, contract_number, file_name)
-                    input('\n Costo estimado exitosamente. Presione una tecla para continuar.\n')
+                    input('\n Costo estimado exitosamente. Presione una tecla para continuar.')
                 else:
-                    raise ValueError('\n Archivo no encontrado. \n')
+                    raise ValueError('\n Archivo no encontrado.')
             except ValueError as ve:
                 print(ve)
-                input('\n Presione una tecla para continuar. \n')
+                input(' Presione una tecla para continuar.')
         elif(opt == '7' and level == 1) or(opt == '5' and level == 2) or (opt == '2' and level == 3):
             break
 
