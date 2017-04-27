@@ -7,14 +7,14 @@ import Projects.features as Pf
 import Planning.features as PLf
 import Planning.reports as PLr
 import Users.features as Uf
-import Stock.usuario as Sf
-# import Tests.Case9 as case9
+import Stock.usuario as Su
+import Tests.Case9 as case9
 import Planning.usuario as PlanU
 import Stock.reports as Sr
 import Stock.features as Sf
 import numpy as np
 
-# Uf.createUser(db,'1', 1,'1')
+Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 11,'Armin')
 # Uf.createUser(db,'Piola', 2,'Cuatro')
 # Uf.createUser(db,'Pleb', 3,'00000')
@@ -31,7 +31,7 @@ def console(level):
         if( opt== '3'):
             Pu.tasks_console(db, level)
         if (opt == '4'):
-            Sf.stock_console(db, level)
+            Su.stock_console(db, level)
         if (opt =='5'):
             PlanU.planning_console(db,level)
         if(opt == '6'):
