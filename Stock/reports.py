@@ -260,6 +260,8 @@ def createStockReportExtended(db):
         chart1.set_categories(cats)
         chart1.shape = 4
         chart1.width = 100
+        chart1.y_axis.scaling.min = -200
+        chart1.y_axis.scaling.max = 500
         ws_plotted.add_chart(chart1, "{0}{1}".format("A",10 + counter*18))
 
         # chart2 = deepcopy(chart1)
