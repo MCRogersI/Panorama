@@ -184,7 +184,7 @@ def createEmployeeReportV2(db,id_employee):
         e = db.Employees.get(id=id_employee)
         es = db.Employees_Skills.get(employee=e)
         # ea = select(ea for ea in db.Employees_Activities if ea.employee == e)
-        ea = db.Employees_Activities.get(employee=e)
+        # ea = db.Employees_Activities.get(employee=e)
         # print(ea.id) #Revisar creación de activities en consola
         wb = Workbook()
         by_default_sheet = wb.get_sheet_by_name('Sheet')

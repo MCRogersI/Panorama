@@ -108,7 +108,7 @@ Sf.createSku(db, 11, 'Profile joint unit plastic bag',4.93, 50,0, waste_factor =
 Pf.createProject(db, 1, 'Cachagua 102', 'Calera', 'Pedro Sanchez',
                  '17.094.362-0', 150, 2017, 5, 10, estimated_cost = 200, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
 Pf.createProject(db, 2, 'Suecia 86', 'Arica', 'Franco Soto',
-                 '16.224.112-0', 200, 2017, 6, 30, estimated_cost = 300, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
+                 '16.2254.112-0', 200, 2017, 6, 30, estimated_cost = 300, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
 Pf.createProject(db, 3, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
                  '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil', 
@@ -116,7 +116,7 @@ Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil',
 
 
 
-Sf.createEngagement(db, 1, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 1))
+Sf.createEngagement(db, 1, [(1,10),(2,150),(3,15),(4,20),(5,70),(6,300)],date(2017, 5, 1))
 Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 1))
 Sf.createEngagement(db, 3, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 1))
 Sf.createEngagement(db, 1, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 2))
@@ -141,13 +141,27 @@ Sf.createEngagement(db, 1, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017
 Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 6))
 Sf.createEngagement(db, 3, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 5, 6))
 
+# Sf.createEngagement(db, 3, [(7,10)],date(2017, 5, 6))
+# Sf.createEngagement(db, 3, [(8,10)],date(2017, 5, 6))
+# Sf.createEngagement(db, 3, [(9,10)],date(2017, 5, 6))
+# Sf.createEngagement(db, 3, [(10,10)],date(2017, 5, 6))
+# Sf.createEngagement(db, 3, [(11,10)],date(2017, 5, 6))
+
 
 Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 4, 4))
 Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 4, 4))
+Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,350),(5,50),(6,50)],date(2017, 5, 5))
 Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 5, 15))
 Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 5, 16))
 Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 5, 20))
 Sf.createPurchases(db,[(1,50),(2,50),(3,50),(4,50),(5,50),(6,50)],date(2017, 9, 2))
+
+# Sf.createPurchases(db,[(7,50)],date(2017, 9, 2))
+# Sf.createPurchases(db,[(8,50)],date(2017, 9, 2))
+# Sf.createPurchases(db,[(9,50)],date(2017, 9, 2))
+# Sf.createPurchases(db,[(10,50)],date(2017, 9, 2))
+# Sf.createPurchases(db,[(11,50)],date(2017, 9, 2))
+
 # with db_session:
 #     #Definicion de las prioridades de los distintos proyectos
 #     db.Projects[3].priority = 3

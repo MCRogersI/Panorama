@@ -138,6 +138,77 @@ def calculateStock(db, id_sku):
         except ValueError as e:
             print('Value error: {}'.format(e))
 
+def calculateStockFix(db, id_sku,final_date):
+    ''' Este método retorna una tupla con los valores (fecha,cantidad) de stock (considerando las fechas en las que se presentan cambios)'''
+    with db_session:
+        createEngagement(db, 1, [(id_sku, 0)], final_date) #Fix, engagement ficticio
+        try:
+            engagements = select(
+                en for en in db.Engagements if en.sku.id == id_sku).order_by(
+                lambda en: en.withdrawal_date)
+            purchases = select(
+                pur for pur in db.Purchases if pur.sku.id == id_sku).order_by(
+                lambda pur: pur.arrival_date)
+            aux_engagements = []
+            aux_purchases = []
+            for en in engagements:
+                aux_engagements.append((-en.quantity, en.withdrawal_date))
+            for pur in purchases:
+                aux_purchases.append((pur.quantity, pur.arrival_date))
+            fluxes = aux_engagements + aux_purchases
+            fluxes = sorted(fluxes, key=itemgetter(1))
+            beginning_date = date.today()
+            beginning_quantity = db.Stock[id_sku].real_quantity
+            fluxes = [(0, beginning_date)] + fluxes
+            values = [(beginning_quantity, beginning_date)]
+            for i in range(1, len(fluxes)):
+                values.append((values[i - 1][0] + fluxes[i][0], fluxes[i][1]))
+            return values
+
+        except ObjectNotFound as e:
+            print('Object not found: {}'.format(e))
+        except ValueError as e:
+            print('Value error: {}'.format(e))
+
+#Función en progreso
+# def calculateStockFixedPeriod(db, id_sku,last_day):
+#     ''' Este método retorna una tupla con los valores (fecha,cantidad) de stock (considerando las fechas en las que se presentan cambios)'''
+#     with db_session:
+#         try:
+#             engagements = select(en for en in db.Engagements if en.sku.id == id_sku).order_by(
+#                 lambda en: en.withdrawal_date)
+#             purchases = select(pur for pur in db.Purchases if pur.sku.id == id_sku).order_by(
+#                 lambda pur: pur.arrival_date)
+#             aux_engagements = []
+#             aux_purchases = []
+#             for en in engagements:
+#                 aux_engagements.append((-en.quantity, en.withdrawal_date))
+#             for pur in purchases:
+#                 aux_purchases.append((pur.quantity, pur.arrival_date))
+#             fluxes = aux_engagements + aux_purchases
+#             fluxes = sorted(fluxes, key=itemgetter(1))
+#             beginning_date = date.today()
+#             beginning_quantity = db.Stock[id_sku].real_quantity
+#             fluxes = [(0, beginning_date)] + fluxes
+#             values = [(beginning_quantity, beginning_date)]
+#             if (len(aux_engagements) < 1 and len(aux_purchases) < 1):
+#                 for i in range(0,(beginning_date-last_day).days):
+#                     values.append((beginning_quantity, beginning_date + timedelta(days=1)))
+#                 return values
+#             else:
+#                 i = 1
+#                 while(i<len(fluxes) and fluxes[i][1] <= last_day):
+#                     values.append((values[i - 1][0] + fluxes[i][0], fluxes[i][1]))
+#                     i+=1
+#
+#
+#                 return values
+#
+#         except ObjectNotFound as e:
+#             print('Object not found: {}'.format(e))
+#         except ValueError as e:
+#             print('Value error: {}'.format(e))
+
 def updateEngagements(db, id_sku):
     '''Este método actualiza los engagements una vez que se ha hecho una planificación, asignando la fecha de inicio
         de la instalación '''
@@ -274,7 +345,8 @@ def calculateStockForExcel(db, id_sku):
     with db_session:
         sku = db.Stock.get(id=id_sku)
         critical_level = sku.critical_level
-        values = calculateStock(db, id_sku)
+        values = calculateStockFix(db, id_sku,date(2017,10,1))
+        # values = calculateStock(db, id_sku) #Función sin el fix
         quantities, dates = zip(*values)#<-- wooowowooo (que bonita función)
 
         def intermediate_calculation(quantities, dates):
