@@ -1,7 +1,7 @@
 from pony.orm import *
 from database import db
 from datetime import date
-import Employees.features as Ef, Employees.usuario as Eu
+import Employees.features as Ef, Employees.usuario as Eu, Employees.reports as Er
 import Projects.usuario as Pu
 import Projects.features as Pf
 import Planning.features as PLf
@@ -49,7 +49,7 @@ def signIn():
             print("Usuario y/o Contraseña incorrecto(s))")
         break
 
-signIn()
+# signIn()
 # Uf.createUser(db, "1", 1, "1")
 # Uf.createUser(db, "2", 2, "2")
 # Uf.createUser(db, "3", 3, "3")
@@ -245,3 +245,16 @@ signIn()
 #########################################################################################
 
 # print(PLr.planningChangesPlausible(db))
+Er.createEmployeeReportV2(db,1)
+Er.createEmployeeReportV2(db,2)
+Er.createEmployeeReportV2(db,3)
+Er.createEmployeeReportV2(db,4)
+Er.createEmployeeReportV2(db,5)
+Er.createEmployeeReportV2(db,6)
+Er.createEmployeeReportV2(db,7)
+Er.createEmployeeReportV2(db,8)
+Er.createEmployeeReportV2(db,9)
+Er.createEmployeeReportV2(db,10)
+Er.createEmployeeReportV2(db,11)
+Er.createEmployeeReportV2(db,12)
+Er.createEmployeeReportV2(db,13)
