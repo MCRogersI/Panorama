@@ -138,10 +138,10 @@ def calculateStock(db, id_sku):
         except ValueError as e:
             print('Value error: {}'.format(e))
 
-def calculateStockFix(db, id_sku,final_date):
+def calculateStockFix(db, id_sku,final_date): #Las fechas de engagements y purchases deben ser futuras (con una fecha mayor al día de hoy) !
     ''' Este método retorna una tupla con los valores (fecha,cantidad) de stock (considerando las fechas en las que se presentan cambios)'''
     with db_session:
-        createEngagement(db, 1, [(id_sku, 0)], final_date) #Fix, engagement ficticio
+        createEngagement(db, 1, [(id_sku, 0)], final_date) #Fix, engagement ficticio. Los Engagements (o Purchases) de la BD no deben tener una fecha superior a final_date
         try:
             engagements = select(
                 en for en in db.Engagements if en.sku.id == id_sku).order_by(
@@ -163,6 +163,7 @@ def calculateStockFix(db, id_sku,final_date):
             values = [(beginning_quantity, beginning_date)]
             for i in range(1, len(fluxes)):
                 values.append((values[i - 1][0] + fluxes[i][0], fluxes[i][1]))
+            values = [v for v in values if v[1]>=beginning_date] #Para tomar en cuenta desde hoy
             return values
 
         except ObjectNotFound as e:
@@ -345,7 +346,7 @@ def calculateStockForExcel(db, id_sku):
     with db_session:
         sku = db.Stock.get(id=id_sku)
         critical_level = sku.critical_level
-        values = calculateStockFix(db, id_sku,date(2017,10,1))
+        values = calculateStockFix(db, id_sku,date(2017,10,1)) #Fecha final del display de los gráficos
         # values = calculateStock(db, id_sku) #Función sin el fix
         quantities, dates = zip(*values)#<-- wooowowooo (que bonita función)
 
