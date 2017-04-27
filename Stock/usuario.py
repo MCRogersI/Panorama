@@ -1,4 +1,5 @@
-from Stock.features import createSku, editSku, deleteSku, printStockConsole
+from Stock.features import createSku, editSku, deleteSku, printStockConsole 
+from Stock.reports import createStockReport
 
 
 #Entiéndase SKU como el producto en si mismo (aunque en realidad significa el código del producto)
@@ -115,7 +116,7 @@ def stock_console(db, level):
             printStockConsole(db)
             input('\n Presione una tecla para continuar \n')
         if opt =='5' and level ==1:
-            print('\n Estamos trabajando para usted. \n')
+            createStockReport(db)
             input('\n Presione cualquier tecla para continuar. \n')
         if (opt == '6' and level == 1) or (opt == '2' and level == 2) or (
                 opt == '2' and level == 3):

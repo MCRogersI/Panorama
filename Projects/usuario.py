@@ -260,23 +260,23 @@ def projects_console(db, level):
         elif (opt =='6' and level == 1) or (opt== '4' and level == 2):
             print('\n Estamos trabajando para usted. \n')
             input('\n Presione cualquier tecla para continuar. \n')
-            # try:
-                # contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo \n')
-                # if int(contract_number)  < 0:
-                    # raise ValueError('\n El número de contrato debe ser un número entero positivo. \n')
-                # with db_session:
-                    # if db.Projects.get(contract_number = contract_number) == None:
-                        # raise ValueError('\n Número de contrato no existente. \n')
-                # file_name = input('\n Ingrese el nombre del archivo de la hoja de corte \n')
-                # file_dir = file_name + ".xls"
-                # if os.path.isfile(file_dir):
-                    # estimateCost(db, contract_number, file_name)
-                    # input('\n Costo estimado exitosamente. Presione una tecla para continuar.\n')
-                # else:
-                    # raise ValueError('\n Archivo no encontrado. \n')
-            # except ValueError as ve:
-                # print(ve)
-                # input('\n Presione una tecla para continuar. \n')
+            try:
+                contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo \n')
+                if int(contract_number)  < 0:
+                    raise ValueError('\n El número de contrato debe ser un número entero positivo. \n')
+                with db_session:
+                    if db.Projects.get(contract_number = contract_number) == None:
+                        raise ValueError('\n Número de contrato no existente. \n')
+                file_name = input('\n Ingrese el nombre del archivo de la hoja de corte \n')
+                file_dir = file_name + ".xlsx"
+                if os.path.isfile(file_dir):
+                    estimateCost(db, contract_number, file_name)
+                    input('\n Costo estimado exitosamente. Presione una tecla para continuar.\n')
+                else:
+                    raise ValueError('\n Archivo no encontrado. \n')
+            except ValueError as ve:
+                print(ve)
+                input('\n Presione una tecla para continuar. \n')
         elif(opt == '7' and level == 1) or(opt == '5' and level == 2) or (opt == '2' and level == 3):
             break
 
