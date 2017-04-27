@@ -88,6 +88,7 @@ def planning_console(db,level):
                 try:
                     # createGlobalReportCompact(db)
                     createGlobalReportModified(db)
+                    input('\n Reporte global creado con éxit. Presione una tecla para continuar: ')
                 except:
                     print(' Estamos trabajando para usted.')
             if opt == '5':
