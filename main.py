@@ -260,4 +260,4 @@ def signIn():
 # Er.createEmployeeReportV2(db,12)
 # Er.createEmployeeReportV2(db,13)
 
-Sr.createStockReport(db)
+# Sr.createStockReport(db)
