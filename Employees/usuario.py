@@ -2,6 +2,7 @@ from Employees.features import createEmployee, printEmployees, editEmployee, pri
 from Projects.features import createEmployeeActivity, deleteEmployeeActivity, printEmployeesActivities
 from pony.orm import *
 from datetime import date
+from Employees.reports import createEmployeeReportV2
 
 def employees_console(db, level):
 #Es mejor importar las funciones en lugar de entregarsélas como parámetro a la función. Cambiar más adelante.
@@ -237,8 +238,29 @@ def employees_console(db, level):
                                                                                  \n - 5: Si desea ver la lista de instaladores. \
                                                                                  \n Ingrese la alternativa elegida: ")
             print('\n')
-            if(opt_ver_empleados == '1'):
-                printEmployees(db)
+            if(opt_ver_empleados == '1' and level == 1):
+                opt_ver_empleados2 = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver lista de empleados. \
+                                                                                    \n - 2: Si desea ver el calendario de trabajo de empleados. \
+                                                                                    \n ingrese la alternativa escogida: ")
+                if (opt_ver_empleados2 =='1'):
+                    printEmployees(db)
+                if (opt_ver_empleados2 == '2'):
+                    try:
+                        id_employee = input('\n Ingrese el id del empleado cuyo calendario le interesa: ')
+                        try:
+                            int(id_employee)
+                        except:
+                            raise ValueError('\n El id debe ser un número entero. \n')
+                        with db_session:
+                            if db.Employees.get( id = int(id_employee)) == None:
+                                raise ValueError('\n Empleado inexistente. \n')
+                        createEmployeeReportV2(db,id_employee)
+                        print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
+                    except ValueError as ve:
+                        print(ve)
+                        input('\n Presione una tecla para continuar. \n')
+                                                                                          
+                    
                 input(' \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '2'):
                 printSelectSkill(db, 1)

@@ -8,7 +8,7 @@ import Planning.features as PLf
 import Planning.reports as PLr
 import Users.features as Uf
 import Stock.usuario as Sf
-import Tests.Case8 as case8
+import Tests.Case8 as case9
 import Planning.usuario as PlanU
 import Stock.reports as Sr
 import numpy as np
