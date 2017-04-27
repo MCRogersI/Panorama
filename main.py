@@ -7,7 +7,7 @@ import Projects.features as Pf
 import Planning.features as PLf
 import Planning.reports as PLr
 import Users.features as Uf
-import Stock.usuario as Sf
+import Stock.usuario as Su
 # import Tests.Case9 as case9
 import Planning.usuario as PlanU
 import Stock.reports as Sr
@@ -31,7 +31,7 @@ def console(level):
         if( opt== '3'):
             Pu.tasks_console(db, level)
         if (opt == '4'):
-            Sf.stock_console(db, level)
+            Su.stock_console(db, level)
         if (opt =='5'):
             PlanU.planning_console(db,level)
         if(opt == '6'):
