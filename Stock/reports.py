@@ -198,7 +198,8 @@ def createStockReportExtended(db):
     bases = [calculateStockForExcel(db, id) for id in skus_ids]
 
     # wb = Workbook(write_only=True, guess_types=True)  # Atención con el guess_types y el write_only
-    wb = Workbook(write_only=False, guess_types=True)
+    # wb = Workbook(write_only=False, guess_types=True)
+    wb = Workbook(write_only=False)
     by_default_sheet = wb.get_sheet_by_name('Sheet')
     wb.remove_sheet(by_default_sheet)
     ws_raw = wb.create_sheet(title="Tablas de Stock")
@@ -260,6 +261,8 @@ def createStockReportExtended(db):
         chart1.set_categories(cats)
         chart1.shape = 4
         chart1.width = 100
+        chart1.y_axis.scaling.min = -200
+        chart1.y_axis.scaling.max = 500
         ws_plotted.add_chart(chart1, "{0}{1}".format("A",10 + counter*18))
 
         # chart2 = deepcopy(chart1)
