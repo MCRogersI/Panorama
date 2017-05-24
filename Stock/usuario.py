@@ -136,7 +136,6 @@ def stock_console(db, level):
         if opt =='6' and level ==1:
             createStockReportExtended(db)
             input('\n Informe creado con éxit. Presione cualquier tecla para continuar. \n')
-
         if (opt == '7' and level == 1) or (opt == '2' and level == 2) or (
                 opt == '2' and level == 3):
             break

@@ -203,7 +203,6 @@ def projects_console(db, level):
             except:
                 print('\n No se pudo realizar la edición. \n')
                 input('Precione cualquier tecla para volver \n')
-
         elif(opt == '3' and level == 1):
             contract_number = input("\n Ingrese el número de contrato del proyecto a eliminar: ")
             try:
@@ -211,7 +210,6 @@ def projects_console(db, level):
             except:
                 print('\n Proyecto inexistente \n')
                 input('Precione cualquier tecla para volver \n')
-
         elif(opt == '4' and level == 1):
             opt_projects_activities = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de disponibilidad de un cliente. \
                                                                                        \n - 2: Si desea eliminar una indisponibilidad. \
@@ -255,8 +253,6 @@ def projects_console(db, level):
             elif opt_projects_activities == '3':
                 print('\n')
                 printProjectsActivities(db)
-
-            
         elif(opt == '5' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
             printProjects(db)
         elif (opt =='6' and level == 1) or (opt== '4' and level == 2):
@@ -351,7 +347,7 @@ def tasks_console(db, level):
             
         elif(opt == '2' and (level == 1 or level == 2)) or (opt == '1' and level == 3):
             printTasks(db)
-
+        #Dado que hay reportes con esto,  es medio redundante.
         elif(opt == '3' and (level == 1 or level == 2)) or (opt == '2' and level == 3):
             break
 

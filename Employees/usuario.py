@@ -90,7 +90,6 @@ def employees_console(db, level):
             except:
                 print(' No se pudo crear el empleado \n')
                 input('\n Presione cualquier tecla para continuar: \n')
-
         if(opt == '2' and (level == 1 or level == 2)):
             try:
                 id_empleado = input("\n Ingrese el ID del empleado a editar: ")
@@ -160,7 +159,6 @@ def employees_console(db, level):
             except ValueError as ve:
                 print(ve)
                 input('\n Presione cualquier tecla para continuar \n')
-
         if(opt == '3' and level == 1):
             try:
                 idEmpleado = input("\n Ingrese el ID del empleado que desea eliminar: ")
@@ -176,8 +174,6 @@ def employees_console(db, level):
             except ValueError as ve:
                 print(ve)
                 input('\n Presione cualquier tecla para continuar \n')
-
-        
         if(opt == '4' and level == 1) or (opt == '3' and level == 2):
             opt_employees_activities = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de una actividad. \
                                                                                         \n - 2: Si desea eliminar una actividad. \
@@ -228,8 +224,6 @@ def employees_console(db, level):
                 print('\n')
                 printEmployeesActivities(db)
                 input(' \n Presione una tecla para continuar: ')
-            
-            
         if(opt == '5' and level == 1) or (opt == '4' and level == 2) or (opt == '1' and level == 3):
             opt_ver_empleados = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver empleados. \
                                                                                  \n - 2: Si desea ver la lista de rectificadores. \
