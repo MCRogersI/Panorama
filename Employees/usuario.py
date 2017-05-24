@@ -151,9 +151,9 @@ def employees_console(db, level):
                     if int(new_senior) == 0:
                         new_senior = False
                     elif int(new_senior) != 1:
-                        raise ValueError('\n Debe ingresar 0 0 1. \n')
+                        raise ValueError('\n Debe ingresar 0 ó 1. \n')
                 except:
-                    raise ValueError('\n Debe ingresar 0 0 1. \n')
+                    raise ValueError('\n Debe ingresar 0 ó 1. \n')
                 editEmployee(db, id_empleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins, bool(new_senior))
                 input('\n Empleado editado exitosamente. Presione una tecla para continuar: ')
             except ValueError as ve:

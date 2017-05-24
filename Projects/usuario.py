@@ -132,7 +132,6 @@ def projects_console(db, level):
                 new_deadline_year = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione enter si se mantiene: ")
                 new_deadline_month = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione enter si se mantiene: ")
                 new_deadline_day = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione enter si se mantiene: ")
-                new_estimated_cost = input("Ingrese el costo estimado del proyecto: ")
                 new_real_cost = input("Ingrese el costo real del proyecto, solo presione enter si no se conoce: ")
                 new_crystal_leadtime = input("Ingrese la cantidad de días que demorarán en llegar los cristales, solo presione enter si se mantiene: ")
                 if new_client_address == '':
