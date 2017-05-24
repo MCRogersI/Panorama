@@ -1,0 +1,54 @@
+4. Usuarios que pueden, ingresar, modificar plazos, prioridades, programación, etc, etc:
+
+
+- Gerente General 
+
+- asistente gerente general ( cargo vacante aún)
+
+- Jefe de Administración 
+
+- asistente de administración.
+
+
+Nombres:
+
+
+- Alberto Croquevielle 
+
+- NN
+
+- Christian Montero 
+
+- María Planez 
+
+
+
+2. Cargos que pueden acceder a mirar información de planificación y de tareas de su unidad e ingresar tareas propias a su Unidad:
+
+
+1. Gerencia Tecnica:
+
+
+- Gerente Técnico (Mariam Uzcategui)
+
+- jefe de instalaciones y post ventas (Obedmar Macallums)
+
+- encargado de Rectificación (Mauricio Perez)
+
+- Profesional de Diseño (NN)
+....cargo colabora además en supervisión de instalaciones y post ventas ( es un apoyo para lo que se requiera en la gerencia tecnica)
+
+
+
+3. Fabricación y Gestión de Bodega:
+
+
+- Debe producir en base a las órdenes de trabajo ( OT emitidas por gerencia técnica....lease. Hojas de corte )
+
+
+- en ese sentido, debe tener visualización de programación de su trabajo ( OT por fabricar, hojas de corte no fabricadas )
+
+
+- debe generar además, cuando se trata de trabajos que requieren retrabajo por fallas, Ordenes de pedido ( OP) que se asocian a un contrato,
+   en materia de perfiles y herrajes ( estas OP deben quedar registradas en sistema y mover inventarios, dando curso de paso a cálculo de sobre
+   costoso de perfiles y herrajes por retrabajos asociados a fallas de calidad).... sigo después
