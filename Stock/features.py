@@ -555,3 +555,8 @@ def makePurchases(db, file_name):
         next_row = next_row + 1
     
     createPurchases(db, skus_list, arrival_date)
+    
+    
+
+#para actualizar la lista de precios de una, a través de una hoja con el mismo formato de 
+def updatePrices(db, 

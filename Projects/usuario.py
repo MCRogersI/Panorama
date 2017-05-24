@@ -199,10 +199,10 @@ def projects_console(db, level):
                 editProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost, new_crystal_leadtime=new_crystal_leadtime)
             except ValueError as ve:
                 print(ve)
-                input('Precione cualquier tecla para volver \n')
+                input('Presione cualquier tecla para volver \n')
             except:
                 print('\n No se pudo realizar la edición. \n')
-                input('Precione cualquier tecla para volver \n')
+                input('Presione cualquier tecla para volver \n')
 
         elif(opt == '3' and level == 1):
             contract_number = input("\n Ingrese el número de contrato del proyecto a eliminar: ")

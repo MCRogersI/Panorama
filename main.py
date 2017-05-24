@@ -14,7 +14,7 @@ import Stock.reports as Sr
 import Stock.features as Sf
 import numpy as np
 
-Uf.createUser(db,'1', 1,'1')
+# Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 11,'Armin')
 # Uf.createUser(db,'Piola', 2,'Cuatro')
 # Uf.createUser(db,'Pleb', 3,'00000')
