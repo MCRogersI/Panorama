@@ -17,9 +17,11 @@ def createSku(db,id, name, price, critical_level, real_quantity, waste_factor):
                      real_quantity=real_quantity, estimated_quantity=real_quantity, waste_factor = waste_factor)
 
 
-def editSku(db, id, name=None, price=None, critical_level=None, real_quantity=None):
-    ''' Este método edita la unidad de stock, en cualquiera de sus características '''
 
+def editSku(db, id, name=None, price=None, critical_level=None, real_quantity=None,
+            waste_factor = None):
+    ''' Este método edita la unidad de stock, en cualquiera de sus características '''
+    
     with db_session:
         try:
             s = db.Stock[id]
@@ -32,7 +34,8 @@ def editSku(db, id, name=None, price=None, critical_level=None, real_quantity=No
             if real_quantity != None:
                 s.real_quantity = real_quantity
                 s.estimated_quantity = real_quantity
-
+            if waste_factor != None:
+                s.waste_factor = waste_factor
         except ObjectNotFound as e:
             print('Object not found: {}'.format(e))
         except ValueError as e:
