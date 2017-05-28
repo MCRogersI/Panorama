@@ -1,9 +1,7 @@
 from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases
-<<<<<<< HEAD
-from Stock.reports import createStockReportExtended
-=======
+
 from Stock.reports import createStockReport,createStockReportExtended
->>>>>>> 9b5fac94ec0449892405a7ad32a0314ed80cea44
+
 import os
 
 
