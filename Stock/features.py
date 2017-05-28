@@ -559,4 +559,5 @@ def makePurchases(db, file_name):
     
 
 #para actualizar la lista de precios de una, a través de una hoja con el mismo formato de 
-def updatePrices(db, 
+def editAllSkus(db,filename):
+    pass
