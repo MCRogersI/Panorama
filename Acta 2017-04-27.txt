@@ -1,0 +1,23 @@
+Acta:
+- Agregar a los reportes fechas en que fueron generados.
+- Crear manual de usuario.
+- Todos los reportes en la misma carpeta.
+- Reportes individuales agrupados por tipo de trabajador (rectificadores, por ejemplo).
+(Alonso tenía una idea de cómo hacerlo, a lo largo y agrupando trabajadores que trabajan 
+juntos).
+- Pasarlo lo antes posible para que el cliente lo vaya probando.
+- Importa saber si el proyecto quedó OK o con reparos, porque si algo quedó mal a nivel de 
+instalación indica que los protocolos de seguridad. Está cubierto con lo de fallos, pero 
+borrar lo de que pide ID de la Tarea, y número de contrato antes del ID del Skill.
+- Lo que sí, es importante que en el globalReport aparezcan las distintas versiones del 
+proyecto, no borrar las que fallaron.
+- "Mayor plazo" es atraso.
+- "Mes_Año" es de la fecha efectiva.
+- Fecha Efectiva y Proveedor OC los ingresa el usuario.
+- "Emisor_OC" es el proveedor de cristales.
+- "LOG" es "Logística", cosas metidas a mano.
+- "Fecha planificada recepción cristales" es ideal que se meta a mano (y no 15 por defecto) 
+porque igual juegan con eso, pagando más por ejemplo para tener antes los cristales.
+- Mandar mail al cliente para que se acuerde de mandar organigrama con las facultades de 
+cada empleado para acceder al programa.
+- Mandar boleta de la segunda cuota.

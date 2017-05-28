@@ -384,7 +384,7 @@ def cleanTasks(db):
         
 def shiftDown(db, project, place, original_place):
     with db_session:
-        projects = select(p for p in db.Projects if p.priority >= place).order_by(lambda p: p.priority)
+        projects = select(p for p in db.Projects if p.priority >= place and p.finished != True).order_by(lambda p: p.priority)
         for p in projects:
             if p.priority == original_place -1:
                 if p.fixed_priority:
@@ -405,7 +405,7 @@ def shiftDown(db, project, place, original_place):
                 
 def shiftUp(db,upper, lower):
     with db_session:
-        projects = select(p for p in db.Projects if p.priority <= lower and p.priority > upper).order_by(lambda p: p.priority)
+        projects = select(p for p in db.Projects if p.priority <= lower and p.priority > upper and p.finished !=True).order_by(lambda p: p.priority)
         for p in projects:
             p.priority = p.priority - 1
             
@@ -416,7 +416,7 @@ def changePriority(db, contract_number, new_priority):
     with db_session:
         old_priority = db.Projects[contract_number].priority
         if old_priority > new_priority:
-            projects = select(p for p in db.Projects if p.priority >= new_priority and p.priority < db.Projects[contract_number].priority).order_by(lambda p: p.priority)
+            projects = select(p for p in db.Projects if p.priority >= new_priority and p.priority < db.Projects[contract_number].priority and p.finished != True).order_by(lambda p: p.priority)
             for p in projects:
                 if p.fixed_priority:
                     p.priority = p.priority +1
@@ -511,7 +511,7 @@ def doPlanning(db):
                 if len(employees) < 1:
                     return('\n No se puede hacer la planificación porque hay tareas que nadie sabe hacer \n')
             
-        projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
+        projects = select(p for p in db.Projects if p.finished != True).order_by(lambda p : p.priority)
         # projects.show()
         for p in projects:
             last_release_date = date.today()

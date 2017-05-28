@@ -13,6 +13,7 @@ import Planning.usuario as PlanU
 import Stock.reports as Sr
 import Stock.features as Sf
 import numpy as np
+import getpass
 
 # Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'Admin', 11,'Armin')
@@ -40,7 +41,8 @@ def console(level):
 def signIn():
     while True:
         user = input("Ingrese su usuario: ")
-        password = input("Ingrese su contraseña: ")
+        # password = input("Ingrese su contraseña: ")
+        password = getpass.getpass('Ingrese su contraseña: ')
         if Uf.checkPassEntry(db, user, password):
             with db_session:
                 level=Uf.getUserLevel(db, user)

@@ -563,6 +563,7 @@ def createEmployeeReportV2(db,id_employee):
     fn = os.path.join(report_folder_path,report_file_name)
     wb.save(fn)
 #
+
 createEmployeeReportV2(db,1)
 # createEmployeeReportV2(db,2)
 # createEmployeeReportV2(db,3)

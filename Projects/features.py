@@ -22,7 +22,7 @@ def createProject(db, contract_number, client_address, client_comuna,
 		############################################################
 		# La siguiente función es para asignar la prioridad al crear el proyecto. por ahora se hará FIFO ya que no sabemos estimar la holgura, pero debe cambiar después.
 		#DEBE CAMBIAR DESPUES
-		db.Projects[contract_number].priority = db.Projects.select().count()
+		db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished != True).count()
 		#NO ES BROMA!!
 	#?????????????????????????????	
 		#############################################################
@@ -65,6 +65,13 @@ def deleteProject(db, contract_number):
     with db_session:
         db.Projects[contract_number].delete()
 
+def finishProject(db, contract_number):
+    with db_session:
+        db.Projects[contract_number].finished = True
+        select(r for r in db.Employees_Restrictions if r.project.contract_number == contract_number).delete()
+        db.Projects[contract_number].priority = -1
+        commit()
+        
 def getNumberConcurrentProjects(db, contract_number, date):
     ''' Método que entrega la cantidad de proyectos que son realizados en la misma comuna,
     en la misma fecha, para calcular los costos de transporte si es que hay más de uno en un lugar

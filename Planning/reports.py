@@ -870,7 +870,24 @@ def createReport(db, Delayed):
         wb = Workbook()
         createDelayedReport(wb, Delayed)
         createPlanningReport(db, wb)
-        wb.save('ReportePlanificacion.xlsx')
+        
+        file_open = True
+        while(file_open):
+            try:
+                #para guardar en la carpeta Reportes
+                module_path = os.path.dirname(__file__)
+                panorama_folder_path = os.path.abspath(os.path.join(module_path, os.pardir))
+                report_folder_path = os.path.join(panorama_folder_path,"Reportes")
+                if not os.path.exists(report_folder_path):
+                    os.makedirs(report_folder_path)
+                fn = os.path.join(report_folder_path, 'ReportePlanificacion.xlsx')
+                wb.save(fn)
+                file_open = False
+            except OSError as e:
+                if e.args[0] != 13:
+                    raise
+                input("\n Ha ocurrido un error porque el archivo ReportePlanificacion.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.")
+        
         
         #entramos en el siguiente ciclo para ver si el usuario acepta la planificación o quiere cambiar datos de los empleados
         while(True):
@@ -886,6 +903,7 @@ def createReport(db, Delayed):
                 if not changes_plausible[0]:
                     print(changes_plausible[1] + " Los cambios a la planificación no serán aplicados.")
                 else:
+                    print(changes_plausible[1])
                     implementChanges(db)
 
 
@@ -1001,7 +1019,7 @@ def planningChangesPlausible(db):
     if not employeesTasksPlausible(db, ws, max_row):
         return False, " Uno de los empleados fue asignado a demasiadas tareas en la misma fecha."
     if not employeesRestrictionsPlausible(db, ws, max_row):
-        return False, str(employeesRestrictionsPlausible(db, ws, max_row))
+        return False, " No se está respetando la restricción de empleados fijos/vetados en la planificación."
     return True, " Los cambios hechos a la planificación son válidos, por lo tanto, serán aplicados."
 
 #revisa factibilidad en cuanto a que a un empleado no se le asigne una tarea que requiera una Skill que no maneje
@@ -1137,6 +1155,39 @@ def employeesTasksPlausible(db, ws, max_row):
 
 #revisa factibilidad en cuanto a empleados fijos/baneados de proyectos
 def employeesRestrictionsPlausible(db, ws, max_row):
+    projects = []
+    employees_assigned = {}
+    #primero recuperamos qué empleados fueron asignados a cada proyecto
+    for next_row in range(4, max_row + 1):
+        project = ws.cell(row = next_row, column = 1).value
+        projects.append(project)
+        employees = []
+        
+        employees.append(ws.cell(row = next_row, column = 4).value)
+        employees.append(ws.cell(row = next_row, column = 7).value)
+        employees.append(ws.cell(row = next_row, column = 10).value)
+        installers = str(ws.cell(row = next_row, column = 4).value).split(';')
+        
+        for i in installers:
+            employees.append(int(i))
+        
+        employees_assigned[project] = employees
+    #ahora revisamos que NINGUN empleado vetado en un proyecto haya sido asignado a el, y que los fijos a un proyecto SI hayan sido asignados
+    for p in projects:
+        #primero revisamos respecto a los vetados
+        with db_session:
+            emp_rests = select(er for er in db.Employees_Restrictions if er.project.contract_number == p and er.fixed == False)
+            employees_vetoed = list(er.employee.id for er in emp_rests)
+            for e in employees_assigned[p]:
+                if e in employees_vetoed:
+                    return False
+        #ahora revisamos respecto a los fijos
+        with db_session:
+            emp_rests = select(er for er in db.Employees_Restrictions if er.project.contract_number == p and er.fixed == True)
+            employees_fixed = list(er.employee.id for er in emp_rests)
+            for e in employees_fixed:
+                if e not in employees_assigned[p]:
+                    return False
     return True
     
 #método auxiliar para ver si un empleado está disponible según sus Activities
@@ -1171,7 +1222,7 @@ def implementChanges(db):
                 skill = skills[i]
                 task = select(t for t in db.Tasks if t.project == db.Projects[contract_number] and t.skill == db.Skills[skill] and \
                                     (t.failed == None or t.failed == False)).first()
-                #luego recuperamos el Employee_Task, para cambiar el empleado asociado
+                #luego recuperamos el Employee_Tasks, para cambiar el empleado asociado
                 c = columns[i]
                 initial_date = ws.cell(row = next_row, column = c - 2).value.date()
                 end_date = ws.cell(row = next_row, column = c - 1).value.date()
@@ -1182,6 +1233,24 @@ def implementChanges(db):
                     #el commit() es clave, si no, el empleado no se considera borrado aún, y la línea de assignTask() tira un error
                     commit()
                     assignTask(db, [new_employee], task.id, initial_date, end_date)
-
-
-
+        #implementamos ahora para el caso de la Skill 4
+        for next_row in range(4, max_row + 1):
+            #recuperamos el Task, sabiendo que solo puede haber uno para un par Project, Skill que no tenga failed = True, usamos el .first()
+            contract_number = ws.cell(row = next_row, column = 1).value
+            skill = 4
+            task = select(t for t in db.Tasks if t.project == db.Projects[contract_number] and t.skill == db.Skills[skill] and \
+                                    (t.failed == None or t.failed == False)).first()
+            #luego recuperamos los Employee_Tasks, para cambiar el empleado asociado
+            c = 13
+            initial_date = ws.cell(row = next_row, column = c - 2).value.date()
+            end_date = ws.cell(row = next_row, column = c - 1).value.date()
+            new_employees = str(ws.cell(row = next_row, column = c).value).split(';')
+            emp_tasks = select(et for et in db.Employees_Tasks if et.task == task and et.planned_initial_date == initial_date and et.planned_end_date == end_date)
+            #eliminamos los Employees_Tasks antiguos
+            for et in emp_tasks:
+                et.delete()
+            #el commit() es clave, si no, los Employees_Tasks no se consideran borrado aún, y la línea de assignTask() tira un error
+            commit()
+            #asignamos los Employees_Tasks nuevos
+            assignTask(db, new_employees, task.id, initial_date, end_date)
+            
