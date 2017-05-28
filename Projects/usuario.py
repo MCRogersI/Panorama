@@ -2,6 +2,7 @@ from datetime import date
 from pony.orm import *
 from Projects.features import createProject, printProjects, editProject, deleteProject, finishProject, createTask, editTask, printTasks, failedTask, createProjectActivity, deleteProjectActivity, printProjectsActivities
 from Projects.costs import estimateCost
+from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts
 import os
 # from Projects.costs import estimateCost
 
@@ -293,7 +294,11 @@ def projects_console(db, level):
 def tasks_console(db, level):
     while True:
         if level == 1 or level =='2':
-            opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea editar una tarea. \n - 2: Si desea ver las tareas actuales. \n - 3: Para volver atrás. \n")
+            opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea editar una tarea.\
+                                                                  \n - 2: Si desea ver las tareas actuales.\
+                                                                  \n - 3: Para editar parámetros asociados a costos.\
+                                                                  \n - 4: Para volver atrás.\
+                                                                  \n")
         if level == 3:
             opt = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver las tareas actuales. \n - 2: Para volver atrás. \n")
 
@@ -361,8 +366,35 @@ def tasks_console(db, level):
             
         elif(opt == '2' and (level == 1 or level == 2)) or (opt == '1' and level == 3):
             printTasks(db)
-        #Dado que hay reportes con esto,  es medio redundante.
-        elif(opt == '3' and (level == 1 or level == 2)) or (opt == '2' and level == 3):
+        elif(opt == '3'):
+            opt2 = input('\n Marque una de las siguientes opciones: \n - 1: Si desea editar costos de flete.\
+                                                                    \n - 2: Si desea editar costos de operaciones.\
+                                                                    \n - 3: Si desea editar costos de viáticos.\
+                                                                    \n - 4: Si desea editar costos de movilización.\
+                                                                    \n - 5: Si desea volver atrás.\
+                                                                    \n Ingrese la alternativa elegida: ')
+            try:
+                file_name = input(' Ingrese el nombre del archivo: ')
+                file_dir = file_name + ".xlsx"
+                if os.path.isfile(file_dir):
+                    if op2 == '1':
+                        updateFreightCosts(db, contract_number, file_name)
+                        input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
+                    if op2 == '2':
+                        updateOperatingCosts(db, contract_number, file_name)
+                        input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
+                    if op2 == '3':
+                        updateViaticCosts(db, contract_number, file_name)
+                        input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
+                    if op2 == '4':
+                        updateMovilizationCosts(db, contract_number, file_name)
+                        input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
+                else:
+                    raise ValueError('\n Archivo no encontrado.')
+            except ValueError as ve:
+                print(ve)
+                input(' Presione una tecla para continuar.')
+        elif(opt == '4' and (level == 1 or level == 2)) or (opt == '2' and level == 3):
             break
 
 
