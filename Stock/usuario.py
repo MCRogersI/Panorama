@@ -52,11 +52,12 @@ def stock_console(db, level):
                 except:
                     raise ValueError('\n La cantidad en bodega debe ser un número positivo \n')
                 waste_factor = input(' Ingrese el factor de pérdida del SKU: ')
-                try:
-                    if float(waste_factor) <0:
+                if waste_factor !='':
+                    try:
+                        if float(waste_factor) <0:
+                            raise ValueError('\n El factor de pérdida debe ser un número positivo \n')
+                    except:
                         raise ValueError('\n El factor de pérdida debe ser un número positivo \n')
-                except:
-                    raise ValueError('\n El factor de pérdida debe ser un número positivo \n')
                 createSku(db,id, name, price, critical_level, real_quantity , waste_factor)
                 input('\n SKU creado con éxito. Presione una tecla para continuar. \n')
             except ValueError as ve:
