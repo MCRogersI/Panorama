@@ -511,7 +511,7 @@ def doPlanning(db):
                 if len(employees) < 1:
                     return('\n No se puede hacer la planificación porque hay tareas que nadie sabe hacer \n')
             
-        projects = select(p for p in db.Projects).order_by(lambda p : p.priority)
+        projects = select(p for p in db.Projects if p.finished != True).order_by(lambda p : p.priority)
         # projects.show()
         for p in projects:
             last_release_date = date.today()
