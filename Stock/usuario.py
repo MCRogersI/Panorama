@@ -108,7 +108,7 @@ def stock_console(db, level):
                                 raise ValueError('\n El factor de pérdida debe ser un número positivo \n')
                         except:
                             raise ValueError('\n El factor de pérdida debe ser un número positivo \n')
-                    editSku(db,id = id, name=name, price=price, critical_level=critical_level, real_quantity=real_quantity, waste_factor)
+                    editSku(db,id = id, name=name, price=price, critical_level=critical_level, real_quantity=real_quantity, waste_factor = waste_factor)
                 except ValueError as ve:
                     print(ve)
                     input('\n Presione una tecla para continuar \n')
