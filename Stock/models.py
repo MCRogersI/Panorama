@@ -9,7 +9,7 @@ def define_models(db):
 		price = Required(float)
 		critical_level = Required(float)#En el futuro este valor podría calcularse pero inicialmente debe ser fijado
 		real_quantity = Required(float)# Required desde el 29/03/2017, no tiene sentido q sea opcional, y es necesario para calcular stock.
-		waste_factor = Required(float)#Required desde el 29/03/2017, todos los materiales tienen factores de pérdida
+		waste_factor = Optional(float)#Required desde el 29/03/2017, todos los materiales tienen factores de pérdida (pensandolo mejor, es Optional desde 18/05/2017, porque algunos waste_factor son bien generales y abarcan hartos SKUs)
 		estimated_quantity = Optional(float)
 		engagements = Set('Engagements')
 		purchases = Set('Purchases')

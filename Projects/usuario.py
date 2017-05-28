@@ -284,7 +284,7 @@ def tasks_console(db, level):
 
         if(opt == '1' and (level == 1 or level == 2)):
             opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n")
-            if (opt2 =='1')
+            if (opt2 =='1'):
                 try:
                     new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
                     with db_session:
