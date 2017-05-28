@@ -26,7 +26,7 @@ def define_models(db):
         costs = Set('Projects_Costs')
         crystal_leadtime = Optional(int, default = 15)
         sale_date = Optional(date)
-
+        finished = Optional(bool)
 
         def __repr__(self):
             return str(self.contract_number)
