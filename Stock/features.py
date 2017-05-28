@@ -7,20 +7,21 @@ from matplotlib.pyplot import plot, show
 from threading import Thread
 
 
-def createSku(db,id, name, price, critical_level, real_quantity, waste_factor, estimated_quantity=None):
+def createSku(db,id, name, price, critical_level, real_quantity, waste_factor):
     ''' Este método crea una unidad nueva de stock, asigna automáticamente el ID de la misma.
         La cantidad estimada es la que se ve afectada por una planificación que podría cambiarse 
-        en el futuro '''
+        en el futuro. Parte siendo igual a la cantidad real'''
 
     with db_session:
         s = db.Stock(id=id, name=name, price=price, critical_level=critical_level,
-                     real_quantity=real_quantity, estimated_quantity=estimated_quantity, waste_factor = waste_factor)
+                     real_quantity=real_quantity, estimated_quantity=real_quantity, waste_factor = waste_factor)
+
 
 
 def editSku(db, id, name=None, price=None, critical_level=None, real_quantity=None,
-            estimated_quantity=None, waste_factor = None):
+            waste_factor = None):
     ''' Este método edita la unidad de stock, en cualquiera de sus características '''
-
+    
     with db_session:
         try:
             s = db.Stock[id]
@@ -559,5 +560,33 @@ def makePurchases(db, file_name):
     
 
 #para actualizar la lista de precios de una, a través de una hoja con el mismo formato de 
-def editAllSkus(db,filename):
-    pass
+def editAllSkus(db, file_name):
+    file_read = file_name + ".xlsx"
+    wb_read = load_workbook(file_read, data_only=True)
+    ws_read_skus = wb_read.active()
+    
+    next_row = 13
+    id = ws_read_skus.cell(row = next_row, column = 2).value
+    while(id != None):
+        name = ws_read_skus.cell(row = next_row, column = 4).value
+        price = ws_read_skus.cell(row = next_row, column = 5).value
+        critical_level = ws_read_skus.cell(row = next_row, column = 9).value
+        real_quantity = ws_read_skus.cell(row = next_row, column = 10).value
+        waste_factor = ws_read_skus.cell(row = next_row, column = 11).value
+        
+        with db_session:
+            stock = db.Stock.get(id = code_read)
+            #revisamos si el codigo leido esta ya en la base de datos. Si esta, actualizamos la informacion, si no esta, creamos el nuevo SKU con la informacion entregada
+            if stock != None:
+                stock.name = name
+                stock.price = price
+                stock.critical_level = critical_level
+                stock.real_quantity = real_quantity
+                stock.waste_factor = waste_factor
+                stock.estimated_quantity = real_quantity
+            else:
+                s = db.Stock(id=code_read, name=name, price=price, critical_level=critical_level,
+                     real_quantity=real_quantity, estimated_quantity=real_quantity, waste_factor = waste_factor)
+        
+        next_row = next_row + 1
+        code_read = ws.cell(row = next_row, column = 2).value
