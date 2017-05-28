@@ -362,8 +362,7 @@ def tasks_console(db, level):
                         raise ValueError(' \n El costo debe ser un número no negativo \n')
                     failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
                 except ValueError as ve:
-                    print(ve)
-            
+                    print(ve)           
         elif(opt == '2' and (level == 1 or level == 2)) or (opt == '1' and level == 3):
             printTasks(db)
         elif(opt == '3'):

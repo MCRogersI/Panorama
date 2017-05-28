@@ -68,7 +68,9 @@ def deleteProject(db, contract_number):
 def finishProject(db, contract_number):
     with db_session:
         db.Projects[contract_number].finished = True
+        select(r for r in db.Employees_Restrictions if r.project.contract_number == contract_number).delete()
         db.Projects[contract_number].priority = -1
+        commit()
         
 def getNumberConcurrentProjects(db, contract_number, date):
     ''' Método que entrega la cantidad de proyectos que son realizados en la misma comuna,
