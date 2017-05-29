@@ -1,12 +1,5 @@
-<<<<<<< HEAD
-from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases
-
-from Stock.reports import createStockReport,createStockReportExtended
-
-=======
 from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases, editAllSkus
 from Stock.reports import createStockReport,createStockReportExtended
->>>>>>> 7dcc9f468f93fe9f909b10ee9440b1c7c0e1e78b
 import os
 
 

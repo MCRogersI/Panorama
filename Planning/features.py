@@ -511,7 +511,9 @@ def doPlanning(db):
                 if len(employees) < 1:
                     return('\n No se puede hacer la planificación porque hay tareas que nadie sabe hacer \n')
             
-        projects = select(p for p in db.Projects if p.finished != True).order_by(lambda p : p.priority)
+        projects = select(p for p in db.Projects if p.finished == None).order_by(lambda p : p.priority) #Idealmente cambiar el == None a != True pero a pony no le gusta
+        print(len(projects))
+        print("aafasf")
         # projects.show()
         for p in projects:
             last_release_date = date.today()
@@ -597,7 +599,7 @@ def doPlanning(db):
                                 commit()
             for e in p.engagements:
                 Sf.updateEngagements(db, e.sku.id)
-        createReport(db, Delayed) #Comenté esta línea para poder ver lo de los engagements (descomentar luego)
+        # createReport(db, Delayed) #Comenté esta línea para poder ver lo de los engagements (descomentar luego)
         
         
 
