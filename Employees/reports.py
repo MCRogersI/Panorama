@@ -12,7 +12,7 @@ import os
 # # from pony.orm import *
 from database import db
 
-def createEmployeeReportV2(db,id_employee):
+def createPersonalEmployeeReport(db,id_employee):
     ''' Este método crea un informe en Excel compacto con una proción de la información de la base de datos. '''
     with db_session:
         e = db.Employees.get(id=id_employee)
@@ -64,7 +64,7 @@ def createEmployeeReportV2(db,id_employee):
                              top=Side(style='thin'),
                              bottom=Side(style='thin'))
 
-        if (es.skill.id == 4):
+        if (False): #(es.skill.id == 4) <-- introducir esta condición si es que se quiere mostrar la información de "senior"
             # columns = ["A", "B", "C","D","E","F","G","H","I"] #Para un instalador y con el rendimiento
             columns = ["A", "B", "C", "D", "E", "F", "G", "H"]  # Para un instalador sin el rendimiento
             # texts = ["","","","ID", "NOMBRE", "ZONA", "COMPETENCIA",
@@ -89,15 +89,23 @@ def createEmployeeReportV2(db,id_employee):
 
         # escribir los títulos de las columnas, en negrita
 
-
-
-
         for i in range(4,len(num_columns)+1):
             cell = ws.cell(row=i, column=3, value=texts[i-1])
             cell.font = Font(bold=True,)
             cell.border = thin_border
             cell.alignment = Alignment(horizontal='left')
 
+
+        #Escribir la fecha en la que fue producida el reporte:
+        cell = ws.cell(row=3, column=3, value="Reporte producido el: ")
+        cell.font = Font(bold=True, )
+        cell.border = thin_border
+        cell.alignment = Alignment(horizontal='left')
+
+        cell = ws.cell(row=3, column=4, value=date.today())
+        cell.font = Font(bold=True, )
+        cell.border = thin_border
+        cell.alignment = Alignment(horizontal='left')
 
         # A continuación llenamos con los datos
 
@@ -154,21 +162,21 @@ def createEmployeeReportV2(db,id_employee):
             cell.alignment = Alignment(horizontal='left')
 
         # Escribe si el empleado es senior o no (Sí o No)
-        if(es.skill.id == 4):
-            if e.senior != None:
-                if e.senior:
-                    value = "Sí"
-                else:
-                    value = "No"
-                cell = ws.cell(row=r+4, column=4, value = value)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='left')
-            else:
-                cell = ws.cell(row=r+4, column=4, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='left')
+        # if(es.skill.id == 4):
+        #     if e.senior != None:
+        #         if e.senior:
+        #             value = "Sí"
+        #         else:
+        #             value = "No"
+        #         cell = ws.cell(row=r+4, column=4, value = value)
+        #         cell.font = Font(bold=True)
+        #         cell.border = thin_border
+        #         cell.alignment = Alignment(horizontal='left')
+        #     else:
+        #         cell = ws.cell(row=r+4, column=4, value="Dato no disponible")
+        #         cell.font = Font(bold=True)
+        #         cell.border = thin_border
+        #         cell.alignment = Alignment(horizontal='left')
 
         # # Escribe el rendimiento del trabajador
         # if es.performance != None:
@@ -227,13 +235,15 @@ def createEmployeeReportV2(db,id_employee):
         tareas = select(et for et in db.Employees_Tasks if et.employee == e)
 
         #Se definen las fechas de trabajo del trabajador
-        working_dates = []
-        tasks = {}
+
+        tasks = []
+        tasks_dates_blocks = []
         for tarea in tareas:
+            working_dates = []
             task_initial_d = tarea.planned_initial_date
             task_final_d = tarea.planned_end_date
             task = db.Tasks.get(id=tarea.task.id)
-            task[task_initial_d:task]
+            tasks.append(task)
             # Ajustar para que solo tome fechas de trabajo en días hábiles
             working_days = (task_final_d-task_initial_d).days
             working_days_span = working_days
@@ -247,12 +257,17 @@ def createEmployeeReportV2(db,id_employee):
                     # working_days_span+=1 #Ya está considerado en el Planning
                     pass
                 working_days_counter+=1
+            tasks_dates_blocks.append(working_dates)
 
         # # ########Adición de funcionalidad para las vacaciones y licencias (Atención)
-        ea_dates = []
+        activities = []
+        activities_dates_blocks = []
         for e_act in e_activities:
+            ea_dates = []
             ea_initial_d = e_act.initial_date
             ea_final_d = e_act.end_date
+            activity = db.Activities.get(id=e_act.activity.id)
+            activities.append(activity)
             # Ajustar para que solo tome fechas de trabajo en días hábiles
             ea_days = (ea_final_d - ea_initial_d).days
             ea_days_span = ea_days
@@ -267,74 +282,86 @@ def createEmployeeReportV2(db,id_employee):
                     pass
                 ea_days_counter += 1
                 # # #########Adición de funcionalidad para las vacaciones y licencias (Atención)
-
+            activities_dates_blocks.append(ea_dates)
         # print(ea_dates)
 
         #Se imprimen los días de trabajo
         for i in range(0,len(dates)-1):
-            for d in working_dates:
-                if (dates[i] <= d < dates[i + 1]):
-                    # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
-                    cell = ws.cell(row=r + 10 + i, column=4 + d.weekday(),
-                                   value="Proyecto {0}\n{1}".format(task.project,task.project.client_address))
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
-                    # create alignment style
-                    wrap_alignment = Alignment(wrap_text=True, horizontal="center",
-                                               vertical="center")
-                    # assign
-                    cell.alignment = wrap_alignment
-                    cell.fill = PatternFill("solid", fgColor="ffff00")
-                elif (dates[len(dates) - 1] <= d):
-                    # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
-                    cell = ws.cell(row=r + 10 + i + 1, column=4 + d.weekday(),
-                                   value="Proyecto {0}\n{1}".format(task.project,
-                                                                    task.project.client_address))
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
-                    # create alignment style
-                    wrap_alignment = Alignment(wrap_text=True, horizontal="center",
-                                               vertical="center")
-                    # assign
-                    cell.alignment = wrap_alignment
-                    cell.fill = PatternFill("solid", fgColor="ffff00")
-
+            task_counter = 0
+            for task_date_block in tasks_dates_blocks:
+                for d in task_date_block:
+                    if (dates[i] <= d < dates[i + 1]):
+                        # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                        cell = ws.cell(row=r + 10 + i, column=4 + d.weekday(),
+                                       value="Proyecto {0}\n{1}".format(tasks[task_counter].project,tasks[task_counter].project.client_address))
+                        cell.font = Font(bold=True)
+                        cell.border = thin_border
+                        cell.alignment = Alignment(horizontal='center')
+                        # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                        # create alignment style
+                        wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                                                   vertical="center")
+                        # assign
+                        cell.alignment = wrap_alignment
+                        cell.fill = PatternFill("solid", fgColor="ffff00")
+                    elif (dates[len(dates) - 1] <= d):
+                        # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                        cell = ws.cell(row=r + 10 + i + 1, column=4 + d.weekday(),
+                                       value="Proyecto {0}\n{1}".format(tasks[task_counter].project,
+                                                                        tasks[task_counter].project.client_address))
+                        cell.font = Font(bold=True)
+                        cell.border = thin_border
+                        cell.alignment = Alignment(horizontal='center')
+                        # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                        # create alignment style
+                        wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                                                   vertical="center")
+                        # assign
+                        cell.alignment = wrap_alignment
+                        cell.fill = PatternFill("solid", fgColor="ffff00")
+                task_counter+=1
 
             # Adición de funcionalidad para las vacaciones y licencias (Atención)
             # print(len(ea_dates))
-            for d in ea_dates:
-                if (dates[i] <= d < dates[i + 1]):
-                    # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
-                    cell = ws.cell(row=r + 10 + i, column=4 + d.weekday(),
-                                   value="Vacaciones")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
-                    # create alignment style
-                    wrap_alignment = Alignment(wrap_text=True, horizontal="center",
-                                               vertical="center")
-                    # assign
-                    cell.alignment = wrap_alignment
-                    cell.fill = PatternFill("solid", fgColor="810777")
-                elif (dates[len(dates) - 1] <= d):
-                    # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
-                    cell = ws.cell(row=r + 10 + i + 1, column=4 + d.weekday(),
-                                   value="Vacaciones")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
-                    # create alignment style
-                    wrap_alignment = Alignment(wrap_text=True, horizontal="center",
-                                               vertical="center")
-                    # assign
-                    cell.alignment = wrap_alignment
-                    cell.fill = PatternFill("solid", fgColor="810777")
+            activity_counter = 0
+            for activity_date_block in activities_dates_blocks:
+                for d in activity_date_block:
+                    if (dates[i] <= d < dates[i + 1]):
+                        # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                        cell = ws.cell(row=r + 10 + i, column=4 + d.weekday(),
+                                       value=activities[activity_counter].description)
+                        cell.font = Font(bold=True)
+                        cell.border = thin_border
+                        cell.alignment = Alignment(horizontal='center')
+                        # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                        # create alignment style
+                        wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                                                   vertical="center")
+                        # assign
+                        cell.alignment = wrap_alignment
+                        if activities[activity_counter].id == 1:
+                            cell.fill = PatternFill("solid", fgColor="E60404")
+                        elif activities[activity_counter].id == 2:
+                            cell.fill = PatternFill("solid", fgColor="810777")
+                    elif (dates[len(dates) - 1] <= d):
+                        # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                        cell = ws.cell(row=r + 10 + i + 1, column=4 + d.weekday(),
+                                       value=activities[activity_counter].description)
+                        cell.font = Font(bold=True)
+                        cell.border = thin_border
+                        cell.alignment = Alignment(horizontal='center')
+                        # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                        # create alignment style
+                        wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                                                   vertical="center")
+                        # assign
+                        cell.alignment = wrap_alignment
+                        if activities[activity_counter].id == 1:
+                            cell.fill = PatternFill("solid", fgColor="E60404")
+                        elif activities[activity_counter].id == 2:
+                            cell.fill = PatternFill("solid", fgColor="810777")
+
+                activity_counter += 1
             # Adición de funcionalidad para las vacaciones y licencias (Atención)
 
         # Imprimir los días feriados
