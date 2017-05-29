@@ -157,10 +157,10 @@ def createTask(db, id_skill, contract_number, original_initial_date, original_en
         t = db.Tasks(skill = id_skill, project = contract_number, original_initial_date = original_initial_date, original_end_date = original_end_date)
 
         
-def editTask(db, id , id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
+def editTask(db, id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
     with db_session:
         try:
-            t = db.Tasks[id]
+            t = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects[contract_number], failed = None)
             if id_skill != None:
                 t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
             if contract_number != None: 
@@ -171,8 +171,22 @@ def editTask(db, id , id_skill = None, contract_number = None, original_initial_
                 t.original_end_date = original_end_date
             if effective_initial_date != None:
                 t.effective_initial_date = effective_initial_date
+                #vemos si la tarea se inició con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
+                #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
+                et = select(et for et in db.Employees_Tasks if et.task == t).first()
+                if effective_initial_date > et.planned_initial_date:
+                    print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
+                    delay = (effective_initial_date - et.planned_initial_date).days
+                    createDelay(db, t.project.contract_number, t.skill.id, delay)
             if effective_end_date != None:
                 t.effective_end_date = effective_end_date
+                #vemos si la tarea se terminó con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
+                #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
+                et = select(et for et in db.Employees_Tasks if et.task == t).first()
+                if effective_end_date > et.planned_end_date:
+                    print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
+                    delay = (effective_end_date - et.planned_end_date).days
+                    createDelay(db, t.project.contract_number, t.skill.id, delay)
             if fail_cost != None:
                 t.fail_cost = fail_cost
         except ObjectNotFound as e:

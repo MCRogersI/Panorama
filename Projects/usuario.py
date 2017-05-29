@@ -313,24 +313,24 @@ def tasks_console(db, level):
                                                                   \n - 4: Para volver atrás.\
                                                                   \n Ingrese la alternativa elegida: ")
         if level == 3:
-            opt = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver las tareas actuales. \n - 2: Para volver atrás. \n")
+            opt = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver las tareas actuales. \n - 2: Para volver atrás. \n Ingrese la alternativa elegida: ")
 
         if(opt == '1' and (level == 1 or level == 2)):
-            opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n")
+            opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n Ingrese la alternativa elegida: ")
             if (opt2 =='1'):
                 try:
                     new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
                     with db_session:
-                        if db.Projects.get(contract_number = new_contract_number) != None:
+                        if db.Projects.get(contract_number = new_contract_number) == None:
                             raise ValueError('\n Proyecto inexistente. \n')
                     new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
                     if int(new_id_skill) != 1 and int(new_id_skill) != 2 and int(new_id_skill) != 3 and int(new_id_skill) != 4:
                         raise ValueError('\n ID de habilidad no válida. \n')
 
-                    new_effective_initial_year = input(" Ingrese el año efectivo de inicio, solo presione enter si no ha comenzado: ")
+                    new_effective_initial_year = int(input(" Ingrese el año efectivo de inicio, solo presione enter si no ha comenzado: "))
                     if new_effective_initial_year != '':
-                        new_effective_initial_month = input(" Ingrese el mes efectivo de inicio: ")
-                        new_effective_initial_day = input(" Ingrese el dia efectivo de inicio: ")
+                        new_effective_initial_month = int(input(" Ingrese el mes efectivo de inicio: "))
+                        new_effective_initial_day = int(input(" Ingrese el dia efectivo de inicio: "))
                         try:
                             new_effective_initial_date = date(new_effective_initial_year,new_effective_initial_month,new_effective_initial_day)
                         except:
@@ -352,7 +352,7 @@ def tasks_console(db, level):
                         new_effective_end_date = None
                     # new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
                     # new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
-                    editTask(db, id_edit, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, efective_initial_date = new_effective_initial_date, efective_end_date = new_effective_end_date)
+                    editTask(db, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, effective_initial_date = new_effective_initial_date, effective_end_date = new_effective_end_date)
                 except ValueError as ve:
                     print(ve)
             elif(opt2 == '2'):
