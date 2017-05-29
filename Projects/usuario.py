@@ -309,7 +309,7 @@ def tasks_console(db, level):
                     try:
                         new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
                         with db_session:
-                            if db.Projects.get(contract_number = new_contract_number) != None:
+                            if db.Projects.get(contract_number = new_contract_number) == None:
                                 raise ValueError('\n Proyecto inexistente. \n')
                         if(level == 1) or (level == 2):
                             new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
@@ -332,7 +332,7 @@ def tasks_console(db, level):
                             new_effective_initial_month = input(" Ingrese el mes efectivo de inicio: ")
                             new_effective_initial_day = input(" Ingrese el dia efectivo de inicio: ")
                             try:
-                                new_effective_initial_date = date(new_effective_initial_year,new_effective_initial_month,new_effective_initial_day)
+                                new_effective_initial_date = date(int(new_effective_initial_year),int(new_effective_initial_month),int(new_effective_initial_day))
                             except:
                                 raise ValueError('\n No es una fecha válida \n')
                         if(new_effective_initial_year != ''):
@@ -341,7 +341,7 @@ def tasks_console(db, level):
                                 new_effective_end_month = input(" Ingrese el mes efectivo de término, solo presione enter si no ha terminado: ")
                                 new_effective_end_day = input(" Ingrese el día efectivo de término, solo presione enter si no ha terminado: ")
                                 try:
-                                    new_effective_end_date = date(new_effective_end_year,new_effective_end_month,new_effective_end_day)
+                                    new_effective_end_date = date(int(new_effective_end_year),int(new_effective_end_month),int(new_effective_end_day))
                                 except:
                                     raise ValueError('\n Fecha de término inválida. \n')
                             else:
@@ -352,7 +352,8 @@ def tasks_console(db, level):
                             new_effective_end_date = None
                         # new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
                         # new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
-                        editTask(db, id_edit, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, efective_initial_date = new_effective_initial_date, efective_end_date = new_effective_end_date)
+                        editTask(db, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, effective_initial_date = new_effective_initial_date, effective_end_date = new_effective_end_date)
+                        input('\n Fecha agregada con éxito. Presione una tecla para continuar: ')
                     except ValueError as ve:
                         print(ve)
                 else:

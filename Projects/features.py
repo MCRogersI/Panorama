@@ -157,10 +157,10 @@ def createTask(db, id_skill, contract_number, original_initial_date, original_en
         t = db.Tasks(skill = id_skill, project = contract_number, original_initial_date = original_initial_date, original_end_date = original_end_date)
 
         
-def editTask(db, id , id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
+def editTask(db , id_skill, contract_number, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
     with db_session:
         try:
-            t = db.Tasks[id]
+            t = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects[contract_number], failed = None)
             if id_skill != None:
                 t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
             if contract_number != None: 
