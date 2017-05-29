@@ -101,13 +101,13 @@ def define_models(db):
         comuna_to = PrimaryKey(str)
         freight_cost = Required(float)
         
-    class Operating_Costs(db.Entity):#Cantidades utilizadas en el cálculo del costo de fabricación del
+    class Operating_Parameters(db.Entity):#Cantidades utilizadas en el cálculo del costo de fabricación del
         #excel Base de Datos _sistema Gestion de Operaciones_ACO_04 03 2017_vf.xlsx, en la hoga 
         #'COSTO ESTANDAR FABRICACION'. Se ingresarán los costos fijos y variables de la fábrica,
         # el arriendo y los gastos de luz, agua, etc, el porcentaje de ventas para los materiales. 
         # La depreciación podría ir aquí o ser ingresada cuando se necesite calcular el costo de fab.
         name = PrimaryKey(str)
-        cost = Required(float)
+        value = Required(float)
         
     class Viatic_Costs(db.Entity):#
         # viaticos para los trabajadores que deben viajar para hacer la instalacion
@@ -122,6 +122,17 @@ def define_models(db):
         comuna_to = Required(str)
         PrimaryKey(comuna_from, comuna_to)        
         movilization_cost = Required(float)
+        
+    class Crystals_Parameters(db.Entity):#
+        # costo por metro cuadrado y factor de perdida segun el espesor de cada cristal (en milimetros)
+        thickness = PrimaryKey(str)   
+        square_meter_cost = Required(float)
+        waste_factor = Required(float)
+        
+    class Profiles_Fittings_Parameters(db.Entity):#
+        # factor de perdida segun el tipo de perfil
+        name = PrimaryKey(str)
+        waste_factor = Required(float)
         
     class Projects_Costs(db.Entity):
         project = PrimaryKey(Projects)

@@ -1,31 +1,30 @@
+from pony.orm import *
 from openpyxl.styles import Font, PatternFill, colors
 from math import ceil
 
-def computation(wb_read, wb_written):
-    ws_written = wb_written.create_sheet("Costo Estandar Fabricacion")
+def computation(db, wb_read, project_cost):
     ws_read_measures = wb_read["Measures"]
     ws_read_manufacturing = wb_read["Manufacturing"]
     
-    #parametros fijos, por ahora uso los que venian en el archivo de ejemplo
-    remuneraciones_fijas = 2400000
-    remuneraciones_variables = 122500
-    porcentaje_venta = 0.02
-    arriendo_fabrica = 1500000
-    depreciacion = 500000
-    energia_agua_otros = 400000
-    
-    #datos que son a nivel empresa, no a nivel proyecto, aca hay que darlos
-    metros_lineales_mes = 240
-    venta_neta_mensual = 80000000
+    #parametros fijos, se toman de la base de datos
+    with db_session:
+        remuneraciones_fijas = db.Operating_Costs.get(name = "Remuneraciones fijas fabrica").value
+        remuneraciones_variables = db.Operating_Costs.get(name = "Remuneraciones variables fabrica").value
+        porcentaje_venta = db.Operating_Costs.get(name = "Porcentaje de la venta correspondiente a materiales de fabricacion").value
+        #lo pasamos de porcentaje a fraccion
+        porcentaje_venta = porcentaje_venta/100.0
+        
+        arriendo_fabrica = db.Operating_Costs.get(name = "Arriendo de fabrica").value
+        depreciacion = db.Operating_Costs.get(name = "Depreciacion equipos y herramientas").value
+        energia_agua_otros = db.Operating_Costs.get(name = "Energia, luz, agua, otros").value
+        metros_lineales_mes = db.Operating_Costs.get(name = "Metros lineales vendidos en el mes").value
+        venta_neta_mensual = db.Operating_Costs.get(name = "Venta (neta de IVA) mensual").value
     
     #parametros que deben obtenerse del archivo en cuestion, si el formato es suficientemente estandar
     metros_lineales = linearMeters(ws_read_manufacturing)
     
-    #ahora partimos escribiendo en el archivo
-    writeTitles(ws_written)
-    
     #ahora terminamos de escribir en el archivo
-    writeInfo(ws_written, metros_lineales, metros_lineales_mes, remuneraciones_fijas, remuneraciones_variables, \
+    writeInfo(db, project_cost, metros_lineales, metros_lineales_mes, remuneraciones_fijas, remuneraciones_variables, \
                 porcentaje_venta, venta_neta_mensual, arriendo_fabrica, depreciacion, energia_agua_otros)
     
     
@@ -39,35 +38,11 @@ def linearMeters(ws_read_manufacturing):
         width = ws_read_manufacturing.cell(row = next_row, column = 4).value
         next_row = next_row + 1
     return metros_lineales
-
-    
-    
-def writeTitles(ws_written):
-    #aplicamos ciertos cambios al ancho y formato de algunas columnas y celdas
-    ws_written.column_dimensions["B"].width = 45
-    fondo_verde = PatternFill(start_color = colors.DARKGREEN, end_color = colors.DARKGREEN, fill_type='solid')
-    ws_written['B10'].fill = fondo_verde
-    ws_written['B14'].fill = fondo_verde
-    
-    #escribimos efectivamente los titulos de la columna
-    rows = [1, 2, 4, 5, 6, 7, 8, 9, 10, 12, 14]
-    columns = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-    texts = ["ML CoNTRATo", "ML VENDIDoS AL MES", "REMUNERACIoNES FIJAS FABRICA", "REMUNERACIoNES VARIABLES FABRICA", \
-                "MATERIALES DE FABRICACIoN", "ARRIENDo DE FABRICA", "DEPRECIACIoN EQUIPoS Y HERRAMIENTAS", \
-                "ENERGIA, LUZ, AGUA, oTRoS", "ToTAL CoSToS FABRICACIoN MENSUALES", "CoSTo FABRICACIoN/ ML VENDIDo MENSUAL", \
-                "CoSTo ESTANDAR FABRICACIoN CoNTRATo"]
-    for i in range(0, len(rows)):
-        ws_written.cell(row = rows[i], column = columns[i], value = texts[i])
         
         
         
-def writeInfo(ws_written, metros_lineales, metros_lineales_mes, remuneraciones_fijas, remuneraciones_variables, \
+def writeInfo(db, project_cost, metros_lineales, metros_lineales_mes, remuneraciones_fijas, remuneraciones_variables, \
                 porcentaje_venta, venta_neta_mensual, arriendo_fabrica, depreciacion, energia_agua_otros):
-    #aplicamos ciertos cambios al ancho y formato de algunas columnas y celdas
-    ws_written.column_dimensions["C"].width = 14
-    fondo_verde = PatternFill(start_color = colors.DARKGREEN, end_color = colors.DARKGREEN, fill_type='solid')
-    ws_written['C10'].fill = fondo_verde
-    ws_written['C14'].fill = fondo_verde
     
     #conseguimos algunos de los datos necesarios para escribir la informacion, partiendo por el los "materiales de fabricacion"
     materiales_fabricacion = porcentaje_venta * venta_neta_mensual
@@ -82,11 +57,6 @@ def writeInfo(ws_written, metros_lineales, metros_lineales_mes, remuneraciones_f
     #terminamos con el costo estandar de fabricacion
     costo_estandar_fabricacion = costo_fabricacion_por_ml * metros_lineales
     
-    #escribimos efectivamente la informacion de la columna
-    rows = [1, 2, 4, 5, 6, 7, 8, 9, 10, 12, 14]
-    columns = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
-    texts = [metros_lineales, metros_lineales_mes, remuneraciones_fijas, remuneraciones_variables, materiales_fabricacion, \
-                arriendo_fabrica, depreciacion, energia_agua_otros, total_costos_fabricacion, costo_fabricacion_por_ml, \
-                costo_estandar_fabricacion]
-    for i in range(0, len(rows)):
-        ws_written.cell(row = rows[i], column = columns[i], value = texts[i])
+    #escribimos efectivamente el costo de fabricacion en la base de datos
+    with db_session:
+        db.project_cost.standard_cost_fabrication = costo_estandar_fabricacion
