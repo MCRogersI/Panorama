@@ -24,7 +24,7 @@ def editUserLevel(db,name,new_level, password):
             
 def deleteUser(db,name):
     with db_session:
-        
+        db.Users.get(user_name = name).delete()
 
 def checkPassEntry(db,name_request, password):
     ''' Este método revisa que los datos ingresados para el sign-up sean correctos
