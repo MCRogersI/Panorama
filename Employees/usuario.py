@@ -29,7 +29,7 @@ def employees_console(db, level):
                                                                    \n - 2: Para volver atrás. \
                                                                    \n Ingrese la alternativa elegida: ")
 
-        if(opt == '1' and (level == 1 or level == 2)):
+        if(opt == '1'):
             try:
                 nameEmpleado = input("\n Ingrese el nombre del empleado: ")
                 if len(nameEmpleado) <1:
@@ -90,7 +90,7 @@ def employees_console(db, level):
             except:
                 print(' No se pudo crear el empleado \n')
                 input('\n Presione cualquier tecla para continuar: \n')
-        if(opt == '2' and (level == 1 or level == 2)):
+        if(opt == '2'):
             try:
                 id_empleado = input("\n Ingrese el ID del empleado a editar: ")
                 try:
@@ -159,7 +159,7 @@ def employees_console(db, level):
             except ValueError as ve:
                 print(ve)
                 input('\n Presione cualquier tecla para continuar \n')
-        if(opt == '3' and level == 1):
+        if(opt == '3'):
             try:
                 idEmpleado = input("\n Ingrese el ID del empleado que desea eliminar: ")
                 with db_session:
@@ -174,7 +174,7 @@ def employees_console(db, level):
             except ValueError as ve:
                 print(ve)
                 input('\n Presione cualquier tecla para continuar \n')
-        if(opt == '4' and level == 1) or (opt == '3' and level == 2):
+        if(opt == '4'):
             opt_employees_activities = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de una actividad. \
                                                                                         \n - 2: Si desea eliminar una actividad. \
                                                                                         \n - 3: Si desea ver la lista actual de actividades. \
@@ -224,7 +224,7 @@ def employees_console(db, level):
                 print('\n')
                 printEmployeesActivities(db)
                 input(' \n Presione una tecla para continuar: ')
-        if(opt == '5' and level == 1) or (opt == '4' and level == 2) or (opt == '1' and level == 3):
+        if(opt == '5'):
             opt_ver_empleados = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver empleados. \
                                                                                  \n - 2: Si desea ver la lista de rectificadores. \
                                                                                  \n - 3: Si desea ver la lista de diseñadores. \
@@ -271,5 +271,5 @@ def employees_console(db, level):
             else:
                 print('\n No es una opción válida. \n')
                 input('\n Presione cualquier tecla para continuar: ')
-        if(opt == '6' and level == 1) or (opt == '5' and level == 2) or (opt == '2' and level ==3):
+        if(opt == '6'):
             break

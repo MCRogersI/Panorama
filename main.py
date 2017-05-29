@@ -22,7 +22,13 @@ import getpass
 
 def console(level):
     while True:
-        opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados. \n - 2: Proyectos. \n - 3: Tareas. \n - 4: Stock. \n - 5: Planificación \n - 6: Para salir. \n Ingrese la alternativa elegida: ")
+        opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados.\
+                                                              \n - 2: Proyectos. \
+                                                              \n - 3: Tareas. \
+                                                              \n - 4: Stock. \
+                                                              \n - 5: Planificación \
+                                                              \n - 6: Para salir. \
+                                                              \n Ingrese la alternativa elegida: ")
         if(opt == '1'):
             # Los ids deberían ser creados automáticamente y no ingresados (para asegurarse de que sean únicos).
             # Para el caso particular de los proyectos el contract_number puede ser ingresado porque tiene la propiedad de ser único.
@@ -41,7 +47,6 @@ def console(level):
 def signIn():
     while True:
         user = input("Ingrese su usuario: ")
-        # password = input("Ingrese su contraseña: ")
         password = getpass.getpass('Ingrese su contraseña: ')
         if Uf.checkPassEntry(db, user, password):
             with db_session:
