@@ -2,7 +2,7 @@ from Employees.features import createEmployee, printEmployees, editEmployee, pri
 from Projects.features import createEmployeeActivity, deleteEmployeeActivity, printEmployeesActivities
 from pony.orm import *
 from datetime import date
-from Employees.reports import createEmployeeReportV2
+from Employees.reports import createPersonalEmployeeReport
 
 def employees_console(db, level, user):
 #Es mejor importar las funciones en lugar de entregarsélas como parámetro a la función. Cambiar más adelante.
@@ -272,7 +272,7 @@ def employees_console(db, level, user):
                         with db_session:
                             if db.Employees.get( id = int(id_employee)) == None:
                                 raise ValueError('\n Empleado inexistente. \n')
-                        createEmployeeReportV2(db,id_employee)
+                        createPersonalEmployeeReport(db,id_employee)
                         print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
                         input('\n Presione una tecla para continuar. \n')
                     except ValueError as ve:
@@ -290,7 +290,7 @@ def employees_console(db, level, user):
                             raise ValueError('\n Empleado inexistente. \n')
                         if db.Employees[int(id_employee)].skill.id != 4:
                             raise ValueError('\n Empleado no es un instalador. Acceso restringido. \n')
-                    createEmployeeReportV2(db,id_employee)
+                    createPersonalEmployeeReport(db,id_employee)
                     print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
                     input('\n Presione una tecla para continuar. \n')
                 except ValueError as ve:
@@ -308,7 +308,7 @@ def employees_console(db, level, user):
                             raise ValueError('\n Empleado inexistente. \n')
                         if db.Employees[int(id_employee)].skill.id != 1:
                             raise ValueError('\n Empleado no es un rectificador. Acceso restringido. \n')
-                    createEmployeeReportV2(db,id_employee)
+                    createPersonalEmployeeReport(db,id_employee)
                     print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
                     input('\n Presione una tecla para continuar. \n')
                 except ValueError as ve:
@@ -326,7 +326,7 @@ def employees_console(db, level, user):
                             raise ValueError('\n Empleado inexistente. \n')
                         if db.Employees[int(id_employee)].skill.id not in [2,4]:
                             raise ValueError('\n Empleado no es un instalador o diseñador. Acceso restringido. \n')
-                    createEmployeeReportV2(db,id_employee)
+                    createPersonalEmployeeReport(db,id_employee)
                     print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
                     input('\n Presione una tecla para continuar. \n')
                 except ValueError as ve:
@@ -342,7 +342,7 @@ def employees_console(db, level, user):
                     with db_session:
                         if db.Employees.get( id = int(id_employee)) == None:
                             raise ValueError('\n Usuario no es trabajador. \n')
-                    createEmployeeReportV2(db,id_employee)
+                    createPersonalEmployeeReport(db,id_employee)
                     print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
                     input('\n Presione una tecla para continuar. \n')
                 except ValueError as ve:
