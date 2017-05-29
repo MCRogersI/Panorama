@@ -12,6 +12,7 @@ import Stock.usuario as Su
 import Planning.usuario as PlanU
 import Stock.reports as Sr
 import Stock.features as Sf
+import Users.usuario as Uu
 import numpy as np
 import getpass
 
@@ -50,6 +51,9 @@ def console(level, user):
             else:
                 print('\n Acceso denegado. \n')
                 input('Presione una tecla para continuar: ')
+        if(opt=='6')
+            if(level ==1):
+                Uu.users_console(db)
         if(opt == '7'):
             print("\n Has salido del programa.")
             break
