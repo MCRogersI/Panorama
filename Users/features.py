@@ -17,7 +17,7 @@ def createUser(db,name, level,password):
 def editUserLevel(db,name,new_level, password):
     with db_session:
         if checkPassEntry(db,name, password):
-            u = db.Users.get(user_name = name):
+            u = db.Users.get(user_name = name)
             u.level = new_level
         else:
             print('\n Usuario o contraseña incorrectos.\n')

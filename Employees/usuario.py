@@ -236,11 +236,11 @@ def employees_console(db, level, user):
                                                                                      \n - 4: Si desea ver la lista de fabricadores. \
                                                                                      \n - 5: Si desea ver la lista de instaladores. \
                                                                                      \n Ingrese la alternativa elegida: ")
-             if (level == 3):
+            if (level == 3):
                 opt_ver_empleados = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver empleados. \
                                                                                      \n - 2: Si desea ver la lista de instaladores. \
                                                                                      \n Ingrese la alternativa elegida: ")
-             if (level == 4):
+            if (level == 4):
                 opt_ver_empleados = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver empleados. \
                                                                                      \n - 2: Si desea ver la lista de rectificadores. \
                                                                                      \n Ingrese la alternativa elegida: ")

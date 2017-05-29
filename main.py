@@ -51,7 +51,7 @@ def console(level, user):
             else:
                 print('\n Acceso denegado. \n')
                 input('Presione una tecla para continuar: ')
-        if(opt=='6')
+        if(opt=='6'):
             if(level ==1):
                 Uu.users_console(db)
         if(opt == '7'):

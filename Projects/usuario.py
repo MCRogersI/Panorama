@@ -419,22 +419,22 @@ def tasks_console(db, level):
                     file_dir = file_name + ".xlsx"
                     if os.path.isfile(file_dir):
                         if op2 == '1':
-                            updateFreightCosts(db, contract_number, file_name)
+                            updateFreightCosts(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
                         if op2 == '2':
-                            updateOperatingCosts(db, contract_number, file_name)
+                            updateOperatingCosts(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
                         if op2 == '3':
-                            updateViaticCosts(db, contract_number, file_name)
+                            updateViaticCosts(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
                         if op2 == '4':
-                            updateMovilizationCosts(db, contract_number, file_name)
+                            updateMovilizationCosts(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
                         if op2 == '5':
-                            updateCrystalsParameters(db, contract_number, file_name)
+                            updateCrystalsParameters(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
                         if op2 == '6':
-                            updateProfilesParameters(db, contract_number, file_name)
+                            updateProfilesParameters(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
                     else:
                         raise ValueError('\n Archivo no encontrado.')
