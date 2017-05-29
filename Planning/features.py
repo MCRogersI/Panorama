@@ -597,7 +597,7 @@ def doPlanning(db):
                                 commit()
             for e in p.engagements:
                 Sf.updateEngagements(db, e.sku.id)
-        createReport(db, Delayed) #Comenté esta línea para poder ver lo de los engagements (descomentar luego)
+        createReport(db, Delayed, False) #Comenté esta línea para poder ver lo de los engagements (descomentar luego)
         
         
 

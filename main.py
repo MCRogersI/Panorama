@@ -278,4 +278,10 @@ signIn()
 
 # Sr.createStockReportExtended(db)
 
-# Sf.makePurchases(db, 'Purchases')
+# Sf.makePurchases(db, 'Purchases
+
+#####################################
+# Probanfo la funcion createDelay() #
+#####################################
+
+# Pf.createDelay(db, 1, 2, 3)
