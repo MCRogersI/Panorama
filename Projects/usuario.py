@@ -2,7 +2,7 @@ from datetime import date
 from pony.orm import *
 from Projects.features import createProject, printProjects, editProject, deleteProject, finishProject, createTask, editTask, printTasks, failedTask, createProjectActivity, deleteProjectActivity, printProjectsActivities
 from Projects.costs import estimateCost
-from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts
+from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts, updateCrystalsParameters, updateProfilesParameters
 import os
 # from Projects.costs import estimateCost
 
@@ -35,42 +35,42 @@ def projects_console(db, level):
                 try:
                     int(contract_number)
                 except:
-                    raise ValueError('No es un número válido')
+                    raise ValueError(' No es un número válido')
                 with db_session:
                     if len(select( p for p in db.Projects if p.contract_number == int(contract_number))) > 0:
                         raise ValueError('\n Este número de contrato ya existe \n')
-                client_address = input("Ingrese la direccion del cliente: ")
+                client_address = input(" Ingrese la direccion del cliente: ")
                 if client_address == '':
                     raise ValueError('\n Debe ingresar una dirección \n')
-                client_comuna = input("Ingrese la comuna del cliente: ")
+                client_comuna = input(" Ingrese la comuna del cliente: ")
                 if client_comuna == '':
                     raise ValueError('\n Debe ingresar una comuna \n')
-                client_name = input("Ingrese el nombre del cliente: ")
+                client_name = input(" Ingrese el nombre del cliente: ")
                 if client_name == '':
                     raise ValueError('\n Debe ingresar un nombre \n')
-                client_rut = input("Ingrese el RUT del cliente: ")
+                client_rut = input(" Ingrese el RUT del cliente: ")
                 if client_rut == '':
                     raise ValueError('\n Debe ingresar un rut \n')
-                linear_meters = input("Ingrese los metros lineales del proyecto: ")
+                linear_meters = input(" Ingrese los metros lineales del proyecto: ")
                 try:
                     int(linear_meters)
                 except:
                     raise ValueError('\n Los metros lineales deben ser un número entero \n')
                 if int(linear_meters) <0:
                     raise ValueError('\n Los metros lineales deben ser un número entero positivo \n')
-                year = input("ingrese el año de la fecha de entrega pactada del proyecto: ")
+                year = input(" Ingrese el año de la fecha de entrega pactada del proyecto: ")
                 try:
                     int(year)
                 except:
                     raise ValueError('\n El año debe ser un número entero \n')
-                month = input("ingrese el mes de la fecha de entrega pactada del proyecto: ")
+                month = input(" Ingrese el mes de la fecha de entrega pactada del proyecto: ")
                 try:
                     int(month)
                 except:
                     raise ValueError('\n ser un número entero \n')
                 if int(month) >12 or int(month) < 1:
                     raise ValueError('\n El mes debe ser un número entero entre 1 y 12 \n')
-                day = input("ingrese el día de la fecha de entrega pactada del proyecto: ")
+                day = input(" Ingrese el día de la fecha de entrega pactada del proyecto: ")
                 try:
                     int(day)
                 except:
@@ -84,7 +84,7 @@ def projects_console(db, level):
                     int(crystal_leadtime)
                 except:
                     crystal_leadtime = 15
-                sale_year = input("ingrese el año de la fecha de venta del proyecto: ")
+                sale_year = input(" Ingrese el año de la fecha de venta del proyecto: ")
                 try:
                     int(sale_year)
                 except:
@@ -271,23 +271,36 @@ def projects_console(db, level):
         elif(opt == '5' and level == 1) or (opt == '3' and level == 2) or (opt == '1' and level == 3):
             printProjects(db)
         elif (opt =='6' and level == 1) or (opt== '4' and level == 2):
-            try:
-                contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo: ')
-                if int(contract_number)  < 0:
-                    raise ValueError('\n El número de contrato debe ser un número entero positivo.')
-                with db_session:
-                    if db.Projects.get(contract_number = contract_number) == None:
-                        raise ValueError('\n Número de contrato no existente.')
-                file_name = input(' Ingrese el nombre del archivo de la hoja de corte: ')
-                file_dir = file_name + ".xlsx"
-                if os.path.isfile(file_dir):
-                    estimateCost(db, contract_number, file_name)
-                    input('\n Costo estimado exitosamente. Presione una tecla para continuar.')
-                else:
-                    raise ValueError('\n Archivo no encontrado.')
-            except ValueError as ve:
-                print(ve)
-                input(' Presione una tecla para continuar.')
+            contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo: ')
+            if int(contract_number)  < 0:
+                raise ValueError('\n El número de contrato debe ser un número entero positivo.')
+            with db_session:
+                if db.Projects.get(contract_number = contract_number) == None:
+                    raise ValueError('\n Número de contrato no existente.')
+            file_name = input(' Ingrese el nombre del archivo de la hoja de corte: ')
+            file_dir = file_name + ".xlsx"
+            if os.path.isfile(file_dir):
+                estimateCost(db, contract_number, file_name)
+                input('\n Costo estimado exitosamente. Presione una tecla para continuar.')
+            else:
+                raise ValueError('\n Archivo no encontrado.')
+            # try:
+                # contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo: ')
+                # if int(contract_number)  < 0:
+                    # raise ValueError('\n El número de contrato debe ser un número entero positivo.')
+                # with db_session:
+                    # if db.Projects.get(contract_number = contract_number) == None:
+                        # raise ValueError('\n Número de contrato no existente.')
+                # file_name = input(' Ingrese el nombre del archivo de la hoja de corte: ')
+                # file_dir = file_name + ".xlsx"
+                # if os.path.isfile(file_dir):
+                    # estimateCost(db, contract_number, file_name)
+                    # input('\n Costo estimado exitosamente. Presione una tecla para continuar.')
+                # else:
+                    # raise ValueError('\n Archivo no encontrado.')
+            # except ValueError as ve:
+                # print(ve)
+                # input(' Presione una tecla para continuar.')
         elif(opt == '7' and level == 1) or(opt == '5' and level == 2) or (opt == '2' and level == 3):
             break
 
@@ -298,7 +311,7 @@ def tasks_console(db, level):
                                                                   \n - 2: Si desea ver las tareas actuales.\
                                                                   \n - 3: Para editar parámetros asociados a costos.\
                                                                   \n - 4: Para volver atrás.\
-                                                                  \n")
+                                                                  \n Ingrese la alternativa elegida: ")
         if level == 3:
             opt = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver las tareas actuales. \n - 2: Para volver atrás. \n")
 
@@ -376,17 +389,19 @@ def tasks_console(db, level):
                 file_name = input(' Ingrese el nombre del archivo: ')
                 file_dir = file_name + ".xlsx"
                 if os.path.isfile(file_dir):
-                    if op2 == '1':
-                        updateFreightCosts(db, contract_number, file_name)
+                    if opt2 == '1':
+                        updateFreightCosts(db, file_name)
                         input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
-                    if op2 == '2':
-                        updateOperatingCosts(db, contract_number, file_name)
+                    if opt2 == '2':
+                        updateOperatingCosts(db, file_name)
                         input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
-                    if op2 == '3':
-                        updateViaticCosts(db, contract_number, file_name)
+                    if opt2 == '3':
+                        updateViaticCosts(db, file_name)
                         input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
-                    if op2 == '4':
-                        updateMovilizationCosts(db, contract_number, file_name)
+                    if opt2 == '4':
+                        updateMovilizationCosts(db, file_name)
+                        updateCrystalsParameters(db, file_name)
+                        updateProfilesParameters(db, file_name)
                         input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
                 else:
                     raise ValueError('\n Archivo no encontrado.')

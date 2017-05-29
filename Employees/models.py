@@ -15,7 +15,7 @@ def define_models(db):
     class Employees(db.Entity):
         id = PrimaryKey(int, auto=True)
         name = Required(str)
-        zone = Required(int)
+        zone = Required(str)
         # solo para los instaladores, senior=True si es instalador senior, senior=False si es instalador junior
         senior = Optional(bool)
         skills = Set('Employees_Skills')

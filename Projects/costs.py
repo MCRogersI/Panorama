@@ -32,8 +32,10 @@ def estimateCost(db, contract_number, file_name):
         viatic_cost = viatic_cost + db.Viatic_Costs[(i.zone, comuna_to)].viatic_cost
         movilization_cost = movilization_cost + db.Movilization_Costs[(i.zone, comuna_to)].movilization_cost
     
-    # creamos tambien el Projects_Costs que usaremos en adelante
-    project_cost = db.Projects_Costs(project = db.Projects[contract_number])
+    # hacemos un query para el Projects_Costs que usaremos en adelante, si no existe, lo creamos
+    project_cost = db.Projects_Costs.get(project = db.Projects[contract_number])
+    if project_cost == None:
+        project_cost = db.Projects_Costs(project = db.Projects[contract_number])
     
     parameters = viatic_cost, movilization_cost, num_installers, freight_cost, 1, file_name
     standardCostCalculation(db, project_cost, parameters)

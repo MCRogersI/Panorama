@@ -114,10 +114,10 @@ def stock_console(db, level):
                     input('\n Presione una tecla para continuar \n')
             if (opt2 == '2'):
                 try:
-                    file_name = input('\n Ingrese el nombre del archivo con los datos : ')
+                    file_name = input('\n Ingrese el nombre del archivo con los datos: ')
                     file_dir = file_name + ".xlsx"
                     if os.path.isfile(file_dir):
-                        editAllSkus(db,filename)
+                        editAllSkus(db, file_name)
                         input('\n Datos cargados exitosamente. Presione una tecla para continuar. ')
                     else:
                         raise ValueError('\n Archivo no encontrado.')

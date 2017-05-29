@@ -9,9 +9,9 @@ def computation(db, wb_read, project_cost, tarifa_viaticos, tarifa_movilizacion,
     #parametros fijos, tomados de los parametros guardados en la base de datos
     with db_session:
         rendimiento_diario = getAveragePerformance(db, 4)
-        factor_errores_instalacion = db.Operating_Costs.get(name = "Factor de errores de instalacion").value
-        tarifa_instalacion_interna = db.Operating_Costs.get(name = "Tarifa instalacion interna").value
-        tarifa_instalacion_externa = db.Operating_Costs.get(name = "Tarifa instalacion externa").value
+        factor_errores_instalacion = db.Operating_Parameters.get(name = "Factor de errores de instalacion").value
+        tarifa_instalacion_interna = db.Operating_Parameters.get(name = "Tarifa instalacion interna").value
+        tarifa_instalacion_externa = db.Operating_Parameters.get(name = "Tarifa instalacion externa").value
     if tipo_instalador == 1:
         tarifa_instalacion = tarifa_instalacion_interna
     else:
@@ -22,7 +22,7 @@ def computation(db, wb_read, project_cost, tarifa_viaticos, tarifa_movilizacion,
     metros_lineales = linearMeters(ws_read_manufacturing)
     
     #ahora terminamos de escribir en el archivo
-    writeInfo(db, project_cost, comuna, metros_lineales, numero_instaladores, rendimiento_diario, tipo_instalador, factor_errores_instalacion, \
+    writeInfo(db, project_cost, metros_lineales, numero_instaladores, rendimiento_diario, factor_errores_instalacion, \
                 costo_flete, tarifa_viaticos, tarifa_movilizacion, tarifa_instalacion)
     
     
@@ -59,4 +59,4 @@ def writeInfo(db, project_cost, metros_lineales, numero_instaladores, rendimient
     
     #escribimos efectivamente el costo de instalacion en la base de datos
     with db_session:
-        db.project_cost.standard_cost_installation = instalacion_despues_fallas
+        project_cost.standard_cost_installation = instalacion_despues_fallas

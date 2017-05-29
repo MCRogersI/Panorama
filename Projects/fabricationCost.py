@@ -8,17 +8,17 @@ def computation(db, wb_read, project_cost):
     
     #parametros fijos, se toman de la base de datos
     with db_session:
-        remuneraciones_fijas = db.Operating_Costs.get(name = "Remuneraciones fijas fabrica").value
-        remuneraciones_variables = db.Operating_Costs.get(name = "Remuneraciones variables fabrica").value
-        porcentaje_venta = db.Operating_Costs.get(name = "Porcentaje de la venta correspondiente a materiales de fabricacion").value
+        remuneraciones_fijas = db.Operating_Parameters.get(name = "Remuneraciones fijas fabrica").value
+        remuneraciones_variables = db.Operating_Parameters.get(name = "Remuneraciones variables fabrica").value
+        porcentaje_venta = db.Operating_Parameters.get(name = "Porcentaje de la venta correspondiente a materiales de fabricacion").value
         #lo pasamos de porcentaje a fraccion
         porcentaje_venta = porcentaje_venta/100.0
         
-        arriendo_fabrica = db.Operating_Costs.get(name = "Arriendo de fabrica").value
-        depreciacion = db.Operating_Costs.get(name = "Depreciacion equipos y herramientas").value
-        energia_agua_otros = db.Operating_Costs.get(name = "Energia, luz, agua, otros").value
-        metros_lineales_mes = db.Operating_Costs.get(name = "Metros lineales vendidos en el mes").value
-        venta_neta_mensual = db.Operating_Costs.get(name = "Venta (neta de IVA) mensual").value
+        arriendo_fabrica = db.Operating_Parameters.get(name = "Arriendo de fabrica").value
+        depreciacion = db.Operating_Parameters.get(name = "Depreciacion equipos y herramientas").value
+        energia_agua_otros = db.Operating_Parameters.get(name = "Energia, luz, agua, otros").value
+        metros_lineales_mes = db.Operating_Parameters.get(name = "Metros lineales vendidos en el mes").value
+        venta_neta_mensual = db.Operating_Parameters.get(name = "Venta (neta de IVA) mensual").value
     
     #parametros que deben obtenerse del archivo en cuestion, si el formato es suficientemente estandar
     metros_lineales = linearMeters(ws_read_manufacturing)
@@ -59,4 +59,4 @@ def writeInfo(db, project_cost, metros_lineales, metros_lineales_mes, remuneraci
     
     #escribimos efectivamente el costo de fabricacion en la base de datos
     with db_session:
-        db.project_cost.standard_cost_fabrication = costo_estandar_fabricacion
+        project_cost.standard_cost_fabrication = costo_estandar_fabricacion
