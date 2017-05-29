@@ -5,7 +5,11 @@ import numpy as np
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles.borders import Border, Side
 from openpyxl.styles import Font,Alignment
+#para borrar archivo Excel
 import os
+#para crear nombres de archivo al azar
+import random
+import string
 
 #################
 # Global report #
@@ -864,8 +868,24 @@ def createGlobalReportModified(db):
 # Métodos relacionados a los informes post-planificación #
 ##########################################################
 
-
-def createReport(db, Delayed):
+'''caused_by_delay es un boolean: si es True significa que estamos usando el método solo para verificar factibilidad de planificacion.
+Ese caso significa que createReport() esta siendo llamado desde el metodo createDelay(), y por lo tanto el archivo Excel que creemos aca 
+sera solamente temporal y lo borraremos al final. Si es False, significa que creareReport() esta siendo llamado desde el metodo 
+doPlanning(), y por lo tanto el archivo Excel no es solo auxiliar: el usuario podrá interferir con el.'''
+def createReport(db, Delayed, caused_by_delay):
+    if caused_by_delay:
+        wb = Workbook()
+        createPlanningReport(db, wb)
+        #creamos un Excel con nombre cualquiera, sera borrado despues de todas maneras
+        N = random.randint(20, 40)
+        file_name = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(N)) + ".xlsx"
+        
+        wb.save(file_name)
+        changes_plausible = planningChangesPlausible(db, wb)
+        os.remove(file_name)
+        return changes_plausible[0]
+        
+    
     with db_session:
         wb = Workbook()
         createDelayedReport(wb, Delayed)
@@ -899,12 +919,12 @@ def createReport(db, Delayed):
                 break
             elif opt == '2':
                 input(" Realice los cambios en el archivo ReportePlanificacion.xlsx, y presione cualquier tecla al terminar.")
-                changes_plausible = planningChangesPlausible(db)
+                changes_plausible = planningChangesPlausible(db, wb)
                 if not changes_plausible[0]:
                     print(changes_plausible[1] + " Los cambios a la planificación no serán aplicados.")
                 else:
                     print(changes_plausible[1])
-                    implementChanges(db)
+                    implementChanges(db, wb)
 
 
 def createDelayedReport(wb, Delayed):
@@ -1002,9 +1022,9 @@ def createPlanningReport(db, wb):
 #############################################################################
 
 #método que revisa si las asignaciones de empleados que hizo el usuario entregan una planificación factible
-def planningChangesPlausible(db):
+def planningChangesPlausible(db, wb):
     #primero cargamos la hoja de planificación y calculamos cuál es la máxima fila
-    wb = load_workbook('ReportePlanificacion.xlsx')
+    # wb = load_workbook('ReportePlanificacion.xlsx')
     ws = wb["Reporte planificación"]
     max_row = 3
     while(True):
@@ -1201,11 +1221,11 @@ def employeesAvailableActivities(db, ids_employees, initial_date, end_date, acti
         return True
 
 #método que aplica los cambios si es que son factibles
-def implementChanges(db):
+def implementChanges(db, wb):
     from Planning.features import assignTask
     with db_session:
         #primero cargamos la hoja de planificación y calculamos cuál es la máxima fila
-        wb = load_workbook('ReportePlanificacion.xlsx')
+        # wb = load_workbook('ReportePlanificacion.xlsx')
         ws = wb["Reporte planificación"]
         max_row = 3
         while(True):
