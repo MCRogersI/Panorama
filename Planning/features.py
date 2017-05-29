@@ -494,7 +494,7 @@ def doPlanning(db):
     import Projects.features as Pf
     import Stock.features as Sf
     Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 
-'task', 'num workers', 'initial date', 'ending date', 'deadline'])#Esto debería
+    'task', 'num workers', 'initial date', 'ending date', 'deadline'])#Esto debería
     # estar encapsulado en otro método.
     cleanTasks(db) #Aquí se borran todas las tasks de planificaciones anteriores (las 'borrables')
     with db_session:
@@ -511,9 +511,8 @@ def doPlanning(db):
                 if len(employees) < 1:
                     return('\n No se puede hacer la planificación porque hay tareas que nadie sabe hacer \n')
             
-        projects = select(p for p in db.Projects if p.finished == None).order_by(lambda p : p.priority) #Idealmente cambiar el == None a != True pero a pony no le gusta
-        print(len(projects))
-        print("aafasf")
+
+        projects = select(p for p in db.Projects if p.finished == None).order_by(lambda p : p.priority)
         # projects.show()
         for p in projects:
             last_release_date = date.today()
@@ -599,7 +598,9 @@ def doPlanning(db):
                                 commit()
             for e in p.engagements:
                 Sf.updateEngagements(db, e.sku.id)
-        # createReport(db, Delayed) #Comenté esta línea para poder ver lo de los engagements (descomentar luego)
+
+        createReport(db, Delayed, False) #Comenté esta línea para poder ver lo de los engagements (descomentar luego)
+
         
         
 

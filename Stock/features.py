@@ -13,6 +13,10 @@ def createSku(db,id, name, price, critical_level, real_quantity, waste_factor):
         en el futuro. Parte siendo igual a la cantidad real'''
 
     with db_session:
+        if critical_level == None:
+            critical_level = 0
+        if real_quantity == None:
+            real_quantity = 0
         s = db.Stock(id=id, name=name, price=price, critical_level=critical_level,
                      real_quantity=real_quantity, estimated_quantity=real_quantity, waste_factor = waste_factor)
 
@@ -563,7 +567,7 @@ def makePurchases(db, file_name):
 def editAllSkus(db, file_name):
     file_read = file_name + ".xlsx"
     wb_read = load_workbook(file_read, data_only=True)
-    ws_read_skus = wb_read.active()
+    ws_read_skus = wb_read["Hoja2"]
     
     next_row = 13
     id = ws_read_skus.cell(row = next_row, column = 2).value
@@ -575,12 +579,12 @@ def editAllSkus(db, file_name):
         waste_factor = ws_read_skus.cell(row = next_row, column = 11).value
         
         with db_session:
-            stock = db.Stock.get(id = code_read)
+            stock = db.Stock.get(id = id)
             #revisamos si el codigo leido esta ya en la base de datos. Si esta, actualizamos la informacion, si no esta, creamos el nuevo SKU con la informacion entregada
             if stock != None:
-                editSku(db, code_read, name, price, critical_level, real_quantity)
+                editSku(db, id, name, price, critical_level, real_quantity)
             else:
-                createSku(db, code_read, name, price, critical_level, real_quantity, waste_factor)
+                createSku(db, id, name, price, critical_level, real_quantity, waste_factor)
         
         next_row = next_row + 1
-        code_read = ws.cell(row = next_row, column = 2).value
+        id = ws_read_skus.cell(row = next_row, column = 2).value

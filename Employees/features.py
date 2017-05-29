@@ -1,9 +1,9 @@
 from pony.orm import *
 
 
-def createEmployee(db,  name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_inst = None, senior = None):
+def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_inst = None, senior = None):
     with db_session:
-        e = db.Employees(name = name, zone = zone)
+        e = db.Employees(id = id, name = name, zone = zone)
         if perf_rect != None:
             db.Employees_Skills(employee = e, skill = 1, performance = perf_rect)
         if perf_des != None:

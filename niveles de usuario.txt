@@ -52,3 +52,16 @@ Nombres:
 - debe generar además, cuando se trata de trabajos que requieren retrabajo por fallas, Ordenes de pedido ( OP) que se asocian a un contrato,
    en materia de perfiles y herrajes ( estas OP deben quedar registradas en sistema y mover inventarios, dando curso de paso a cálculo de sobre
    costoso de perfiles y herrajes por retrabajos asociados a fallas de calidad).... sigo después
+
+
+
+Niveles:
+	1- Administrador
+	2- Gerente Técnico.
+	3- Jefe de instalaciones y postventas
+	4- Encargado rectificación
+	5- Profesional de Diseño
+	6- rectificador
+	7- Diseñador
+	8- Fabricante
+	9- Instalador

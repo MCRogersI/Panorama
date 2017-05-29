@@ -2,7 +2,11 @@ from pony.orm import *
 from datetime import date, datetime, timedelta
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font
+from os import remove
 import Stock.features as Sf
+from Planning.features import sumDays, doPlanning
+from Planning.reports import createReport
+
 
 
 def createProject(db, contract_number, client_address, client_comuna,
@@ -18,14 +22,7 @@ def createProject(db, contract_number, client_address, client_comuna,
 			p.real_linear_meters = real_linear_meters
 		if real_cost != None:
 			p.real_cost = real_cost
-		
-		############################################################
-		# La siguiente función es para asignar la prioridad al crear el proyecto. por ahora se hará FIFO ya que no sabemos estimar la holgura, pero debe cambiar después.
-		#DEBE CAMBIAR DESPUES
 		db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished != True).count()
-		#NO ES BROMA!!
-	#?????????????????????????????	
-		#############################################################
 	PLf.doPlanning(db)
 
 def printProjects(db):
@@ -101,7 +98,7 @@ def getCostInstallation(db, contract_number, internal = True):
     with db_session:
         total_cost = 0
         p = db.Projects[contract_number]
-        price_ml = db.Operating_Costs['Costo por metro lineal de instalacion'].cost
+        price_ml = db.Operating_Parameters['Costo por metro lineal de instalacion'].cost
         task_aux = db.Tasks.get(skill = 4, project = p)
         et_ins = select(et for et in db.Employees_Tasks if et.task == task_aux)
         aux = 1
@@ -118,8 +115,8 @@ def getCostInstallation(db, contract_number, internal = True):
             # instalador externo cuesta 1.5 veces más
         num_projects = getNumberConcurrentProjects(db, contract_number, et_aux.planned_initial_date)
         total_cost += db.Freight_Costs[p.client_comuna].freight_cost/num_projects
-        total_cost += db.Operating_Costs['Viatical per day'].cost*len(et_ins)
-        total_cost += db.Operating_Costs['Costo por metro lineal de instalacion'].cost*p.linear_meters
+        total_cost += db.Operating_Parameters['Viatical per day'].cost*len(et_ins)
+        total_cost += db.Operating_Parameters['Costo por metro lineal de instalacion'].cost*p.linear_meters
         total_cost = total_cost*db.Waste_Factors[5].factor
         return total_cost
 def getCostFabrication(db, contract_number):
@@ -129,11 +126,11 @@ def getCostFabrication(db, contract_number):
     monthly_income = 80000000 #venta promedio mensual, basada en el año
     total_cost = 0
     p = db.Projects[contract_number]
-    total_cost += db.Operating_Costs['Remuneracion fija fabrica'].cost
-    total_cost += db.Operating_Costs['Remuneracion variable fabrica'].cost
-    total_cost += db.Operating_Costs['Porcentaje ventas para materiales'].cost*monthly_income
-    total_cost += db.Operating_Costs['Arriendo fabrica'].cost
-    total_cost += db.Operating_Costs['Costos operacion'].cost
+    total_cost += db.Operating_Parameters['Remuneracion fija fabrica'].cost
+    total_cost += db.Operating_Parameters['Remuneracion variable fabrica'].cost
+    total_cost += db.Operating_Parameters['Porcentaje ventas para materiales'].cost*monthly_income
+    total_cost += db.Operating_Parameters['Arriendo fabrica'].cost
+    total_cost += db.Operating_Parameters['Costos operacion'].cost
     total_cost = total_cost/monthly_selled_ml
     total_cost = total_cost*p.linear_meters
     return total_cost
@@ -152,11 +149,11 @@ def createTask(db, id_skill, contract_number, original_initial_date, original_en
     with db_session:
         t = db.Tasks(skill = id_skill, project = contract_number, original_initial_date = original_initial_date, original_end_date = original_end_date)
 
-        
-def editTask(db, id , id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
+
+def editTask(db , id_skill, contract_number, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
     with db_session:
         try:
-            t = db.Tasks[id]
+            t = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects[contract_number], failed = None)
             if id_skill != None:
                 t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
             if contract_number != None: 
@@ -167,8 +164,22 @@ def editTask(db, id , id_skill = None, contract_number = None, original_initial_
                 t.original_end_date = original_end_date
             if effective_initial_date != None:
                 t.effective_initial_date = effective_initial_date
+                #vemos si la tarea se inició con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
+                #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
+                et = select(et for et in db.Employees_Tasks if et.task == t).first()
+                if effective_initial_date > et.planned_initial_date:
+                    print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
+                    delay = (effective_initial_date - et.planned_initial_date).days
+                    createDelay(db, t.project.contract_number, t.skill.id, delay)
             if effective_end_date != None:
                 t.effective_end_date = effective_end_date
+                #vemos si la tarea se terminó con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
+                #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
+                et = select(et for et in db.Employees_Tasks if et.task == t).first()
+                if effective_end_date > et.planned_end_date:
+                    print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
+                    delay = (effective_end_date - et.planned_end_date).days
+                    createDelay(db, t.project.contract_number, t.skill.id, delay)
             if fail_cost != None:
                 t.fail_cost = fail_cost
         except ObjectNotFound as e:
@@ -198,38 +209,42 @@ def failedTask(db, contract_number, id_skill, fail_cost):
         for t in tasks:
             t.delete()
 
-        PLf.doPlanning(db)
+        doPlanning(db)
 
-def createDelay(db, project_id, skill_id, delay):
-    '''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = project_id, alargando el end date en delay días.         
-    Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html '''
+def createDelay(db, contract_number, skill_id, delay):
+    '''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = contract_number, alargando el end date en delay días.    
+    Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html 
+    Después de correr la planificacion en "delay" cantidad de dias, revisa si la planificacion que queda es factible. Si no lo es, 
+    realiza una nueva planificacion'''
     with db_session:
         try:
-            if skill_id < 4:
-                p = db.Projects[project_id]
-                t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
-                db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
-                et = db.Employees_Tasks.get(task = t)
-                et.planned_end_date = et.planned_end_date+timedelta(delay)
-                skill_aux = skill_id + 1
-                while skill_aux <= 4:#si es una actividad anterior a instalación, atrasa todas las 
-                #tareas que le siguen
-                    t_aux = db.Tasks.get(skill = db.Skills[skill_aux], project = p)
-                    et_aux = db.Employees_Tasks.get(task = t_aux)
-                    et_aux.planned_initial_date = et_aux.planned_initial_date + timedelta(delay)
-                    et_aux.planned_end_date = et_aux.planned_end_date+timedelta(delay)
-                    skill_aux += 1
-            else:
-                p = db.Projects[project_id]
-                t = db.Tasks.get(skill = db.Skills[skill_id], project = p)
-                db.Projects_Delays(project_id = project_id, skill_id = skill_id, delay = delay)
-                et = db.Employees_Tasks.get(task = t)#si es una instalación con varios trabajadores
-                #asignados podría no funcionar esta línea
-                et.planned_end_date = et.planned_end_date+timedelta(delay)
+            project = db.Projects[contract_number]
+            task = db.Tasks.get(skill = db.Skills[skill_id], project = project, failed = None)
+            emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+            for et in emp_tasks:
+                et.planned_end_date = sumDays(et.planned_end_date, delay)
+            skill_id = skill_id + 1
+            while skill_id <= 4:#si es una actividad anterior a instalación, atrasa todas las 
+            #tareas que le siguen
+                task = db.Tasks.get(skill = db.Skills[skill_id], project = project, failed = None)
+                emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+                for et in emp_tasks:
+                    et.planned_initial_date = sumDays(et.planned_initial_date, delay)
+                    et.planned_end_date = sumDays(et.planned_end_date, delay)
+                skill_id = skill_id + 1
         except ObjectNotFound as e:
             print('Object not found: {}'.format(e))
         except ValueError as e:
             print('Value error: {}'.format(e))
+        
+        #si la planificacion que queda no es factible, replanificamos, dejando fijo el proyecto en cuestion
+        if createReport(db, None, True) == False:
+            fixed_planning = project.fixed_planning
+            project.fixed_planning = True
+            doPlanning(db)
+            project.fixed_planning = fixed_planning
+            
+    #revisamos si es que la planificacion nueva es factible, sino, hay que replanificar
 
 
 
