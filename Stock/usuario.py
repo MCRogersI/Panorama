@@ -6,23 +6,15 @@ import os
 #Entiéndase SKU como el producto en si mismo (aunque en realidad significa el código del producto)
 def stock_console(db, level):
     while True:
-        if level == 1:
-            opt = input(
-                "\n Marque una de las siguientes opciones:\n - 1: Agregar un SKU. \
-                                                          \n - 2: Editar la información de SKU. \
-                                                          \n - 3: Eliminar un SKU.\
-                                                          \n - 4: Ver el Inventario. \
-                                                          \n - 5: Para agregar ordenes de compra. \
-                                                          \n - 6: Generar reporte global de stock. \
-                                                          \n - 7: Para volver atrás.\
-                                                          \n Ingrese la alternativa elegida: ")
-        if level == 2 or level == 3:
-            opt = input(
-                "\n Marque una de las siguientes opciones:\n - 1: Ver SKU.\
-                                                          \n - 2: Para volver atrás.\
-                                                          \n Ingrese la alternativa elegida: ")
-
-        if (opt == '1' and level == 1):
+        opt = input("\n Marque una de las siguientes opciones:\n - 1: Agregar un SKU. \
+                                                              \n - 2: Editar la información de SKU. \
+                                                              \n - 3: Eliminar un SKU.\
+                                                              \n - 4: Ver el Inventario. \
+                                                              \n - 5: Para agregar ordenes de compra. \
+                                                              \n - 6: Generar reporte global de stock. \
+                                                              \n - 7: Para volver atrás.\
+                                                              \n Ingrese la alternativa elegida: ")
+        if (opt == '1'):
             try:
                 id = input("\n Ingrese el ID del producto: ")
                 try:
@@ -63,7 +55,7 @@ def stock_console(db, level):
             except ValueError as ve:
                 print(ve)
                 input('\n Presione una tecla para continuar \n')
-        if (opt == '2' and level == 1):
+        if (opt == '2'):
             opt2 = input('\n Marque una de las siguientes opciones:\n - 1: Edición manual de un SKU. \
                                                                    \n - 2: Cargar adiciones de un archivo. \
                                                                    \n Ingrese la alternativa elegida: ')
@@ -123,7 +115,7 @@ def stock_console(db, level):
                         raise ValueError('\n Archivo no encontrado.')
                 except ValueError as ve:
                     print(ve)
-        if (opt == '3' and level == 1):
+        if (opt == '3'):
             try:
                 id = input("\n Ingrese el ID del producto que desea eliminar: ")
                 try:
@@ -137,11 +129,10 @@ def stock_console(db, level):
             except ValueError as ve:
                 print(ve)
                 input('\n Presione una tecla para continuar \n')
-        if (opt == '4' and level == 1) or (opt == '1' and level == 2) or (
-                opt == '1' and level == 3):
+        if (opt == '4'):
             printStockConsole(db)
             input('\n Presione una tecla para continuar \n')
-        if (opt =='5' and level == 1) :
+        if (opt =='5') :
             try:
                 file_name = input(' Ingrese el nombre del archivo de la orden de compra: ')
                 file_dir = file_name + ".xlsx"
@@ -156,6 +147,5 @@ def stock_console(db, level):
         if opt =='6' and level ==1:
             createStockReportExtended(db)
             input('\n Informe creado con éxit. Presione cualquier tecla para continuar. \n')
-        if (opt == '7' and level == 1) or (opt == '2' and level == 2) or (
-                opt == '2' and level == 3):
+        if (opt == '7'):
             break

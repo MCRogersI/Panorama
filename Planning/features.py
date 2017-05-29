@@ -494,7 +494,7 @@ def doPlanning(db):
     import Projects.features as Pf
     import Stock.features as Sf
     Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 
-'task', 'num workers', 'initial date', 'ending date', 'deadline'])#Esto debería
+    'task', 'num workers', 'initial date', 'ending date', 'deadline'])#Esto debería
     # estar encapsulado en otro método.
     cleanTasks(db) #Aquí se borran todas las tasks de planificaciones anteriores (las 'borrables')
     with db_session:

@@ -14,6 +14,17 @@ def createUser(db,name, level,password):
         u = db.Users(user_name = name, user_level = level,salt = salt, hashed_password = hashed_password)
 
 #falta un editUser o no?
+def editUserLevel(db,name,new_level, password):
+    with db_session:
+        if checkPassEntry(db,name, password):
+            u = db.Users.get(user_name = name)
+            u.level = new_level
+        else:
+            print('\n Usuario o contraseña incorrectos.\n')
+            
+def deleteUser(db,name):
+    with db_session:
+        db.Users.get(user_name = name).delete()
 
 def checkPassEntry(db,name_request, password):
     ''' Este método revisa que los datos ingresados para el sign-up sean correctos
