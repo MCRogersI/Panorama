@@ -9,7 +9,6 @@ def define_models(db):
         user_name = Required(str)
 
         user_level=Required(int)#'1' = 'Administrador', '2' = 'Usuario Normal', '3' = 'Invitado', '4' = ...
-        # user_rut = Optional(str)
         salt = Required(bytes, auto = False)
         hashed_password = Required(bytes, auto=False)
 

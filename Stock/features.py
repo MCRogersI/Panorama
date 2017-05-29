@@ -578,9 +578,9 @@ def editAllSkus(db, file_name):
             stock = db.Stock.get(id = code_read)
             #revisamos si el codigo leido esta ya en la base de datos. Si esta, actualizamos la informacion, si no esta, creamos el nuevo SKU con la informacion entregada
             if stock != None:
-                editSku(db, code_read, name, price, critical_level, real_quantity):
+                editSku(db, code_read, name, price, critical_level, real_quantity)
             else:
-                createSku(db, code_read, name, price, critical_level, real_quantity, waste_factor):
+                createSku(db, code_read, name, price, critical_level, real_quantity, waste_factor)
         
         next_row = next_row + 1
         code_read = ws.cell(row = next_row, column = 2).value
