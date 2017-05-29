@@ -2,7 +2,7 @@ from datetime import date
 from pony.orm import *
 from Projects.features import createProject, printProjects, editProject, deleteProject, finishProject, createTask, editTask, printTasks, failedTask, createProjectActivity, deleteProjectActivity, printProjectsActivities
 from Projects.costs import estimateCost
-from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts
+from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts, updateCrystalsParameters, updateProfilesParameters
 import os
 # from Projects.costs import estimateCost
 
@@ -296,109 +296,112 @@ def projects_console(db, level):
 
 def tasks_console(db, level):
     while True:
-        if level == 1 or level =='2':
-            opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea editar una tarea.\
-                                                                  \n - 2: Si desea ver las tareas actuales.\
-                                                                  \n - 3: Para editar parámetros asociados a costos.\
-                                                                  \n - 4: Para volver atrás.\
-                                                                  \n")
+        opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea editar una tarea.\
+                                                              \n - 2: Si desea ver las tareas actuales.\
+                                                              \n - 3: Para editar parámetros asociados a costos.\
+                                                              \n - 4: Para volver atrás.\
+                                                              \n Ingrese la alternativa elegida: ")
 
         if(opt == '1'):
-            opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n")
+            opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n -3: Volver. \n Ingrese la alternativa elegida: ")
             if (opt2 =='1'):
-                try:
-                    new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
-                    with db_session:
-                        if db.Projects.get(contract_number = new_contract_number) != None:
-                            raise ValueError('\n Proyecto inexistente. \n')
-                    if(level == 1) or (level == 2):
-                        new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
-                        if int(new_id_skill) != 1 and int(new_id_skill) != 2 and int(new_id_skill) != 3 and int(new_id_skill) != 4:
-                            raise ValueError('\n ID de habilidad no válida. \n')
-                    if(level == 4) or (level == 6) :
-                        new_id_skill = 1
-                    if (level == 7) :   
-                        new_id_skill = 2    
-                    if (level == 8) :   
-                        new_id_skill = 3
-                    if (level == 9) or (level == 3) :   
-                        new_id_skill = 4    
-                    if (level == 5):
-                        new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: dis, 2: ins): ")
+                if level in  [1,2,3,4,5]:
+                    try:
+                        new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
+                        with db_session:
+                            if db.Projects.get(contract_number = new_contract_number) != None:
+                                raise ValueError('\n Proyecto inexistente. \n')
+                        if(level == 1) or (level == 2):
+                            new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
+                            if int(new_id_skill) != 1 and int(new_id_skill) != 2 and int(new_id_skill) != 3 and int(new_id_skill) != 4:
+                                raise ValueError('\n ID de habilidad no válida. \n')
+                        if(level == 4):
+                            new_id_skill = 1  
+                        if (level == 3) :   
+                            new_id_skill = 4    
+                        if (level == 5):
+                            new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: dis, 2: ins): ")
                             if new_id_skill == '1':
                                 new_id_skill = 2
                             if new_id_skill == '2':
                                 new_id_skill = 4
                             else:
                                 raise ValueError('\n Error de ingreso. \n ')
-                    new_effective_initial_year = input(" Ingrese el año efectivo de inicio, solo presione enter si no ha comenzado: ")
-                    if new_effective_initial_year != '':
-                        new_effective_initial_month = input(" Ingrese el mes efectivo de inicio: ")
-                        new_effective_initial_day = input(" Ingrese el dia efectivo de inicio: ")
-                        try:
-                            new_effective_initial_date = date(new_effective_initial_year,new_effective_initial_month,new_effective_initial_day)
-                        except:
-                            raise ValueError('\n No es una fecha válida \n')
-                    if(new_effective_initial_year != ''):
-                        new_effective_end_year = input(" Ingrese el año efectivo de término, solo presione enter si no ha terminado: ")
-                        if new_effective_end_year != '':
-                            new_effective_end_month = input(" Ingrese el mes efectivo de término, solo presione enter si no ha terminado: ")
-                            new_effective_end_day = input(" Ingrese el día efectivo de término, solo presione enter si no ha terminado: ")
+                        new_effective_initial_year = input(" Ingrese el año efectivo de inicio, solo presione enter si no ha comenzado: ")
+                        if new_effective_initial_year != '':
+                            new_effective_initial_month = input(" Ingrese el mes efectivo de inicio: ")
+                            new_effective_initial_day = input(" Ingrese el dia efectivo de inicio: ")
                             try:
-                                new_effective_end_date = date(new_effective_end_year,new_effective_end_month,new_effective_end_day)
+                                new_effective_initial_date = date(new_effective_initial_year,new_effective_initial_month,new_effective_initial_day)
                             except:
-                                raise ValueError('\n Fecha de término inválida. \n')
-                        else:
-                            new_effective_end_date = None
+                                raise ValueError('\n No es una fecha válida \n')
+                        if(new_effective_initial_year != ''):
+                            new_effective_end_year = input(" Ingrese el año efectivo de término, solo presione enter si no ha terminado: ")
+                            if new_effective_end_year != '':
+                                new_effective_end_month = input(" Ingrese el mes efectivo de término, solo presione enter si no ha terminado: ")
+                                new_effective_end_day = input(" Ingrese el día efectivo de término, solo presione enter si no ha terminado: ")
+                                try:
+                                    new_effective_end_date = date(new_effective_end_year,new_effective_end_month,new_effective_end_day)
+                                except:
+                                    raise ValueError('\n Fecha de término inválida. \n')
+                            else:
+                                new_effective_end_date = None
 
-                    else:
-                        new_effective_initial_date = None
-                        new_effective_end_date = None
-                    # new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
-                    # new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
-                    editTask(db, id_edit, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, efective_initial_date = new_effective_initial_date, efective_end_date = new_effective_end_date)
-                except ValueError as ve:
-                    print(ve)
+                        else:
+                            new_effective_initial_date = None
+                            new_effective_end_date = None
+                        # new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
+                        # new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
+                        editTask(db, id_edit, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, efective_initial_date = new_effective_initial_date, efective_end_date = new_effective_end_date)
+                    except ValueError as ve:
+                        print(ve)
+                else:
+                    print('\n Acceso denegado. \n')
+                    input(' Presione una tecla para continuar: ')
             elif(opt2 == '2'):
-                try:
-                    contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
-                    with db_session:
-                        if db.Tasks.get(contract_number = contract_number_fail) != None:
-                            raise ValueError('\n Número de contrato inexistente \n')
-                    if(level == 1) or (level == 2):
-                        id_skill_fail = input(" Ingrese el ID de la habilidad donde ocurrió el fallo (1: rect, 2: dis, 3: fab, 4: ins): ")
-                        if int(id_skill_fail) != 1 and int(id_skill_fail) != 2 and int(id_skill_fail) != 3 and int(id_skill_fail) != 4:
-                            raise ValueError('\n ID de habilidad no válida. \n')
-                    if(level == 4) or (level == 6) :
-                        new_id_skill = 1
-                    if (level == 7) :   
-                        new_id_skill = 2    
-                    if (level == 8) :   
-                        new_id_skill = 3
-                    if (level == 9) or (level == 3) :   
-                        new_id_skill = 4    
-                    if (level == 5):
-                        new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: dis, 2: ins): ")
+                if level in  [1,2,3,4,5]:
+                    try:
+                        contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
+                        with db_session:
+                            if db.Tasks.get(contract_number = contract_number_fail) != None:
+                                raise ValueError('\n Número de contrato inexistente \n')
+                        if(level == 1) or (level == 2):
+                            id_skill_fail = input(" Ingrese el ID de la habilidad donde ocurrió el fallo (1: rect, 2: dis, 3: fab, 4: ins): ")
+                            if int(id_skill_fail) != 1 and int(id_skill_fail) != 2 and int(id_skill_fail) != 3 and int(id_skill_fail) != 4:
+                                raise ValueError('\n ID de habilidad no válida. \n')
+                        if(level == 4) or (level == 6) :
+                            new_id_skill = 1
+                        if (level == 7) :   
+                            new_id_skill = 2    
+                        if (level == 8) :   
+                            new_id_skill = 3
+                        if (level == 9) or (level == 3) :   
+                            new_id_skill = 4    
+                        if (level == 5):
+                            new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: dis, 2: ins): ")
                             if new_id_skill == '1':
                                 new_id_skill = 2
                             if new_id_skill == '2':
                                 new_id_skill = 4
                             else:
                                 raise ValueError('\n Error de ingreso. \n ')
-                    try:
-                        if 0 > int(id_skill_fail) or int(id_skill_fail) > 4:
+                        try:
+                            if 0 > int(id_skill_fail) or int(id_skill_fail) > 4:
+                                raise ValueError(' \n Ingreso inválido de habilidad \n')
+                        except:
                             raise ValueError(' \n Ingreso inválido de habilidad \n')
-                    except:
-                        raise ValueError(' \n Ingreso inválido de habilidad \n')
-                    fail_cost = input("\n Ingrese el costo estimado de la falla: ")
-                    try:
-                        if float(fail_cost) < 0 :
+                        fail_cost = input("\n Ingrese el costo estimado de la falla: ")
+                        try:
+                            if float(fail_cost) < 0 :
+                                raise ValueError(' \n El costo debe ser un número no negativo \n')
+                        except:
                             raise ValueError(' \n El costo debe ser un número no negativo \n')
-                    except:
-                        raise ValueError(' \n El costo debe ser un número no negativo \n')
-                    failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
-                except ValueError as ve:
-                    print(ve)           
+                        failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
+                    except ValueError as ve:
+                        print(ve) 
+                else:
+                    print('\n Acceso denegado. \n')
+                    input(' Presione una tecla para continuar: ')
         elif(opt == '2'):
             printTasks(db)
         elif(opt == '3'):

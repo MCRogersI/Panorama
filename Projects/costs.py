@@ -32,8 +32,10 @@ def estimateCost(db, contract_number, file_name):
         viatic_cost = viatic_cost + db.Viatic_Costs[(i.zone, comuna_to)].viatic_cost
         movilization_cost = movilization_cost + db.Movilization_Costs[(i.zone, comuna_to)].movilization_cost
     
-    # creamos tambien el Projects_Costs que usaremos en adelante
-    project_cost = db.Projects_Costs(project = db.Projects[contract_number])
+    # hacemos un query para el Projects_Costs que usaremos en adelante, si no existe, lo creamos
+    project_cost = db.Projects_Costs.get(project = db.Projects[contract_number])
+    if project_cost == None:
+        project_cost = db.Projects_Costs(project = db.Projects[contract_number])
     
     parameters = viatic_cost, movilization_cost, num_installers, freight_cost, 1, file_name
     standardCostCalculation(db, project_cost, parameters)
@@ -44,41 +46,33 @@ def estimateCost(db, contract_number, file_name):
 
 def standardCostCalculation(db, project_cost, parameters):
     file_read = parameters[5] + ".xlsx"
-    file_written = "Costo Estandar " + file_read
 
     wb_read = load_workbook(file_read, data_only=True)
-    wb_written = Workbook()
 
     #tercero, calculamos y escribimos los costos de instalacion
-    instalationCost.computation(wb_read, wb_written, parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
+    instalationCost.computation(db, wb_read, project_cost, parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
 
     #cuarto, calculamos y escribimos los costos de fabricacion
-    fabricationCost.computation(wb_read, wb_written)
+    fabricationCost.computation(db, wb_read, project_cost)
 
     #segundo, calculamos los costos por materia prima
-    materialCost.computation(wb_read, wb_written)
+    materialCost.computation(db, wb_read, project_cost)
 
     #quinto, calculamos y escribimos los costos adicionales
     
-    #guardamos el archivo de output
-    wb_written.save(file_written)
-    
-    #por ultimo, pasamos los datos a la tabla Projects_Costs
-    wb_written = load_workbook(file_written, data_only=True)
-    ws_summary = wb_written["Resumen"]
+    #por ultimo, actualizamos los datos que faltan en la tabla Projects_Costs
     with db_session:
-        profiles_cost = ws_summary.cell(row = 2, column = 5).value
-        fittings_cost = ws_summary.cell(row = 2, column = 6).value
-        crystals_cost = ws_summary.cell(row = 2, column = 4).value
-        
-        project_cost.standard_cost_profiles = profiles_cost
-        project_cost.standard_cost_fittings = fittings_cost
-        project_cost.standard_cost_crystals = crystals_cost
-        project_cost.standard_cost_material = profiles_cost + fittings_cost + crystals_cost
-        project_cost.standard_cost_fabrication = ws_summary.cell(row = 2, column = 7).value
-        project_cost.standard_cost_installation = ws_summary.cell(row = 2, column = 8).value
         project_cost.standard_cost_additionals = 0
-        project_cost.standard_cost_total = ws_summary.cell(row = 2, column = 9).value
+    
+        profiles_cost = project_cost.standard_cost_profiles
+        fittings_cost = project_cost.standard_cost_fittings
+        crystals_cost = project_cost.standard_cost_crystals
+        project_cost.standard_cost_material = profiles_cost + fittings_cost + crystals_cost
+        
+        additional_costs = project_cost.standard_cost_additionals
+        installation_cost = project_cost.standard_cost_installation
+        fabrication_cost = project_cost.standard_cost_fabrication
+        project_cost.standard_cost_total = profiles_cost + fittings_cost + crystals_cost + additional_costs + installation_cost + fabrication_cost
         
         commit()
     

@@ -101,7 +101,7 @@ def getCostInstallation(db, contract_number, internal = True):
     with db_session:
         total_cost = 0
         p = db.Projects[contract_number]
-        price_ml = db.Operating_Costs['Costo por metro lineal de instalacion'].cost
+        price_ml = db.Operating_Parameters['Costo por metro lineal de instalacion'].cost
         task_aux = db.Tasks.get(skill = 4, project = p)
         et_ins = select(et for et in db.Employees_Tasks if et.task == task_aux)
         aux = 1
@@ -118,8 +118,8 @@ def getCostInstallation(db, contract_number, internal = True):
             # instalador externo cuesta 1.5 veces más
         num_projects = getNumberConcurrentProjects(db, contract_number, et_aux.planned_initial_date)
         total_cost += db.Freight_Costs[p.client_comuna].freight_cost/num_projects
-        total_cost += db.Operating_Costs['Viatical per day'].cost*len(et_ins)
-        total_cost += db.Operating_Costs['Costo por metro lineal de instalacion'].cost*p.linear_meters
+        total_cost += db.Operating_Parameters['Viatical per day'].cost*len(et_ins)
+        total_cost += db.Operating_Parameters['Costo por metro lineal de instalacion'].cost*p.linear_meters
         total_cost = total_cost*db.Waste_Factors[5].factor
         return total_cost
 def getCostFabrication(db, contract_number):
@@ -129,11 +129,11 @@ def getCostFabrication(db, contract_number):
     monthly_income = 80000000 #venta promedio mensual, basada en el año
     total_cost = 0
     p = db.Projects[contract_number]
-    total_cost += db.Operating_Costs['Remuneracion fija fabrica'].cost
-    total_cost += db.Operating_Costs['Remuneracion variable fabrica'].cost
-    total_cost += db.Operating_Costs['Porcentaje ventas para materiales'].cost*monthly_income
-    total_cost += db.Operating_Costs['Arriendo fabrica'].cost
-    total_cost += db.Operating_Costs['Costos operacion'].cost
+    total_cost += db.Operating_Parameters['Remuneracion fija fabrica'].cost
+    total_cost += db.Operating_Parameters['Remuneracion variable fabrica'].cost
+    total_cost += db.Operating_Parameters['Porcentaje ventas para materiales'].cost*monthly_income
+    total_cost += db.Operating_Parameters['Arriendo fabrica'].cost
+    total_cost += db.Operating_Parameters['Costos operacion'].cost
     total_cost = total_cost/monthly_selled_ml
     total_cost = total_cost*p.linear_meters
     return total_cost
