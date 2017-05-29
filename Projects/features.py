@@ -156,8 +156,8 @@ def createTask(db, id_skill, contract_number, original_initial_date, original_en
     with db_session:
         t = db.Tasks(skill = id_skill, project = contract_number, original_initial_date = original_initial_date, original_end_date = original_end_date)
 
-        
-def editTask(db, id_skill = None, contract_number = None, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
+
+def editTask(db , id_skill, contract_number, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
     with db_session:
         try:
             t = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects[contract_number], failed = None)
