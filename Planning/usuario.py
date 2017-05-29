@@ -2,6 +2,8 @@ from datetime import date
 from pony.orm import *
 from Planning.features import changePriority, addDelayed, doPlanning, checkVeto
 from Planning.reports import createGlobalReportCompact, createGlobalReportModified
+import pandas
+from IPython.display import display
 
 def planning_console(db,level):
     while True:
@@ -104,8 +106,13 @@ def planning_console(db,level):
                     print(ve)
             if opt2 == '5':
                 with db_session:
+                    ra = db.Employees_Restrictions.select()
+                    data = {'data':[p.to_dict() for p in ra]}
+                    df = pandas.DataFrame(data = data)
+                    display(df)
+                    print(df)
+                    print(df.to_string())
                     print('\n Restricciones de asignación: \n')
-                    db.Employees_Restrictions.select().show()
                     print('\n Restricciones de tiempo \n')
                     db.Deadlines_Restrictions.select().show()
         if opt == '4':
