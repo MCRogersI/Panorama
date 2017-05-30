@@ -16,9 +16,9 @@ import Users.usuario as Uu
 import numpy as np
 import getpass
 import os
-# Uf.createUser(db,'1', 1,'1')
-# Uf.createUser(db,'2', 2,'2')
-# Uf.createUser(db,'3', 3,'3')
+Uf.createUser(db,'1', 1,'1')
+Uf.createUser(db,'2', 2,'2')
+Uf.createUser(db,'3', 3,'3')
 
 def console(level, user):
     while True:
@@ -59,8 +59,8 @@ def console(level, user):
 def signIn():
     while True:
         user = input(" Ingrese su usuario: ")
-        # password = input("Ingrese su contraseña: ")
-        password = getpass.getpass(' Ingrese su contraseña: ')
+        password = input("Ingrese su contraseña: ")
+        # password = getpass.getpass(' Ingrese su contraseña: ')
         if Uf.checkPassEntry(db, user, password):
             with db_session:
                 level=Uf.getUserLevel(db, user)
