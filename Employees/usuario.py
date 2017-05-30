@@ -297,23 +297,23 @@ def employees_console(db, level, user):
                         print(ve)
                         input('\n Presione una tecla para continuar. \n')
                 if (opt_ver_empleados_2 == '3'):
-                    createWorkersReportWide(db)
+                    createWorkersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '4'):
-                    createRectificatorsReportWide(db)
+                    createRectificatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '5'):
-                    createDesignersReportWide(db)
+                    createDesignersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '6'):
-                    createFabricatorsReportWide(db)
+                    createFabricatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '7'):
-                    createInstallatorsReportWide(db)
+                    createInstallatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 3):
@@ -339,7 +339,7 @@ def employees_console(db, level, user):
                         print(ve)
                         input('\n Presione la tecla Enter para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
-                    createInstallatorsReportWide(db)
+                    createInstallatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 4):
@@ -365,7 +365,7 @@ def employees_console(db, level, user):
                         print(ve)
                         input('\n Presione una tecla para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
-                    createRectificatorsReportWide(db)
+                    createRectificatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 5):
@@ -392,11 +392,11 @@ def employees_console(db, level, user):
                         print(ve)
                         input('\n Presione una tecla para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
-                    createDesignersReportWide(db)
+                    createDesignersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '3'):
-                    createInstallatorsReportWide(db)
+                    createInstallatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level in [6,7,8,9]):
