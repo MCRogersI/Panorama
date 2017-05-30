@@ -56,6 +56,12 @@ def printStockConsole(db):
     ''' Este método elimina una de las entradas de SKU de la tabla de Stock '''
     with db_session:
         db.Stock.select().show()
+        print('\n')
+        st = db.Stock.select()
+        data = [s.to_dict() for s in st]
+        df = pandas.DataFrame(data, columns = ['id','name','price','critical_level','real_quantity','waste_factor','estimated_quantityt'])
+        df.columns = ['ID','Nombre','Precio','Punto Crítico','Cantidad Real en Bodega','Factor de Pérdida','Cantidad Estimada en Bodega']
+        print( tabulate(df, headers='keys', tablefmt='psql'))
 
 
 def createEngagement(db, contract_number, skus_list, withdrawal_date=None):

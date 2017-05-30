@@ -15,7 +15,7 @@ import Stock.features as Sf
 import Users.usuario as Uu
 import numpy as np
 import getpass
-
+import os
 # Uf.createUser(db,'1', 1,'1')
 
 def console(level, user):
@@ -57,8 +57,8 @@ def console(level, user):
 def signIn():
     while True:
         user = input("Ingrese su usuario: ")
-        password = input("Ingrese su contraseña: ")
-        # password = getpass.getpass('Ingrese su contraseña: ')
+        # password = input("Ingrese su contraseña: ")
+        password = getpass.getpass('Ingrese su contraseña: ')
         if Uf.checkPassEntry(db, user, password):
             with db_session:
                 level=Uf.getUserLevel(db, user)
@@ -67,5 +67,5 @@ def signIn():
         else:
             print("Usuario y/o Contraseña incorrecto(s))")
         break
-
+# os.system("mode con cols=100 lines=30")
 signIn()
