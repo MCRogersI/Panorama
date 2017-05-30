@@ -442,13 +442,15 @@ def createGlobalReportModified(db):
               "G": 35, "H": 35, "I": 35,"J": 35, "K": 35, "L": 35,
               "M": 35, "N": 35, "O": 45,"P": 45, "Q": 45, "R": 45,
               "S": 45, "T": 45, "U": 45,"V": 45, "W": 45, "X": 45,
-              "Y": 45, "Z": 45, "AA": 45, "AB": 45, "AC": 45,"AD":45}
+              "Y": 45, "Z": 45, "AA": 45, "AB": 45, "AC": 45,"AD":45,
+              "AE": 45}
 
     heights = {"A": 10, "B": 10, "C": 10, "D": 10, "E": 10, "F": 10,
               "G": 10, "H": 10, "I": 10, "J": 10, "K": 10, "L": 10,
               "M": 10, "N": 10, "O": 10,"P": 10, "Q": 10, "R": 10,
               "S": 10, "T": 10, "U": 10,"V": 10, "W": 10, "X": 10,
-              "Y": 10, "Z": 10, "AA": 10, "AB": 10, "AC": 10,"AD":10}
+              "Y": 10, "Z": 10, "AA": 10, "AB": 10, "AC": 10,"AD":10,
+               "AE":10}
 
     thin_border = Border(left=Side(style='thin'),
                          right=Side(style='thin'),
@@ -457,7 +459,7 @@ def createGlobalReportModified(db):
 
 
     columns = ["A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB",
-               "AC","AD"]
+               "AC","AD","AE"]
     for c in columns:
         ws.column_dimensions[c].width = widths[c]
         ws.column_dimensions[c].height = heights[c]
@@ -477,7 +479,7 @@ def createGlobalReportModified(db):
         ,"FECHA ORIGINAL TÉRMINO DISEÑO","FECHA EFECTIVA INICIO DISEÑO","FECHA EFECTIVA TÉRMINO DISEÑO",
              "FECHA ORIGINAL INICIO FABRICACIÓN","FECHA ORIGINAL TÉRMINO FABRICACIÓN","FECHA EFECTIVA INICIO FABRICACIÓN",
              "FECHA EFECTIVA TÉRMINO FABRICACIÓN","FECHA ORIGINAL INICIO INSTALACIÓN","FECHA ORIGINAL TÉRMINO INSTALACIÓN",
-             "FECHA EFECTIVA INICIO INSTALACIÓN","FECHA EFECTIVA TÉRMINO INSTALACIÓN"]
+             "FECHA EFECTIVA INICIO INSTALACIÓN","FECHA EFECTIVA TÉRMINO INSTALACIÓN","MAYOR PLAZO (ATRASO)"]
 
     for i in range(4,len(num_columns)+1):
         cell = ws.cell(row=3, column=i, value=texts[i-1])
@@ -827,15 +829,32 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
+            # Escribe el atraso, en caso de haberlo
+            if p.deadline < installation.original_end_date :
+                cell = ws.cell(row=r, column=31, value=(installation.original_end_date-p.deadline).days)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=31, value="A tiempo")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
             r+=1
 
-    module_path = os.path.dirname(__file__)
-    panorama_folder_path = os.path.abspath(os.path.join(module_path, os.pardir))
-    report_folder_path = os.path.join(panorama_folder_path,"Reportes")
-    if not os.path.exists(report_folder_path):
-        os.makedirs(report_folder_path)
-    fn = os.path.join(report_folder_path,"Reporte global de planificación.xlsx")
-    wb.save(fn)
+    try:
+        module_path = os.path.dirname(__file__)
+        panorama_folder_path = os.path.abspath(os.path.join(module_path, os.pardir))
+        report_folder_path = os.path.join(panorama_folder_path,"Reportes")
+        if not os.path.exists(report_folder_path):
+            os.makedirs(report_folder_path)
+        fn = os.path.join(report_folder_path,"Reporte global de planificación.xlsx")
+        wb.save(fn)
+    except OSError as e:
+        if e.args[0] != 13:
+            raise
+        input("\n Ha ocurrido un error porque el archivo Reporte global de planificación.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.")
 
 # from database import db
 # createGlobalReportModified(db)

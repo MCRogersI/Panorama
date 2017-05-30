@@ -13,34 +13,14 @@ from openpyxl.styles import PatternFill
 from openpyxl.drawing.fill import PatternFillProperties, ColorChoice
 from openpyxl.chart.marker import DataPoint
 import os
-from copy import deepcopy
-import time
 
 def createStockReport(db):
+
     thin_border = Border(left=Side(style='thin'),
                          right=Side(style='thin'),
                          top=Side(style='thin'),
                          bottom=Side(style='thin'))
-    # time.sleep(0.5)
-    # id_sku = 1
     from Stock.features import displayStock, calculateStockForExcel
-    # displayStock(db,id_sku)
-    # SKU_list = []
-    # with db_session:
-    #     skus = select(s for s in db.Stock)
-    #     results = [calculateStockForExcel(db,sku.id) for sku in skus]
-    # t1 = calculateStockForExcel(db,1)
-    # t2 = calculateStockForExcel(db, 2)
-    # t3 = calculateStockForExcel(db, 3)
-    # t4 = calculateStockForExcel(db, 4)
-    # t5 = calculateStockForExcel(db, 5)
-    # t6 = calculateStockForExcel(db, 6)
-    # t7 = calculateStockForExcel(db, 7)
-    # t8 = calculateStockForExcel(db, 8)
-    # t9 = calculateStockForExcel(db, 9)
-    # t10 = calculateStockForExcel(db, 10)
-    # t11 = calculateStockForExcel(db, 11)
-
     with db_session:
         skus = select(s for s in db.Stock)
         skus_ids = [sku.id for sku in skus]
@@ -170,51 +150,19 @@ def createStockReport(db):
             row_counter += 1
 
         ws_plotted.add_chart(chart1, "{0}{1}".format("A",10 + counter*18))
-
-        # chart2 = deepcopy(chart1)
-        # ws_plotted.add_chart(chart2, "A28")
-
-        # ws.insert_chart('C1', chart1) #Alternativa para insertar el gráfico
-
-        # from copy import deepcopy
-        #
-        # chart2 = deepcopy(chart1)
-        # chart2.style = 11
-        # chart2.type = "bar"
-        # chart2.title = "Horizontal Bar Chart"
-        #
-        # ws.add_chart(chart2, "G10")
-        #
-        # chart3 = deepcopy(chart1)
-        # chart3.type = "col"
-        # chart3.style = 12
-        # chart3.grouping = "stacked"
-        # chart3.overlap = 100
-        # chart3.title = 'Stacked Chart'
-        #
-        # ws.add_chart(chart3, "A27")
-        #
-        # chart4 = deepcopy(chart1)
-        # chart4.type = "bar"
-        # chart4.style = 13
-        # chart4.grouping = "percentStacked"
-        # chart4.overlap = 100
-        # chart4.title = 'Percent Stacked Chart'
-        #
-        # ws.add_chart(chart4, "G27")
         counter+=1
 
-    # Escribir la fecha en la que fue producida el reporte:
-    ws_plotted.column_dimensions["C"].width = 20
-    cell = ws_plotted.cell(row=3, column=3, value="Reporte producido el: ")
-    cell.font = Font(bold=True, )
-    cell.border = thin_border
-    cell.alignment = Alignment(horizontal='left')
-
-    cell = ws_plotted.cell(row=3, column=4, value=date.today())
-    cell.font = Font(bold=True, )
-    cell.border = thin_border
-    cell.alignment = Alignment(horizontal='left')
+    # # Escribir la fecha en la que fue producida el reporte:
+    # ws_plotted.column_dimensions["C"].width = 20
+    # cell = ws_plotted.cell(row=3, column=3, value="Reporte producido el: ")
+    # cell.font = Font(bold=True, )
+    # cell.border = thin_border
+    # cell.alignment = Alignment(horizontal='left')
+    #
+    # cell = ws_plotted.cell(row=3, column=4, value=date.today())
+    # cell.font = Font(bold=True, )
+    # cell.border = thin_border
+    # cell.alignment = Alignment(horizontal='left')
 
     try:
         module_path = os.path.dirname(__file__)
@@ -222,7 +170,7 @@ def createStockReport(db):
         report_folder_path = os.path.join(panorama_folder_path, "Reportes")
         if not os.path.exists(report_folder_path):
             os.makedirs(report_folder_path)
-        report_file_name = "Informe de Stock.xlsx"
+        report_file_name = "Informe de Stock {}.xlsx".format(date.today())
         fn = os.path.join(report_folder_path, report_file_name)
         wb.save(fn)
     except OSError as e:
@@ -230,6 +178,6 @@ def createStockReport(db):
             raise
         input("\n Ha ocurrido un error porque el archivo Informe de Stock.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.")
 
+
 from database import db
 # createStockReport(db)
-createStockReportExtended(db)

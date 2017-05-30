@@ -114,6 +114,7 @@ Pf.createProject(db, 3, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil', 
                     '14.214.392-K',220, 2017, 8, 30, estimated_cost = 250, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
 
+# Pf.failedTask(db,1,2,1000)
 
 
 Sf.createEngagement(db, 1, [(1,10),(2,150),(3,15),(4,20),(5,70),(6,300)],date(2017, 6, 1))

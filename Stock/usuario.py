@@ -1,6 +1,7 @@
 from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases, editAllSkus
-from Stock.reports import createStockReport,createStockReport
+from Stock.reports import createStockReport
 import os
+from pony.orm import *
 
 
 #Entiéndase SKU como el producto en si mismo (aunque en realidad significa el código del producto)
@@ -146,6 +147,6 @@ def stock_console(db, level):
                 input(' Presione una tecla para continuar.')
         if opt =='6' and level ==1:
             createStockReport(db)
-            input('\n Informe creado con éxit. Presione cualquier tecla para continuar. \n')
+            input('\n Informe creado con éxito. Presione cualquier tecla para continuar. \n')
         if (opt == '7'):
             break
