@@ -273,6 +273,7 @@ def projects_console(db, level):
                 input(' Presione una tecla para continuar: ')
         elif(opt == '5'):
             printProjects(db)
+            input('\n Presione una tecla para continuar: ')
         elif (opt =='6'):
             try:
                 contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo: ')

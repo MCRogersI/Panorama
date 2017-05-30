@@ -6,7 +6,9 @@ from os import remove
 import Stock.features as Sf
 from Planning.features import sumDays, doPlanning
 from Planning.reports import createReport
-
+import pandas
+from IPython.display import display
+from tabulate import tabulate
 
 
 def createProject(db, contract_number, client_address, client_comuna,
@@ -27,8 +29,15 @@ def createProject(db, contract_number, client_address, client_comuna,
 
 def printProjects(db):
     with db_session:
-        db.Projects.select().show()
-
+        print('\n')
+        pr = db.Projects.select()
+        data = [p.to_dict() for p in pr]
+        df = pandas.DataFrame(data, columns = ['contract_number','client_address','client_comuna','client_name','client_rut','linear_meters','deadline','priority','real_linear_meters'\
+        ,'estimated_cost','real_cost','sale_price','fixed_planning','fixed_priority','crystal_leadtime','sale_date','finished'])                    
+        df.columns = ['Número de Contrato','Dirección','Comuna','Nombre','Rut','Metros Lineales','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
+        ,'Costo Estimado','Costo Real','Precio de Venta','Planificación Fija','Prioridad Fijada','Tiempo Entrega Cristales','Fecha de Venta','Proyecto Finalizado']
+        print( tabulate(df.drop(df.columns[[8,9,10,11,12,13,14,15,16]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7]], axis = 1), headers='keys', tablefmt='psql'))
 def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None):
     with db_session:
         try:
@@ -193,7 +202,12 @@ def deleteTask(db, id_task):
 
 def printTasks(db):
     with db_session:
-        db.Tasks.select().show()
+        print('\n')
+        ts = db.Tasks.select()
+        data = [t.to_dict() for t in ts]
+        df = pandas.DataFrame(data, columns = ['id','skill','project','original_initial_date','original_end_date','effective_initial_date','effective_end_date','failed','fail_cost'])
+        df.columns = ['ID','Tarea','Proyecto','Fecha de Inicio Original','Fecha de Finalización Original','Fecha de Inicio Efectiva','Fecha de Finalización Efectiva','Falló','Costo de Falla']
+        print( tabulate(df, headers='keys', tablefmt='psql'))
 
 def failedTask(db, contract_number, id_skill, fail_cost):
     import Planning.features as PLf

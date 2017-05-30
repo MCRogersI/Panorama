@@ -2,7 +2,9 @@ from datetime import date
 from pony.orm import *
 from Planning.features import changePriority, addDelayed, doPlanning, checkVeto
 from Planning.reports import createGlobalReportCompact, createGlobalReportModified
-
+import pandas
+from IPython.display import display
+from tabulate import tabulate
 def planning_console(db,level):
     while True:
         opt = input( "\n Marque una de las siguientes opciones:\n - 1: Generar planificación.\
@@ -104,14 +106,24 @@ def planning_console(db,level):
                     print(ve)
             if opt2 == '5':
                 with db_session:
+                    ra = db.Employees_Restrictions.select()
+                    data1 = [p.to_dict() for p in ra]
+                    df = pandas.DataFrame(data1, columns = ['employee','fixed','project'])                    
+                    df.columns = ['Empleado', 'Fijo', 'Proyecto']
                     print('\n Restricciones de asignación: \n')
-                    db.Employees_Restrictions.select().show()
+                    print( tabulate(df, headers='keys', tablefmt='psql'))
+                    # print(df.to_string())
+                    
+                    rt = db.Deadlines_Restrictions.select()
+                    data2 = [p.to_dict() for p in rt]
+                    df2 = pandas.DataFrame(data2,columns = ['id', 'project', 'skill', 'deadline'])   
+                    df2.columns = ['Id','Proyecto', 'Habilidad', 'Fecha Límite']
                     print('\n Restricciones de tiempo \n')
-                    db.Deadlines_Restrictions.select().show()
+                    print( tabulate(df2, headers='keys', tablefmt='psql'))
         if opt == '4':
             try:
                 createGlobalReportModified(db)
-                input('\n Reporte global creado con éxit. Presione una tecla para continuar: ')
+                input('\n Reporte global creado con éxito. Presione una tecla para continuar: ')
             except:
                 print(' Estamos trabajando para usted.')
         if opt == '5':
