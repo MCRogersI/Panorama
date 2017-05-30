@@ -4659,7 +4659,7 @@ def createWorkersReportWide(db):
 # createInstallatorsReportWide(db)
 # createRectificatorsReport(db)
 # createDesignersReport(db)
-createFabricatorsReport(db)
+# createFabricatorsReport(db)
 # createInstallersReport(db)
 
 # createPersonalEmployeeReport(db,1)
