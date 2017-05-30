@@ -123,7 +123,7 @@ def planning_console(db,level):
         if opt == '4':
             try:
                 createGlobalReportModified(db)
-                input('\n Reporte global creado con éxit. Presione una tecla para continuar: ')
+                input('\n Reporte global creado con éxito. Presione una tecla para continuar: ')
             except:
                 print(' Estamos trabajando para usted.')
         if opt == '5':

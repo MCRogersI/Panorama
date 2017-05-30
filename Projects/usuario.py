@@ -8,14 +8,17 @@ import os
 
 def projects_console(db, level):
     while True:
-        opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear un proyecto. \
-                                                              \n - 2: Si desea editar un proyecto. \
-                                                              \n - 3: Eliminar un proyecto. \
-                                                              \n - 4: Si desea manejar datos sobre disponibilidad de un cliente. \
-                                                              \n - 5: Para ver proyectos actuales. \
-                                                              \n - 6: Para estimar costos del proyecto. \
-                                                              \n - 7: Para volver atrás. \
-                                                              \n Ingrese la alternativa elegida: ")
+        if (level in [1,2,3,4,5]):
+            opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear un proyecto. \
+                                                                  \n - 2: Si desea editar un proyecto. \
+                                                                  \n - 3: Eliminar un proyecto. \
+                                                                  \n - 4: Si desea manejar datos sobre disponibilidad de un cliente. \
+                                                                  \n - 5: Para ver proyectos actuales. \
+                                                                  \n - 6: Para estimar costos del proyecto. \
+                                                                  \n - 7: Para volver atrás. \
+                                                                  \n Ingrese la alternativa elegida: ")
+        else:
+            opt = '6'
         if(opt == '1'):
             if(level == 1):
                 try:
@@ -272,8 +275,12 @@ def projects_console(db, level):
                 print('\n Acceso denegado. \n')
                 input(' Presione una tecla para continuar: ')
         elif(opt == '5'):
-            printProjects(db)
-            input('\n Presione una tecla para continuar: ')
+            if (level == 1):
+                printProjects(db)
+                input('\n Presione una tecla para continuar: ')
+            else:
+                print('\n Acceso denegado. \n')
+                input(' Presione una tecla para continuar: ')
         elif (opt =='6'):
             try:
                 contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo: ')
@@ -287,11 +294,15 @@ def projects_console(db, level):
                 if os.path.isfile(file_dir):
                     estimateCost(db, contract_number, file_name)
                     input('\n Costo estimado exitosamente. Presione una tecla para continuar.')
+                    if (level not in [1,2,3,4,5]) :
+                        break
                 else:
                     raise ValueError('\n Archivo no encontrado.')
             except ValueError as ve:
                 print(ve)
                 input(' Presione una tecla para continuar.')
+                if (level not in [1,2,3,4,5]) :
+                    break
         elif(opt == '7'):
             break
 
@@ -304,9 +315,9 @@ def tasks_console(db, level):
                                                               \n Ingrese la alternativa elegida: ")
 
         if(opt == '1'):
-            opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n -3: Volver. \n Ingrese la alternativa elegida: ")
-            if (opt2 =='1'):
-                if level in  [1,2,3,4,5]:
+            if level in  [1,2,3,4,5]:
+                opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n - 3: Volver. \n Ingrese la alternativa elegida: ")
+                if (opt2 =='1'):
                     try:
                         new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
                         with db_session:
@@ -357,11 +368,7 @@ def tasks_console(db, level):
                         input('\n Fecha agregada con éxito. Presione una tecla para continuar: ')
                     except ValueError as ve:
                         print(ve)
-                else:
-                    print('\n Acceso denegado. \n')
-                    input(' Presione una tecla para continuar: ')
-            elif(opt2 == '2'):
-                if level in  [1,2,3,4,5]:
+                elif(opt2 == '2'):
                     try:
                         contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
                         with db_session:
@@ -401,11 +408,15 @@ def tasks_console(db, level):
                         failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
                     except ValueError as ve:
                         print(ve) 
-                else:
-                    print('\n Acceso denegado. \n')
-                    input(' Presione una tecla para continuar: ')
+            else:
+                print('\n Acceso denegado. \n')
+                input(' Presione una tecla para continuar: ')
         elif(opt == '2'):
-            printTasks(db)
+            if (level == 1):
+                printTasks(db)
+            else:
+                print('\n Acceso denegado. \n')
+                input(' Presione una tecla para continuar: ')
         elif(opt == '3'):
             if(level == 1):
                 opt2 = input('\n Marque una de las siguientes opciones: \n - 1: Si desea editar costos de flete.\
