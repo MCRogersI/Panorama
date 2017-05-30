@@ -8,7 +8,7 @@ import Planning.features as PLf
 import Planning.reports as PLr
 import Users.features as Uf
 import Stock.usuario as Su
-# import Tests.Case9 as case9
+import Tests.Case9 as case9
 import Planning.usuario as PlanU
 import Stock.reports as Sr
 import Stock.features as Sf
@@ -16,7 +16,7 @@ import Users.usuario as Uu
 import numpy as np
 import getpass
 import os
-# Uf.createUser(db,'1', 1,'1')
+Uf.createUser(db,'1', 1,'1')
 
 def console(level, user):
     while True:
@@ -57,8 +57,8 @@ def console(level, user):
 def signIn():
     while True:
         user = input("Ingrese su usuario: ")
-        # password = input("Ingrese su contraseña: ")
-        password = getpass.getpass('Ingrese su contraseña: ')
+        password = input("Ingrese su contraseña: ")
+        # password = getpass.getpass('Ingrese su contraseña: ') #Esto parece no funcionar para Python 3.5.2
         if Uf.checkPassEntry(db, user, password):
             with db_session:
                 level=Uf.getUserLevel(db, user)

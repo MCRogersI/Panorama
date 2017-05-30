@@ -841,6 +841,14 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
+            project_counter = 1
+            for pt in project_tasks:
+                if pt.fail_cost != None:
+                    project_counter+=1
+                    failed_task_id = pt.id
+                else:
+                    pass
+
             r+=1
 
     try:
