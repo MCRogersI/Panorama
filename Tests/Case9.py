@@ -73,19 +73,19 @@ with db_session:
 #        Lista de empleados test case 1         #
 # ###############################################
 
-Ef.createEmployee(db, 1, "Juan", "Vitacura", perf_rect = 2)
-Ef.createEmployee(db, 2, "Pedro", "Vitacura", perf_des = 2)
-Ef.createEmployee(db, 3, "Diego", "Vitacura", perf_fab = 30)
-Ef.createEmployee(db, 4, "Miguel", "Vitacura", perf_inst = 40, senior = True)
-Ef.createEmployee(db, 5, "Mario", "Vitacura", perf_rect = 1)
-Ef.createEmployee(db, 6, "Felipe", "Vitacura", perf_des = 1)
-Ef.createEmployee(db, 7, "Miguel", "Vitacura", perf_fab = 40)
-Ef.createEmployee(db, 8, "Mario", "Vitacura", perf_inst = 50, senior = False)
-Ef.createEmployee(db, 9, "Felipe", "Vitacura", perf_rect = 2)
-Ef.createEmployee(db, 10, "Miguel", "Vitacura", perf_des = 1)
-Ef.createEmployee(db, 11, "Mario", "Vitacura", perf_fab = 50)
-Ef.createEmployee(db, 12, "Felipe", "Vitacura", perf_inst = 60, senior = True)
-Ef.createEmployee(db, 13, "Iker", "Vitacura", perf_inst = 70, senior = False)
+Ef.createEmployee(db,1, "Juan", "Vitacura", perf_rect = 2)
+Ef.createEmployee(db,2,  "Pedro", "Vitacura", perf_des = 2)
+Ef.createEmployee(db,3,  "Diego", "Vitacura", perf_fab = 30)
+Ef.createEmployee(db,4,  "Miguel", "Vitacura", perf_inst = 40, senior = True)
+Ef.createEmployee(db,5,  "Mario", "Vitacura", perf_rect = 1)
+Ef.createEmployee(db,6,  "Felipe", "Vitacura", perf_des = 1)
+Ef.createEmployee(db,7,  "Miguel", "Vitacura", perf_fab = 40)
+Ef.createEmployee(db,8,  "Mario", "Vitacura", perf_inst = 50, senior = False)
+Ef.createEmployee(db,9,  "Felipe", "Vitacura", perf_rect = 2)
+Ef.createEmployee(db,10,  "Miguel", "Vitacura", perf_des = 1)
+Ef.createEmployee(db,11,  "Mario", "Vitacura", perf_fab = 50)
+Ef.createEmployee(db,12,  "Felipe", "Vitacura", perf_inst = 60, senior = True)
+Ef.createEmployee(db,13,  "Iker", "Vitacura", perf_inst = 70, senior = False)
 
 
 ##############################################
@@ -115,7 +115,13 @@ Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil',
                     '14.214.392-K',220, 2017, 8, 30, estimated_cost = 250, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
 
 # Pf.failedTask(db,1,2,1000)
-
+# Pf.failedTask(db,3,3,5000)
+Pf.createEmployeeActivity(db, 5, 1, 2017, 8, 1, 2017, 8, 5)
+Pf.createEmployeeActivity(db, 1, 2, 2017, 6, 20, 2017, 7, 1)
+Pf.createEmployeeActivity(db, 1, 2, 2017, 7, 4, 2017, 7, 6)
+Pf.createEmployeeActivity(db, 7, 1, 2017, 8, 6, 2017, 9, 1)
+Pf.createEmployeeActivity(db, 8, 1, 2017, 7, 15, 2017, 8, 2)
+Pf.createEmployeeActivity(db, 9, 2, 2017, 7, 4, 2017, 7, 14)
 
 Sf.createEngagement(db, 1, [(1,10),(2,150),(3,15),(4,20),(5,70),(6,300)],date(2017, 6, 1))
 Sf.createEngagement(db, 2, [(1,10),(2,10),(3,10),(4,10),(5,10),(6,10)],date(2017, 6, 1))

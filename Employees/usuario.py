@@ -2,20 +2,24 @@ from Employees.features import createEmployee, printEmployees, editEmployee, pri
 from Projects.features import createEmployeeActivity, deleteEmployeeActivity, printEmployeesActivities
 from pony.orm import *
 from datetime import date
-from Employees.reports import createPersonalEmployeeReport
+from Employees.reports import createPersonalEmployeeReport, createWorkersReportWide, createRectificatorsReportWide, createDesignersReportWide, createFabricatorsReportWide, createInstallatorsReportWide
 import pandas
 from tabulate import tabulate
 def employees_console(db, level, user):
 #Es mejor importar las funciones en lugar de entregarsélas como parámetro a la función. Cambiar más adelante.
 
-    while True:   
-        opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear nuevo empleado. \
-                                                                  \n - 2: Si desea editar datos de empleados. \
-                                                                  \n - 3: Si desea eliminar un empleado. \
-                                                                  \n - 4: Para manejar vacaciones/periodos de licencia de los empleados. \
-                                                                  \n - 5: Para ver empleados actuales. \
-                                                                  \n - 6: Para volver atrás. \
-                                                                  \n Ingrese la alternativa elegida: ")
+    while True:
+        print('hola')
+        if (level in [1,2,3,4,5]):
+            opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear nuevo empleado. \
+                                                                      \n - 2: Si desea editar datos de empleados. \
+                                                                      \n - 3: Si desea eliminar un empleado. \
+                                                                      \n - 4: Para manejar vacaciones/periodos de licencia de los empleados. \
+                                                                      \n - 5: Para ver empleados actuales. \
+                                                                      \n - 6: Para volver atrás. \
+                                                                      \n Ingrese la alternativa elegida: ")
+        else:
+            opt = '5'
         if(opt == '1'):
             if (level == 1):
                 try:
@@ -258,12 +262,17 @@ def employees_console(db, level, user):
                                                                                      \n - 3: Si desea ver la lista de instaladores. \
                                                                                      \n Ingrese la alternativa elegida: ")
             if ( level in [6,7,8,9]):
-                opt_ver_empleados = 1
+                opt_ver_empleados = '1'
             if(opt_ver_empleados == '1' and level in [1,2]):
-                opt_ver_empleados2 = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver lista de empleados. \
-                                                                                    \n - 2: Si desea ver el calendario de trabajo de empleados. \
-                                                                                    \n Ingrese la alternativa escogida: ")
-                if (opt_ver_empleados2 =='1'):
+                opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver lista de empleados. \
+                                                                                      \n - 2: Si desea ver el calendario de trabajo de un empleado. \
+                                                                                      \n - 3: Si desea ver el calendario de trabajo de todos los empleados\
+                                                                                      \n - 4: Si desea ver el calendario de trabajo de todos los rectificadores\
+                                                                                      \n - 5: Si desea ver el calendario de trabajo de todos los diseñadores\
+                                                                                      \n - 6: Si desea ver el calendario de trabajo de todos los fabricadores\
+                                                                                      \n - 7: Si desea ver el calendario de trabajo de todos los instaladores\
+                                                                                      \n ingrese la alternativa escogida: ")
+                if (opt_ver_empleados_2 =='1'):
                     print('\n')
                     e = db.Employees.select()
                     data = [p.to_dict() for p in e]
@@ -271,7 +280,7 @@ def employees_console(db, level, user):
                     df.columns = ['Rut','Nombre','Zona', '¿Es Senior?']
                     print( tabulate(df, headers='keys', tablefmt='psql'))
                     input(' \n Presione una tecla para continuar: ')
-                if (opt_ver_empleados2 == '2'):
+                if (opt_ver_empleados_2 == '2'):
                     try:
                         id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
                         try:
@@ -287,60 +296,109 @@ def employees_console(db, level, user):
                     except ValueError as ve:
                         print(ve)
                         input('\n Presione una tecla para continuar. \n')
+                if (opt_ver_empleados_2 == '3'):
+                    createWorkersReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
+                if (opt_ver_empleados_2 == '4'):
+                    createRectificatorsReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
+                if (opt_ver_empleados_2 == '5'):
+                    createDesignersReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
+                if (opt_ver_empleados_2 == '6'):
+                    createFabricatorsReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
+                if (opt_ver_empleados_2 == '7'):
+                    createInstallatorsReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 3):
-                try:
-                    id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
+                opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
+                                                                                      \n - 2: Si desea ver el calendario de trabajo de todos los instaladores\
+                                                                                      \n ingrese la alternativa escogida: ")
+                if (opt_ver_empleados_2 == '1'):
                     try:
-                        int(id_employee)
-                    except:
-                        raise ValueError('\n El rut debe ser un número entero. \n')
-                    with db_session:
-                        if db.Employees.get( id = int(id_employee)) == None:
-                            raise ValueError('\n Empleado inexistente. \n')
-                        if db.Employees_Skills.get(employee = db.Employees[id_employee]).skill.id != 4:
-                            raise ValueError('\n Empleado no es un instalador. Acceso restringido. \n')
-                    createPersonalEmployeeReport(db,id_employee)
-                    print('\n Reporte creado. Puede revisarlo en la carpeta Reportes. \n')
-                    input('\n Presione la tecla Enter para continuar. \n')
-                except ValueError as ve:
-                    print(ve)
-                    input('\n Presione la tecla Enter para continuar. \n')
+                        id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
+                        try:
+                            int(id_employee)
+                        except:
+                            raise ValueError('\n El rut debe ser un número entero. \n')
+                        with db_session:
+                            if db.Employees.get( id = int(id_employee)) == None:
+                                raise ValueError('\n Empleado inexistente. \n')
+                            if db.Employees_Skills.get(employee = db.Employees[id_employee]).skill.id != 4:
+                                raise ValueError('\n Empleado no es un instalador. Acceso restringido. \n')
+                        createPersonalEmployeeReport(db,id_employee)
+                        print('\n Reporte creado. Puede revisarlo en la carpeta Reportes. \n')
+                        input('\n Presione la tecla Enter para continuar. \n')
+                    except ValueError as ve:
+                        print(ve)
+                        input('\n Presione la tecla Enter para continuar. \n')
+                if (opt_ver_empleados_2 == '2'):
+                    createInstallatorsReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 4):
-                try:
-                    id_employee = input('\n Ingrese el RUT del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
+                opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
+                                                                                      \n - 2: Si desea ver el calendario de trabajo de todos los rectificadores\
+                                                                                      \n ingrese la alternativa escogida: ")
+                if (opt_ver_empleados_2 == '1'):
                     try:
-                        int(id_employee)
-                    except:
-                        raise ValueError('\n El rut debe ser un número entero. \n')
-                    with db_session:
-                        if db.Employees.get( id = int(id_employee)) == None:
-                            raise ValueError('\n Empleado inexistente. \n')
-                        if db.Employees[int(id_employee)].skill.id != 1:
-                            raise ValueError('\n Empleado no es un rectificador. Acceso restringido. \n')
-                    createPersonalEmployeeReport(db,id_employee)
-                    print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                    input('\n Presione una tecla para continuar. \n')
-                except ValueError as ve:
-                    print(ve)
-                    input('\n Presione una tecla para continuar. \n')
+                        id_employee = input('\n Ingrese el RUT del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
+                        try:
+                            int(id_employee)
+                        except:
+                            raise ValueError('\n El rut debe ser un número entero. \n')
+                        with db_session:
+                            if db.Employees.get( id = int(id_employee)) == None:
+                                raise ValueError('\n Empleado inexistente. \n')
+                            if db.Employees[int(id_employee)].skill.id != 1:
+                                raise ValueError('\n Empleado no es un rectificador. Acceso restringido. \n')
+                        createPersonalEmployeeReport(db,id_employee)
+                        print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
+                        input('\n Presione una tecla para continuar. \n')
+                    except ValueError as ve:
+                        print(ve)
+                        input('\n Presione una tecla para continuar. \n')
+                if (opt_ver_empleados_2 == '2'):
+                    createRectificatorsReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 5):
-                try:
-                    id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
+                opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
+                                                                                      \n - 2: Si desea ver el calendario de trabajo de todos los diseñadores\
+                                                                                      \n - 3: Si desea ver el calendario de trabajo de todos los instaladores\
+                                                                                      \n ingrese la alternativa escogida: ")
+                if (opt_ver_empleados_2 == '1'):
                     try:
-                        int(id_employee)
-                    except:
-                        raise ValueError('\n El rut debe ser un número entero. \n')
-                    with db_session:
-                        if db.Employees.get( id = int(id_employee)) == None:
-                            raise ValueError('\n Empleado inexistente. \n')
-                        if db.Employees[int(id_employee)].skill.id not in [2,4]:
-                            raise ValueError('\n Empleado no es un instalador o diseñador. Acceso restringido. \n')
-                    createPersonalEmployeeReport(db,id_employee)
-                    print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                    input('\n Presione una tecla para continuar. \n')
-                except ValueError as ve:
-                    print(ve)
-                    input('\n Presione una tecla para continuar. \n')
+                        id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
+                        try:
+                            int(id_employee)
+                        except:
+                            raise ValueError('\n El rut debe ser un número entero. \n')
+                        with db_session:
+                            if db.Employees.get( id = int(id_employee)) == None:
+                                raise ValueError('\n Empleado inexistente. \n')
+                            if db.Employees[int(id_employee)].skill.id not in [2,4]:
+                                raise ValueError('\n Empleado no es un instalador o diseñador. Acceso restringido. \n')
+                        createPersonalEmployeeReport(db,id_employee)
+                        print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
+                        input('\n Presione una tecla para continuar. \n')
+                    except ValueError as ve:
+                        print(ve)
+                        input('\n Presione una tecla para continuar. \n')
+                if (opt_ver_empleados_2 == '2'):
+                    createDesignersReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
+                if (opt_ver_empleados_2 == '3'):
+                    createInstallatorsReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level in [6,7,8,9]):
                 try:
                     id_employee = user
@@ -350,13 +408,15 @@ def employees_console(db, level, user):
                         raise ValueError('\n Usuario no es trabajador. \n')
                     with db_session:
                         if db.Employees.get( id = int(id_employee)) == None:
-                            raise ValueError('\n Usuario no es trabajador. \n')
+                            raise ValueError('\n Usuario no es trabajador. Acceso denegado. \n')
                     createPersonalEmployeeReport(db,id_employee)
                     print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
                     input('\n Presione una tecla para continuar. \n')
                 except ValueError as ve:
                     print(ve)
                     input('\n Presione una tecla para continuar. \n')
+                finally:
+                    break
                                                                                           
             elif(opt_ver_empleados == '2') and (level in [1,2,4]):
                 printSelectSkill(db, 1)

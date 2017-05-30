@@ -16,26 +16,51 @@ import Users.usuario as Uu
 import numpy as np
 import getpass
 import os
-Uf.createUser(db,'6', 6,'6')
+# Uf.createUser(db,'1', 1,'1')
+# Uf.createUser(db,'2', 2,'2')
+# Uf.createUser(db,'3', 3,'3')
+# Uf.createUser(db,'4', 4,'4')
+# Uf.createUser(db,'5', 5,'5')
+# Uf.createUser(db,'6', 6,'6')
+# Uf.createUser(db,'7', 7,'7')
+# Uf.createUser(db,'8', 8,'8')
+# Uf.createUser(db,'9', 9,'9')
 
 def console(level, user):
     while True:
-        opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados.\
-                                                              \n - 2: Proyectos. \
-                                                              \n - 3: Tareas. \
-                                                              \n - 4: Stock. \
-                                                              \n - 5: Planificación \
-                                                              \n - 6: Usuarios de consola\
-                                                              \n - 7: Para salir. \
-                                                              \n Ingrese la alternativa elegida: ")
+        if (level in [1,2,3,4,5]):
+            opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados.\
+                                                                  \n - 2: Proyectos. \
+                                                                  \n - 3: Tareas. \
+                                                                  \n - 4: Stock. \
+                                                                  \n - 5: Planificación \
+                                                                  \n - 6: Usuarios de consola\
+                                                                  \n - 7: Para salir. \
+                                                                  \n Ingrese la alternativa elegida: ")
+        else:
+            opt2 = input("\n Marque una de las siguientes opciones:\n - 1: Obtener mi calendario de trabajo.\
+                                                                  \n - 2: Ingresar hoja de corte. \
+                                                                  \n - 3: Para salir. \
+                                                                  \n Ingrese la alternativa elegida: ")
+            if(opt2 == '1'):
+                print('holi')
+                opt = '1'
+            elif(opt2 == '2'):
+                opt = '2'
+            elif(opt2 == '3'):
+                opt = '7'
+            else:
+                opt =''
         if(opt == '1'):
-            # Los ids deberían ser creados automáticamente y no ingresados (para asegurarse de que sean únicos).
-            # Para el caso particular de los proyectos el contract_number puede ser ingresado porque tiene la propiedad de ser único.
             Eu.employees_console(db, level, user)
         if(opt == '2'):
             Pu.projects_console(db, level)
         if( opt== '3'):
-            Pu.tasks_console(db, level)
+            if (level in [1,2,3,4,5]):
+                Pu.tasks_console(db, level)
+            else:
+                print('\n Acceso denegado. \n')
+                input(' Presione una tecla para continuar: ')
         if (opt == '4'):
             if (level == 1):
                 Su.stock_console(db, level)
@@ -51,6 +76,9 @@ def console(level, user):
         if(opt=='6'):
             if(level ==1):
                 Uu.users_console(db)
+            else:
+                print('\n Acceso denegado. \n')
+                input(' Presione una tecla para continuar: ')
         if(opt == '7'):
             print("\n Has salido del programa.")
             break
