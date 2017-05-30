@@ -264,8 +264,13 @@ def employees_console(db, level, user):
             print('\n')
             if(opt_ver_empleados == '1' and level in [1,2]):
                 opt_ver_empleados2 = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver lista de empleados. \
-                                                                                    \n - 2: Si desea ver el calendario de trabajo de empleados. \
-                                                                                    \n ingrese la alternativa escogida: ")
+                                                                                      \n - 2: Si desea ver el calendario de trabajo de un empleado. \
+                                                                                      \n - 3: Si desea ver el calendario de trabajo de todos los empleados\
+                                                                                      \n - 4: Si desea ver el calendario de trabajo de todos los rectificadores\
+                                                                                      \n - 5: Si desea ver el calendario de trabajo de todos los diseñadores\
+                                                                                      \n - 6: Si desea ver el calendario de trabajo de todos los fabricadores\
+                                                                                      \n - 7: Si desea ver el calendario de trabajo de todos los instaladores\
+                                                                                      \n ingrese la alternativa escogida: ")
                 if (opt_ver_empleados2 =='1'):
                     print('\n')
                     e = db.Employees.select()
@@ -290,6 +295,26 @@ def employees_console(db, level, user):
                     except ValueError as ve:
                         print(ve)
                         input('\n Presione una tecla para continuar. \n')
+                if (opt_ver_empleados_2 == '3'):
+                    createWorkersReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
+                if (opt_ver_empleados_2 == '4'):
+                    createRectificatorsReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
+                if (opt_ver_empleados_2 == '5'):
+                    createDesignersReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
+                if (opt_ver_empleados_2 == '6'):
+                    createFabricatorsReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
+                if (opt_ver_empleados_2 == '3'):
+                    createInstallatorsReportWide(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                            \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 3):
                 try:
                     id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
