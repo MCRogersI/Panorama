@@ -9,7 +9,6 @@ def employees_console(db, level, user):
 #Es mejor importar las funciones en lugar de entregarsélas como parámetro a la función. Cambiar más adelante.
 
     while True:
-        print('hola')
         if (level in [1,2,3,4,5]):
             opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear nuevo empleado. \
                                                                       \n - 2: Si desea editar datos de empleados. \

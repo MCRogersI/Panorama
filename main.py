@@ -43,7 +43,6 @@ def console(level, user):
                                                                   \n - 3: Para salir. \
                                                                   \n Ingrese la alternativa elegida: ")
             if(opt2 == '1'):
-                print('holi')
                 opt = '1'
             elif(opt2 == '2'):
                 opt = '2'
