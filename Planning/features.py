@@ -511,6 +511,7 @@ def doPlanning(db):
                 if len(employees) < 1:
                     return('\n No se puede hacer la planificación porque hay tareas que nadie sabe hacer \n')
             
+
         projects = select(p for p in db.Projects if p.finished == None).order_by(lambda p : p.priority)
         # projects.show()
         for p in projects:
@@ -597,7 +598,9 @@ def doPlanning(db):
                                 commit()
             for e in p.engagements:
                 Sf.updateEngagements(db, e.sku.id)
+
         createReport(db, Delayed, False) #Comenté esta línea para poder ver lo de los engagements (descomentar luego)
+
         
         
 

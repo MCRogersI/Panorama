@@ -194,14 +194,18 @@ def createGlobalReport(db):
             # cell.alignment = Alignment(horizontal='center')
 
             r+=1
-
-    module_path = os.path.dirname(__file__)
-    panorama_folder_path = os.path.abspath(os.path.join(module_path, os.pardir))
-    report_folder_path = os.path.join(panorama_folder_path, "Reportes")
-    if not os.path.exists(report_folder_path):
-        os.makedirs(report_folder_path)
-    fn = os.path.join(report_folder_path, "Global Report.xlsx")
-    wb.save(fn)
+    try:
+        module_path = os.path.dirname(__file__)
+        panorama_folder_path = os.path.abspath(os.path.join(module_path, os.pardir))
+        report_folder_path = os.path.join(panorama_folder_path, "Reportes")
+        if not os.path.exists(report_folder_path):
+            os.makedirs(report_folder_path)
+        fn = os.path.join(report_folder_path, "Global Report.xlsx")
+        wb.save(fn)
+    except OSError as e:
+        if e.args[0] != 13:
+            raise
+        input("\n Ha ocurrido un error porque el archivo Global Report.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.")
 
 
 

@@ -2,11 +2,16 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Python 3.5.2 (D:\Anaconda3\python.exe)" jdkType="Python SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Hidrología" />
-    <orderEntry type="module" module-name="ADH" />
-    <orderEntry type="module" module-name="OHLALA" />
-    <orderEntry type="module" module-name="epynet" />
+    <orderEntry type="module" module-name="Tarea11" />
+    <orderEntry type="module" module-name="I2DisMec" />
+    <orderEntry type="module" module-name="TAREA 4 ANALISIS Y DISEÑO HIDRÁULICO" />
+    <orderEntry type="module" module-name="Tarea 12" />
+    <orderEntry type="module" module-name="I2secondRound" />
+  </component>
+  <component name="TestRunnerService">
+    <option name="projectConfiguration" value="Nosetests" />
+    <option name="PROJECT_TEST_RUNNER" value="Nosetests" />
   </component>
 </module>

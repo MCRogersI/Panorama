@@ -22,14 +22,7 @@ def createProject(db, contract_number, client_address, client_comuna,
 			p.real_linear_meters = real_linear_meters
 		if real_cost != None:
 			p.real_cost = real_cost
-		
-		############################################################
-		# La siguiente función es para asignar la prioridad al crear el proyecto. por ahora se hará FIFO ya que no sabemos estimar la holgura, pero debe cambiar después.
-		#DEBE CAMBIAR DESPUES
 		db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished != True).count()
-		#NO ES BROMA!!
-	#?????????????????????????????	
-		#############################################################
 	PLf.doPlanning(db)
 
 def printProjects(db):
