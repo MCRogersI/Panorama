@@ -8,14 +8,17 @@ import os
 
 def projects_console(db, level):
     while True:
-        opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear un proyecto. \
-                                                              \n - 2: Si desea editar un proyecto. \
-                                                              \n - 3: Eliminar un proyecto. \
-                                                              \n - 4: Si desea manejar datos sobre disponibilidad de un cliente. \
-                                                              \n - 5: Para ver proyectos actuales. \
-                                                              \n - 6: Para estimar costos del proyecto. \
-                                                              \n - 7: Para volver atrás. \
-                                                              \n Ingrese la alternativa elegida: ")
+        if (level in [1,2,3,4,5]):
+            opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear un proyecto. \
+                                                                  \n - 2: Si desea editar un proyecto. \
+                                                                  \n - 3: Eliminar un proyecto. \
+                                                                  \n - 4: Si desea manejar datos sobre disponibilidad de un cliente. \
+                                                                  \n - 5: Para ver proyectos actuales. \
+                                                                  \n - 6: Para estimar costos del proyecto. \
+                                                                  \n - 7: Para volver atrás. \
+                                                                  \n Ingrese la alternativa elegida: ")
+        else:
+            opt = '6'
         if(opt == '1'):
             if(level == 1):
                 try:
@@ -27,38 +30,38 @@ def projects_console(db, level):
                     with db_session:
                         if len(select( p for p in db.Projects if p.contract_number == int(contract_number))) > 0:
                             raise ValueError('\n Este número de contrato ya existe \n')
-                    client_address = input("Ingrese la direccion del cliente: ")
+                    client_address = input(" Ingrese la direccion del cliente: ")
                     if client_address == '':
                         raise ValueError('\n Debe ingresar una dirección \n')
-                    client_comuna = input("Ingrese la comuna del cliente: ")
+                    client_comuna = input(" Ingrese la comuna del cliente: ")
                     if client_comuna == '':
                         raise ValueError('\n Debe ingresar una comuna \n')
-                    client_name = input("Ingrese el nombre del cliente: ")
+                    client_name = input(" Ingrese el nombre del cliente: ")
                     if client_name == '':
                         raise ValueError('\n Debe ingresar un nombre \n')
-                    client_rut = input("Ingrese el RUT del cliente: ")
+                    client_rut = input(" Ingrese el RUT del cliente: ")
                     if client_rut == '':
                         raise ValueError('\n Debe ingresar un rut \n')
-                    linear_meters = input("Ingrese los metros lineales del proyecto: ")
+                    linear_meters = input(" Ingrese los metros lineales del proyecto: ")
                     try:
                         int(linear_meters)
                     except:
                         raise ValueError('\n Los metros lineales deben ser un número entero \n')
                     if int(linear_meters) <0:
                         raise ValueError('\n Los metros lineales deben ser un número entero positivo \n')
-                    year = input("ingrese el año de la fecha de entrega pactada del proyecto: ")
+                    year = input(" Ingrese el año de la fecha de entrega pactada del proyecto: ")
                     try:
                         int(year)
                     except:
                         raise ValueError('\n El año debe ser un número entero \n')
-                    month = input("ingrese el mes de la fecha de entrega pactada del proyecto: ")
+                    month = input(" Ingrese el mes de la fecha de entrega pactada del proyecto: ")
                     try:
                         int(month)
                     except:
                         raise ValueError('\n ser un número entero \n')
                     if int(month) >12 or int(month) < 1:
                         raise ValueError('\n El mes debe ser un número entero entre 1 y 12 \n')
-                    day = input("ingrese el día de la fecha de entrega pactada del proyecto: ")
+                    day = input(" Ingrese el día de la fecha de entrega pactada del proyecto: ")
                     try:
                         int(day)
                     except:
@@ -72,7 +75,7 @@ def projects_console(db, level):
                         int(crystal_leadtime)
                     except:
                         crystal_leadtime = 15
-                    sale_year = input("ingrese el año de la fecha de venta del proyecto: ")
+                    sale_year = input(" Ingrese el año de la fecha de venta del proyecto: ")
                     try:
                         int(sale_year)
                     except:
@@ -93,7 +96,7 @@ def projects_console(db, level):
                         sale_date =date(int(sale_year),int(sale_month),int(sale_day))
                     except:
                         raise ValueError('\n No se ha ingresado una fecha válida \n')
-                    sale_price = input('\n Ingrese el precio de venta del proyecto \n')
+                    sale_price = input('\n Ingrese el precio de venta del proyecto: \n')
                     try:
                         if int(sale_price) < 0:
                             raise ValueError('\n El precio de venta debe ser un número posititvo \n')
@@ -272,8 +275,12 @@ def projects_console(db, level):
                 print('\n Acceso denegado. \n')
                 input(' Presione una tecla para continuar: ')
         elif(opt == '5'):
-            printProjects(db)
-            input('\n Presione una tecla para continuar: ')
+            if (level == 1):
+                printProjects(db)
+                input('\n Presione una tecla para continuar: ')
+            else:
+                print('\n Acceso denegado. \n')
+                input(' Presione una tecla para continuar: ')
         elif (opt =='6'):
             try:
                 contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo: ')
@@ -287,11 +294,15 @@ def projects_console(db, level):
                 if os.path.isfile(file_dir):
                     estimateCost(db, contract_number, file_name)
                     input('\n Costo estimado exitosamente. Presione una tecla para continuar.')
+                    if (level not in [1,2,3,4,5]) :
+                        break
                 else:
                     raise ValueError('\n Archivo no encontrado.')
             except ValueError as ve:
                 print(ve)
                 input(' Presione una tecla para continuar.')
+                if (level not in [1,2,3,4,5]) :
+                    break
         elif(opt == '7'):
             break
 
@@ -304,9 +315,9 @@ def tasks_console(db, level):
                                                               \n Ingrese la alternativa elegida: ")
 
         if(opt == '1'):
-            opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n - 3: Volver. \n Ingrese la alternativa elegida: ")
-            if (opt2 =='1'):
-                if level in  [1,2,3,4,5]:
+            if level in  [1,2,3,4,5]:
+                opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n - 3: Volver. \n Ingrese la alternativa elegida: ")
+                if (opt2 =='1'):
                     try:
                         new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
                         with db_session:
@@ -357,11 +368,7 @@ def tasks_console(db, level):
                         input('\n Fecha agregada con éxito. Presione una tecla para continuar: ')
                     except ValueError as ve:
                         print(ve)
-                else:
-                    print('\n Acceso denegado. \n')
-                    input(' Presione una tecla para continuar: ')
-            elif(opt2 == '2'):
-                if level in  [1,2,3,4,5]:
+                elif(opt2 == '2'):
                     try:
                         contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
                         with db_session:
@@ -401,11 +408,15 @@ def tasks_console(db, level):
                         failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
                     except ValueError as ve:
                         print(ve) 
-                else:
-                    print('\n Acceso denegado. \n')
-                    input(' Presione una tecla para continuar: ')
+            else:
+                print('\n Acceso denegado. \n')
+                input(' Presione una tecla para continuar: ')
         elif(opt == '2'):
-            printTasks(db)
+            if (level == 1):
+                printTasks(db)
+            else:
+                print('\n Acceso denegado. \n')
+                input(' Presione una tecla para continuar: ')
         elif(opt == '3'):
             if(level == 1):
                 opt2 = input('\n Marque una de las siguientes opciones: \n - 1: Si desea editar costos de flete.\
