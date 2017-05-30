@@ -4,7 +4,6 @@ from pony.orm import *
 from datetime import date
 from Employees.reports import createPersonalEmployeeReport
 import pandas
-from IPython.display import display
 from tabulate import tabulate
 def employees_console(db, level, user):
 #Es mejor importar las funciones en lugar de entregarsélas como parámetro a la función. Cambiar más adelante.

@@ -16,9 +16,7 @@ import Users.usuario as Uu
 import numpy as np
 import getpass
 import os
-# Uf.createUser(db,'1', 1,'1')
-# Uf.createUser(db,'2', 2,'2')
-# Uf.createUser(db,'3', 3,'3')
+Uf.createUser(db,'6', 6,'6')
 
 def console(level, user):
     while True:
