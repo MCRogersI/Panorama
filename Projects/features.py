@@ -24,7 +24,7 @@ def createProject(db, contract_number, client_address, client_comuna,
 			p.real_linear_meters = real_linear_meters
 		if real_cost != None:
 			p.real_cost = real_cost
-		db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished != True).count()
+		db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished == None).count()
 	PLf.doPlanning(db)
 
 def printProjects(db):

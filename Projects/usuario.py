@@ -304,7 +304,7 @@ def tasks_console(db, level):
                                                               \n Ingrese la alternativa elegida: ")
 
         if(opt == '1'):
-            opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n -3: Volver. \n Ingrese la alternativa elegida: ")
+            opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n - 3: Volver. \n Ingrese la alternativa elegida: ")
             if (opt2 =='1'):
                 if level in  [1,2,3,4,5]:
                     try:

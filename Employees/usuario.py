@@ -10,8 +10,7 @@ def employees_console(db, level, user):
 #Es mejor importar las funciones en lugar de entregarsélas como parámetro a la función. Cambiar más adelante.
 
     while True:   
-        if level == 1:
-            opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear nuevo empleado. \
+        opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear nuevo empleado. \
                                                                   \n - 2: Si desea editar datos de empleados. \
                                                                   \n - 3: Si desea eliminar un empleado. \
                                                                   \n - 4: Para manejar vacaciones/periodos de licencia de los empleados. \
@@ -173,7 +172,7 @@ def employees_console(db, level, user):
                         if db.Employees.get(id = int(idEmpleado)) == None:
                             raise ValueError('\n Empleado inexistente \n')
                     deleteEmployee(db, idEmpleado)
-                    input(' \n Empleado eliminado. Presione una tecla para continuar: ')
+                    input('\n Empleado eliminado. Presione una tecla para continuar: ')
                 except ValueError as ve:
                     print(ve)
                     input('\n Presione cualquier tecla para continuar \n')
@@ -261,11 +260,10 @@ def employees_console(db, level, user):
                                                                                      \n Ingrese la alternativa elegida: ")
             if ( level in [6,7,8,9]):
                 opt_ver_empleados = 1
-            print('\n')
             if(opt_ver_empleados == '1' and level in [1,2]):
                 opt_ver_empleados2 = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver lista de empleados. \
                                                                                     \n - 2: Si desea ver el calendario de trabajo de empleados. \
-                                                                                    \n ingrese la alternativa escogida: ")
+                                                                                    \n Ingrese la alternativa escogida: ")
                 if (opt_ver_empleados2 =='1'):
                     print('\n')
                     e = db.Employees.select()
@@ -300,17 +298,17 @@ def employees_console(db, level, user):
                     with db_session:
                         if db.Employees.get( id = int(id_employee)) == None:
                             raise ValueError('\n Empleado inexistente. \n')
-                        if db.Employees[int(id_employee)].skill.id != 4:
+                        if db.Employees_Skills.get(employee = db.Employees[id_employee]).skill.id != 4:
                             raise ValueError('\n Empleado no es un instalador. Acceso restringido. \n')
                     createPersonalEmployeeReport(db,id_employee)
-                    print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                    input('\n Presione una tecla para continuar. \n')
+                    print('\n Reporte creado. Puede revisarlo en la carpeta Reportes. \n')
+                    input('\n Presione la tecla Enter para continuar. \n')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione una tecla para continuar. \n')
+                    input('\n Presione la tecla Enter para continuar. \n')
             elif(opt_ver_empleados == '1' and level == 4):
                 try:
-                    id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
+                    id_employee = input('\n Ingrese el RUT del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
                     try:
                         int(id_employee)
                     except:

@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91b820c1-0a4a-4fa8-8539-505bd0720a10" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Employees/reports.py" afterPath="$PROJECT_DIR$/Employees/reports.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Planning/reports.py" afterPath="$PROJECT_DIR$/Planning/reports.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Purchases.xlsx" afterPath="$PROJECT_DIR$/Hojas de parametros estandar/Purchases.xlsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Employees/usuario.py" afterPath="$PROJECT_DIR$/Employees/usuario.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Projects/features.py" afterPath="$PROJECT_DIR$/Projects/features.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Projects/usuario.py" afterPath="$PROJECT_DIR$/Projects/usuario.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tests/Case9.py" afterPath="$PROJECT_DIR$/Tests/Case9.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
     </list>
@@ -46,11 +48,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="reports.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="reports.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Employees/reports.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="3483" column="66" selection-start-line="3483" selection-start-column="66" selection-end-line="3483" selection-end-column="66" />
+            <state relative-caret-position="231">
+              <caret line="3481" column="45" selection-start-line="3481" selection-start-column="45" selection-end-line="3481" selection-end-column="45" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -103,19 +105,23 @@
       <file leaf-file-name="Case9.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Tests/Case9.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-999">
-              <caret line="120" column="59" selection-start-line="120" selection-start-column="59" selection-end-line="120" selection-end-column="59" />
-              <folding />
+            <state relative-caret-position="-122">
+              <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+              <folding>
+                <marker date="1496136417704" expanded="false" signature="233:511" ph="import ..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
-              <folding />
+            <state relative-caret-position="250">
+              <caret line="61" column="53" selection-start-line="61" selection-start-column="53" selection-end-line="61" selection-end-column="53" />
+              <folding>
+                <element signature="e#0#22#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -152,9 +158,9 @@
         <option value="$PROJECT_DIR$/Stock/usuario.py" />
         <option value="$PROJECT_DIR$/Planning/reports.py" />
         <option value="$PROJECT_DIR$/Planning/features.py" />
+        <option value="$PROJECT_DIR$/Employees/reports.py" />
         <option value="$PROJECT_DIR$/Tests/Case9.py" />
         <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/Employees/reports.py" />
       </list>
     </option>
   </component>
@@ -815,14 +821,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Projects/features.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="193">
@@ -865,18 +863,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/Case9.py">
+    <entry file="file://$PROJECT_DIR$/Employees/reports.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-999">
-          <caret line="120" column="59" selection-start-line="120" selection-start-column="59" selection-end-line="120" selection-end-column="59" />
-          <folding />
+        <state relative-caret-position="231">
+          <caret line="3481" column="45" selection-start-line="3481" selection-start-column="45" selection-end-line="3481" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Employees/reports.py">
+    <entry file="file://$PROJECT_DIR$/Tests/Case9.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="3483" column="66" selection-start-line="3483" selection-start-column="66" selection-end-line="3483" selection-end-column="66" />
+        <state relative-caret-position="-122">
+          <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+          <folding>
+            <marker date="1496136417704" expanded="false" signature="233:511" ph="import ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="61" column="53" selection-start-line="61" selection-start-column="53" selection-end-line="61" selection-end-column="53" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
