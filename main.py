@@ -26,8 +26,6 @@ import os
 # Uf.createUser(db,'8', 8,'8')
 # Uf.createUser(db,'9', 9,'9')
 
-
-
 def console(level, user):
     while True:
         if (level in [1,2,3,4,5]):

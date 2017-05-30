@@ -30,38 +30,38 @@ def projects_console(db, level):
                     with db_session:
                         if len(select( p for p in db.Projects if p.contract_number == int(contract_number))) > 0:
                             raise ValueError('\n Este número de contrato ya existe \n')
-                    client_address = input("Ingrese la direccion del cliente: ")
+                    client_address = input(" Ingrese la direccion del cliente: ")
                     if client_address == '':
                         raise ValueError('\n Debe ingresar una dirección \n')
-                    client_comuna = input("Ingrese la comuna del cliente: ")
+                    client_comuna = input(" Ingrese la comuna del cliente: ")
                     if client_comuna == '':
                         raise ValueError('\n Debe ingresar una comuna \n')
-                    client_name = input("Ingrese el nombre del cliente: ")
+                    client_name = input(" Ingrese el nombre del cliente: ")
                     if client_name == '':
                         raise ValueError('\n Debe ingresar un nombre \n')
-                    client_rut = input("Ingrese el RUT del cliente: ")
+                    client_rut = input(" Ingrese el RUT del cliente: ")
                     if client_rut == '':
                         raise ValueError('\n Debe ingresar un rut \n')
-                    linear_meters = input("Ingrese los metros lineales del proyecto: ")
+                    linear_meters = input(" Ingrese los metros lineales del proyecto: ")
                     try:
                         int(linear_meters)
                     except:
                         raise ValueError('\n Los metros lineales deben ser un número entero \n')
                     if int(linear_meters) <0:
                         raise ValueError('\n Los metros lineales deben ser un número entero positivo \n')
-                    year = input("ingrese el año de la fecha de entrega pactada del proyecto: ")
+                    year = input(" Ingrese el año de la fecha de entrega pactada del proyecto: ")
                     try:
                         int(year)
                     except:
                         raise ValueError('\n El año debe ser un número entero \n')
-                    month = input("ingrese el mes de la fecha de entrega pactada del proyecto: ")
+                    month = input(" Ingrese el mes de la fecha de entrega pactada del proyecto: ")
                     try:
                         int(month)
                     except:
                         raise ValueError('\n ser un número entero \n')
                     if int(month) >12 or int(month) < 1:
                         raise ValueError('\n El mes debe ser un número entero entre 1 y 12 \n')
-                    day = input("ingrese el día de la fecha de entrega pactada del proyecto: ")
+                    day = input(" Ingrese el día de la fecha de entrega pactada del proyecto: ")
                     try:
                         int(day)
                     except:
@@ -75,7 +75,7 @@ def projects_console(db, level):
                         int(crystal_leadtime)
                     except:
                         crystal_leadtime = 15
-                    sale_year = input("ingrese el año de la fecha de venta del proyecto: ")
+                    sale_year = input(" Ingrese el año de la fecha de venta del proyecto: ")
                     try:
                         int(sale_year)
                     except:
@@ -96,7 +96,7 @@ def projects_console(db, level):
                         sale_date =date(int(sale_year),int(sale_month),int(sale_day))
                     except:
                         raise ValueError('\n No se ha ingresado una fecha válida \n')
-                    sale_price = input('\n Ingrese el precio de venta del proyecto \n')
+                    sale_price = input('\n Ingrese el precio de venta del proyecto: \n')
                     try:
                         if int(sale_price) < 0:
                             raise ValueError('\n El precio de venta debe ser un número posititvo \n')
