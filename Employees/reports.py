@@ -4652,15 +4652,15 @@ def createWorkersReportWide(db):
         input(
             "\n Ha ocurrido un error porque el archivo Reporte empleados {}.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.".format(date.today()))
 
-# createWorkersReportWide(db)
+createWorkersReportWide(db)
 # createRectificatorsReportWide(db)
 # createDesignersReportWide(db)
 # createFabricatorsReportWide(db)
 # createInstallatorsReportWide(db)
-# createRectificatorsReport(db)
-# createDesignersReport(db)
-# createFabricatorsReport(db)
-# createInstallersReport(db)
+createRectificatorsReport(db)
+createDesignersReport(db)
+createFabricatorsReport(db)
+createInstallersReport(db)
 
 # createPersonalEmployeeReport(db,1)
 # createPersonalEmployeeReport(db,2)

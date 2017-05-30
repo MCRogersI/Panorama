@@ -119,7 +119,7 @@ Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil',
 Pf.createEmployeeActivity(db, 5, 1, 2017, 8, 1, 2017, 8, 5)
 Pf.createEmployeeActivity(db, 1, 2, 2017, 6, 20, 2017, 7, 1)
 Pf.createEmployeeActivity(db, 1, 2, 2017, 7, 4, 2017, 7, 6)
-Pf.createEmployeeActivity(db, 7, 1, 2017, 8, 6, 2017, 9, 1)
+# Pf.createEmployeeActivity(db, 7, 1, 2017, 8, 6, 2017, 9, 1)
 Pf.createEmployeeActivity(db, 8, 1, 2017, 7, 15, 2017, 8, 2)
 Pf.createEmployeeActivity(db, 9, 2, 2017, 7, 4, 2017, 7, 14)
 
