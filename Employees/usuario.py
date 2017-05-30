@@ -2,7 +2,7 @@ from Employees.features import createEmployee, printEmployees, editEmployee, pri
 from Projects.features import createEmployeeActivity, deleteEmployeeActivity, printEmployeesActivities
 from pony.orm import *
 from datetime import date
-from Employees.reports import createPersonalEmployeeReport, createWorkersReportWide, createRectificatorsReportWide, createDesignersReportWide, createFabricatorsReportWide, createInstallatorsReportWide
+from Employees.reports import createPersonalEmployeeReport, createWorkersReportWide, createRectificatorsReport, createDesignersReport, createFabricatorsReport, createInstallersReport
 import pandas
 from tabulate import tabulate
 def employees_console(db, level, user):
@@ -296,7 +296,7 @@ def employees_console(db, level, user):
                         print(ve)
                         input('\n Presione una tecla para continuar. \n')
                 if (opt_ver_empleados_2 == '3'):
-                    createWorkersReport(db)
+                    createWorkersReportWide(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '4'):
@@ -312,7 +312,7 @@ def employees_console(db, level, user):
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '7'):
-                    createInstallatorsReport(db)
+                    createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 3):
@@ -338,7 +338,7 @@ def employees_console(db, level, user):
                         print(ve)
                         input('\n Presione la tecla Enter para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
-                    createInstallatorsReport(db)
+                    createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 4):
@@ -395,7 +395,7 @@ def employees_console(db, level, user):
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '3'):
-                    createInstallatorsReport(db)
+                    createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level in [6,7,8,9]):
