@@ -305,7 +305,7 @@ def employees_console(db, level, user):
                     input('\n Presione la tecla Enter para continuar. \n')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione una tecla para continuar. \n')
+                    input('\n Presione la tecla Enter para continuar. \n')
             elif(opt_ver_empleados == '1' and level == 4):
                 try:
                     id_employee = input('\n Ingrese el RUT del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
