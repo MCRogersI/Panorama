@@ -1,5 +1,5 @@
 from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases, editAllSkus
-from Stock.reports import createStockReport,createStockReportExtended
+from Stock.reports import createStockReport,createStockReport
 import os
 from pony.orm import *
 
@@ -146,7 +146,7 @@ def stock_console(db, level):
                 print(ve)
                 input(' Presione una tecla para continuar.')
         if opt =='6' and level ==1:
-            createStockReportExtended(db)
+            createStockReport(db)
             input('\n Informe creado con éxit. Presione cualquier tecla para continuar. \n')
         if (opt == '7'):
             break

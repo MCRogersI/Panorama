@@ -417,7 +417,7 @@ def createPersonalEmployeeReport(db,id_employee):
     except OSError as e:
         if e.args[0] != 13:
             raise
-        input("\n Ha ocurrido un error porque el archivo ReportePlanificacion.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.")
+        input("\n Ha ocurrido un error porque el archivo Reporte empleado {}.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.".format(id_employee))
 #
 
 # createEmployeeReportV2(db,1)

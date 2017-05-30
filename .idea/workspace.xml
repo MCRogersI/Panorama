@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="91b820c1-0a4a-4fa8-8539-505bd0720a10" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Employees/reports.py" afterPath="$PROJECT_DIR$/Employees/reports.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Employees/usuario.py" afterPath="$PROJECT_DIR$/Employees/usuario.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Planning/reports.py" afterPath="$PROJECT_DIR$/Planning/reports.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Stock/reports.py" afterPath="$PROJECT_DIR$/Stock/reports.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Stock/usuario.py" afterPath="$PROJECT_DIR$/Stock/usuario.py" />
     </list>
     <ignored path="Panorama.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,22 +28,10 @@
       <file leaf-file-name="reports.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Employees/reports.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="14" column="32" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="32" />
+            <state relative-caret-position="142">
+              <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="usuario.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Employees/usuario.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="338">
-              <caret line="333" column="69" selection-start-line="333" selection-start-column="69" selection-end-line="333" selection-end-column="69" />
-              <folding>
-                <element signature="e#0#131#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -51,10 +40,32 @@
       <file leaf-file-name="reports.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Planning/reports.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19778">
-              <caret line="906" column="16" selection-start-line="906" selection-start-column="16" selection-end-line="906" selection-end-column="16" />
+            <state relative-caret-position="855">
+              <caret line="206" column="17" selection-start-line="206" selection-start-column="17" selection-end-line="206" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="reports.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Stock/reports.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="396">
+              <caret line="18" column="21" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="21" />
               <folding>
-                <marker date="1496096609860" expanded="false" signature="0:236" ph="import ..." />
+                <element signature="e#0#22#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="usuario.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Stock/usuario.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3234">
+              <caret line="147" column="29" selection-start-line="147" selection-start-column="29" selection-end-line="147" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#104#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -67,66 +78,6 @@
               <caret line="59" column="48" selection-start-line="59" selection-start-column="48" selection-end-line="59" selection-end-column="48" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="usuario.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Stock/usuario.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#104#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="usuario.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Planning/usuario.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-                <marker date="1496096609861" expanded="true" signature="7834:7851" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="features.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Projects/features.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="features.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Planning/features.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
-              <folding>
-                <element signature="e#0#22#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Case9.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tests/Case9.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-              <folding>
-                <element signature="e#233#255#0" expanded="true" />
-                <marker date="1496096609879" expanded="true" signature="1076:2079" ph="..." />
               </folding>
             </state>
           </provider>
@@ -157,12 +108,14 @@
         <option value="D:/PUC 2017-1/Hidrología/Tarea 12/Tarea12Go.py" />
         <option value="D:/PUC 2017-1/Hidrología/Tarea 12/preguntaC.py" />
         <option value="D:/PUC 2017-1/ADH/I2secondRound/secondround.py" />
-        <option value="$PROJECT_DIR$/Stock/usuario.py" />
         <option value="$PROJECT_DIR$/Projects/features.py" />
         <option value="$PROJECT_DIR$/Planning/features.py" />
         <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/Employees/reports.py" />
         <option value="$PROJECT_DIR$/Employees/usuario.py" />
+        <option value="$PROJECT_DIR$/Employees/reports.py" />
+        <option value="$PROJECT_DIR$/Planning/reports.py" />
+        <option value="$PROJECT_DIR$/Stock/reports.py" />
+        <option value="$PROJECT_DIR$/Stock/usuario.py" />
       </list>
     </option>
   </component>
@@ -227,6 +180,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Stock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Panorama" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Panorama" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="Planning" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -261,7 +228,7 @@
       </console-settings>
     </option>
   </component>
-  <component name="RunManager" selected="Python.reports">
+  <component name="RunManager" selected="Python.reports (1)">
     <configuration default="false" name="reports" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -292,6 +259,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="Panorama" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="reports (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Stock" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Panorama" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Stock/reports.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -430,14 +414,16 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <list size="2">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Python.reports" />
       <item index="1" class="java.lang.String" itemvalue="Python.main" />
+      <item index="2" class="java.lang.String" itemvalue="Python.reports (1)" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python.reports" />
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="Python.reports (1)" />
         <item index="1" class="java.lang.String" itemvalue="Python.main" />
+        <item index="2" class="java.lang.String" itemvalue="Python.reports" />
       </list>
     </recent_temporary>
   </component>
@@ -496,13 +482,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://D:/PUC 2017-1/Hidrología/Tarea 12/preguntaC.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/PUC 2017-1/Hidrología/Tarea 12/sadsad.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1650">
@@ -783,16 +762,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Stock/usuario.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#104#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Planning/usuario.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -800,16 +769,6 @@
           <folding>
             <element signature="e#0#25#0" expanded="true" />
             <marker date="1496096609861" expanded="true" signature="7834:7851" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Planning/reports.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19778">
-          <caret line="906" column="16" selection-start-line="906" selection-start-column="16" selection-end-line="906" selection-end-column="16" />
-          <folding>
-            <marker date="1496096609860" expanded="false" signature="0:236" ph="import ..." />
           </folding>
         </state>
       </provider>
@@ -852,22 +811,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Employees/usuario.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="326" column="54" selection-start-line="326" selection-start-column="54" selection-end-line="326" selection-end-column="54" />
+          <folding>
+            <element signature="e#0#131#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Employees/reports.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="14" column="32" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="32" />
+        <state relative-caret-position="142">
+          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Employees/usuario.py">
+    <entry file="file://$PROJECT_DIR$/Planning/reports.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="333" column="69" selection-start-line="333" selection-start-column="69" selection-end-line="333" selection-end-column="69" />
+        <state relative-caret-position="855">
+          <caret line="206" column="17" selection-start-line="206" selection-start-column="17" selection-end-line="206" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Stock/reports.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="18" column="21" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="21" />
           <folding>
-            <element signature="e#0#131#0" expanded="true" />
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Stock/usuario.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3234">
+          <caret line="147" column="29" selection-start-line="147" selection-start-column="29" selection-end-line="147" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#104#0" expanded="true" />
           </folding>
         </state>
       </provider>
