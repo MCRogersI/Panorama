@@ -17,6 +17,8 @@ import numpy as np
 import getpass
 import os
 # Uf.createUser(db,'1', 1,'1')
+# Uf.createUser(db,'2', 2,'2')
+# Uf.createUser(db,'3', 3,'3')
 
 def console(level, user):
     while True:
@@ -41,13 +43,13 @@ def console(level, user):
                 Su.stock_console(db, level)
             else:
                 print('\n Acceso denegado. \n')
-                input('Presione una tecla para continuar: ')
+                input(' Presione una tecla para continuar: ')
         if (opt =='5'):
             if (level == 1):
                 PlanU.planning_console(db,level)
             else:
                 print('\n Acceso denegado. \n')
-                input('Presione una tecla para continuar: ')
+                input(' Presione una tecla para continuar: ')
         if(opt=='6'):
             if(level ==1):
                 Uu.users_console(db)
@@ -56,16 +58,16 @@ def console(level, user):
             break
 def signIn():
     while True:
-        user = input("Ingrese su usuario: ")
+        user = input(" Ingrese su usuario: ")
         # password = input("Ingrese su contraseña: ")
-        password = getpass.getpass('Ingrese su contraseña: ')
+        password = getpass.getpass(' Ingrese su contraseña: ')
         if Uf.checkPassEntry(db, user, password):
             with db_session:
                 level=Uf.getUserLevel(db, user)
                 console(level, user)
                 
         else:
-            print("Usuario y/o Contraseña incorrecto(s))")
+            print(" Usuario y/o Contraseña incorrecto(s))")
         break
 # os.system("mode con cols=100 lines=30")
 signIn()

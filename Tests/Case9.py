@@ -73,19 +73,19 @@ with db_session:
 #        Lista de empleados test case 1         #
 # ###############################################
 
-Ef.createEmployee(db,  "Juan", "Vitacura", perf_rect = 2)
-Ef.createEmployee(db,  "Pedro", "Vitacura", perf_des = 2)
-Ef.createEmployee(db,  "Diego", "Vitacura", perf_fab = 30)
-Ef.createEmployee(db,  "Miguel", "Vitacura", perf_inst = 40, senior = True)
-Ef.createEmployee(db,  "Mario", "Vitacura", perf_rect = 1)
-Ef.createEmployee(db,  "Felipe", "Vitacura", perf_des = 1)
-Ef.createEmployee(db,  "Miguel", "Vitacura", perf_fab = 40)
-Ef.createEmployee(db,  "Mario", "Vitacura", perf_inst = 50, senior = False)
-Ef.createEmployee(db,  "Felipe", "Vitacura", perf_rect = 2)
-Ef.createEmployee(db,  "Miguel", "Vitacura", perf_des = 1)
-Ef.createEmployee(db,  "Mario", "Vitacura", perf_fab = 50)
-Ef.createEmployee(db,  "Felipe", "Vitacura", perf_inst = 60, senior = True)
-Ef.createEmployee(db,  "Iker", "Vitacura", perf_inst = 70, senior = False)
+Ef.createEmployee(db, 1, "Juan", "Vitacura", perf_rect = 2)
+Ef.createEmployee(db, 2, "Pedro", "Vitacura", perf_des = 2)
+Ef.createEmployee(db, 3, "Diego", "Vitacura", perf_fab = 30)
+Ef.createEmployee(db, 4, "Miguel", "Vitacura", perf_inst = 40, senior = True)
+Ef.createEmployee(db, 5, "Mario", "Vitacura", perf_rect = 1)
+Ef.createEmployee(db, 6, "Felipe", "Vitacura", perf_des = 1)
+Ef.createEmployee(db, 7, "Miguel", "Vitacura", perf_fab = 40)
+Ef.createEmployee(db, 8, "Mario", "Vitacura", perf_inst = 50, senior = False)
+Ef.createEmployee(db, 9, "Felipe", "Vitacura", perf_rect = 2)
+Ef.createEmployee(db, 10, "Miguel", "Vitacura", perf_des = 1)
+Ef.createEmployee(db, 11, "Mario", "Vitacura", perf_fab = 50)
+Ef.createEmployee(db, 12, "Felipe", "Vitacura", perf_inst = 60, senior = True)
+Ef.createEmployee(db, 13, "Iker", "Vitacura", perf_inst = 70, senior = False)
 
 
 ##############################################
