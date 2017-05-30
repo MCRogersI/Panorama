@@ -1,6 +1,7 @@
 from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases, editAllSkus
 from Stock.reports import createStockReport,createStockReportExtended
 import os
+from pony.orm import *
 
 
 #Entiéndase SKU como el producto en si mismo (aunque en realidad significa el código del producto)

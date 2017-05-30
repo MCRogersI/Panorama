@@ -1,5 +1,7 @@
 from pony.orm import *
-
+import pandas
+from IPython.display import display
+from tabulate import tabulate
 
 def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_inst = None, senior = None):
     with db_session:
@@ -79,9 +81,14 @@ def printSkills(db):
 def printSelectSkill(db, id_skill):
     with db_session:
         ids = []
-        emps = select(e for e in db.Employees)
+        emps = select(e for e in db.Employees )
         for e in emps:
             es = db.Employees_Skills.get(employee = db.Employees[e.id], skill = db.Skills[id_skill])
             if es != None and es.performance > 0:
                 ids.append(e.id)
-        select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id).show()
+        e = select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id)
+        print('\n')
+        data = [p.to_dict() for p in e]
+        df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
+        df.columns = ['Rut','Nombre','Zona', '¿Es Senior?']
+        print( tabulate(df, headers='keys', tablefmt='psql'))

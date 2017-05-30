@@ -4,7 +4,7 @@ from Planning.features import changePriority, addDelayed, doPlanning, checkVeto
 from Planning.reports import createGlobalReportCompact, createGlobalReportModified
 import pandas
 from IPython.display import display
-
+from tabulate import tabulate
 def planning_console(db,level):
     while True:
         opt = input( "\n Marque una de las siguientes opciones:\n - 1: Generar planificación.\
@@ -107,14 +107,19 @@ def planning_console(db,level):
             if opt2 == '5':
                 with db_session:
                     ra = db.Employees_Restrictions.select()
-                    data = {'data':[p.to_dict() for p in ra]}
-                    df = pandas.DataFrame(data = data)
-                    display(df)
-                    print(df)
-                    print(df.to_string())
+                    data1 = [p.to_dict() for p in ra]
+                    df = pandas.DataFrame(data1, columns = ['employee','fixed','project'])                    
+                    df.columns = ['Empleado', 'Fijo', 'Proyecto']
                     print('\n Restricciones de asignación: \n')
+                    print( tabulate(df, headers='keys', tablefmt='psql'))
+                    # print(df.to_string())
+                    
+                    rt = db.Deadlines_Restrictions.select()
+                    data2 = [p.to_dict() for p in rt]
+                    df2 = pandas.DataFrame(data2,columns = ['id', 'project', 'skill', 'deadline'])   
+                    df2.columns = ['Id','Proyecto', 'Habilidad', 'Fecha Límite']
                     print('\n Restricciones de tiempo \n')
-                    db.Deadlines_Restrictions.select().show()
+                    print( tabulate(df2, headers='keys', tablefmt='psql'))
         if opt == '4':
             try:
                 createGlobalReportModified(db)

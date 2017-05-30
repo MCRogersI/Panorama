@@ -3,7 +3,9 @@ from Projects.features import createEmployeeActivity, deleteEmployeeActivity, pr
 from pony.orm import *
 from datetime import date
 from Employees.reports import createPersonalEmployeeReport
-
+import pandas
+from IPython.display import display
+from tabulate import tabulate
 def employees_console(db, level, user):
 #Es mejor importar las funciones en lugar de entregarsélas como parámetro a la función. Cambiar más adelante.
 
@@ -227,7 +229,11 @@ def employees_console(db, level, user):
                         input('\n Presione cualquier tecla para continuar: ')
                 elif opt_employees_activities == '3':
                     print('\n')
-                    printEmployeesActivities(db)
+                    ea = db.Employees_Activities.select()
+                    data = [p.to_dict() for p in ea]
+                    df = pandas.DataFrame(data, columns = ['id','employee','activity','initial_ date','end_date'])                    
+                    df.columns = ['ID','Empleado','Tipo Actividad', 'Fecha Inicio', 'Fecha Fin']
+                    print( tabulate(df, headers='keys', tablefmt='psql'))
                     input(' \n Presione una tecla para continuar: ')
             else:
                 print('\n Acceso denegado.')
@@ -261,7 +267,13 @@ def employees_console(db, level, user):
                                                                                     \n - 2: Si desea ver el calendario de trabajo de empleados. \
                                                                                     \n ingrese la alternativa escogida: ")
                 if (opt_ver_empleados2 =='1'):
-                    printEmployees(db)
+                    print('\n')
+                    e = db.Employees.select()
+                    data = [p.to_dict() for p in e]
+                    df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
+                    df.columns = ['Rut','Nombre','Zona', '¿Es Senior?']
+                    print( tabulate(df, headers='keys', tablefmt='psql'))
+                    input(' \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados2 == '2'):
                     try:
                         id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
@@ -351,6 +363,7 @@ def employees_console(db, level, user):
                                                                                           
             elif(opt_ver_empleados == '2') and (level in [1,2,4]):
                 printSelectSkill(db, 1)
+                print('\n')
                 input(' \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '3' and level in [1,2]) or (opt_ver_empleados == '2' and level == 5):
                 printSelectSkill(db, 2)
