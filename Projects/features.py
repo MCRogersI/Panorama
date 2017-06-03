@@ -12,20 +12,15 @@ from tabulate import tabulate
 
 
 def createProject(db, contract_number, client_address, client_comuna,
-				  client_name, client_rut, linear_meters, year, month,
-				  day, real_linear_meters = None, estimated_cost = None,
-				  real_cost = None, crystal_leadtime = 15,sale_date_year = None,sale_date_month = None,sale_date_day = None,sale_price = None):
-	import Planning.features as PLf
-	with db_session:
-		deadline = date(int(year), int(month), int(day))
-		sale_date = date(int(sale_date_year), int(sale_date_month), int(sale_date_day))
-		p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline=deadline, estimated_cost = estimated_cost, crystal_leadtime = crystal_leadtime, sale_date=sale_date, sale_price=sale_price)
-		if real_linear_meters != None:
-			p.real_linear_meters = real_linear_meters
-		if real_cost != None:
-			p.real_cost = real_cost
-		db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished == None).count()
-	PLf.doPlanning(db)
+                  client_name, client_rut, linear_meters, year, month,
+                  day, crystal_leadtime, sale_date, sale_price):
+    import Planning.features as PLf
+    with db_session:
+        deadline = date(int(year), int(month), int(day))
+        p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, 
+                            client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline = deadline, crystal_leadtime = crystal_leadtime, sale_date = sale_date, sale_price = sale_price)
+        db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished == None).count()
+    PLf.doPlanning(db)
 
 def printProjects(db):
     with db_session:
