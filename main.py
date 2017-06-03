@@ -16,6 +16,7 @@ import Users.usuario as Uu
 import numpy as np
 import getpass
 import os
+
 # Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'2', 2,'2')
 # Uf.createUser(db,'3', 3,'3')
@@ -25,6 +26,7 @@ import os
 # Uf.createUser(db,'7', 7,'7')
 # Uf.createUser(db,'8', 8,'8')
 # Uf.createUser(db,'9', 9,'9')
+
 
 def console(level, user):
     while True:
@@ -43,7 +45,6 @@ def console(level, user):
                                                                   \n - 3: Para salir. \
                                                                   \n Ingrese la alternativa elegida: ")
             if(opt2 == '1'):
-                print('holi')
                 opt = '1'
             elif(opt2 == '2'):
                 opt = '2'

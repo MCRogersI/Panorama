@@ -2,14 +2,13 @@ from Employees.features import createEmployee, printEmployees, editEmployee, pri
 from Projects.features import createEmployeeActivity, deleteEmployeeActivity, printEmployeesActivities
 from pony.orm import *
 from datetime import date
-from Employees.reports import createPersonalEmployeeReport, createWorkersReportWide, createRectificatorsReportWide, createDesignersReportWide, createFabricatorsReportWide, createInstallatorsReportWide
+from Employees.reports import createPersonalEmployeeReport, createWorkersReportWide, createRectificatorsReport, createDesignersReport, createFabricatorsReport, createInstallersReport
 import pandas
 from tabulate import tabulate
 def employees_console(db, level, user):
 #Es mejor importar las funciones en lugar de entregarsélas como parámetro a la función. Cambiar más adelante.
 
     while True:
-        print('hola')
         if (level in [1,2,3,4,5]):
             opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear nuevo empleado. \
                                                                       \n - 2: Si desea editar datos de empleados. \
@@ -301,19 +300,19 @@ def employees_console(db, level, user):
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '4'):
-                    createRectificatorsReportWide(db)
+                    createRectificatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '5'):
-                    createDesignersReportWide(db)
+                    createDesignersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '6'):
-                    createFabricatorsReportWide(db)
+                    createFabricatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '7'):
-                    createInstallatorsReportWide(db)
+                    createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 3):
@@ -339,7 +338,7 @@ def employees_console(db, level, user):
                         print(ve)
                         input('\n Presione la tecla Enter para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
-                    createInstallatorsReportWide(db)
+                    createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 4):
@@ -365,7 +364,7 @@ def employees_console(db, level, user):
                         print(ve)
                         input('\n Presione una tecla para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
-                    createRectificatorsReportWide(db)
+                    createRectificatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level == 5):
@@ -392,11 +391,11 @@ def employees_console(db, level, user):
                         print(ve)
                         input('\n Presione una tecla para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
-                    createDesignersReportWide(db)
+                    createDesignersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
                 if (opt_ver_empleados_2 == '3'):
-                    createInstallatorsReportWide(db)
+                    createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
                             \n Presione una tecla para continuar: ')
             elif(opt_ver_empleados == '1' and level in [6,7,8,9]):
