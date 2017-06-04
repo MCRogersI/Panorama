@@ -37,6 +37,9 @@ Nombres:
 
 - Profesional de Diseño (NN)
 ....cargo colabora además en supervisión de instalaciones y post ventas ( es un apoyo para lo que se requiera en la gerencia tecnica)
+
+jefe de fabricación... debe ver stock y poder actualizar las cantidades de sku
+
 
 
 

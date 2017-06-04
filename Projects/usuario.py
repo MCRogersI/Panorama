@@ -44,10 +44,10 @@ def projects_console(db, level):
                         raise ValueError('\n Debe ingresar un rut \n')
                     linear_meters = input(" Ingrese los metros lineales del proyecto: ")
                     try:
-                        int(linear_meters)
+                        float(linear_meters)
                     except:
-                        raise ValueError('\n Los metros lineales deben ser un número entero \n')
-                    if int(linear_meters) <0:
+                        raise ValueError('\n Los metros lineales deben ser un número\n')
+                    if float(linear_meters) <0:
                         raise ValueError('\n Los metros lineales deben ser un número entero positivo \n')
                     year = input(" Ingrese el año de la fecha de entrega pactada del proyecto: ")
                     try:
@@ -102,7 +102,7 @@ def projects_console(db, level):
                             raise ValueError('\n El precio de venta debe ser un número posititvo \n')
                     except:
                         raise ValueError('\n El precio debe ser un número entero \n')
-                    createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, year, month, day, crystal_leadtime,sale_date, sale_price)
+                    createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, float(linear_meters),year = year, month =month, day =day,real_linear_meters = None, estimated_cost = None ,real_cost = None, crystal_leadtime = int(crystal_leadtime),sale_date = sale_date, sale_price = int(sale_price))
                 except ValueError as ve:
                     print(ve)
                 except:

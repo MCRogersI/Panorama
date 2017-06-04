@@ -11,9 +11,7 @@ from IPython.display import display
 from tabulate import tabulate
 
 
-def createProject(db, contract_number, client_address, client_comuna,
-				  client_name, client_rut, linear_meters, year, month,
-				  day, real_linear_meters = None, estimated_cost = None,
+def createProject(db, contract_number, client_address, client_comuna,client_name, client_rut, linear_meters, year, month,day, real_linear_meters = None, estimated_cost = None,
 				  real_cost = None, crystal_leadtime = 15,sale_date_year = None,sale_date_month = None,sale_date_day = None,sale_price = None):
 	import Planning.features as PLf
 	with db_session:
