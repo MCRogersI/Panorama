@@ -28,13 +28,11 @@ def employees_console(db, level, user):
                     except:
                         raise ValueError('\n Rut no válido.')
                     nameEmpleado = input(" Ingrese el nombre del empleado: ")
-                    if len(nameEmpleado) <1:
+                    if len(nameEmpleado.replace(' ','')) <1:
                         raise ValueError('\n El empleado debe tener un nombre.')
                     zoneEmpleado = input(" Ingrese el código de la zona del empleado: ")
-                    try:
-                        int(zoneEmpleado)
-                    except:
-                        raise ValueError('\n La zona debe ser un numero.')
+                    if len( zoneEmpleado.replace(' ',''))<1:
+                        raise ValueError('\n La zona no puede estar vacía.')
                     perf_rect = input(" Ingrese el rendimiento histórico en rectificación del empleado, solo presione Enter si no realiza esta labor: ")
                     if(perf_rect == ''):
                         perf_rect=None
@@ -80,13 +78,15 @@ def employees_console(db, level, user):
                             senior = False
                         else:
                             raise ValueError('\n Se debe ingresar 0 o 1.')
+                    if perf_rect == None and perf_des ==None and perf_fab == None and perf_ins == None:
+                        raise ValueError('\n El empleado debe ejercer alguna función.')
                     createEmployee(db,id, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins, senior)
                     input('\n Empleado creado con éxito. Presione Enter para continuar. ')
                 except ValueError as ve:
                     print(ve)
                     input(' Presione Enter para continuar.')
                 except:
-                    print(' No se pudo crear el empleado.')
+                    print('\n No se pudo crear el empleado.')
                     input(' Presione Enter para continuar.')
             else:
                 print(' Acceso denegado.')
