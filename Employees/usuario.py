@@ -108,59 +108,56 @@ def employees_console(db, level, user):
                     newPerf_ins = input(" Ingrese el rendimiento histórico en instalación del empleado, solo presione Enter si mantiene la información actual: ")
                     if newName == '':
                         newName = None
-                    if newZone == '':
+                    if len(newZone.replace(' ',''))<1:
                         newZone = None
-                    else:
-                        try:
-                            int(newZone)
-                        except:
-                            raise ValueError('\n La zona debe ser un numero entero. \n')
                     if newPerf_rect == '':
                         newPerf_rect=None
                     else:
                         try:
-                            if int(newPerf_rect) < 0:
+                            if float(newPerf_rect) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
                         except:
-                            raise ValueError('\n El rendimiento debe ser un numero entero. \n')
+                            raise ValueError('\n El rendimiento debe ser un número. \n')
                     if newPerf_des == '':
                         newPerf_des = None
                     else:
                         try:
-                            if int(newPerf_des) < 0:
+                            if float(newPerf_des) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
                         except:
-                            raise ValueError('\n El rendimiento debe ser un numero entero. \n')
+                            raise ValueError('\n El rendimiento debe ser un número. \n')
                        
                     if newPerf_fab == '':
                         newPerf_fab = None
                     else:
                         try:
-                            if int(newPerf_fab) < 0:
+                            if float(newPerf_fab) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
                         except:
-                            raise ValueError('\n El rendimiento debe ser un numero entero. \n')
+                            raise ValueError('\n El rendimiento debe ser un número. \n')
                     if newPerf_ins == '':
                         newPerf_ins = None
                     else:
                         try:
-                            if int(newPerf_ins) < 0:
+                            if float(newPerf_ins) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
                         except:
-                            raise ValueError('\n El rendimiento debe ser un numero entero. \n')
+                            raise ValueError('\n El rendimiento debe ser un número. \n')
                     new_senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior (si no es instalador, solo presione Enter): ")
                     try:
                         if int(new_senior) == 0:
                             new_senior = False
-                        elif int(new_senior) != 1:
+                        elif int(new_senior) == 1:
+                            new_senior = True
+                        else:
                             raise ValueError('\n Debe ingresar 0 ó 1. \n')
                     except:
                         raise ValueError('\n Debe ingresar 0 ó 1. \n')
-                    editEmployee(db, id_empleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins, bool(new_senior))
+                    editEmployee(db, id_empleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins, new_senior)
                     input('\n Empleado editado exitosamente. Presione Enter para continuar. ')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione cualquier tecla para continuar \n')
+                    input('\n Presione Enter para continuar \n')
             else:
                 print('\n Acceso denegado.')
                 input('\n Presione Enter para continuar. ')
