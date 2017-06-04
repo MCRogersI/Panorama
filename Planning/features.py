@@ -134,7 +134,8 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
 
         for ea in emp_acts:
             if 9 in ids_employees:
-                print(ea.initial_date + " " + ea.end_date)
+                # print(ea.initial_date + " " + ea.end_date)
+                pass
             if datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
                 return False
         # acá los rectificadores y disenadores se diferencian de los otros dos, porque pueden estar en más de un proyecto por día

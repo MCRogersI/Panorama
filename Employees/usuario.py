@@ -2,7 +2,7 @@ from Employees.features import createEmployee, printEmployees, editEmployee, pri
 from Projects.features import createEmployeeActivity, deleteEmployeeActivity, printEmployeesActivities
 from pony.orm import *
 from datetime import date
-from Employees.reports import createPersonalEmployeeReport, createWorkersReportWide, createRectificatorsReportWide, createDesignersReportWide, createFabricatorsReportWide, createInstallatorsReportWide
+from Employees.reports import createPersonalEmployeeReport, createWorkersReportWide, createRectificatorsReport, createDesignersReport, createFabricatorsReport, createInstallersReport
 import pandas
 from tabulate import tabulate
 def employees_console(db, level, user):

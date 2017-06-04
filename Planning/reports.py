@@ -831,7 +831,7 @@ def createGlobalReportModified(db):
 
             # Escribe el atraso, en caso de haberlo
             if p.deadline < installation.original_end_date :
-                cell = ws.cell(row=r, column=31, value=(installation.original_end_date-p.deadline).days)
+                cell = ws.cell(row=r, column=31, value=("{} días".format(installation.original_end_date-p.deadline).days))
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
