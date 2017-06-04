@@ -28,13 +28,13 @@ def planning_console(db,level):
                     current_projects = len(select(p for p in db.Projects))
                     old_priority = db.Projects[int(contract_number)].priority
                 print('la prioridad actual de este proyecto es de ' + str(old_priority) + ' de ' + str(current_projects))
-                new_priority = input('ingrese la nueva prioridad que desea asignarle al proyecto. Presione enter si no quiere cambiar la prioridad ')
+                new_priority = input('ingrese la nueva prioridad que desea asignarle al proyecto. presione Enter si no quiere cambiar la prioridad ')
                 if new_priority != None:
                     try:
                         changePriority(db, int(contract_number), int(new_priority))
                     except:
                         print('Ingreso de variables inválidas')
-                        input('Presione una tecla para continuar: ')
+                        input('Presione Enter para continuar. ')
             except ValueError as ve:
                 print(ve)
                 input('Precione cualquier tecla para volver \n')
@@ -123,7 +123,7 @@ def planning_console(db,level):
         if opt == '4':
             try:
                 createGlobalReportModified(db)
-                input('\n Reporte global creado con éxito. Presione una tecla para continuar: ')
+                input('\n Reporte global creado con éxito. Presione Enter para continuar. ')
             except:
                 print(' Estamos trabajando para usted.')
         if opt == '5':

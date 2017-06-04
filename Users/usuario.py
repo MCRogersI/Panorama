@@ -31,7 +31,7 @@ def users_console(db):
                     raise ValueError('\n Contraseñas no coinciden! \n')
             except ValueError as ve:
                 print(ve)
-                input('\n Presione una tecla para continuar: ')
+                input('\n Presione Enter para continuar. ')
                 
                 
         if (opt == '2'):
