@@ -18,8 +18,6 @@ import numpy as np
 import getpass
 import os
 
-import clcomuna
-
 # Uf.createUser(db,'1', 1,'1')
 # Uf.createUser(db,'2', 2,'2')
 # Uf.createUser(db,'3', 3,'3')
@@ -100,13 +98,7 @@ def signIn():
             print(" Usuario y/o Contraseña incorrecto(s))")
         break
 # os.system("mode con cols=100 lines=30")
-# signIn()
-
-
-
-
-
-a = clcomuna.get_fuzzy("las condes")
+signIn()
 
 
 
