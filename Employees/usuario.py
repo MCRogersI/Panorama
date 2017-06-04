@@ -79,16 +79,16 @@ def employees_console(db, level, user):
                         except:
                             raise ValueError('\n Se debe ingresar 0 o 1. \n')
                     createEmployee(db,id, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins, senior)
-                    input('\n Empleado creado con éxito. Presione una tecla para continuar: ')
+                    input('\n Empleado creado con éxito. Presione enter para continuar: ')
                 except ValueError as ve:
                     print(ve)
                     input('\n Presione cualquier tecla para continuar: \n')
                 except:
                     print(' No se pudo crear el empleado \n')
-                    input('\n Presione cualquier tecla para continuar: \n')
+                    input('\n Presione enter para continuar: \n')
             else:
                 print('\n Acceso denegado.')
-                input('\n Presione una tecla para continuar: ')
+                input('\n Presione enter para continuar: ')
         if(opt == '2'):
             if (level == 1):
                 try:
@@ -155,13 +155,13 @@ def employees_console(db, level, user):
                     except:
                         raise ValueError('\n Debe ingresar 0 ó 1. \n')
                     editEmployee(db, id_empleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins, bool(new_senior))
-                    input('\n Empleado editado exitosamente. Presione una tecla para continuar: ')
+                    input('\n Empleado editado exitosamente. Presione enter para continuar: ')
                 except ValueError as ve:
                     print(ve)
                     input('\n Presione cualquier tecla para continuar \n')
             else:
                 print('\n Acceso denegado.')
-                input('\n Presione una tecla para continuar: ')
+                input('\n Presione enter para continuar: ')
         if(opt == '3'):
             if (level == 1):
                 try:
@@ -174,13 +174,13 @@ def employees_console(db, level, user):
                         if db.Employees.get(id = int(idEmpleado)) == None:
                             raise ValueError('\n Empleado inexistente \n')
                     deleteEmployee(db, idEmpleado)
-                    input('\n Empleado eliminado. Presione una tecla para continuar: ')
+                    input('\n Empleado eliminado. Presione enter para continuar: ')
                 except ValueError as ve:
                     print(ve)
                     input('\n Presione cualquier tecla para continuar \n')
             else:
                 print('\n Acceso denegado.')
-                input('\n Presione una tecla para continuar: ')
+                input('\n Presione enter para continuar: ')
         if(opt == '4'):
             if(level == 1):
                 opt_employees_activities = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de una actividad. \
@@ -216,7 +216,7 @@ def employees_console(db, level, user):
                         except:
                             raise ValueError('\n La fecha es inválida. \n')
                         createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day)
-                        input(' \n Actividad creada. Presione una tecla para continuar: ')
+                        input(' \n Actividad creada. Presione enter para continuar: ')
                     except ValueError as ve:
                         print(ve)
                         input('\n Presione cualquier tecla para continuar: ')
@@ -224,7 +224,7 @@ def employees_console(db, level, user):
                     try:
                         id_employee_activity = input("\n Ingrese el ID de la actividad que quiere eliminar: ")
                         deleteEmployeeActivity(db, id_employee_activity)
-                        input(' \n Actividad eliminada. Presione una tecla para continuar: ')
+                        input(' \n Actividad eliminada. Presione enter para continuar: ')
                     except:
                         print('\n Actividad inexistente. \n')
                         input('\n Presione cualquier tecla para continuar: ')
@@ -235,10 +235,10 @@ def employees_console(db, level, user):
                     df = pandas.DataFrame(data, columns = ['id','employee','activity','initial_ date','end_date'])                    
                     df.columns = ['ID','Empleado','Tipo Actividad', 'Fecha Inicio', 'Fecha Fin']
                     print( tabulate(df, headers='keys', tablefmt='psql'))
-                    input(' \n Presione una tecla para continuar: ')
+                    input(' \n Presione enter para continuar: ')
             else:
                 print('\n Acceso denegado.')
-                input('\n Presione una tecla para continuar: ')
+                input('\n Presione enter para continuar: ')
         if(opt == '5'):
             if (level in [1,2]):
                 opt_ver_empleados = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver empleados. \
@@ -278,7 +278,7 @@ def employees_console(db, level, user):
                     df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
                     df.columns = ['Rut','Nombre','Zona', '¿Es Senior?']
                     print( tabulate(df, headers='keys', tablefmt='psql'))
-                    input(' \n Presione una tecla para continuar: ')
+                    input(' \n Presione enter para continuar: ')
                 if (opt_ver_empleados_2 == '2'):
                     try:
                         id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
@@ -291,30 +291,30 @@ def employees_console(db, level, user):
                                 raise ValueError('\n Empleado inexistente. \n')
                         createPersonalEmployeeReport(db,id_employee)
                         print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                     except ValueError as ve:
                         print(ve)
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                 if (opt_ver_empleados_2 == '3'):
                     createWorkersReportWide(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
-                            \n Presione una tecla para continuar: ')
+                            \n Presione enter para continuar: ')
                 if (opt_ver_empleados_2 == '4'):
                     createRectificatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
-                            \n Presione una tecla para continuar: ')
+                            \n Presione enter para continuar: ')
                 if (opt_ver_empleados_2 == '5'):
                     createDesignersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
-                            \n Presione una tecla para continuar: ')
+                            \n Presione enter para continuar: ')
                 if (opt_ver_empleados_2 == '6'):
                     createFabricatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
-                            \n Presione una tecla para continuar: ')
+                            \n Presione enter para continuar: ')
                 if (opt_ver_empleados_2 == '7'):
                     createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
-                            \n Presione una tecla para continuar: ')
+                            \n Presione enter para continuar: ')
             elif(opt_ver_empleados == '1' and level == 3):
                 opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
                                                                                       \n - 2: Si desea ver el calendario de trabajo de todos los instaladores\
@@ -340,7 +340,7 @@ def employees_console(db, level, user):
                 if (opt_ver_empleados_2 == '2'):
                     createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
-                            \n Presione una tecla para continuar: ')
+                            \n Presione enter para continuar: ')
             elif(opt_ver_empleados == '1' and level == 4):
                 opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
                                                                                       \n - 2: Si desea ver el calendario de trabajo de todos los rectificadores\
@@ -359,14 +359,14 @@ def employees_console(db, level, user):
                                 raise ValueError('\n Empleado no es un rectificador. Acceso restringido. \n')
                         createPersonalEmployeeReport(db,id_employee)
                         print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                     except ValueError as ve:
                         print(ve)
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
                     createRectificatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
-                            \n Presione una tecla para continuar: ')
+                            \n Presione enter para continuar: ')
             elif(opt_ver_empleados == '1' and level == 5):
                 opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
                                                                                       \n - 2: Si desea ver el calendario de trabajo de todos los diseñadores\
@@ -386,18 +386,18 @@ def employees_console(db, level, user):
                                 raise ValueError('\n Empleado no es un instalador o diseñador. Acceso restringido. \n')
                         createPersonalEmployeeReport(db,id_employee)
                         print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                     except ValueError as ve:
                         print(ve)
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
                     createDesignersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
-                            \n Presione una tecla para continuar: ')
+                            \n Presione enter para continuar: ')
                 if (opt_ver_empleados_2 == '3'):
                     createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
-                            \n Presione una tecla para continuar: ')
+                            \n Presione enter para continuar: ')
             elif(opt_ver_empleados == '1' and level in [6,7,8,9]):
                 try:
                     id_employee = user
@@ -410,26 +410,26 @@ def employees_console(db, level, user):
                             raise ValueError('\n Usuario no es trabajador. Acceso denegado. \n')
                     createPersonalEmployeeReport(db,id_employee)
                     print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                    input('\n Presione una tecla para continuar. \n')
+                    input('\n Presione enter para continuar. \n')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione una tecla para continuar. \n')
+                    input('\n Presione enter para continuar. \n')
                 finally:
                     break
                                                                                           
             elif(opt_ver_empleados == '2') and (level in [1,2,4]):
                 printSelectSkill(db, 1)
                 print('\n')
-                input(' \n Presione una tecla para continuar: ')
+                input(' \n Presione enter para continuar: ')
             elif(opt_ver_empleados == '3' and level in [1,2]) or (opt_ver_empleados == '2' and level == 5):
                 printSelectSkill(db, 2)
-                input(' \n Presione una tecla para continuar: ')
+                input(' \n Presione enter para continuar: ')
             elif(opt_ver_empleados == '4' and level in [1,2]):
                 printSelectSkill(db, 3)
-                input(' \n Presione una tecla para continuar: ')
+                input(' \n Presione enter para continuar: ')
             elif(opt_ver_empleados == '5' and level in [1,2]) or (opt_ver_empleados =='2' and level ==3) or (opt_ver_empleados =='3' and level ==5):
                 printSelectSkill(db, 4)
-                input(' \n Presione una tecla para continuar: ')
+                input(' \n Presione enter para continuar: ')
             else:
                 print('\n No es una opción válida. \n')
                 input('\n Presione cualquier tecla para continuar: ')

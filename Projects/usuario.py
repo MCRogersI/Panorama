@@ -96,17 +96,17 @@ def projects_console(db, level):
                         sale_date =date(int(sale_year),int(sale_month),int(sale_day))
                     except:
                         raise ValueError('\n No se ha ingresado una fecha válida \n')
-                    sale_price = input('\n Ingrese el precio de venta del proyecto: \n')
+                    sale_price = input(' Ingrese el precio de venta del proyecto: ')
                     try:
                         if int(sale_price) < 0:
                             raise ValueError('\n El precio de venta debe ser un número posititvo \n')
                     except:
                         raise ValueError('\n El precio debe ser un número entero \n')
-                    createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, float(linear_meters),year = year, month =month, day =day,real_linear_meters = None, estimated_cost = None ,real_cost = None, crystal_leadtime = int(crystal_leadtime),sale_date = sale_date, sale_price = int(sale_price))
+                    createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, year, month, day, crystal_leadtime, sale_date, sale_price)
                 except ValueError as ve:
                     print(ve)
-                except:
-                    print('\n No se pudo ingresar correctamente el proyecto \n')
+                # except:
+                    # print('\n No se pudo ingresar correctamente el proyecto \n')
             else: 
                 print('\n Acceso denegado. \n')
                 input(' Presione una tecla para continuar: ')

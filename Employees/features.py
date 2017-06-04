@@ -16,7 +16,7 @@ def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_
             db.Employees_Skills(employee = e, skill = 4, performance = perf_inst)
             # solo para el caso de los instaladores, pueden ser senior o junior, por defecto los consideramos como senior:
             if senior != None:
-                e.senior = senior
+                e.senior = bool(senior)
             else:
                 e.senior = True
         commit()
