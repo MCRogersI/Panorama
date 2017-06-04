@@ -500,14 +500,14 @@ def doPlanning(db):
             if i == 4:
                 employees1 = select(es.employee for es in db.Employees_Skills if es.skill.id == i and es.employee.senior == True)
                 if len(employees1) < 1:
-                    return('\n No se puede hacer la planificación porque no hay instaladores senior \n')
+                    return('\n No se puede hacer la planificación porque no hay instaladores senior. \n')
                 employees2 = select(es.employee for es in db.Employees_Skills if es.skill.id == i and es.employee.senior == False)
                 if len(employees2) < 1:
-                    return('\n No se puede hacer la planificación porque no hay instaladores junior \n')
+                    return('\n No se puede hacer la planificación porque no hay instaladores junior. \n')
             else:
                 employees = select(es.employee for es in db.Employees_Skills if es.skill.id == i)
                 if len(employees) < 1:
-                    return('\n No se puede hacer la planificación porque hay tareas que nadie sabe hacer \n')
+                    return('\n No se puede hacer la planificación porque hay tareas que nadie sabe hacer. \n')
             
 
         projects = select(p for p in db.Projects if p.finished == None).order_by(lambda p : p.priority)
