@@ -38,7 +38,7 @@ def employees_console(db, level, user):
                         perf_rect=None
                     else:
                         try:
-                            if int(perf_rect) < 0:
+                            if float(perf_rect) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un numero entero.')
@@ -47,7 +47,7 @@ def employees_console(db, level, user):
                         perf_des=None
                     else:
                         try:
-                            if int(perf_des) < 0:
+                            if float(perf_des) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un numero entero.')                    
@@ -56,7 +56,7 @@ def employees_console(db, level, user):
                         perf_fab=None
                     else:
                         try:
-                            if int(perf_fab) < 0:
+                            if float(perf_fab) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un numero entero.')
@@ -65,7 +65,7 @@ def employees_console(db, level, user):
                         perf_ins=None
                     else:
                         try:
-                            if int(perf_ins) < 0:
+                            if float(perf_ins) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un numero entero.')
