@@ -31,16 +31,16 @@ def projects_console(db, level):
                         if len(select( p for p in db.Projects if p.contract_number == int(contract_number))) > 0:
                             raise ValueError('\n Este número de contrato ya existe \n')
                     client_address = input(" Ingrese la direccion del cliente: ")
-                    if client_address == '':
+                    if len(client_address.replace(' ','')) < 1:
                         raise ValueError('\n Debe ingresar una dirección \n')
                     client_comuna = input(" Ingrese la comuna del cliente: ")
-                    if client_comuna == '':
+                    if len(client_comuna.replace(' ','')) < 1:
                         raise ValueError('\n Debe ingresar una comuna \n')
                     client_name = input(" Ingrese el nombre del cliente: ")
-                    if client_name == '':
+                    if len(client_name.replace(' ','')) < 1:
                         raise ValueError('\n Debe ingresar un nombre \n')
                     client_rut = input(" Ingrese el RUT del cliente: ")
-                    if client_rut == '':
+                    if len(client_rut.replace(' ','')) < 1:
                         raise ValueError('\n Debe ingresar un rut \n')
                     linear_meters = input(" Ingrese los metros lineales del proyecto: ")
                     try:
@@ -58,51 +58,55 @@ def projects_console(db, level):
                     try:
                         int(month)
                     except:
-                        raise ValueError('\n ser un número entero \n')
+                        raise ValueError('\n ser un número entero.')
                     if int(month) >12 or int(month) < 1:
                         raise ValueError('\n El mes debe ser un número entero entre 1 y 12 \n')
                     day = input(" Ingrese el día de la fecha de entrega pactada del proyecto: ")
                     try:
                         int(day)
                     except:
-                        raise ValueError('\n El día debe ser un número entero \n')
+                        raise ValueError('\n El día debe ser un número entero.')
                     try:
                         date(int(year),int(month),int(day))
                     except:
-                        raise ValueError('\n No se ha ingresado una fecha válida \n')
+                        raise ValueError('\n No se ha ingresado una fecha válida.')
                     crystal_leadtime = input(" Ingrese la cantidad de días que demorarán en llegar los cristales (solo presione Enter si el valor es 15): ")
-                    try:
-                        int(crystal_leadtime)
-                    except:
+                    if crystal_leadtime != '':
+                        try:
+                            int(crystal_leadtime)
+                        except:
+                            raise ValueError('\n Debe ingresar un número entero.')
+                    else:
                         crystal_leadtime = 15
                     sale_year = input(" Ingrese el año de la fecha de venta del proyecto: ")
                     try:
                         int(sale_year)
                     except:
-                        raise ValueError('\n El año debe ser un número entero \n')
+                        raise ValueError('\n El año debe ser un número entero.')
                     sale_month = input(" Ingrese el mes de la fecha de venta del proyecto: ")
                     try:
                         int(sale_month)
                     except:
-                        raise ValueError('\n ser un número entero \n')
+                        raise ValueError('\n ser un número entero. ')
                     if int(sale_month) >12 or int(sale_month) < 1:
-                        raise ValueError('\n El mes debe ser un número entero entre 1 y 12 \n')
+                        raise ValueError('\n El mes debe ser un número entero entre 1 y 12.')
                     sale_day = input(" Ingrese el día de la fecha de venta del proyecto: ")
                     try:
                         int(sale_day)
                     except:
-                        raise ValueError('\n El día debe ser un número entero \n')
+                        raise ValueError('\n El día debe ser un número entero.')
                     try:
                         sale_date =date(int(sale_year),int(sale_month),int(sale_day))
                     except:
-                        raise ValueError('\n No se ha ingresado una fecha válida \n')
+                        raise ValueError('\n No se ha ingresado una fecha válida.')
                     sale_price = input(' Ingrese el precio de venta del proyecto: ')
                     try:
                         if int(sale_price) < 0:
-                            raise ValueError('\n El precio de venta debe ser un número posititvo \n')
+                            raise ValueError('\n El precio de venta debe ser un número posititvo.')
                     except:
-                        raise ValueError('\n El precio debe ser un número entero \n')
+                        raise ValueError('\n El precio debe ser un número entero.')
                     createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, year, month, day, crystal_leadtime, sale_date, sale_price)
+                    input('\n Proyecto creado con éxito. Presione Enter para continuar: ')
                 except ValueError as ve:
                     print(ve)
                 # except:
@@ -122,7 +126,7 @@ def projects_console(db, level):
                             with db_session:
                                 db.Projects[int(contract_number)].contract_number
                         except:
-                            raise ValueError('\n No existe ese número de contrato \n')
+                            raise ValueError('\n No existe ese número de contrato.')
                         finishProject(db, int(contract_number))
                     except ValueError as ve:
                         print(ve)
@@ -133,7 +137,7 @@ def projects_console(db, level):
                             try:
                                 db.Projects[int(contract_number)].contract_number
                             except:
-                                raise ValueError('\n No existe ese número de contrato \n')
+                                raise ValueError('\n No existe ese número de contrato.')
                         new_client_address = input("Ingrese la nueva direccion del cliente, solo presione Enter si la mantiene: ")
                         new_client_comuna = input("Ingrese la nueva comuna del cliente, solo presione Enter si la mantiene: ")
                         new_client_name = input("Ingrese el nuevo nombre del cliente, solo presione Enter si lo mantiene: ")
@@ -145,23 +149,23 @@ def projects_console(db, level):
                         new_deadline_day = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
                         new_real_cost = input("Ingrese el costo real del proyecto, solo presione Enter si no se conoce: ")
                         new_crystal_leadtime = input("Ingrese la cantidad de días que demorarán en llegar los cristales, solo presione Enter si se mantiene: ")
-                        if new_client_address == '':
+                        if new_client_address.replace(' ','') == '':
                             new_client_address = None
-                        if new_client_comuna == '':
+                        if new_client_comuna.replace(' ','') == '':
                             new_client_comuna = None
-                        if new_client_name == '':
+                        if new_client_name.replace(' ','') == '':
                             new_client_name = None
-                        if new_client_rut == '':
+                        if new_client_rut.replace(' ','') == '':
                             new_client_rut = None
-                        if new_linear_meters == '':
+                        if new_linear_meters.replace(' ','') == '':
                             new_linear_meters = None
-                        if new_real_linear_meters == '':
+                        if new_real_linear_meters.replace(' ','') == '':
                             new_real_linear_meters = None
-                        if new_deadline_day == '':
+                        if new_deadline_day.replace(' ','') == '':
                             new_deadline_day = None
-                            if new_deadline_month == '':
+                            if new_deadline_month.replace(' ','') == '':
                                 new_deadline_month = None
-                                if new_deadline_year == '':
+                                if new_deadline_year.replace(' ','') == '':
                                     new_deadline_year = None
                         elif new_deadline_month == '':
                             with db_session:
@@ -171,7 +175,7 @@ def projects_console(db, level):
                         elif new_deadline_year == '':
                             with db_session:
                                 new_deadline_year = db.Projects[int(contract_number)].deadline.year
-                        if new_real_cost == '':
+                        if new_real_cost.replace(' ','') == '':
                             new_real_cost = None
                         if new_linear_meters != None:
                             try:
