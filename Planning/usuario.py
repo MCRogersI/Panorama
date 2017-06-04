@@ -124,7 +124,8 @@ def planning_console(db,level):
             try:
                 createGlobalReportModified(db)
                 input('\n Reporte global creado con éxito. Presione Enter para continuar. ')
-            except:
-                print(' Estamos trabajando para usted.')
+            except IndexError:
+                print('\n No se pudo hacer reporte debido a que la planificación no está actualizada.')
+                input(' Presione Enter para continuar: ')
         if opt == '5':
             break
