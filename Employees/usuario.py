@@ -108,46 +108,51 @@ def employees_console(db, level, user):
                             e = db.Employees[int(id_empleado)]
                     except:
                         raise ValueError('\n Empleado inexistente. \n')
-                    newName = input(" Ingrese el nuevo nombre del empleado, solo presione Enter si lo mantiene: ")
-                    newZone = input(" Ingrese el código de la nueva zona del empleado, solo presione Enter si la mantiene: ")
-                    newPerf_rect = input(" Ingrese el rendimiento histórico en rectificación del empleado, solo presione Enter si mantiene la información actual: ")
-                    newPerf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione Enter mantiene la información actual: ")
-                    newPerf_fab = input(" Ingrese el rendimiento histórico en fabricación del empleado, solo presione Enter si mantiene la información actual: ")
-                    newPerf_ins = input(" Ingrese el rendimiento histórico en instalación del empleado, solo presione Enter si mantiene la información actual: ")
-                    if newName == '':
-                        newName = None
-                    if len(newZone.replace(' ',''))<1:
-                        newZone = None
-                    if newPerf_rect == '':
-                        newPerf_rect=None
+                    new_name = input(" Ingrese el nuevo nombre del empleado, solo presione Enter si lo mantiene: ")
+                    new_zone = input(" Ingrese el código de la nueva zona del empleado, solo presione Enter si la mantiene: ")
+                    new_perf_rect = input(" Ingrese el rendimiento histórico en rectificación del empleado, solo presione Enter si mantiene la información actual: ")
+                    new_perf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione Enter mantiene la información actual: ")
+                    new_perf_fab = input(" Ingrese el rendimiento histórico en fabricación del empleado, solo presione Enter si mantiene la información actual: ")
+                    new_perf_ins = input(" Ingrese el rendimiento histórico en instalación del empleado, solo presione Enter si mantiene la información actual: ")
+                    if new_name == '':
+                        new_name = None
+                    if len(new_zone.replace(' ',''))<1:
+                        new_zone_parsed = None
                     else:
                         try:
-                            if float(newPerf_rect) < 0:
+                            new_zone_parsed = clcomuna.convert.get_fuzzy(new_zone)
+                        except:
+                            raise ValueError('\n La comuna ingresada es inválida.')
+                    if new_perf_rect == '':
+                        new_perf_rect=None
+                    else:
+                        try:
+                            if float(new_perf_rect) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
-                    if newPerf_des == '':
-                        newPerf_des = None
+                    if new_perf_des == '':
+                        new_perf_des = None
                     else:
                         try:
-                            if float(newPerf_des) < 0:
+                            if float(new_perf_des) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
                        
-                    if newPerf_fab == '':
-                        newPerf_fab = None
+                    if new_perf_fab == '':
+                        new_perf_fab = None
                     else:
                         try:
-                            if float(newPerf_fab) < 0:
+                            if float(new_perf_fab) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
-                    if newPerf_ins == '':
-                        newPerf_ins = None
+                    if new_perf_ins == '':
+                        new_perf_ins = None
                     else:
                         try:
-                            if float(newPerf_ins) < 0:
+                            if float(new_perf_ins) < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
@@ -161,7 +166,7 @@ def employees_console(db, level, user):
                             raise ValueError('\n Debe ingresar 0 ó 1. \n')
                     except:
                         raise ValueError('\n Debe ingresar 0 ó 1. \n')
-                    editEmployee(db, id_empleado, newName, newZone, newPerf_rect, newPerf_des, newPerf_fab, newPerf_ins, new_senior)
+                    editEmployee(db, id_empleado, new_name, new_zone_parsed, new_perf_rect, new_perf_des, new_perf_fab, new_perf_ins, new_senior)
                     input('\n Empleado editado exitosamente. Presione Enter para continuar. ')
                 except ValueError as ve:
                     print(ve)

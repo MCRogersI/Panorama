@@ -4,6 +4,7 @@ from Projects.features import createProject, printProjects, editProject, deleteP
 from Projects.costs import estimateCost
 from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts, updateCrystalsParameters, updateProfilesParameters
 import os
+import clcomuna
 # from Projects.costs import estimateCost
 
 def projects_console(db, level):
@@ -36,6 +37,10 @@ def projects_console(db, level):
                     client_comuna = input(" Ingrese la comuna del cliente: ")
                     if len(client_comuna.replace(' ','')) < 1:
                         raise ValueError('\n Debe ingresar una comuna \n')
+                    try:
+                        client_comuna_parsed = clcomuna.convert.get_fuzzy(client_comuna)
+                    except:
+                        raise ValueError('\n La comuna ingresada es inválida.')
                     client_name = input(" Ingrese el nombre del cliente: ")
                     if len(client_name.replace(' ','')) < 1:
                         raise ValueError('\n Debe ingresar un nombre \n')
@@ -105,7 +110,7 @@ def projects_console(db, level):
                             raise ValueError('\n El precio de venta debe ser un número posititvo.')
                     except:
                         raise ValueError('\n El precio debe ser un número entero.')
-                    createProject(db, contract_number, client_address, client_comuna, client_name, client_rut, linear_meters, year, month, day, crystal_leadtime, sale_date, sale_price)
+                    createProject(db, contract_number, client_address, client_comuna_parsed, client_name, client_rut, linear_meters, year, month, day, crystal_leadtime, sale_date, sale_price)
                     input('\n Proyecto creado con éxito. Presione Enter para continuar: ')
                 except ValueError as ve:
                     print(ve)
@@ -152,7 +157,12 @@ def projects_console(db, level):
                         if new_client_address.replace(' ','') == '':
                             new_client_address = None
                         if new_client_comuna.replace(' ','') == '':
-                            new_client_comuna = None
+                            new_client_comuna_parsed = None
+                        else:
+                            try:
+                                new_client_comuna_parsed = clcomuna.convert.get_fuzzy(new_client_comuna)
+                            except:
+                                raise ValueError('\n La comuna ingresada es inválida.')
                         if new_client_name.replace(' ','') == '':
                             new_client_name = None
                         if new_client_rut.replace(' ','') == '':
@@ -210,7 +220,7 @@ def projects_console(db, level):
                                 int(new_crystal_leadtime)
                             except:
                                 raise ValueError('\n La cantidad de días debe ser un número entero \n')
-                        editProject(db, contract_number, new_client_address, new_client_comuna, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost, new_crystal_leadtime=new_crystal_leadtime)
+                        editProject(db, contract_number, new_client_address, new_client_comuna_parsed, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost, new_crystal_leadtime=new_crystal_leadtime)
                     except ValueError as ve:
                         print(ve)
                         input('Presione cualquier tecla para volver \n')
