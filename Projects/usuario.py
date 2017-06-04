@@ -109,7 +109,7 @@ def projects_console(db, level):
                     # print('\n No se pudo ingresar correctamente el proyecto \n')
             else: 
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')
+                input(' Presione Enter para continuar. ')
         elif(opt == '2'):
             if(level ==1):
                 opt2 = input('\n Seleccione una de las siguientes alternativas: \n - 1: Si desea terminar un proyecto.\
@@ -134,17 +134,17 @@ def projects_console(db, level):
                                 db.Projects[int(contract_number)].contract_number
                             except:
                                 raise ValueError('\n No existe ese número de contrato \n')
-                        new_client_address = input("Ingrese la nueva direccion del cliente, solo presione enter si la mantiene: ")
-                        new_client_comuna = input("Ingrese la nueva comuna del cliente, solo presione enter si la mantiene: ")
-                        new_client_name = input("Ingrese el nuevo nombre del cliente, solo presione enter si lo mantiene: ")
-                        new_client_rut = input("Ingrese el nuevo RUT del cliente, solo presione enter si lo mantiene: ")
-                        new_linear_meters = input("Ingrese los metros lineales del proyecto, solo presione enter si se mantienen: ")
-                        new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto, solo presione enter si no se conocen: ")
-                        new_deadline_year = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione enter si se mantiene: ")
-                        new_deadline_month = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione enter si se mantiene: ")
-                        new_deadline_day = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione enter si se mantiene: ")
-                        new_real_cost = input("Ingrese el costo real del proyecto, solo presione enter si no se conoce: ")
-                        new_crystal_leadtime = input("Ingrese la cantidad de días que demorarán en llegar los cristales, solo presione enter si se mantiene: ")
+                        new_client_address = input("Ingrese la nueva direccion del cliente, solo presione Enter si la mantiene: ")
+                        new_client_comuna = input("Ingrese la nueva comuna del cliente, solo presione Enter si la mantiene: ")
+                        new_client_name = input("Ingrese el nuevo nombre del cliente, solo presione Enter si lo mantiene: ")
+                        new_client_rut = input("Ingrese el nuevo RUT del cliente, solo presione Enter si lo mantiene: ")
+                        new_linear_meters = input("Ingrese los metros lineales del proyecto, solo presione Enter si se mantienen: ")
+                        new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto, solo presione Enter si no se conocen: ")
+                        new_deadline_year = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
+                        new_deadline_month = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
+                        new_deadline_day = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
+                        new_real_cost = input("Ingrese el costo real del proyecto, solo presione Enter si no se conoce: ")
+                        new_crystal_leadtime = input("Ingrese la cantidad de días que demorarán en llegar los cristales, solo presione Enter si se mantiene: ")
                         if new_client_address == '':
                             new_client_address = None
                         if new_client_comuna == '':
@@ -215,7 +215,7 @@ def projects_console(db, level):
                         input('Presione cualquier tecla para volver \n')
             else:
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')                
+                input(' Presione Enter para continuar. ')                
         elif(opt == '3'):
             if(level == 1):
                 contract_number = input("\n Ingrese el número de contrato del proyecto a eliminar: ")
@@ -226,7 +226,7 @@ def projects_console(db, level):
                     input('Precione cualquier tecla para volver \n')
             else:
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')
+                input(' Presione Enter para continuar. ')
         elif(opt == '4'):
             if(level == 1):
                 opt_projects_activities = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de disponibilidad de un cliente. \
@@ -257,7 +257,7 @@ def projects_console(db, level):
                         except:
                             raise ValueError('\n Fecha de término inválida \n')
                         createProjectActivity(db, project, 3, initial_year, initial_month, initial_day, end_year, end_month, end_day)
-                        input('\n Indisponibilidad ingresada. Presione una tecla para continuar: ')
+                        input('\n Indisponibilidad ingresada. Presione Enter para continuar. ')
                     except ValueError as ve:
                         print(ve)
                         input('Precione cualquier tecla para volver \n')
@@ -273,14 +273,14 @@ def projects_console(db, level):
                     printProjectsActivities(db)
             else:
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')
+                input(' Presione Enter para continuar. ')
         elif(opt == '5'):
             if (level == 1):
                 printProjects(db)
-                input('\n Presione una tecla para continuar: ')
+                input('\n Presione Enter para continuar. ')
             else:
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')
+                input(' Presione Enter para continuar. ')
         elif (opt =='6'):
             try:
                 contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo: ')
@@ -339,7 +339,7 @@ def tasks_console(db, level):
                                 new_id_skill = 4
                             else:
                                 raise ValueError('\n Error de ingreso. \n ')
-                        new_effective_initial_year = input(" Ingrese el año efectivo de inicio, solo presione enter si no ha comenzado: ")
+                        new_effective_initial_year = input(" Ingrese el año efectivo de inicio, solo presione Enter si no ha comenzado: ")
                         if new_effective_initial_year != '':
                             new_effective_initial_month = input(" Ingrese el mes efectivo de inicio: ")
                             new_effective_initial_day = input(" Ingrese el dia efectivo de inicio: ")
@@ -348,10 +348,10 @@ def tasks_console(db, level):
                             except:
                                 raise ValueError('\n No es una fecha válida \n')
                         if(new_effective_initial_year != ''):
-                            new_effective_end_year = input(" Ingrese el año efectivo de término, solo presione enter si no ha terminado: ")
+                            new_effective_end_year = input(" Ingrese el año efectivo de término, solo presione Enter si no ha terminado: ")
                             if new_effective_end_year != '':
-                                new_effective_end_month = input(" Ingrese el mes efectivo de término, solo presione enter si no ha terminado: ")
-                                new_effective_end_day = input(" Ingrese el día efectivo de término, solo presione enter si no ha terminado: ")
+                                new_effective_end_month = input(" Ingrese el mes efectivo de término, solo presione Enter si no ha terminado: ")
+                                new_effective_end_day = input(" Ingrese el día efectivo de término, solo presione Enter si no ha terminado: ")
                                 try:
                                     new_effective_end_date = date(int(new_effective_end_year),int(new_effective_end_month),int(new_effective_end_day))
                                 except:
@@ -365,7 +365,7 @@ def tasks_console(db, level):
                         # new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
                         # new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
                         editTask(db, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, effective_initial_date = new_effective_initial_date, effective_end_date = new_effective_end_date)
-                        input('\n Fecha agregada con éxito. Presione una tecla para continuar: ')
+                        input('\n Fecha agregada con éxito. Presione Enter para continuar. ')
                     except ValueError as ve:
                         print(ve)
                 elif(opt2 == '2'):
@@ -410,13 +410,13 @@ def tasks_console(db, level):
                         print(ve) 
             else:
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')
+                input(' Presione Enter para continuar. ')
         elif(opt == '2'):
             if (level == 1):
                 printTasks(db)
             else:
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')
+                input(' Presione Enter para continuar. ')
         elif(opt == '3'):
             if(level == 1):
                 opt2 = input('\n Marque una de las siguientes opciones: \n - 1: Si desea editar costos de flete.\
@@ -456,7 +456,7 @@ def tasks_console(db, level):
                     input(' Presione una tecla para continuar.')
             else:
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')
+                input(' Presione Enter para continuar. ')
         elif(opt == '4'):
             break
 
