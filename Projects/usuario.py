@@ -435,22 +435,22 @@ def tasks_console(db, level):
                     file_name = input(' Ingrese el nombre del archivo: ')
                     file_dir = file_name + ".xlsx"
                     if os.path.isfile(file_dir):
-                        if op2 == '1':
+                        if opt2 == '1':
                             updateFreightCosts(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
-                        if op2 == '2':
+                        if opt2 == '2':
                             updateOperatingCosts(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
-                        if op2 == '3':
+                        if opt2 == '3':
                             updateViaticCosts(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
-                        if op2 == '4':
+                        if opt2 == '4':
                             updateMovilizationCosts(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
-                        if op2 == '5':
+                        if opt2 == '5':
                             updateCrystalsParameters(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
-                        if op2 == '6':
+                        if opt2 == '6':
                             updateProfilesParameters(db, file_name)
                             input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
                     else:
