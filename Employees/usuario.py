@@ -279,13 +279,7 @@ def employees_console(db, level, user):
                                                                                       \n - 7: Si desea ver el calendario de trabajo de todos los instaladores\
                                                                                       \n Ingrese la alternativa escogida: ")
                 if (opt_ver_empleados_2 =='1'):
-                    print('')
-                    e = db.Employees.select()
-                    data = [p.to_dict() for p in e]
-                    df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
-                    df.columns = ['Rut','Nombre','Comuna', '¿Es Senior?']
-                    print( tabulate(df, headers='keys', tablefmt='psql'))
-                    input(' \n Presione Enter para continuar. ')
+                    printEmployees(db)
                 if (opt_ver_empleados_2 == '2'):
                     try:
                         id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
