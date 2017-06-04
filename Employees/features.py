@@ -87,8 +87,7 @@ def printSelectSkill(db, id_skill):
             if es != None and es.performance > 0:
                 ids.append(e.id)
         e = select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id)
-        print('\n')
         data = [p.to_dict() for p in e]
         df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
-        df.columns = ['Rut','Nombre','Zona', '¿Es Senior?']
+        df.columns = ['Rut','Nombre','Comuna','¿Es Senior?']
         print( tabulate(df, headers='keys', tablefmt='psql'))
