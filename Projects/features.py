@@ -11,21 +11,18 @@ from IPython.display import display
 from tabulate import tabulate
 
 
+
 def createProject(db, contract_number, client_address, client_comuna,
-				  client_name, client_rut, linear_meters, year, month,
-				  day, real_linear_meters = None, estimated_cost = None,
-				  real_cost = None, crystal_leadtime = 15,sale_date_year = None,sale_date_month = None,sale_date_day = None,sale_price = None):
-	import Planning.features as PLf
-	with db_session:
-		deadline = date(int(year), int(month), int(day))
-		sale_date = date(int(sale_date_year), int(sale_date_month), int(sale_date_day))
-		p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline=deadline, estimated_cost = estimated_cost, crystal_leadtime = crystal_leadtime, sale_date=sale_date, sale_price=sale_price)
-		if real_linear_meters != None:
-			p.real_linear_meters = real_linear_meters
-		if real_cost != None:
-			p.real_cost = real_cost
-		db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished == None).count()
-	PLf.doPlanning(db)
+                  client_name, client_rut, linear_meters, year, month,
+                  day, crystal_leadtime, sale_date, sale_price):
+    import Planning.features as PLf
+    with db_session:
+        deadline = date(int(year), int(month), int(day))
+        p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, 
+                            client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline = deadline, crystal_leadtime = crystal_leadtime, sale_date = sale_date, sale_price = sale_price)
+        db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished == None).count()
+        commit()
+    PLf.doPlanning(db)
 
 def printProjects(db):
     with db_session:
@@ -62,6 +59,7 @@ def editProject(db, contract_number, new_client_address = None, new_client_comun
                 p.real_cost = new_real_cost
             if new_crystal_leadtime != None:
                 p.crystal_leadtime = new_crystal_leadtime
+            commit()
         except ObjectNotFound as e:
             print('Object not found: {}'.format(e))
         except ValueError as e:
@@ -70,6 +68,7 @@ def editProject(db, contract_number, new_client_address = None, new_client_comun
 def deleteProject(db, contract_number):
     with db_session:
         db.Projects[contract_number].delete()
+        commit()
 
 def finishProject(db, contract_number):
     with db_session:
@@ -157,6 +156,7 @@ def getCostProject(db, contract_number):
 def createTask(db, id_skill, contract_number, original_initial_date, original_end_date, effective_initial_date = None, effective_end_date = None):
     with db_session:
         t = db.Tasks(skill = id_skill, project = contract_number, original_initial_date = original_initial_date, original_end_date = original_end_date)
+        commit()
 
 
 def editTask(db , id_skill, contract_number, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
@@ -191,6 +191,7 @@ def editTask(db , id_skill, contract_number, original_initial_date = None, origi
                     createDelay(db, t.project.contract_number, t.skill.id, delay)
             if fail_cost != None:
                 t.fail_cost = fail_cost
+            commit()
         except ObjectNotFound as e:
             print('Object not found: {}'.format(e))
         except ValueError as e:
@@ -199,6 +200,7 @@ def editTask(db , id_skill, contract_number, original_initial_date = None, origi
 def deleteTask(db, id_task):
     with db_session:
         db.Tasks[id_task].delete()
+        commit()
 
 def printTasks(db):
     with db_session:
@@ -210,7 +212,7 @@ def printTasks(db):
         print( tabulate(df, headers='keys', tablefmt='psql'))
 
 def failedTask(db, contract_number, id_skill, fail_cost):
-    import Planning.features as PLf
+    # import Planning.features as PLf
     with db_session:
 
         tasks = select(t for t in db.Tasks if t.skill >= db.Skills[id_skill] and t.project == db.Projects[contract_number] and t.failed == None)
@@ -246,6 +248,7 @@ def createDelay(db, contract_number, skill_id, delay):
                     et.planned_initial_date = sumDays(et.planned_initial_date, delay)
                     et.planned_end_date = sumDays(et.planned_end_date, delay)
                 skill_id = skill_id + 1
+            commit()
         except ObjectNotFound as e:
             print('Object not found: {}'.format(e))
         except ValueError as e:
@@ -293,6 +296,7 @@ def updateEmployeeProjects(db, employee, initial_date, end_date):
                 delete(er for er in db.Employees_Restrictions if er.employee.id == employee and er.project == et.task.project and er.fixed == True)
                 ## esto desfija al empleado de un proyecto si se va de vacaciones, privilegiando la fecha de entrega sobre la preferencia del cliente
                 changed = True
+        commit()
     return changed
 
         
@@ -314,6 +318,7 @@ def createProjectActivity(db, project, activity, initial_year, initial_month, in
     end_date = date(int(end_year), int(end_month), int(end_day))
     with db_session:
         db.Projects_Activities(project = project, activity = activity, initial_date = initial_date, end_date = end_date)
+        commit()
     if updateProjectActivities(db, project, initial_date, end_date):
         PLf.doPlanning(db)
 
@@ -331,11 +336,13 @@ def updateProjectActivities(db, project, initial_date, end_date):
                 tp.task.project.fixed_planning = False
                 ##aqui se va a desfijar el proyecto para que no haga planificaciones infactibles
                 changed = True
+        commit()
     return changed
         
 def deleteProjectActivity(db, id_project_activity):
     with db_session:
         db.Projects_Activities[id_project_activity].delete()
+        commit()
         
 def printProjectsActivities(db):
     with db_session:
@@ -357,6 +364,7 @@ def getListProducts(db):
             #Asumimos que el factor de pérdida es 0.03 para todos los SKUs, eventualmente la tabla Products debería tener 
             #el factor de pérdida asociado al código del SKU.
             r += 1
+        commit()
 
 
 def getProjectFeatures(db, contract_number):
@@ -419,6 +427,7 @@ def getProjectFeatures(db, contract_number):
             quantity  =  ws.cell(row = c4, column = 3).value
             Sf.createEngagement(db, contract_number, [(ide, quantity)], withdrawal_date = withdrawal)
             c4 += 1
+        commit()
 
 
 

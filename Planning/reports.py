@@ -906,6 +906,8 @@ doPlanning(), y por lo tanto el archivo Excel no es solo auxiliar: el usuario po
 def createReport(db, Delayed, caused_by_delay):
     if caused_by_delay:
         wb = Workbook()
+        by_default_sheet = wb['Sheet']
+        wb.remove_sheet(by_default_sheet)
         createPlanningReport(db, wb)
         #creamos un Excel con nombre cualquiera, sera borrado despues de todas maneras
         N = random.randint(20, 40)

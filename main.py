@@ -1,6 +1,7 @@
 from pony.orm import *
 from database import db
 from datetime import date
+# import initialize.py
 import Employees.features as Ef, Employees.usuario as Eu   #, Employees.reports as Er
 import Projects.usuario as Pu
 import Projects.features as Pf
@@ -61,33 +62,33 @@ def console(level, user):
                 Pu.tasks_console(db, level)
             else:
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')
+                input(' Presione Enter para continuar. ')
         if (opt == '4'):
             if (level == 1):
                 Su.stock_console(db, level)
             else:
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')
+                input(' Presione Enter para continuar. ')
         if (opt =='5'):
             if (level == 1):
                 PlanU.planning_console(db,level)
             else:
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')
+                input(' Presione Enter para continuar. ')
         if(opt=='6'):
             if(level ==1):
                 Uu.users_console(db)
             else:
                 print('\n Acceso denegado. \n')
-                input(' Presione una tecla para continuar: ')
+                input(' Presione Enter para continuar. ')
         if(opt == '7'):
             print("\n Has salido del programa.")
             break
 def signIn():
     while True:
         user = input(" Ingrese su usuario: ")
-        password = input("Ingrese su contraseña: ")
-        # password = getpass.getpass(' Ingrese su contraseña: ')
+        # password = input("Ingrese su contraseña: ")
+        password = getpass.getpass(' Ingrese su contraseña: ')
         if Uf.checkPassEntry(db, user, password):
             with db_session:
                 level=Uf.getUserLevel(db, user)

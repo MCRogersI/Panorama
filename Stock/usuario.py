@@ -63,10 +63,10 @@ def stock_console(db, level):
             if(opt2 == '1'):
                 try:
                     id = input("\n Ingrese el id del producto: ")
-                    name = input("\n Ingrese el nuevo nombre del producto, solo presione enter si lo mantiene: ")
+                    name = input("\n Ingrese el nuevo nombre del producto, solo presione Enter si lo mantiene: ")
                     if name == '':
                         name = None
-                    price = input(" Ingrese el nuevo precio unitario del producto, solo presione enter si lo mantiene: ")
+                    price = input(" Ingrese el nuevo precio unitario del producto, solo presione Enter si lo mantiene: ")
                     if price == '':
                         price = None
                     else:
@@ -75,7 +75,7 @@ def stock_console(db, level):
                                 raise ValueError('\n El precio unitario del producto debe ser un número positivo \n')
                         except:
                             raise ValueError('\n El precio unitario del producto debe ser un número positivo \n')
-                    critical_level = input(" Ingrese el nuevo nivel crítico del producto, solo presione enter si lo mantiene: ")
+                    critical_level = input(" Ingrese el nuevo nivel crítico del producto, solo presione Enter si lo mantiene: ")
                     if critical_level == '':
                         critical_level = None
                     else:
@@ -84,7 +84,7 @@ def stock_console(db, level):
                                 raise ValueError('\n El nivel crítico del producto debe ser un número positivo \n')
                         except:
                             raise ValueError('\n El nivel crítico del producto debe ser un número positivo \n')
-                    real_quantity = input(" Ingrese la nueva cantidad en bodega del producto, solo presione enter si es que desea ingresar este valor en el futuro: ")
+                    real_quantity = input(" Ingrese la nueva cantidad en bodega del producto, solo presione Enter si es que desea ingresar este valor en el futuro: ")
                     if real_quantity == '':
                         real_quantity = None
                     else:
