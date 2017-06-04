@@ -44,10 +44,10 @@ def projects_console(db, level):
                         raise ValueError('\n Debe ingresar un rut \n')
                     linear_meters = input(" Ingrese los metros lineales del proyecto: ")
                     try:
-                        int(linear_meters)
+                        float(linear_meters)
                     except:
-                        raise ValueError('\n Los metros lineales deben ser un número entero \n')
-                    if int(linear_meters) <0:
+                        raise ValueError('\n Los metros lineales deben ser un número\n')
+                    if float(linear_meters) <0:
                         raise ValueError('\n Los metros lineales deben ser un número entero positivo \n')
                     year = input(" Ingrese el año de la fecha de entrega pactada del proyecto: ")
                     try:

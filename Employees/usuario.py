@@ -74,9 +74,11 @@ def employees_console(db, level, user):
                     senior = None
                     if(perf_ins != None):
                         senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
-                        try:
-                            senior = bool(senior)
-                        except:
+                        if senior == '1':
+                            senior = True
+                        elif senior == '0':
+                            senior = False
+                        else:
                             raise ValueError('\n Se debe ingresar 0 o 1.')
                     createEmployee(db,id, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins, senior)
                     input('\n Empleado creado con éxito. Presione Enter para continuar. ')
@@ -291,10 +293,10 @@ def employees_console(db, level, user):
                                 raise ValueError('\n Empleado inexistente. \n')
                         createPersonalEmployeeReport(db,id_employee)
                         print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                     except ValueError as ve:
                         print(ve)
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                 if (opt_ver_empleados_2 == '3'):
                     createWorkersReportWide(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
@@ -359,10 +361,10 @@ def employees_console(db, level, user):
                                 raise ValueError('\n Empleado no es un rectificador. Acceso restringido. \n')
                         createPersonalEmployeeReport(db,id_employee)
                         print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                     except ValueError as ve:
                         print(ve)
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
                     createRectificatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
@@ -386,10 +388,10 @@ def employees_console(db, level, user):
                                 raise ValueError('\n Empleado no es un instalador o diseñador. Acceso restringido. \n')
                         createPersonalEmployeeReport(db,id_employee)
                         print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                     except ValueError as ve:
                         print(ve)
-                        input('\n Presione una tecla para continuar. \n')
+                        input('\n Presione enter para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
                     createDesignersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
@@ -410,10 +412,10 @@ def employees_console(db, level, user):
                             raise ValueError('\n Usuario no es trabajador. Acceso denegado. \n')
                     createPersonalEmployeeReport(db,id_employee)
                     print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                    input('\n Presione una tecla para continuar. \n')
+                    input('\n Presione enter para continuar. \n')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione una tecla para continuar. \n')
+                    input('\n Presione enter para continuar. \n')
                 finally:
                     break
                                                                                           
