@@ -74,9 +74,11 @@ def employees_console(db, level, user):
                     senior = None
                     if(perf_ins != None):
                         senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
-                        try:
-                            senior = bool(senior)
-                        except:
+                        if senior == '1':
+                            senior = True
+                        elif senior == '0':
+                            senior = False
+                        else:
                             raise ValueError('\n Se debe ingresar 0 o 1.')
                     createEmployee(db,id, nameEmpleado, zoneEmpleado, perf_rect, perf_des, perf_fab, perf_ins, senior)
                     input('\n Empleado creado con éxito. Presione Enter para continuar. ')
