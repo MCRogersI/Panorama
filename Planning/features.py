@@ -501,32 +501,31 @@ def doPlanning(db):
                 employees = select(es.employee for es in db.Employees_Skills if es.skill.id == i)
                 if len(employees) < 1:
                     print('\n No se puede hacer la planificación porque no hay rectificadores.')
-                    input(' Presione enter para continuar: ')
+                    input(' Presione Enter para continuar: ')
                     return
             elif i == 2:
                 employees = select(es.employee for es in db.Employees_Skills if es.skill.id == i)
                 if len(employees) < 1:
                     print('\n No se puede hacer la planificación porque no hay diseñadores.')
-                    input(' Presione enter para continuar: ')
+                    input(' Presione Enter para continuar: ')
                     return
             if i == 3:
                 employees = select(es.employee for es in db.Employees_Skills if es.skill.id == i)
                 if len(employees) < 1:
-                    print('\n No se puede hacer la planificación porque no ha fabricadores.')
-                    input(' Presione enter para continuar: ')
+                    print('\n No se puede hacer la planificación porque no hay fabricadores.')
+                    input(' Presione Enter para continuar: ')
                     return
             if i == 4:
                 employees1 = select(es.employee for es in db.Employees_Skills if es.skill.id == i and es.employee.senior == True)
                 if len(employees1) < 1:
                     print('\n No se puede hacer la planificación porque no hay instaladores senior.')
-                    input(' Presione enter para continuar: ')
+                    input(' Presione Enter para continuar: ')
                     return
                 employees2 = select(es.employee for es in db.Employees_Skills if es.skill.id == i and es.employee.senior == False)
                 if len(employees2) < 1:
                     print('\n No se puede hacer la planificación porque no hay instaladores junior.')
-                    input(' Presione enter para continuar: ')
+                    input(' Presione Enter para continuar: ')
                     return
-
 
         projects = select(p for p in db.Projects if p.finished == None).order_by(lambda p : p.priority)
         # projects.show()
