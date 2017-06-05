@@ -1,22 +1,44 @@
 Tests 2017/06/04:
 
-1) Creación de proyectos y empleados:
+1) Revisar que inicialización sea correcta:
 
 - Partir de base de datos inicializada con lo básico: Skills, Activities y usuario administrador.
-- Inicializar todo con initialize.py.
-- Revisar que crear Employees funcione: que funcione si se ingresa todo bien.
-                                        que reclame al ingresar mal, apropiadamente.
-                                        que senior/junior te lo pida solo para instaladores.
-                                        que te avise que la creación fue exitosa.
-                                        que permita rendimientos racionales, no solo enteros.
-                                        que exija rendimiento al menos en alguna Skill.
-                                        que parsee el nombre de la comuna.
-- Revisar que crear Projects funcione: que funcione si se ingresa todo bien.
-                                       que acepte metros lineales racionales, no solo enteros.
-                                       que reclame al ingresar mal, apropiadamente.
-                                       que reclame (y no se caiga) si se trata de crear sin Employees inscritos.
-                                       que no haya problema (en creación ni en planificación) de proyectos atrasados.
-                                       que un proyecto atrasado parta mañana, y no en la fecha de venta.
-                                       que te avise que la creación fue exitosa.
-                                       que parsee el nombre de la comuna.
-                                                                             
+- Todo se inicializa desde initialize.py.
+- La inicialización anterior funciona, efectivamente, en la base de datos.
+
+2) Revisar que crear Employees funcione: 
+
+- Que funcione si se ingresa todo bien.
+- Que reclame al ingresar mal, apropiadamente.
+- Que senior/junior te lo pida solo para instaladores.
+- Que te avise que la creación fue exitosa.
+- Que permita rendimientos racionales, no solo enteros.
+- Que exija rendimiento al menos en alguna Skill.
+- Que pregunte por la comuna de residencia y no por el "código de zona".
+- Que parsee el nombre de la comuna.
+
+3) Revisar que crear Projects funcione: 
+
+- Que funcione si se ingresa todo bien.
+- Que acepte metros lineales racionales, no solo enteros.
+- Que reclame al ingresar mal, apropiadamente.
+- Que reclame (y no se caiga) si se trata de crear sin Employees inscritos.
+- Que no haya problema (en creación ni en planificación) de proyectos atrasados.
+- Que un proyecto atrasado parta mañana, y no en la fecha de venta.
+- Que te avise que la creación fue exitosa.
+- Que parsee el nombre de la comuna.
+                                       
+4) Revisar que eliminar Employees funcione: 
+
+- Que efectivamente salga de la base de datos.
+- En caso de que el Employee haya estado en la planificación, hacer de nuevo doPlanning().
+- Que no sea considerado en nuevas planificaciones.
+- Que los Employees_X desaparezcan todos con X = Skills, Tasks, Activities, Restrictions.
+
+5) Revisar que eliminar Projects funcione:
+
+- Que efectvamente salga de la base de datos.
+- Que actualice las prioridades de los Projects restantes.
+- Avisar al usuario que puede convenir re-planificar para tratar de mejorar las fechas de entrega.
+- Que los Projects_X desaparezcan todos con X = Activities, Costs, Delays.
+- También que desaparezcan las Tasks, Deadlines_Restrictions, Employees_Restrictions, Employees_Tasks asociadas.

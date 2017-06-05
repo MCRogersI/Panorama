@@ -1,0 +1,3 @@
+hiddenimports = [
+    "pony.orm.dbproviders",
+]
