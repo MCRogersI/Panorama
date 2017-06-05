@@ -2,7 +2,7 @@ from pony.orm import *
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font
 from . import materialCost, instalationCost, fabricationCost
-import clcomuna
+import convert
 
 def estimateCost(db, contract_number, file_name):
     # primero, obtenemos la comuna donde se realizara el proyecto
@@ -11,7 +11,7 @@ def estimateCost(db, contract_number, file_name):
     ws_read_measures = wb_read["Measures"]
     comuna_to = ws_read_measures.cell(row = 7, column = 15).value
     try:
-        comuna_to = clcomuna.convert.get_fuzzy(comuna_to)
+        comuna_to = convert.get_fuzzy(comuna_to)
     except:
         raise ValueError('\n Formato del archivo es invalido. No ha podido leerse .')
     

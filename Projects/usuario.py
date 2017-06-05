@@ -4,7 +4,7 @@ from Projects.features import createProject, printProjects, editProject, deleteP
 from Projects.costs import estimateCost
 from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts, updateCrystalsParameters, updateProfilesParameters
 import os
-import clcomuna
+import convert
 # from Projects.costs import estimateCost
 
 def projects_console(db, level):
@@ -38,7 +38,7 @@ def projects_console(db, level):
                     if len(client_comuna.replace(' ','')) < 1:
                         raise ValueError('\n Debe ingresar una comuna \n')
                     try:
-                        client_comuna_parsed = clcomuna.convert.get_fuzzy(client_comuna)
+                        client_comuna_parsed = convert.get_fuzzy(client_comuna)
                     except:
                         raise ValueError('\n La comuna ingresada es inválida.')
                     client_name = input(" Ingrese el nombre del cliente: ")
@@ -160,7 +160,7 @@ def projects_console(db, level):
                             new_client_comuna_parsed = None
                         else:
                             try:
-                                new_client_comuna_parsed = clcomuna.convert.get_fuzzy(new_client_comuna)
+                                new_client_comuna_parsed = convert.get_fuzzy(new_client_comuna)
                             except:
                                 raise ValueError('\n La comuna ingresada es inválida.')
                         if new_client_name.replace(' ','') == '':

@@ -5,7 +5,7 @@ from datetime import date
 from Employees.reports import createPersonalEmployeeReport, createWorkersReportWide, createRectificatorsReport, createDesignersReport, createFabricatorsReport, createInstallersReport
 import pandas
 from tabulate import tabulate
-import clcomuna
+import convert
 
 
 
@@ -38,7 +38,7 @@ def employees_console(db, level, user):
                     if len( zone_empleado.replace(' ',''))<1:
                         raise ValueError('\n La comuna no puede estar vacía.')
                     try:
-                        zone_empleado_parsed = clcomuna.convert.get_fuzzy(zone_empleado)
+                        zone_empleado_parsed = convert.get_fuzzy(zone_empleado)
                     except:
                         raise ValueError('\n La comuna ingresada es inválida.')
                     perf_rect = input(" Ingrese el rendimiento histórico en rectificación del empleado, solo presione Enter si no realiza esta labor: ")
@@ -120,7 +120,7 @@ def employees_console(db, level, user):
                         new_zone_parsed = None
                     else:
                         try:
-                            new_zone_parsed = clcomuna.convert.get_fuzzy(new_zone)
+                            new_zone_parsed = convert.get_fuzzy(new_zone)
                         except:
                             raise ValueError('\n La comuna ingresada es inválida.')
                     if new_perf_rect == '':
