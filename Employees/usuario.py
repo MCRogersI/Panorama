@@ -243,7 +243,7 @@ def employees_console(db, level, user):
                     print('\n')
                     ea = db.Employees_Activities.select()
                     data = [p.to_dict() for p in ea]
-                    df = pandas.DataFrame(data, columns = ['id','employee','activity','initial_ date','end_date'])                    
+                    df = pandas.DataFrame(data, columns = ['id','employee','activity','initial_date','end_date'])                    
                     df.columns = ['ID','Empleado','Tipo Actividad', 'Fecha Inicio', 'Fecha Fin']
                     print( tabulate(df, headers='keys', tablefmt='psql'))
                     input(' \n Presione Enter para continuar. ')
