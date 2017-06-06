@@ -4,7 +4,7 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font
 from os import remove
 import Stock.features as Sf
-from Planning.features import sumDays, doPlanning
+from Planning.features import sumDays, substractDays, doPlanning
 from Planning.reports import createReport
 import pandas
 from IPython.display import display
@@ -176,19 +176,19 @@ def editTask(db , id_skill, contract_number, original_initial_date = None, origi
                 #vemos si la tarea se inició con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
                 #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
                 et = select(et for et in db.Employees_Tasks if et.task == t).first()
-                if effective_initial_date > et.planned_initial_date:
-                    print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
-                    delay = (effective_initial_date - et.planned_initial_date).days
-                    createDelay(db, t.project.contract_number, t.skill.id, delay)
+                # if effective_initial_date > et.planned_initial_date:
+                    # print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
+                    # delay = (effective_initial_date - et.planned_initial_date).days
+                    # createDelay(db, t.project.contract_number, t.skill.id, delay)
             if effective_end_date != None:
                 t.effective_end_date = effective_end_date
                 #vemos si la tarea se terminó con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
                 #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
                 et = select(et for et in db.Employees_Tasks if et.task == t).first()
-                if effective_end_date > et.planned_end_date:
-                    print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
-                    delay = (effective_end_date - et.planned_end_date).days
-                    createDelay(db, t.project.contract_number, t.skill.id, delay)
+                # if effective_end_date > et.planned_end_date:
+                    # print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
+                    # delay = (effective_end_date - et.planned_end_date).days
+                    # createDelay(db, t.project.contract_number, t.skill.id, delay)
             if fail_cost != None:
                 t.fail_cost = fail_cost
             commit()
@@ -234,26 +234,24 @@ def createDelay(db, task, delay):
     realiza una nueva planificacion'''
     with db_session:
         emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
-        for et in emp_tasks:
-            et.planned_end_date = sumDays(et.planned_end_date, delay)
-        skill_id = skill_id + 1
-        # while skill_id <= 4:#si es una actividad anterior a instalación, atrasa todas las tareas que le siguen
-            # task = db.Tasks.get(skill = db.Skills[skill_id], project = project, failed = None)
-            # emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
-            # for et in emp_tasks:
-                # et.planned_initial_date = sumDays(et.planned_initial_date, delay)
-                # et.planned_end_date = sumDays(et.planned_end_date, delay)
-            # skill_id = skill_id + 1
-        # commit()
+        #corremos la planned_end_date de los Employees_Tasks pertinentes
+        if delay > 0:
+            for et in emp_tasks:
+                et.planned_end_date = sumDays(et.planned_end_date, delay)
+        else:
+            for et in emp_tasks:
+                et.planned_end_date = substractDays(et.planned_end_date, -1*delay)
+
+        commit()
+        doPlanning(db)
         
+        #No borrar: es forma efectiva de revisar si una planificación es factible
         # si la planificacion que queda no es factible, replanificamos, dejando fijo el proyecto en cuestion
         # if createReport(db, None, True) == False:
             # fixed_planning = project.fixed_planning
             # project.fixed_planning = True
             # doPlanning(db)
             # project.fixed_planning = fixed_planning
-            
-    #revisamos si es que la planificacion nueva es factible, sino, hay que replanificar
 
 
 

@@ -36,6 +36,17 @@ def sumDays(dt, days):
             new_dt = new_dt + delta
         days = days - 1
     return new_dt
+    
+#checked
+def substractDays(dt, days):
+    new_dt = dt
+    delta = timedelta(days = 1)
+    while(days > 0):
+        new_dt = new_dt - delta
+        while(isNotWorkday(new_dt)):
+            new_dt = new_dt - delta
+        days = days - 1
+    return new_dt
 
 #checked
 def getAveragePerformance(db, id_skill):
@@ -131,10 +142,24 @@ def fillCommitments(commitments, initial_date, end_date, planned_initial_date, p
 def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
     with db_session:
         emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-
+        
+        # revisamos que la fecha no coincida con fechas de actividades como licencia o vacaciones
         for ea in emp_acts:
             if datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
                 return False
+        
+        # revisamos también si algún Tasks_Delays que tenga al empleado "congelado", funciona similar a un Employees_Activities
+        emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
+        for et in emp_tasks:
+            task = et.task
+            # si la tarea tiene un Tasks_Delays asociados, y ya partió, pero aún no termina, entonces el empleado está congelado
+            if task.effective_initial_date != None and task.effective_end_date == None:
+                tasks_delays = select(td for td in db.Tasks_Delays if td.task == task)
+                if len(tasks_delays > 0) and datesOverlap(initial_date, end_date, date.today(), et.planned_end_date):
+                    return False
+                    
+        
+        # por último, revisamos que no haya problema con las otras Employees_Tasks ya planificadas
         # acá los rectificadores y disenadores se diferencian de los otros dos, porque pueden estar en más de un proyecto por día
         if id_skill == 3 or id_skill == 4:
             emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
