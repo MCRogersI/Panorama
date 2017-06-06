@@ -25,16 +25,19 @@ def planning_console(db,level):
                         raise ValueError('\n No existe ese número de contrato \n')
                         
                 with db_session:
-                    current_projects = len(select(p for p in db.Projects))
+                    current_projects = len(select(p for p in db.Projects if p.finished == None))
                     old_priority = db.Projects[int(contract_number)].priority
                 print('la prioridad actual de este proyecto es de ' + str(old_priority) + ' de ' + str(current_projects))
                 new_priority = input('ingrese la nueva prioridad que desea asignarle al proyecto. presione Enter si no quiere cambiar la prioridad ')
-                if new_priority != None:
+                if new_priority != '':
                     try:
                         changePriority(db, int(contract_number), int(new_priority))
+                        input('\n Cambio de prioridad realizado exitosamente. Presione Enter para continuar: ')
                     except:
                         print('Ingreso de variables inválidas')
                         input('Presione Enter para continuar. ')
+                else:
+                    input('\n No se realizó ningún cambio. Presione Enter para continuar: ')
             except ValueError as ve:
                 print(ve)
                 input('Precione cualquier tecla para volver \n')

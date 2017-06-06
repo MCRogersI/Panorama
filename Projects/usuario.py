@@ -1,6 +1,6 @@
 from datetime import date
 from pony.orm import *
-from Projects.features import createProject, printProjects, editProject, deleteProject, finishProject, createTask, editTask, printTasks, failedTask, createProjectActivity, deleteProjectActivity, printProjectsActivities
+from Projects.features import createProject, printProjects, editProject, deleteProject, finishProject, createTask, editTask, printTasks, failedTask, createProjectActivity, deleteProjectActivity, printProjectsActivities, createDelay
 from Projects.costs import estimateCost
 from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts, updateCrystalsParameters, updateProfilesParameters
 from Planning.features import sumDays
@@ -145,18 +145,9 @@ def projects_console(db, level):
                             except:
                                 raise ValueError('\n No existe ese número de contrato.')
                         new_client_address = input("Ingrese la nueva direccion del cliente, solo presione Enter si la mantiene: ")
-                        new_client_comuna = input("Ingrese la nueva comuna del cliente, solo presione Enter si la mantiene: ")
-                        new_client_name = input("Ingrese el nuevo nombre del cliente, solo presione Enter si lo mantiene: ")
-                        new_client_rut = input("Ingrese el nuevo RUT del cliente, solo presione Enter si lo mantiene: ")
-                        new_linear_meters = input("Ingrese los metros lineales del proyecto, solo presione Enter si se mantienen: ")
-                        new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto, solo presione Enter si no se conocen: ")
-                        new_deadline_year = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
-                        new_deadline_month = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
-                        new_deadline_day = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
-                        new_real_cost = input("Ingrese el costo real del proyecto, solo presione Enter si no se conoce: ")
-                        new_crystal_leadtime = input("Ingrese la cantidad de días que demorarán en llegar los cristales, solo presione Enter si se mantiene: ")
                         if new_client_address.replace(' ','') == '':
                             new_client_address = None
+                        new_client_comuna = input("Ingrese la nueva comuna del cliente, solo presione Enter si la mantiene: ")
                         if new_client_comuna.replace(' ','') == '':
                             new_client_comuna_parsed = None
                         else:
@@ -164,20 +155,42 @@ def projects_console(db, level):
                                 new_client_comuna_parsed = convert.get_fuzzy(new_client_comuna)
                             except:
                                 raise ValueError('\n La comuna ingresada es inválida.')
+                        new_client_name = input("Ingrese el nuevo nombre del cliente, solo presione Enter si lo mantiene: ")
                         if new_client_name.replace(' ','') == '':
                             new_client_name = None
+                        new_client_rut = input("Ingrese el nuevo RUT del cliente, solo presione Enter si lo mantiene: ")
                         if new_client_rut.replace(' ','') == '':
                             new_client_rut = None
+                        new_linear_meters = input("Ingrese los metros lineales del proyecto, solo presione Enter si se mantienen: ")
                         if new_linear_meters.replace(' ','') == '':
                             new_linear_meters = None
+                        if new_linear_meters != None:
+                            try:
+                                new_linear_meters = float(new_linear_meters)
+                                if new_linear_meters < 0:
+                                    raise ValueError('\n Los metros lineales deben ser un número positivo. \n')
+                            except:
+                                raise ValueError('\n Los metros lineales deben ser un número. \n')
+                        new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto, solo presione Enter si no se conocen: ")
                         if new_real_linear_meters.replace(' ','') == '':
                             new_real_linear_meters = None
+                        if new_real_linear_meters != None:
+                            try:
+                                new_real_linear_meters = float(new_real_linear_meters)
+                                if new_real_linear_meters < 0:
+                                    raise ValueError('\n Los metros lineales deben ser un número positivo. \n')
+                            except:
+                                raise ValueError('\n Los metros lineales deben ser un número positivo. \n')
+                        new_deadline_year = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
+                        new_deadline_month = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
+                        new_deadline_day = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
                         if new_deadline_day.replace(' ','') == '':
-                            new_deadline_day = None
-                            if new_deadline_month.replace(' ','') == '':
-                                new_deadline_month = None
-                                if new_deadline_year.replace(' ','') == '':
-                                    new_deadline_year = None
+                            with db_session:
+                                new_deadline_day = db.Projects[int(contract_number)].deadline.day
+                                if new_deadline_month.replace(' ','') == '':
+                                    new_deadline_month = db.Projects[int(contract_number)].deadline.month
+                                    if new_deadline_year.replace(' ','') == '':
+                                        new_deadline_year = db.Projects[int(contract_number)].deadline.year
                         elif new_deadline_month == '':
                             with db_session:
                                 new_deadline_month = db.Projects[int(contract_number)].deadline.month
@@ -186,39 +199,25 @@ def projects_console(db, level):
                         elif new_deadline_year == '':
                             with db_session:
                                 new_deadline_year = db.Projects[int(contract_number)].deadline.year
+                        try:
+                            new_deadline =date(int(new_deadline_year), int(new_deadline_month), int(new_deadline_day))
+                        except:
+                            raise ValueError('\n Debe ingresar una fecha válida. \n')
+                        new_real_cost = input("Ingrese el costo real del proyecto, solo presione Enter si no se conoce: ")
                         if new_real_cost.replace(' ','') == '':
                             new_real_cost = None
-                        if new_linear_meters != None:
-                            try:
-                                int(new_linear_meters)
-                                if int(new_linear_meters) < 0:
-                                    raise ValueError('\n Los metros lineales deben ser un número entero positivo \n')
-                            except:
-                                raise ValueError('\n Los metros lineales deben ser un número entero positivo \n')
-                        if new_real_linear_meters != None:
-                            try:
-                                int(new_real_linear_meters)
-                                if int(new_real_linear_meters) < 0:
-                                    raise ValueError('\n Los metros lineales deben ser un número entero positivo \n')
-                            except:
-                                raise ValueError('\n Los metros lineales deben ser un número entero positivo \n')
                         if new_real_cost != None:
                             try:
-                                float(new_real_cost)
+                                new_real_cost = float(new_real_cost)
                                 if float(new_real_cost) < 0:
                                     raise ValueError('\n Los costos deben ser un número positivo \n')
                             except:
                                 raise ValueError('\n Los costos deben ser un número positivo \n')
-                        if new_deadline_year != None or new_deadline_month != None or new_deadline_day != None:
-                            try:
-                                new_deadline =date(int(new_deadline_year), int(new_deadline_month), int(new_deadline_day))
-                            except:
-                                raise ValueError('\n Debe ingresar una fecha válida. \n')
-                        else:
-                            new_deadline = None
+
+                        new_crystal_leadtime = input("Ingrese la cantidad de días que demorarán en llegar los cristales, solo presione Enter si se mantiene: ")
                         if new_crystal_leadtime != None:
                             try:
-                                int(new_crystal_leadtime)
+                                new_crystal_leadtime = int(new_crystal_leadtime)
                             except:
                                 raise ValueError('\n La cantidad de días debe ser un número entero \n')
                         editProject(db, contract_number, new_client_address, new_client_comuna_parsed, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost, new_crystal_leadtime=new_crystal_leadtime)
@@ -236,6 +235,8 @@ def projects_console(db, level):
                 contract_number = input("\n Ingrese el número de contrato del proyecto a eliminar: ")
                 try:
                     deleteProject(db, contract_number)
+                    print('\n Proyecto eliminado exitosamente. Es altamente recomendable realizar una nueva planificación para mejorar las fechas de entrega.')
+                    input(' Presione Enter para continuar: ')
                 except:
                     print('\n Proyecto inexistente \n')
                     input('Precione cualquier tecla para volver \n')
@@ -506,7 +507,7 @@ def tasks_console(db, level):
                 except:
                     raise ValueError('\n ID de habilidad no válida. \n')
                 with db_session:
-                    task = db.Tasks.get( project = db.Proyects[contract_number], skill = db.Skills[id_skill], failed = None)
+                    task = db.Tasks.get( project = db.Projects[contract_number], skill = db.Skills[id_skill], failed = None)
                     if task == None:
                         raise ValueError('\n Tarea no encontrada.')
                     if task.effective_initial_date == None :

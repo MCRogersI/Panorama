@@ -382,7 +382,7 @@ def cleanTasks(db):
         
 def shiftDown(db, project, place, original_place):
     with db_session:
-        projects = select(p for p in db.Projects if p.priority >= place and p.finished != True).order_by(lambda p: p.priority)
+        projects = select(p for p in db.Projects if p.priority >= place and p.finished == None).order_by(lambda p: p.priority)
         for p in projects:
             if p.priority == original_place -1:
                 if p.fixed_priority:
@@ -396,6 +396,7 @@ def shiftDown(db, project, place, original_place):
                 project.priority = p.priority
                 shiftDown(db, p, p.priority + 1, original_place)
                 break 
+        commit()
 # Función auxiliar. "empuja" la prioridad cuando es puede cambiar por no ser fijada por el usuario. Al tener que revisar esto
 # preferí hacerlo recursivo y empujar de uno en uno
 #check
@@ -403,9 +404,10 @@ def shiftDown(db, project, place, original_place):
                 
 def shiftUp(db,upper, lower):
     with db_session:
-        projects = select(p for p in db.Projects if p.priority <= lower and p.priority > upper and p.finished !=True).order_by(lambda p: p.priority)
+        projects = select(p for p in db.Projects if p.priority <= lower and p.priority > upper and p.finished == None).order_by(lambda p: p.priority)
         for p in projects:
             p.priority = p.priority - 1
+        commit()
             
 #Función auxiliar. Empuja hacia arriba las prioridades. En este caso la prioridad de todos cambia ya que mejora.
 #check        
@@ -414,7 +416,7 @@ def changePriority(db, contract_number, new_priority):
     with db_session:
         old_priority = db.Projects[contract_number].priority
         if old_priority > new_priority:
-            projects = select(p for p in db.Projects if p.priority >= new_priority and p.priority < db.Projects[contract_number].priority and p.finished != True).order_by(lambda p: p.priority)
+            projects = select(p for p in db.Projects if p.priority >= new_priority and p.priority < old_priority and p.finished == None).order_by(lambda p: p.priority)
             for p in projects:
                 if p.fixed_priority:
                     p.priority = p.priority +1
@@ -424,10 +426,11 @@ def changePriority(db, contract_number, new_priority):
             db.Projects[contract_number].priority = new_priority
             db.Projects[contract_number].fixed_priority = True
         if old_priority < new_priority:
-            shiftUp(db, db.Projects[contract_number].priority, new_priority)
+            shiftUp(db, old_priority, new_priority)
             db.Projects[contract_number].priority = new_priority
             db.Projects[contract_number].fixed_priority = True
             db.Projects.select().order_by(lambda p: p.contract_number)
+        commit()
             
 ############
 #Este evento debe gatillar una replanificación

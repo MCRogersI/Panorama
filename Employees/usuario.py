@@ -45,7 +45,7 @@ def employees_console(db, level, user):
                         perf_rect=None
                     else:
                         try:
-                            if float(perf_rect) < 0:
+                            if float(perf_rect) <= 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número.')
@@ -54,7 +54,7 @@ def employees_console(db, level, user):
                         perf_des=None
                     else:
                         try:
-                            if float(perf_des) < 0:
+                            if float(perf_des) <= 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número.')                    
@@ -63,7 +63,7 @@ def employees_console(db, level, user):
                         perf_fab=None
                     else:
                         try:
-                            if float(perf_fab) < 0:
+                            if float(perf_fab) <= 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número.')
@@ -72,7 +72,7 @@ def employees_console(db, level, user):
                         perf_ins=None
                     else:
                         try:
-                            if float(perf_ins) < 0:
+                            if float(perf_ins) <= 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número.')
@@ -101,10 +101,13 @@ def employees_console(db, level, user):
         if(opt == '2'):
             if (level == 1):
                 try:
+                    skills = [1,2,3,4]
+                    skill_added = False
                     id_empleado = input("\n Ingrese el RUT del empleado a editar sin puntos ni número identificador: ")
                     try:
+                        id_empleado = int(id_empleado)
                         with db_session:
-                            e = db.Employees[int(id_empleado)]
+                            e = db.Employees[id_empleado]
                     except:
                         raise ValueError('\n Empleado inexistente. \n')
                     new_name = input(" Ingrese el nuevo nombre del empleado, solo presione Enter si lo mantiene: ")
@@ -113,6 +116,7 @@ def employees_console(db, level, user):
                     new_perf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione Enter mantiene la información actual: ")
                     new_perf_fab = input(" Ingrese el rendimiento histórico en fabricación del empleado, solo presione Enter si mantiene la información actual: ")
                     new_perf_ins = input(" Ingrese el rendimiento histórico en instalación del empleado, solo presione Enter si mantiene la información actual: ")
+                    new_senior = None
                     if new_name == '':
                         new_name = None
                     if len(new_zone.replace(' ',''))<1:
@@ -126,16 +130,26 @@ def employees_console(db, level, user):
                         new_perf_rect=None
                     else:
                         try:
-                            if float(new_perf_rect) < 0:
+                            new_perf_rect = float(new_perf_rect)
+                            if new_perf_rect < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                            elif new_perf_rect == 0:
+                                skills.remove(1)
+                            else:
+                                skill_added = True
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
                     if new_perf_des == '':
                         new_perf_des = None
                     else:
                         try:
-                            if float(new_perf_des) < 0:
+                            new_perf_des = float(new_perf_des)
+                            if new_perf_des < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                            elif new_perf_des == 0:
+                                skills.remove(2)
+                            else:
+                                skill_added = True
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
                        
@@ -143,28 +157,42 @@ def employees_console(db, level, user):
                         new_perf_fab = None
                     else:
                         try:
-                            if float(new_perf_fab) < 0:
+                            new_perf_fab = float(new_perf_fab)
+                            if new_perf_fab < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                            elif new_perf_fab == 0:
+                                skills.remove(3)
+                            else:
+                                skill_added = True
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
                     if new_perf_ins == '':
                         new_perf_ins = None
                     else:
                         try:
-                            if float(new_perf_ins) < 0:
+                            new_perf_ins = float(new_perf_ins)
+                            if new_perf_ins < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                            elif new_perf_ins == 0:
+                                skills.remove(4)
+                            else:
+                                skill_added = True
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
-                    new_senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior (si no es instalador, solo presione Enter): ")
-                    try:
-                        if int(new_senior) == 0:
-                            new_senior = False
-                        elif int(new_senior) == 1:
-                            new_senior = True
-                        else:
+                        new_senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
+                        try:
+                            if int(new_senior) == 0:
+                                new_senior = False
+                            elif int(new_senior) == 1:
+                                new_senior = True
+                            else:
+                                raise ValueError('\n Debe ingresar 0 ó 1. \n')
+                        except:
                             raise ValueError('\n Debe ingresar 0 ó 1. \n')
-                    except:
-                        raise ValueError('\n Debe ingresar 0 ó 1. \n')
+                    with db_session:
+                        es = select(es for es in db.Employees_Skills if es.employee == db.Employees[id_empleado] and es.skill.id in skills)
+                        if len(es) == 0 and not skill_added:
+                            raise ValueError ('\n No puede dejar a un empleado sin habilidad.')
                     editEmployee(db, id_empleado, new_name, new_zone_parsed, new_perf_rect, new_perf_des, new_perf_fab, new_perf_ins, new_senior)
                     input('\n Empleado editado exitosamente. Presione Enter para continuar. ')
                 except ValueError as ve:

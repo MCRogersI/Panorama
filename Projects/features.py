@@ -4,7 +4,7 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font
 from os import remove
 import Stock.features as Sf
-from Planning.features import sumDays, doPlanning
+from Planning.features import sumDays, doPlanning, changePriority
 from Planning.reports import createReport
 import pandas
 from IPython.display import display
@@ -21,6 +21,7 @@ def createProject(db, contract_number, client_address, client_comuna,
         p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, 
                             client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline = deadline, crystal_leadtime = crystal_leadtime, sale_date = sale_date, sale_price = sale_price)
         db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished == None).count()
+        
         commit()
     PLf.doPlanning(db)
 
@@ -37,36 +38,33 @@ def printProjects(db):
         print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7]], axis = 1), headers='keys', tablefmt='psql'))
 def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None):
     with db_session:
-        try:
-            p = db.Projects[contract_number]
-            if new_client_address != None:
-                p.client_addres = new_client_address
-            if new_client_comuna != None:
-                p.client_comuna = new_client_comuna
-            if new_client_name != None:
-                p.client_name = new_client_name
-            if new_client_rut != None:
-                p.client_rut = new_client_rut
-            if new_linear_meters != None:
-                p.linear_meters = new_linear_meters
-            if new_deadline != None:
-                p.deadline = new_deadline
-            if new_real_linear_meters != None:
-                p.real_linear_meters = new_real_linear_meters
-            if new_estimated_cost != None:
-                p.estimated_cost = new_estimated_cost
-            if new_real_cost != None:
-                p.real_cost = new_real_cost
-            if new_crystal_leadtime != None:
-                p.crystal_leadtime = new_crystal_leadtime
-            commit()
-        except ObjectNotFound as e:
-            print('Object not found: {}'.format(e))
-        except ValueError as e:
-            print('Value error: {}'.format(e))
+        p = db.Projects[contract_number]
+        if new_client_address != None:
+            p.client_addres = new_client_address
+        if new_client_comuna != None:
+            p.client_comuna = new_client_comuna
+        if new_client_name != None:
+            p.client_name = new_client_name
+        if new_client_rut != None:
+            p.client_rut = new_client_rut
+        if new_linear_meters != None:
+            p.linear_meters = new_linear_meters
+        if new_deadline != None:
+            p.deadline = new_deadline
+        if new_real_linear_meters != None:
+            p.real_linear_meters = new_real_linear_meters
+        if new_estimated_cost != None:
+            p.estimated_cost = new_estimated_cost
+        if new_real_cost != None:
+            p.real_cost = new_real_cost
+        if new_crystal_leadtime != None:
+            p.crystal_leadtime = new_crystal_leadtime
+        commit()
 
 def deleteProject(db, contract_number):
     with db_session:
+        new_priority = select(p for p in db.Projects if p.finished == None).count()
+        changePriority(db, contract_number, new_priority)
         db.Projects[contract_number].delete()
         commit()
 
