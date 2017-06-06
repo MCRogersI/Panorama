@@ -27,8 +27,9 @@ def printEmployees(db):
         e = db.Employees.select()
         data = [p.to_dict() for p in e]
         df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
-        df.columns = ['RUT','Nombre','Zona', '¿Es Senior?']
-        print( tabulate(df, headers='keys', tablefmt='psql'))
+        df.columns = ['RUT','Nombre','Comuna', '¿Es Senior?']
+        print()
+        print(tabulate(df, headers='keys', tablefmt='psql'))
         input(' \n Presione Enter para continuar. ')
 
 def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_ins = None, senior = None):

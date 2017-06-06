@@ -27,6 +27,7 @@ def define_models(db):
         crystal_leadtime = Optional(int, default = 15)
         sale_date = Optional(date)
         finished = Optional(bool)
+        crystals_sales_orders = Set('Crystals_Sales_Order')
 
         def __repr__(self):
             return str(self.contract_number)
@@ -57,12 +58,6 @@ def define_models(db):
         initial_date = Optional(date)
         end_date = Optional(date)
     
-    class Projects_Delays(db.Entity):
-        id = PrimaryKey(int, auto = True)
-        project_id = Required(int)
-        skill_id = Required(int)
-        delay = Required(int)
-    
     class Employees_Activities(db.Entity):
         id = PrimaryKey(int, auto=True)
         employee = Required('Employees')
@@ -83,6 +78,7 @@ def define_models(db):
         failed = Optional(bool)
         fail_cost = Optional(int)
         employees = Set('Employees_Tasks')
+        delays = Set('Tasks_Delays')
 
         def __repr__(self):
             return str(self.id)
@@ -93,6 +89,33 @@ def define_models(db):
         PrimaryKey(employee, task)
         planned_initial_date = Optional(date)
         planned_end_date = Optional(date)
+        
+    class Tasks_Delays(db.Entity):
+        id = PrimaryKey(int, auto = True)
+        task = Required(Tasks)
+        delay = Required(int)
+        
+    # para guardar los datos relacionados a la orden de compra de los cristales
+    class Crystals_Sales_Order(db.Entity):
+        id = PrimaryKey(int, auto=True)
+        project = Required(Projects)
+        # programa lo llenará automáticamente, debiera ser el día siguiente al planned_end_date del diseno
+        original_issuing_date = Required(date)
+        # esto es cuándo se supone que llegarán los cristales
+        # originalmente lo llena el programa, a partir de la fecha anterior más el crystal_leadtime del proyecto
+        # esto lo puede editar también la persona que registra el pedido
+        original_arrival_date = Required(date)
+        # esto lo indica la persona que registra el pedido, cuándo efectivamente hizo la orden de compra de cristales
+        effective_issuing_date = Optional(date)
+        # esto lo indica la persona que registra el pedido, cuándo efectivamente llegan los cristales
+        effective_arrival_date = Optional(date)
+        # esto lo indica la persona que registra el pedido, ID del emisor de la orden de compra de los cristales
+        id_issuer_order = Optional(int)
+        # esto lo indica la persona que registra el pedido, ID del emisor de la orden de compra de los cristales
+        id_crystal_provider = Optional(int)
+
+        def __repr__(self):
+            return str(self.id)
         
     class Freight_Costs(db.Entity):#La cantidad costo flete sistema que aparece en el excel Base de Datos             #_sistema Gestion de Operaciones_ACO_04 03 2017_vf.xlsx, en la hoja 'COSTO ESTANDAR INSTALACION',
         #se debería fijar una sola vez el costo para todas las comunas de chile. El nombre de la comuna

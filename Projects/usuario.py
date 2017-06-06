@@ -45,7 +45,7 @@ def projects_console(db, level):
                     client_name = input(" Ingrese el nombre del cliente: ")
                     if len(client_name.replace(' ','')) < 1:
                         raise ValueError('\n Debe ingresar un nombre \n')
-                    client_rut = input(" Ingrese el RUTdel cliente: ")
+                    client_rut = input(" Ingrese el RUT del cliente: ")
                     if len(client_rut.replace(' ','')) < 1:
                         raise ValueError('\n Debe ingresar un rut \n')
                     linear_meters = input(" Ingrese los metros lineales del proyecto: ")
