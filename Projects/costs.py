@@ -70,7 +70,7 @@ def estimateCost(db, contract_number, file_name):
         project_cost = db.Projects_Costs(project = db.Projects[contract_number])
     
     parameters = viatic_cost, movilization_cost, num_installers, freight_cost, 1, file_name
-    standardCostCalculation(db, project_cost, parameters)
+    return standardCostCalculation(db, project_cost, parameters)
     
 ###################################################################
 # Desde aqui los metodos auxiliares que calculan todos los costos #
@@ -107,6 +107,8 @@ def standardCostCalculation(db, project_cost, parameters):
         project_cost.standard_cost_total = profiles_cost + fittings_cost + crystals_cost + additional_costs + installation_cost + fabrication_cost
         
         commit()
+    #si el cálculo es exitoso
+    return True
     
 ####################################################################################################
 # Método auxiliar para manejar los casos en que alguno de los valores no están en la base de datos #

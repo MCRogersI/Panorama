@@ -227,32 +227,24 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 
         doPlanning(db)
 
-def createDelay(db, contract_number, skill_id, delay):
+def createDelay(db, task, delay):
     '''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = contract_number, alargando el end date en delay días.    
     Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html 
     Después de correr la planificacion en "delay" cantidad de dias, revisa si la planificacion que queda es factible. Si no lo es, 
     realiza una nueva planificacion'''
     with db_session:
-        try:
-            project = db.Projects[contract_number]
+        emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+        for et in emp_tasks:
+            et.planned_end_date = sumDays(et.planned_end_date, delay)
+        skill_id = skill_id + 1
+        while skill_id <= 4:#si es una actividad anterior a instalación, atrasa todas las tareas que le siguen
             task = db.Tasks.get(skill = db.Skills[skill_id], project = project, failed = None)
             emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
             for et in emp_tasks:
+                et.planned_initial_date = sumDays(et.planned_initial_date, delay)
                 et.planned_end_date = sumDays(et.planned_end_date, delay)
             skill_id = skill_id + 1
-            while skill_id <= 4:#si es una actividad anterior a instalación, atrasa todas las 
-            #tareas que le siguen
-                task = db.Tasks.get(skill = db.Skills[skill_id], project = project, failed = None)
-                emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
-                for et in emp_tasks:
-                    et.planned_initial_date = sumDays(et.planned_initial_date, delay)
-                    et.planned_end_date = sumDays(et.planned_end_date, delay)
-                skill_id = skill_id + 1
-            commit()
-        except ObjectNotFound as e:
-            print('Object not found: {}'.format(e))
-        except ValueError as e:
-            print('Value error: {}'.format(e))
+        commit()
         
         #si la planificacion que queda no es factible, replanificamos, dejando fijo el proyecto en cuestion
         if createReport(db, None, True) == False:

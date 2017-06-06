@@ -57,10 +57,9 @@ def define_models(db):
         initial_date = Optional(date)
         end_date = Optional(date)
     
-    class Projects_Delays(db.Entity):
+    class Tasks_Delays(db.Entity):
         id = PrimaryKey(int, auto = True)
-        project_id = Required(int)
-        skill_id = Required(int)
+        task = Required('Tasks')
         delay = Required(int)
     
     class Employees_Activities(db.Entity):
@@ -83,6 +82,7 @@ def define_models(db):
         failed = Optional(bool)
         fail_cost = Optional(int)
         employees = Set('Employees_Tasks')
+        delays = Set('Tasks_Delays')
 
         def __repr__(self):
             return str(self.id)
