@@ -516,8 +516,11 @@ def tasks_console(db, level):
                         if sumDays(date.today(),-1*delay) > planned_end_date: 
                             raise ValueError('\n Según este ingreso la tarea ya terminó. Ingrese una fecha efectiva de término y no un atraso negativo.')
                 createDelay(db,task,delay)
+                print('\n Atraso ingresado exitosamente.')
             except ValueError as ve:
                 print(ve)
+            finally:
+                input(' Presione Enter para continuar: ')
         elif(opt == '5'):
             break
 
