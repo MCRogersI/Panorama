@@ -296,27 +296,34 @@ def projects_console(db, level):
                 print('\n Acceso denegado. \n')
                 input(' Presione Enter para continuar. ')
         elif (opt =='6'):
-            try:
-                contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo: ')
-                if int(contract_number)  < 0:
-                    raise ValueError('\n El número de contrato debe ser un número entero positivo.')
-                with db_session:
-                    if db.Projects.get(contract_number = contract_number) == None:
-                        raise ValueError('\n Número de contrato no existente.')
-                file_name = input(' Ingrese el nombre del archivo de la hoja de corte: ')
-                file_dir = file_name + ".xlsx"
-                if os.path.isfile(file_dir):
-                    estimateCost(db, contract_number, file_name)
-                    input('\n Costo estimado exitosamente. Presione una tecla para continuar.')
+            if (level not in [1,2,3,4,5]) :
+                input('\n Acceso denegado. Presione Enter para continuar: ')
+            else:
+                try:
+                    contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo: ')
+                    try:
+                        int(contract_number)
+                    except:
+                        raise ValueError('\n El número de contrato debe ser un número.')
+                    if int(contract_number)  < 0:
+                        raise ValueError('\n El número de contrato debe ser un número entero positivo.')
+                    with db_session:
+                        if db.Projects.get(contract_number = contract_number) == None:
+                            raise ValueError('\n Número de contrato no existente.')
+                    file_name = input(' Ingrese el nombre del archivo de la hoja de corte: ')
+                    file_dir = file_name + ".xlsx"
+                    if os.path.isfile(file_dir):
+                        if (estimateCost(db, contract_number, file_name)):
+                           input('\n Costo estimado exitosamente.')
+
+                    else:
+                        raise ValueError('\n Archivo no encontrado.')
+                except ValueError as ve:
+                    print(ve)                    
                     if (level not in [1,2,3,4,5]) :
                         break
-                else:
-                    raise ValueError('\n Archivo no encontrado.')
-            except ValueError as ve:
-                print(ve)
-                input(' Presione una tecla para continuar.')
-                if (level not in [1,2,3,4,5]) :
-                    break
+                finally:
+                    input(' Presione Enter para continuar: ')
         elif(opt == '7'):
             break
 
@@ -442,35 +449,46 @@ def tasks_console(db, level):
                                                                         \n - 7: Si desea volver atrás.\
                                                                         \n Ingrese la alternativa elegida: ')
                 try:
-                    file_name = input('\n Ingrese el nombre del archivo: ')
-                    file_dir = file_name + ".xlsx"
-                    if os.path.isfile(file_dir):
-                        if opt2 == '1':
-                            updateFreightCosts(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
-                        if opt2 == '2':
-                            updateOperatingCosts(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
-                        if opt2 == '3':
-                            updateViaticCosts(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
-                        if opt2 == '4':
-                            updateMovilizationCosts(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
-                        if opt2 == '5':
-                            updateCrystalsParameters(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
-                        if opt2 == '6':
-                            updateProfilesParameters(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
-                    else:
-                        raise ValueError('\n Archivo no encontrado.')
+                    try:
+                        int(opt2)
+                        if int(opt2) not in range(1,8):
+                            raise 
+                    except:
+                        raise ValueError('\n Debe ingresar una alternativa válida.')
+                    if(int(opt2) == 7):
+                        pass
+                    elif( int(opt2) in range(1,7)):
+                        file_name = input('\n Ingrese el nombre del archivo: ')
+                        file_dir = file_name + ".xlsx"
+                        if os.path.isfile(file_dir):
+                            if opt2 == '1':
+                                if updateFreightCosts(db, file_name):
+                                    print('\n Edición realizada exitosamente.')
+                            if opt2 == '2':
+                                if updateOperatingCosts(db, file_name):
+                                    print('\n Edición realizada exitosamente.')
+                            if opt2 == '3':
+                                if updateViaticCosts(db, file_name):
+                                    print('\n Edición realizada exitosamente.')
+                            if opt2 == '4':
+                                if updateMovilizationCosts(db, file_name):
+                                    print('\n Edición realizada exitosamente.')
+                            if opt2 == '5':
+                                if updateCrystalsParameters(db, file_name):
+                                    print('\n Edición realizada exitosamente.')
+                            if opt2 == '6':
+                                if updateProfilesParameters(db, file_name):
+                                    print('\n Edición realizada exitosamente.')
+                            input(' Presione Enter para continuar: ')
+                        else:
+                            raise ValueError('\n Archivo no encontrado.')
                 except ValueError as ve:
                     print(ve)
-                    input(' Presione Enter para continuar.')
+                    input(' Presione Enter para continuar: ')
+                
             else:
                 print('\n Acceso denegado.')
-                input(' Presione Enter para continuar.')
+                input(' Presione Enter para continuar: ')
         elif(opt == '4'):
             break
 
