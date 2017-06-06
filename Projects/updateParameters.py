@@ -33,6 +33,7 @@ def updateFreightCosts(db, file_name):
         comuna_to = ws_read_freight.cell(row = next_row, column = 1).value
     
     commit()
+    return True
 
 
     
@@ -60,6 +61,7 @@ def updateOperatingCosts(db, file_name):
         name = ws_read_operating.cell(row = next_row, column = 1).value
     
     commit()
+    return True
 
 
     
@@ -96,6 +98,7 @@ def updateViaticCosts(db, file_name):
         comuna_from = ws_read_viatic.cell(row = next_row, column = 1).value
         
     commit()
+    return True
         
         
         
@@ -132,6 +135,7 @@ def updateMovilizationCosts(db, file_name):
         comuna_from = ws_read_movilization.cell(row = next_row, column = 1).value
      
     commit()
+    return True
         
 
         
@@ -161,6 +165,7 @@ def updateCrystalsParameters(db, file_name):
         thickness = ws_read_crystals.cell(row = next_row, column = 1).value
     
     commit()
+    return True
         
 
         
@@ -188,6 +193,7 @@ def updateProfilesParameters(db, file_name):
         name = ws_read_profiles.cell(row = next_row, column = 1).value
     
     commit()
+    return True
 
     
 
