@@ -237,21 +237,21 @@ def createDelay(db, task, delay):
         for et in emp_tasks:
             et.planned_end_date = sumDays(et.planned_end_date, delay)
         skill_id = skill_id + 1
-        while skill_id <= 4:#si es una actividad anterior a instalación, atrasa todas las tareas que le siguen
-            task = db.Tasks.get(skill = db.Skills[skill_id], project = project, failed = None)
-            emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
-            for et in emp_tasks:
-                et.planned_initial_date = sumDays(et.planned_initial_date, delay)
-                et.planned_end_date = sumDays(et.planned_end_date, delay)
-            skill_id = skill_id + 1
-        commit()
+        # while skill_id <= 4:#si es una actividad anterior a instalación, atrasa todas las tareas que le siguen
+            # task = db.Tasks.get(skill = db.Skills[skill_id], project = project, failed = None)
+            # emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+            # for et in emp_tasks:
+                # et.planned_initial_date = sumDays(et.planned_initial_date, delay)
+                # et.planned_end_date = sumDays(et.planned_end_date, delay)
+            # skill_id = skill_id + 1
+        # commit()
         
-        #si la planificacion que queda no es factible, replanificamos, dejando fijo el proyecto en cuestion
-        if createReport(db, None, True) == False:
-            fixed_planning = project.fixed_planning
-            project.fixed_planning = True
-            doPlanning(db)
-            project.fixed_planning = fixed_planning
+        # si la planificacion que queda no es factible, replanificamos, dejando fijo el proyecto en cuestion
+        # if createReport(db, None, True) == False:
+            # fixed_planning = project.fixed_planning
+            # project.fixed_planning = True
+            # doPlanning(db)
+            # project.fixed_planning = fixed_planning
             
     #revisamos si es que la planificacion nueva es factible, sino, hay que replanificar
 
