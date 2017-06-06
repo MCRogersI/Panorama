@@ -253,8 +253,6 @@ def createDelay(db, task, delay):
             # doPlanning(db)
             # project.fixed_planning = fixed_planning
 
-
-
 # métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees)
 def createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
     '''
