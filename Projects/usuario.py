@@ -44,7 +44,7 @@ def projects_console(db, level):
                     client_name = input(" Ingrese el nombre del cliente: ")
                     if len(client_name.replace(' ','')) < 1:
                         raise ValueError('\n Debe ingresar un nombre \n')
-                    client_rut = input(" Ingrese el RUT del cliente: ")
+                    client_rut = input(" Ingrese el RUTdel cliente: ")
                     if len(client_rut.replace(' ','')) < 1:
                         raise ValueError('\n Debe ingresar un rut \n')
                     linear_meters = input(" Ingrese los metros lineales del proyecto: ")
@@ -442,35 +442,35 @@ def tasks_console(db, level):
                                                                         \n - 7: Si desea volver atrás.\
                                                                         \n Ingrese la alternativa elegida: ')
                 try:
-                    file_name = input(' Ingrese el nombre del archivo: ')
+                    file_name = input('\n Ingrese el nombre del archivo: ')
                     file_dir = file_name + ".xlsx"
                     if os.path.isfile(file_dir):
                         if opt2 == '1':
                             updateFreightCosts(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
+                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
                         if opt2 == '2':
                             updateOperatingCosts(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
+                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
                         if opt2 == '3':
                             updateViaticCosts(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
+                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
                         if opt2 == '4':
                             updateMovilizationCosts(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
+                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
                         if opt2 == '5':
                             updateCrystalsParameters(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
+                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
                         if opt2 == '6':
                             updateProfilesParameters(db, file_name)
-                            input('\n Edición realizada exitosamente. Presione una tecla para continuar.')
+                            input('\n Edición realizada exitosamente. Presione Enter para continuar.')
                     else:
                         raise ValueError('\n Archivo no encontrado.')
                 except ValueError as ve:
                     print(ve)
-                    input(' Presione una tecla para continuar.')
+                    input(' Presione Enter para continuar.')
             else:
-                print('\n Acceso denegado. \n')
-                input(' Presione Enter para continuar. ')
+                print('\n Acceso denegado.')
+                input(' Presione Enter para continuar.')
         elif(opt == '4'):
             break
 

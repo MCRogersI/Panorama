@@ -8,10 +8,16 @@ def computation(db, wb_read, project_cost, tarifa_viaticos, tarifa_movilizacion,
     
     #parametros fijos, tomados de los parametros guardados en la base de datos
     with db_session:
+        from Projects.costs import getParameter
         rendimiento_diario = getAveragePerformance(db, 4)
-        factor_errores_instalacion = db.Operating_Parameters.get(name = "Factor de errores de instalacion").value
-        tarifa_instalacion_interna = db.Operating_Parameters.get(name = "Tarifa instalacion interna").value
-        tarifa_instalacion_externa = db.Operating_Parameters.get(name = "Tarifa instalacion externa").value
+        warning = ' Aviso: el factor de errores de instalacion no se encuentra registrada en la base de datos. Se considerara como 0.'
+        factor_errores_instalacion = getParameter(db.Operating_Parameters, "Factor de errores de instalacion", pony.orm.core.ObjectNotFound, warning)
+        
+        warning = ' Aviso: la tarifa de instalacion de empleados internos no se encuentra registrado en la base de datos. Se considerara como 0.'
+        tarifa_instalacion_interna = getParameter(db.Operating_Parameters, "Tarifa instalacion interna", pony.orm.core.ObjectNotFound, warning)
+        
+        warning = ' Aviso: la tarifa de instalacion de empleados externos no se encuentra registrada en la base de datos. Se considerara como 0.'
+        tarifa_instalacion_externa = getParameter(db.Operating_Parameters, "Tarifa instalacion externa", pony.orm.core.ObjectNotFound, warning)
     if tipo_instalador == 1:
         tarifa_instalacion = tarifa_instalacion_interna
     else:

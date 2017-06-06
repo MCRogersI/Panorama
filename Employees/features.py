@@ -23,11 +23,10 @@ def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_
 
 def printEmployees(db):
     with db_session:
-        print('\n')
         e = db.Employees.select()
         data = [p.to_dict() for p in e]
         df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
-        df.columns = ['Rut','Nombre','Zona', '¿Es Senior?']
+        df.columns = ['RUT','Nombre','Zona', '¿Es Senior?']
         print( tabulate(df, headers='keys', tablefmt='psql'))
         input(' \n Presione Enter para continuar. ')
 

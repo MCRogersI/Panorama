@@ -8,15 +8,32 @@ def estimateCost(db, contract_number, file_name):
     # primero, obtenemos la comuna donde se realizara el proyecto
     file_read = file_name + ".xlsx"
     wb_read = load_workbook(file_read, data_only=True)
-    ws_read_measures = wb_read["Measures"]
+    #revisamos que el archivo tenga las hojas que debe tener
+    try:
+        ws_read_measures = wb_read["Measures"]
+    except KeyError:
+        print(' Formato invalido del archivo. El archivo debe tener una hoja llamada Measures.')
+        return
+    try:
+        wb_read["Manufacturing"]
+    except KeyError:
+        print(' Formato invalido del archivo. El archivo debe tener una hoja llamada Measures.')
+        return
+    #obtenemos la comuna donde se realizara el proyecto
     comuna_to = ws_read_measures.cell(row = 7, column = 15).value
     try:
         comuna_to = convert.get_fuzzy(comuna_to)
     except:
-        raise ValueError('\n Formato del archivo es invalido. No ha podido leerse .')
+        print('\n Formato del archivo es invalido. No ha podido leerse la comuna del proyecto.')
+        return
     
     # luego, obtenemos el freight_cost de la tabla Freight_Costs
-    freight_cost = db.Freight_Costs[comuna_to].freight_cost
+    warning = ' Aviso: el costo de flete para la comuna indicada en el archivo no se encuentra registrado en la base de datos. Se considerara como 0.'
+    try:
+        freight_cost = db.Freight_Costs[comuna_to].freight_cost
+    except pony.orm.core.ObjectNotFound:
+        print(warning)
+        freight_cost = 0
     
     # segundo, obtenemos la lista de instaladores ligados al proyecto
     tasks = select(t for t in db.Tasks if t.skill == db.Skills[4] and t.project == db.Projects[contract_number])
@@ -34,8 +51,18 @@ def estimateCost(db, contract_number, file_name):
     num_installers = 0
     for i in installers:
         num_installers = num_installers + 1
-        viatic_cost = viatic_cost + db.Viatic_Costs[(i.zone, comuna_to)].viatic_cost
-        movilization_cost = movilization_cost + db.Movilization_Costs[(i.zone, comuna_to)].movilization_cost
+        #recuperamos el costo de viáticos
+        warning = ' Aviso: el costo de viatico para las comunas ' + i.zone + '-' + comuna_to + ' no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            viatic_cost = viatic_cost + db.Viatic_Costs[(i.zone, comuna_to)].viatic_cost
+        except pony.orm.core.ObjectNotFound:
+            print(warning)
+        #recuperamos el costo de movilización
+        warning = ' Aviso: el costo de movilizacion para las comunas ' + i.zone + '-' + comuna_to + ' no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            movilization_cost = movilization_cost + db.Movilization_Costs[(i.zone, comuna_to)].movilization_cost
+        except pony.orm.core.ObjectNotFound:
+            print(warning)
     
     # hacemos un query para el Projects_Costs que usaremos en adelante, si no existe, lo creamos
     project_cost = db.Projects_Costs.get(project = db.Projects[contract_number])
@@ -81,3 +108,15 @@ def standardCostCalculation(db, project_cost, parameters):
         
         commit()
     
+####################################################################################################
+# Método auxiliar para manejar los casos en que alguno de los valores no están en la base de datos #
+####################################################################################################
+
+def getParameter(table, key, exception, warning):
+    parameter = 0
+    try:
+        parameter = table[key].value
+    except exception:
+        print(warning)
+        parameter = 0
+    return parameter
