@@ -1,14 +1,26 @@
 from pony.orm import *
 from openpyxl import load_workbook
+import convert
 
 def updateFreightCosts(db, file_name):
     file_read = file_name + ".xlsx"
     wb_read = load_workbook(file_read, data_only=True)
-    ws_read_freight = wb_read["Flete"]
+    try:
+        ws_read_freight = wb_read["Flete"]
+    except KeyError:
+        print(' Formato invalido del archivo. El archivo debe tener una hoja llamada Flete.')
+        return
     
     next_row = 5
     comuna_to = ws_read_freight.cell(row = next_row, column = 1).value
     while(comuna_to != None):
+        #parseamos el nombre de la comuna a formato estandar
+        try:
+            comuna_to = convert.get_fuzzy(comuna_to)
+        except:
+            print('\n Formato del archivo es invalido. Ha ocurrido un error al leer los nombres de las comunas.')
+            return
+        
         freight_cost = ws_read_freight.cell(row = next_row, column = 2).value
         with db_session:
             fc = db.Freight_Costs.get(comuna_to = comuna_to)
@@ -22,11 +34,16 @@ def updateFreightCosts(db, file_name):
     
     commit()
 
-        
+
+    
 def updateOperatingCosts(db, file_name):
     file_read = file_name + ".xlsx"
     wb_read = load_workbook(file_read, data_only=True)
-    ws_read_operating = wb_read["Operaciones"]
+    try:
+        ws_read_operating = wb_read["Operaciones"]
+    except KeyError:
+        print(' Formato invalido del archivo. El archivo debe tener una hoja llamada Operaciones.')
+        return
     
     next_row = 5
     name = ws_read_operating.cell(row = next_row, column = 1).value
@@ -49,12 +66,24 @@ def updateOperatingCosts(db, file_name):
 def updateViaticCosts(db, file_name):
     file_read = file_name + ".xlsx"
     wb_read = load_workbook(file_read, data_only=True)
-    ws_read_viatic = wb_read["Viaticos"]
+    try:
+        ws_read_viatic = wb_read["Viaticos"]
+    except KeyError:
+        print(' Formato invalido del archivo. El archivo debe tener una hoja llamada Viaticos.')
+        return
     
     next_row = 5
     comuna_from = ws_read_viatic.cell(row = next_row, column = 1).value
     while(comuna_from != None):
         comuna_to = ws_read_viatic.cell(row = next_row, column = 2).value
+        #parseamos el nombre de la comuna a formato estandar
+        try:
+            comuna_from = convert.get_fuzzy(comuna_from)
+            comuna_to = convert.get_fuzzy(comuna_to)
+        except:
+            print('\n Formato del archivo es invalido. Ha ocurrido un error al leer los nombres de las comunas.')
+            return
+        
         viatic_cost = ws_read_viatic.cell(row = next_row, column = 3).value
         with db_session:
             vc = db.Viatic_Costs.get(comuna_from = comuna_from, comuna_to = comuna_to)
@@ -73,12 +102,24 @@ def updateViaticCosts(db, file_name):
 def updateMovilizationCosts(db, file_name):
     file_read = file_name + ".xlsx"
     wb_read = load_workbook(file_read, data_only=True)
-    ws_read_movilization = wb_read["Movilizacion"]
+    try:
+        ws_read_movilization = wb_read["Movilizacion"]
+    except KeyError:
+        print(' Formato invalido del archivo. El archivo debe tener una hoja llamada Movilizacion.')
+        return
     
     next_row = 5
     comuna_from = ws_read_movilization.cell(row = next_row, column = 1).value
     while(comuna_from != None):
         comuna_to = ws_read_movilization.cell(row = next_row, column = 2).value
+        #parseamos el nombre de la comuna a formato estandar
+        try:
+            comuna_from = convert.get_fuzzy(comuna_from)
+            comuna_to = convert.get_fuzzy(comuna_to)
+        except:
+            print('\n Formato del archivo es invalido. Ha ocurrido un error al leer los nombres de las comunas.')
+            return
+
         movilization_cost = ws_read_movilization.cell(row = next_row, column = 3).value
         with db_session:
             mc = db.Movilization_Costs.get(comuna_from = comuna_from, comuna_to = comuna_to)
@@ -93,10 +134,15 @@ def updateMovilizationCosts(db, file_name):
     commit()
         
 
+        
 def updateCrystalsParameters(db, file_name):
     file_read = file_name + ".xlsx"
     wb_read = load_workbook(file_read, data_only=True)
-    ws_read_crystals = wb_read["Parametros cristales"]
+    try:
+        ws_read_crystals = wb_read["Parametros cristales"]
+    except KeyError:
+        print(' Formato invalido del archivo. El archivo debe tener una hoja llamada Parametros cristales.')
+        return
     
     next_row = 5
     thickness = str(ws_read_crystals.cell(row = next_row, column = 1).value)
@@ -116,11 +162,16 @@ def updateCrystalsParameters(db, file_name):
     
     commit()
         
+
         
 def updateProfilesParameters(db, file_name):
     file_read = file_name + ".xlsx"
     wb_read = load_workbook(file_read, data_only=True)
-    ws_read_profiles = wb_read["Parametros perfiles y herrajes"]
+    try:
+        ws_read_profiles = wb_read["Parametros perfiles y herrajes"]
+    except KeyError:
+        print(' Formato invalido del archivo. El archivo debe tener una hoja llamada Parametros perfiles y herrajes.')
+        return
     
     next_row = 5
     name = ws_read_profiles.cell(row = next_row, column = 1).value
@@ -137,3 +188,6 @@ def updateProfilesParameters(db, file_name):
         name = ws_read_profiles.cell(row = next_row, column = 1).value
     
     commit()
+
+    
+
