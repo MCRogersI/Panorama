@@ -2,8 +2,9 @@ from pony.orm import *
 import pandas
 from IPython.display import display
 from tabulate import tabulate
+from Planning.features import doPlanning
 
-def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_inst = None, senior = None):
+def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_ins = None, senior = None):
     with db_session:
         e = db.Employees(id = id, name = name, zone = zone)
         if perf_rect != None:
@@ -12,8 +13,8 @@ def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_
             db.Employees_Skills(employee = e, skill = 2, performance = perf_des)
         if perf_fab != None:
             db.Employees_Skills(employee = e, skill = 3, performance = perf_fab)
-        if perf_inst != None:
-            db.Employees_Skills(employee = e, skill = 4, performance = perf_inst)
+        if perf_ins != None:
+            db.Employees_Skills(employee = e, skill = 4, performance = perf_ins)
             # solo para el caso de los instaladores, pueden ser senior o junior, por defecto los consideramos como senior:
             if senior != None:
                 e.senior = bool(senior)
@@ -23,15 +24,16 @@ def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_
 
 def printEmployees(db):
     with db_session:
-        print('\n')
         e = db.Employees.select()
         data = [p.to_dict() for p in e]
         df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
-        df.columns = ['Rut','Nombre','Zona', '¿Es Senior?']
-        print( tabulate(df, headers='keys', tablefmt='psql'))
+        df.columns = ['RUT','Nombre','Comuna', '¿Es Senior?']
+        print()
+        print(tabulate(df, headers='keys', tablefmt='psql'))
         input(' \n Presione Enter para continuar. ')
 
-def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_inst = None, senior = None):
+def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_ins = None, senior = None):
+    replan = False
     with db_session:
         e = db.Employees[id]
         if new_zone != None:
@@ -40,37 +42,62 @@ def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, per
             e.name = new_name
         if perf_rect != None: 
             if db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[1]) != None:
-                db.Employees_Skills[(id, 1)].performance = perf_rect
-            else:
+                if perf_rect == 0:
+                    if len(select(et for et in db.Employees_Tasks if et.employee == db.Employees[id] and et.task.skill == db.Skills[1]))>0:
+                        replan = True
+                    db.Employees_Skills[(id, 1)].delete()
+                else:
+                    db.Employees_Skills[(id, 1)].performance = perf_rect
+            elif perf_rect != 0:
                 db.Employees_Skills(employee = id, skill = 1, performance = perf_rect)
         if perf_des != None:
             if db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[2]) != None:
-                db.Employees_Skills[(id, 2)].performance = perf_des
-            else:
+                if perf_des == 0:
+                    if len(select(et for et in db.Employees_Tasks if et.employee == db.Employees[id] and et.task.skill == db.Skills[2]))>0:
+                        replan = True
+                    db.Employees_Skills[(id, 2)].delete()
+                else:
+                    db.Employees_Skills[(id, 2)].performance = perf_des
+            elif perf_des != 0:
                 db.Employees_Skills(employee = id, skill = 2, performance = perf_des)
         if perf_fab != None:
             if db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[3]) != None:
-                db.Employees_Skills[(id, 3)].performance = perf_fab
-            else:
+                if perf_fab == 0 :
+                    if len(select(et for et in db.Employees_Tasks if et.employee == db.Employees[id] and et.task.skill == db.Skills[3]))>0:
+                        replan = True
+                    db.Employees_Skills[(id, 3)].delete()
+                else:
+                    db.Employees_Skills[(id, 3)].performance = perf_fab
+            elif perf_fab != 0:
                 db.Employees_Skills(employee = id, skill = 3, performance = perf_fab)
-        if perf_inst != None:
+        if perf_ins != None:
             if db.Employees_Skills.get(employee=db.Employees[id],skill=db.Skills[4]) != None:
-                db.Employees_Skills[(id, 4)].performance = perf_inst
-            else:
-                db.Employees_Skills(employee = id, skill = 4, performance = perf_inst)
+                if perf_ins == 0:
+                    if len(select(et for et in db.Employees_Tasks if et.employee == db.Employees[id] and et.task.skill == db.Skills[4]))>0:
+                        replan = True
+                    db.Employees_Skills[(id, 4)].delete()
+                else:
+                    db.Employees_Skills[(id, 4)].performance = perf_ins
+            elif perf_ins != 0:
+                db.Employees_Skills(employee = id, skill = 4, performance = perf_ins)
         # si es que el empleado no es instalador, no se pesca el valor de la variable senior:
-        emp_skill = select(es for es in db.Employees_Skills if es.employee == id and es.skill == 4)
+        emp_skill = select(es for es in db.Employees_Skills if es.employee == db.Employees[id] and es.skill == db.Skills[4])
         if len(emp_skill) > 0 and senior != None:
             e.senior = senior
+        commit()
+        if replan:
+            input(' Es necesario hacer una replanificación. Presione enter para empezar la replanificación: ')
+            doPlanning(db)
+            
 
             
 def deleteEmployee(db, id):
-    import Planning.features as Pf
     with db_session:
         if len(select(et for et in db.Employees_Tasks if et.employee == db.Employees[id]))>0:
             db.Employees[id].delete()
             commit()
-            Pf.doPlanning(db)
+            input(' Es necesario hacer una replanificación. Presione enter para empezar la replanificación: ')
+            doPlanning(db)
         else:
             db.Employees[id].delete()
             commit()

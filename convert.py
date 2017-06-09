@@ -1,5 +1,4 @@
 import unicodedata
-# import csv
 from fuzzywuzzy import process
 from pkg_resources import resource_filename # For the right filename
 

@@ -5,8 +5,7 @@ from datetime import date
 from Employees.reports import createPersonalEmployeeReport, createWorkersReportWide, createRectificatorsReport, createDesignersReport, createFabricatorsReport, createInstallersReport
 import pandas
 from tabulate import tabulate
-import clcomuna
-
+import convert
 
 
 def employees_console(db, level, user):
@@ -26,11 +25,11 @@ def employees_console(db, level, user):
         if(opt == '1'):
             if (level == 1):
                 try:
-                    id = input("\n Ingrese el rut del empleado sin puntos ni número verificador: ")
+                    id = input("\n Ingrese el RUT del empleado sin puntos ni número verificador: ")
                     try:
                         int(id)
                     except:
-                        raise ValueError('\n Rut no válido.')
+                        raise ValueError('\n RUT no válido.')
                     name_empleado = input(" Ingrese el nombre del empleado: ")
                     if len(name_empleado.replace(' ','')) <1:
                         raise ValueError('\n El empleado debe tener un nombre.')
@@ -38,7 +37,7 @@ def employees_console(db, level, user):
                     if len( zone_empleado.replace(' ',''))<1:
                         raise ValueError('\n La comuna no puede estar vacía.')
                     try:
-                        zone_empleado_parsed = clcomuna.convert.get_fuzzy(zone_empleado)
+                        zone_empleado_parsed = convert.get_fuzzy(zone_empleado)
                     except:
                         raise ValueError('\n La comuna ingresada es inválida.')
                     perf_rect = input(" Ingrese el rendimiento histórico en rectificación del empleado, solo presione Enter si no realiza esta labor: ")
@@ -46,7 +45,7 @@ def employees_console(db, level, user):
                         perf_rect=None
                     else:
                         try:
-                            if float(perf_rect) < 0:
+                            if float(perf_rect) <= 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número.')
@@ -55,7 +54,7 @@ def employees_console(db, level, user):
                         perf_des=None
                     else:
                         try:
-                            if float(perf_des) < 0:
+                            if float(perf_des) <= 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número.')                    
@@ -64,7 +63,7 @@ def employees_console(db, level, user):
                         perf_fab=None
                     else:
                         try:
-                            if float(perf_fab) < 0:
+                            if float(perf_fab) <= 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número.')
@@ -73,7 +72,7 @@ def employees_console(db, level, user):
                         perf_ins=None
                     else:
                         try:
-                            if float(perf_ins) < 0:
+                            if float(perf_ins) <= 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo.')
                         except:
                             raise ValueError('\n El rendimiento debe ser un número.')
@@ -102,10 +101,13 @@ def employees_console(db, level, user):
         if(opt == '2'):
             if (level == 1):
                 try:
-                    id_empleado = input("\n Ingrese el rut del empleado a editar sin puntos ni número identificador: ")
+                    skills = [1,2,3,4]
+                    skill_added = False
+                    id_empleado = input("\n Ingrese el RUT del empleado a editar sin puntos ni número identificador: ")
                     try:
+                        id_empleado = int(id_empleado)
                         with db_session:
-                            e = db.Employees[int(id_empleado)]
+                            e = db.Employees[id_empleado]
                     except:
                         raise ValueError('\n Empleado inexistente. \n')
                     new_name = input(" Ingrese el nuevo nombre del empleado, solo presione Enter si lo mantiene: ")
@@ -114,29 +116,40 @@ def employees_console(db, level, user):
                     new_perf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione Enter mantiene la información actual: ")
                     new_perf_fab = input(" Ingrese el rendimiento histórico en fabricación del empleado, solo presione Enter si mantiene la información actual: ")
                     new_perf_ins = input(" Ingrese el rendimiento histórico en instalación del empleado, solo presione Enter si mantiene la información actual: ")
+                    new_senior = None
                     if new_name == '':
                         new_name = None
                     if len(new_zone.replace(' ',''))<1:
                         new_zone_parsed = None
                     else:
                         try:
-                            new_zone_parsed = clcomuna.convert.get_fuzzy(new_zone)
+                            new_zone_parsed = convert.get_fuzzy(new_zone)
                         except:
                             raise ValueError('\n La comuna ingresada es inválida.')
                     if new_perf_rect == '':
                         new_perf_rect=None
                     else:
                         try:
-                            if float(new_perf_rect) < 0:
+                            new_perf_rect = float(new_perf_rect)
+                            if new_perf_rect < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                            elif new_perf_rect == 0:
+                                skills.remove(1)
+                            else:
+                                skill_added = True
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
                     if new_perf_des == '':
                         new_perf_des = None
                     else:
                         try:
-                            if float(new_perf_des) < 0:
+                            new_perf_des = float(new_perf_des)
+                            if new_perf_des < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                            elif new_perf_des == 0:
+                                skills.remove(2)
+                            else:
+                                skill_added = True
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
                        
@@ -144,28 +157,42 @@ def employees_console(db, level, user):
                         new_perf_fab = None
                     else:
                         try:
-                            if float(new_perf_fab) < 0:
+                            new_perf_fab = float(new_perf_fab)
+                            if new_perf_fab < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                            elif new_perf_fab == 0:
+                                skills.remove(3)
+                            else:
+                                skill_added = True
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
                     if new_perf_ins == '':
                         new_perf_ins = None
                     else:
                         try:
-                            if float(new_perf_ins) < 0:
+                            new_perf_ins = float(new_perf_ins)
+                            if new_perf_ins < 0:
                                 raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                            elif new_perf_ins == 0:
+                                skills.remove(4)
+                            else:
+                                skill_added = True
                         except:
                             raise ValueError('\n El rendimiento debe ser un número. \n')
-                    new_senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior (si no es instalador, solo presione Enter): ")
-                    try:
-                        if int(new_senior) == 0:
-                            new_senior = False
-                        elif int(new_senior) == 1:
-                            new_senior = True
-                        else:
+                        new_senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
+                        try:
+                            if int(new_senior) == 0:
+                                new_senior = False
+                            elif int(new_senior) == 1:
+                                new_senior = True
+                            else:
+                                raise ValueError('\n Debe ingresar 0 ó 1. \n')
+                        except:
                             raise ValueError('\n Debe ingresar 0 ó 1. \n')
-                    except:
-                        raise ValueError('\n Debe ingresar 0 ó 1. \n')
+                    with db_session:
+                        es = select(es for es in db.Employees_Skills if es.employee == db.Employees[id_empleado] and es.skill.id in skills)
+                        if len(es) == 0 and not skill_added:
+                            raise ValueError ('\n No puede dejar a un empleado sin habilidad.')
                     editEmployee(db, id_empleado, new_name, new_zone_parsed, new_perf_rect, new_perf_des, new_perf_fab, new_perf_ins, new_senior)
                     input('\n Empleado editado exitosamente. Presione Enter para continuar. ')
                 except ValueError as ve:
@@ -177,7 +204,7 @@ def employees_console(db, level, user):
         if(opt == '3'):
             if (level == 1):
                 try:
-                    idEmpleado = input("\n Ingrese el rut del empleado que desea eliminar: ")
+                    idEmpleado = input("\n Ingrese el RUT del empleado que desea eliminar: ")
                     with db_session:
                         try:
                             int(idEmpleado)
@@ -207,7 +234,7 @@ def employees_console(db, level, user):
                     try:
                         if int(activity) != 1 and int(activity)!=2:
                             raise ValueError('\n Debe elegir entre licencia y vacaciones. \n')
-                        employee = input(" Ingrese el rut del empleado asociado a la actividad elegida (sin puntos ni número identificador): ")
+                        employee = input(" Ingrese el RUT del empleado asociado a la actividad elegida (sin puntos ni número identificador): ")
                         try:
                             with db_session:
                                 e =  db.Employees[employee]
@@ -244,7 +271,7 @@ def employees_console(db, level, user):
                     print('\n')
                     ea = db.Employees_Activities.select()
                     data = [p.to_dict() for p in ea]
-                    df = pandas.DataFrame(data, columns = ['id','employee','activity','initial_ date','end_date'])                    
+                    df = pandas.DataFrame(data, columns = ['id','employee','activity','initial_date','end_date'])                    
                     df.columns = ['ID','Empleado','Tipo Actividad', 'Fecha Inicio', 'Fecha Fin']
                     print( tabulate(df, headers='keys', tablefmt='psql'))
                     input(' \n Presione Enter para continuar. ')
@@ -287,39 +314,39 @@ def employees_console(db, level, user):
                     printEmployees(db)
                 if (opt_ver_empleados_2 == '2'):
                     try:
-                        id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
+                        id_employee = input('\n Ingrese el RUT del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
                         try:
                             int(id_employee)
                         except:
-                            raise ValueError('\n El rut debe ser un número entero. \n')
+                            raise ValueError('\n El RUT debe ser un número entero.')
                         with db_session:
                             if db.Employees.get( id = int(id_employee)) == None:
-                                raise ValueError('\n Empleado inexistente. \n')
+                                raise ValueError('\n Empleado inexistente.')
                         createPersonalEmployeeReport(db,id_employee)
-                        print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                        input('\n Presione enter para continuar. \n')
+                        print(' Reporte creado. Puede revisarlo en la carpeta Reportes.')
+                        input(' Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
-                        input('\n Presione enter para continuar. \n')
+                        input(' Presione Enter para continuar. ')
                 if (opt_ver_empleados_2 == '3'):
                     createWorkersReportWide(db)
-                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
                             \n Presione Enter para continuar. ')
                 if (opt_ver_empleados_2 == '4'):
                     createRectificatorsReport(db)
-                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
                             \n Presione Enter para continuar. ')
                 if (opt_ver_empleados_2 == '5'):
                     createDesignersReport(db)
-                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
                             \n Presione Enter para continuar. ')
                 if (opt_ver_empleados_2 == '6'):
                     createFabricatorsReport(db)
-                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
                             \n Presione Enter para continuar. ')
                 if (opt_ver_empleados_2 == '7'):
                     createInstallersReport(db)
-                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
                             \n Presione Enter para continuar. ')
             elif(opt_ver_empleados == '1' and level == 3):
                 opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
@@ -327,7 +354,7 @@ def employees_console(db, level, user):
                                                                                       \n ingrese la alternativa escogida: ")
                 if (opt_ver_empleados_2 == '1'):
                     try:
-                        id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
+                        id_employee = input('\n Ingrese el RUT del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
                         try:
                             int(id_employee)
                         except:
@@ -345,11 +372,38 @@ def employees_console(db, level, user):
                         input('\n Presione la tecla Enter para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
                     createInstallersReport(db)
-                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
                             \n Presione Enter para continuar. ')
             elif(opt_ver_empleados == '1' and level == 4):
                 opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
                                                                                       \n - 2: Si desea ver el calendario de trabajo de todos los rectificadores\
+                                                                                      \n ingrese la alternativa escogida: ")
+                if (opt_ver_empleados_2 == '1'):
+                    try:
+                        id_employee = input('\n Ingrese el RUTdel empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
+                        try:
+                            int(id_employee)
+                        except:
+                            raise ValueError('\n El rut debe ser un número entero. \n')
+                        with db_session:
+                            if db.Employees.get( id = int(id_employee)) == None:
+                                raise ValueError('\n Empleado inexistente. \n')
+                            if db.Employees[int(id_employee)].skill.id != 1:
+                                raise ValueError('\n Empleado no es un rectificador. Acceso restringido. \n')
+                        createPersonalEmployeeReport(db,id_employee)
+                        print('\n Reporte creado. Puede revisarlo en la carpeta Reportes. \n')
+                        input('\n Presione Enter para continuar. \n')
+                    except ValueError as ve:
+                        print(ve)
+                        input('\n Presione Enter para continuar. \n')
+                if (opt_ver_empleados_2 == '2'):
+                    createRectificatorsReport(db)
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
+                            \n Presione Enter para continuar. ')
+            elif(opt_ver_empleados == '1' and level == 5):
+                opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
+                                                                                      \n - 2: Si desea ver el calendario de trabajo de todos los diseñadores\
+                                                                                      \n - 3: Si desea ver el calendario de trabajo de todos los instaladores\
                                                                                       \n ingrese la alternativa escogida: ")
                 if (opt_ver_empleados_2 == '1'):
                     try:
@@ -361,48 +415,21 @@ def employees_console(db, level, user):
                         with db_session:
                             if db.Employees.get( id = int(id_employee)) == None:
                                 raise ValueError('\n Empleado inexistente. \n')
-                            if db.Employees[int(id_employee)].skill.id != 1:
-                                raise ValueError('\n Empleado no es un rectificador. Acceso restringido. \n')
-                        createPersonalEmployeeReport(db,id_employee)
-                        print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                        input('\n Presione enter para continuar. \n')
-                    except ValueError as ve:
-                        print(ve)
-                        input('\n Presione enter para continuar. \n')
-                if (opt_ver_empleados_2 == '2'):
-                    createRectificatorsReport(db)
-                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
-                            \n Presione Enter para continuar. ')
-            elif(opt_ver_empleados == '1' and level == 5):
-                opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
-                                                                                      \n - 2: Si desea ver el calendario de trabajo de todos los diseñadores\
-                                                                                      \n - 3: Si desea ver el calendario de trabajo de todos los instaladores\
-                                                                                      \n ingrese la alternativa escogida: ")
-                if (opt_ver_empleados_2 == '1'):
-                    try:
-                        id_employee = input('\n Ingrese el rut del empleado cuyo calendario le interesa (sin puntos ni número identificador): ')
-                        try:
-                            int(id_employee)
-                        except:
-                            raise ValueError('\n El rut debe ser un número entero. \n')
-                        with db_session:
-                            if db.Employees.get( id = int(id_employee)) == None:
-                                raise ValueError('\n Empleado inexistente. \n')
                             if db.Employees[int(id_employee)].skill.id not in [2,4]:
                                 raise ValueError('\n Empleado no es un instalador o diseñador. Acceso restringido. \n')
                         createPersonalEmployeeReport(db,id_employee)
-                        print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                        input('\n Presione enter para continuar. \n')
+                        print('\n Reporte creado. Puede revisarlo en la carpeta Reportes. \n')
+                        input('\n Presione Enter para continuar. \n')
                     except ValueError as ve:
                         print(ve)
-                        input('\n Presione enter para continuar. \n')
+                        input('\n Presione Enter para continuar. \n')
                 if (opt_ver_empleados_2 == '2'):
                     createDesignersReport(db)
-                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
                             \n Presione Enter para continuar. ')
                 if (opt_ver_empleados_2 == '3'):
                     createInstallersReport(db)
-                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta de reportes. \
+                    input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
                             \n Presione Enter para continuar. ')
             elif(opt_ver_empleados == '1' and level in [6,7,8,9]):
                 try:
@@ -415,11 +442,11 @@ def employees_console(db, level, user):
                         if db.Employees.get( id = int(id_employee)) == None:
                             raise ValueError('\n Usuario no es trabajador. Acceso denegado. \n')
                     createPersonalEmployeeReport(db,id_employee)
-                    print('\n Reporte creado. Puede revisarlo en la carpeta de reportes. \n')
-                    input('\n Presione enter para continuar. \n')
+                    print('\n Reporte creado. Puede revisarlo en la carpeta Reportes. \n')
+                    input('\n Presione Enter para continuar. \n')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione enter para continuar. \n')
+                    input('\n Presione Enter para continuar. \n')
                 finally:
                     break
                                                                                           

@@ -1,0 +1,24 @@
+empleados:
+	2 rectificadores: performance de 5 y 10
+	1 diseñador: performance de 10
+	1 fabricador: performance de 10
+	2 instaladores, uno senior y otro junior: performance de 10
+
+proyectos:
+	proyecto 1: metros lineales : 6.4
+		    plazo pactado: 2017-03-10
+		    precio de venta: 10000
+		    crystal leadtime: 15
+		    fecha de venta: 2017-05-30
+
+	proyecto 2: metros lineales : 40
+		    plazo pactado: 2017-06-20
+		    precio de venta: 54000
+		    crystal leadtime: 5
+		    fecha de venta: 2017-06-03
+
+	proyecto 1: metros lineales : 10
+		    plazo pactado: 2017-05-25
+		    precio de venta: 1000
+		    crystal leadtime: 15
+		    fecha de venta: 2017-06-01

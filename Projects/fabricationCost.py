@@ -8,20 +8,37 @@ def computation(db, wb_read, project_cost):
     
     #parametros fijos, se toman de la base de datos
     with db_session:
-        remuneraciones_fijas = db.Operating_Parameters.get(name = "Remuneraciones fijas fabrica").value
-        remuneraciones_variables = db.Operating_Parameters.get(name = "Remuneraciones variables fabrica").value
-        porcentaje_venta = db.Operating_Parameters.get(name = "Porcentaje de la venta correspondiente a materiales de fabricacion").value
+        from Projects.costs import getParameter
+        warning = ' Aviso: el monto de remuneraciones fijas asociadas a fabricacion no se encuentra registrado en la base de datos. Se considerara como 0.'
+        remuneraciones_fijas = getParameter(db.Operating_Parameters, "Remuneraciones fijas fabrica", pony.orm.core.ObjectNotFound, warning)
+        
+        warning = ' Aviso: el monto de remuneraciones fijas asociadas a fabricacion no se encuentra registrado en la base de datos. Se considerara como 0.'
+        remuneraciones_variables = getParameter(db.Operating_Parameters, "Remuneraciones variables fabrica", pony.orm.core.ObjectNotFound, warning)
+        
+        warning = ' Aviso: el porcentaje de la venta correspondiente a materiales de fabricacion no se encuentra registrado en la base de datos. Se considerara como 0.'
+        porcentaje_venta = getParameter(db.Operating_Parameters, "Porcentaje de la venta correspondiente a materiales de fabricacion", pony.orm.core.ObjectNotFound, warning)
         #lo pasamos de porcentaje a fraccion
         porcentaje_venta = porcentaje_venta/100.0
         
-        arriendo_fabrica = db.Operating_Parameters.get(name = "Arriendo de fabrica").value
-        depreciacion = db.Operating_Parameters.get(name = "Depreciacion equipos y herramientas").value
-        energia_agua_otros = db.Operating_Parameters.get(name = "Energia, luz, agua, otros").value
-        metros_lineales_mes = db.Operating_Parameters.get(name = "Metros lineales vendidos en el mes").value
-        venta_neta_mensual = db.Operating_Parameters.get(name = "Venta (neta de IVA) mensual").value
+        warning = ' Aviso: el monto de arriendo de la fabrica no se encuentra registrado en la base de datos. Se considerara como 0.'
+        arriendo_fabrica = getParameter(db.Operating_Parameters, "Arriendo de fabrica", pony.orm.core.ObjectNotFound, warning)
+        
+        warning = ' Aviso: el monto de arriendo de la fabrica no se encuentra registrado en la base de datos. Se considerara como 0.'
+        depreciacion = getParameter(db.Operating_Parameters, "Depreciacion equipos y herramientas", pony.orm.core.ObjectNotFound, warning)
+        
+        warning = ' Aviso: el monto gastado en energia, luz, agua y otros en la fabrica no se encuentra registrado en la base de datos. Se considerara como 0.'
+        energia_agua_otros = getParameter(db.Operating_Parameters, "Energia, luz, agua, otros", pony.orm.core.ObjectNotFound, warning)
+        
+        warning = ' Aviso: la venta (neta de IVA) mensual no se encuentra registrada en la base de datos. Se considerara como 0.'
+        venta_neta_mensual = getParameter(db.Operating_Parameters, "Venta (neta de IVA) mensual", pony.orm.core.ObjectNotFound, warning)
     
     #parametros que deben obtenerse del archivo en cuestion, si el formato es suficientemente estandar
     metros_lineales = linearMeters(ws_read_manufacturing)
+    with db_session:
+        warning = ' Aviso: la cantidad de metros lineales vendidos en el mes no se encuentra registrada en la base de datos. Se considerara como la cantidad de metros lineales de este proyecto.'
+        metros_lineales_mes = getParameter(db.Operating_Parameters, "Metros lineales vendidos en el mes", pony.orm.core.ObjectNotFound, warning)
+        if metros_lineales_mes == 0:
+            metros_lineales_mes = metros_lineales
     
     #ahora terminamos de escribir en el archivo
     writeInfo(db, project_cost, metros_lineales, metros_lineales_mes, remuneraciones_fijas, remuneraciones_variables, \

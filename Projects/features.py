@@ -4,7 +4,7 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font
 from os import remove
 import Stock.features as Sf
-from Planning.features import sumDays, doPlanning
+from Planning.features import sumDays, substractDays, doPlanning ,changePriority
 from Planning.reports import createReport
 import pandas
 from IPython.display import display
@@ -21,6 +21,7 @@ def createProject(db, contract_number, client_address, client_comuna,
         p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, 
                             client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline = deadline, crystal_leadtime = crystal_leadtime, sale_date = sale_date, sale_price = sale_price)
         db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished == None).count()
+        
         commit()
     PLf.doPlanning(db)
 
@@ -37,36 +38,33 @@ def printProjects(db):
         print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7]], axis = 1), headers='keys', tablefmt='psql'))
 def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None):
     with db_session:
-        try:
-            p = db.Projects[contract_number]
-            if new_client_address != None:
-                p.client_addres = new_client_address
-            if new_client_comuna != None:
-                p.client_comuna = new_client_comuna
-            if new_client_name != None:
-                p.client_name = new_client_name
-            if new_client_rut != None:
-                p.client_rut = new_client_rut
-            if new_linear_meters != None:
-                p.linear_meters = new_linear_meters
-            if new_deadline != None:
-                p.deadline = new_deadline
-            if new_real_linear_meters != None:
-                p.real_linear_meters = new_real_linear_meters
-            if new_estimated_cost != None:
-                p.estimated_cost = new_estimated_cost
-            if new_real_cost != None:
-                p.real_cost = new_real_cost
-            if new_crystal_leadtime != None:
-                p.crystal_leadtime = new_crystal_leadtime
-            commit()
-        except ObjectNotFound as e:
-            print('Object not found: {}'.format(e))
-        except ValueError as e:
-            print('Value error: {}'.format(e))
+        p = db.Projects[contract_number]
+        if new_client_address != None:
+            p.client_addres = new_client_address
+        if new_client_comuna != None:
+            p.client_comuna = new_client_comuna
+        if new_client_name != None:
+            p.client_name = new_client_name
+        if new_client_rut != None:
+            p.client_rut = new_client_rut
+        if new_linear_meters != None:
+            p.linear_meters = new_linear_meters
+        if new_deadline != None:
+            p.deadline = new_deadline
+        if new_real_linear_meters != None:
+            p.real_linear_meters = new_real_linear_meters
+        if new_estimated_cost != None:
+            p.estimated_cost = new_estimated_cost
+        if new_real_cost != None:
+            p.real_cost = new_real_cost
+        if new_crystal_leadtime != None:
+            p.crystal_leadtime = new_crystal_leadtime
+        commit()
 
 def deleteProject(db, contract_number):
     with db_session:
+        new_priority = select(p for p in db.Projects if p.finished == None).count()
+        changePriority(db, contract_number, new_priority)
         db.Projects[contract_number].delete()
         commit()
 
@@ -176,19 +174,19 @@ def editTask(db , id_skill, contract_number, original_initial_date = None, origi
                 #vemos si la tarea se inició con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
                 #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
                 et = select(et for et in db.Employees_Tasks if et.task == t).first()
-                if effective_initial_date > et.planned_initial_date:
-                    print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
-                    delay = (effective_initial_date - et.planned_initial_date).days
-                    createDelay(db, t.project.contract_number, t.skill.id, delay)
+                # if effective_initial_date > et.planned_initial_date:
+                    # print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
+                    # delay = (effective_initial_date - et.planned_initial_date).days
+                    # createDelay(db, t.project.contract_number, t.skill.id, delay)
             if effective_end_date != None:
                 t.effective_end_date = effective_end_date
                 #vemos si la tarea se terminó con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
                 #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
                 et = select(et for et in db.Employees_Tasks if et.task == t).first()
-                if effective_end_date > et.planned_end_date:
-                    print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
-                    delay = (effective_end_date - et.planned_end_date).days
-                    createDelay(db, t.project.contract_number, t.skill.id, delay)
+                # if effective_end_date > et.planned_end_date:
+                    # print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
+                    # delay = (effective_end_date - et.planned_end_date).days
+                    # createDelay(db, t.project.contract_number, t.skill.id, delay)
             if fail_cost != None:
                 t.fail_cost = fail_cost
             commit()
@@ -227,43 +225,31 @@ def failedTask(db, contract_number, id_skill, fail_cost):
 
         doPlanning(db)
 
-def createDelay(db, contract_number, skill_id, delay):
+def createDelay(db, task, delay):
     '''Este método ingresa un delay en la tarea con id skill = skill_id del proyecto con id = contract_number, alargando el end date en delay días.    
     Todo está con ints porque si no, había problemas con los reverses, ver aquí: https://docs.ponyorm.com/relationships.html 
     Después de correr la planificacion en "delay" cantidad de dias, revisa si la planificacion que queda es factible. Si no lo es, 
     realiza una nueva planificacion'''
     with db_session:
-        try:
-            project = db.Projects[contract_number]
-            task = db.Tasks.get(skill = db.Skills[skill_id], project = project, failed = None)
-            emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+        emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
+        #corremos la planned_end_date de los Employees_Tasks pertinentes
+        if delay > 0:
             for et in emp_tasks:
                 et.planned_end_date = sumDays(et.planned_end_date, delay)
-            skill_id = skill_id + 1
-            while skill_id <= 4:#si es una actividad anterior a instalación, atrasa todas las 
-            #tareas que le siguen
-                task = db.Tasks.get(skill = db.Skills[skill_id], project = project, failed = None)
-                emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
-                for et in emp_tasks:
-                    et.planned_initial_date = sumDays(et.planned_initial_date, delay)
-                    et.planned_end_date = sumDays(et.planned_end_date, delay)
-                skill_id = skill_id + 1
-            commit()
-        except ObjectNotFound as e:
-            print('Object not found: {}'.format(e))
-        except ValueError as e:
-            print('Value error: {}'.format(e))
+        else:
+            for et in emp_tasks:
+                et.planned_end_date = substractDays(et.planned_end_date, -1*delay)
+
+        commit()
+        doPlanning(db)
         
-        #si la planificacion que queda no es factible, replanificamos, dejando fijo el proyecto en cuestion
-        if createReport(db, None, True) == False:
-            fixed_planning = project.fixed_planning
-            project.fixed_planning = True
-            doPlanning(db)
-            project.fixed_planning = fixed_planning
-            
-    #revisamos si es que la planificacion nueva es factible, sino, hay que replanificar
-
-
+        #No borrar: es forma efectiva de revisar si una planificación es factible
+        # si la planificacion que queda no es factible, replanificamos, dejando fijo el proyecto en cuestion
+        # if createReport(db, None, True) == False:
+            # fixed_planning = project.fixed_planning
+            # project.fixed_planning = True
+            # doPlanning(db)
+            # project.fixed_planning = fixed_planning
 
 # métodos asociados a Employees_Activities (llamados en usuario.py de carpeta Employees)
 def createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):

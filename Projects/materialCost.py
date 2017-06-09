@@ -13,9 +13,20 @@ def computation(db, wb_read, project_cost):
     
     #necesitamos algunos parametros basicos para costear
     with db_session:
-        royalty_porcentaje = db.Operating_Parameters.get(name = "Royalty").value
-        seguros_porcentaje = db.Operating_Parameters.get(name = "Seguros, Transporte, Aduana, Flete").value
-        euro = db.Operating_Parameters.get(name = "Valor del euro").value
+        from Projects.costs import getParameter
+        
+        warning = ' Aviso: el royalty asociado a la importacion de productos no se encuentra registrado en la base de datos. Se considerara como 0.'
+        royalty_porcentaje = getParameter(db.Operating_Parameters, "Royalty", pony.orm.core.ObjectNotFound, warning)
+        royalty_porcentaje = royalty_porcentaje/100.0
+        
+        warning = ' Aviso: el porcentaje asociado a seguros, transporte, aduana y flete de productos no se encuentra registrado en la base de datos. Se considerara como 0.'
+        seguros_porcentaje = getParameter(db.Operating_Parameters, "Seguros, Transporte, Aduana, Flete", pony.orm.core.ObjectNotFound, warning)
+        seguros_porcentaje = seguros_porcentaje/100.0
+        
+        warning = ' Aviso: el valor actual del Euro no se encuentra registrado en la base de datos. Se considerara como 700.'
+        euro = getParameter(db.Operating_Parameters, "Valor del euro", pony.orm.core.ObjectNotFound, warning)
+        if euro == 0:
+            euro = 700
     
     #ahora seguimos escribiendo en el archivo, donde llamamos varias funciones mas
     writeInfoGlass(db, project_cost, ws_read_manufacturing)
@@ -38,8 +49,20 @@ def writeInfoGlass(db, project_cost, ws_read_manufacturing):
     with db_session:
         thickness = str(ws_read_manufacturing.cell(row = 7, column = 2).value)
         cristal = db.Crystals_Parameters.get(thickness = thickness)
-        costo_cristal_por_m2 = cristal.square_meter_cost
-        factor_perdida = cristal.waste_factor
+        #recuperamos el costo de cristal por metro cuadrado
+        warning = ' Aviso: el costo del cristal por metro cuadrado no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            costo_cristal_por_m2 = cristal.square_meter_cost
+        except AttributeError:
+            print(warning)
+            costo_cristal_por_m2 = 0
+        #recuperamos el factor de perdida de cristales
+        warning = ' Aviso: el factor de perdida del cristal no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            factor_perdida = cristal.waste_factor
+        except AttributeError:
+            print(warning)
+            factor_perdida = 0
         #lo pasamos de porcentaje a fraccion
         factor_perdida = factor_perdida/100.0
 
@@ -75,7 +98,13 @@ def writeInfoGlass(db, project_cost, ws_read_manufacturing):
 def writeInfoProfile(db, project_cost, ws_read_manufacturing, royalty_porcentaje, seguros_porcentaje, euro):
     #primero, para el Perfil Superior
     with db_session:
-        factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Upper").waste_factor
+        #recuperamos el factor de perdida
+        warning = ' Aviso: el factor de perdida para Perfil Superior no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Upper").waste_factor
+        except AttributeError:
+            print(warning)
+            factor_perdida = 0
         #pasamos de porcentaje a fraccion
         factor_perdida = factor_perdida/100.0
         length_coords = [48, 2]
@@ -83,7 +112,13 @@ def writeInfoProfile(db, project_cost, ws_read_manufacturing, royalty_porcentaje
         profile1 = writeProfile(db, ws_read_manufacturing, royalty_porcentaje, seguros_porcentaje, euro, factor_perdida, length_coords, code_coords)
     
     #ahora, el Perfil Inferior
-        factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Lower").waste_factor
+        #recuperamos el factor de perdida
+        warning = ' Aviso: el factor de perdida para Perfil Inferior no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Lower").waste_factor
+        except AttributeError:
+            print(warning)
+            factor_perdida = 0
         #pasamos de porcentaje a fraccion
         factor_perdida = factor_perdida/100.0
         length_coords = [60, 2]
@@ -91,7 +126,13 @@ def writeInfoProfile(db, project_cost, ws_read_manufacturing, royalty_porcentaje
         profile2 = writeProfile(db, ws_read_manufacturing, royalty_porcentaje, seguros_porcentaje, euro, factor_perdida, length_coords, code_coords)
     
     #por ultimo, el Perfil Telescopico
-        factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Teleskopic").waste_factor
+        #recuperamos el factor de perdida
+        warning = ' Aviso: el factor de perdida para Perfil Telescopico no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Teleskopic").waste_factor
+        except AttributeError:
+            print(warning)
+            factor_perdida = 0
         #pasamos de porcentaje a fraccion
         factor_perdida = factor_perdida/100.0
         length_coords = [72, 2]
@@ -99,7 +140,13 @@ def writeInfoProfile(db, project_cost, ws_read_manufacturing, royalty_porcentaje
         profile3 = writeProfile(db, ws_read_manufacturing, royalty_porcentaje, seguros_porcentaje, euro, factor_perdida, length_coords, code_coords)
     
     #ahora, los Glassing Beads
-        factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Glassing beads").waste_factor
+        #recuperamos el factor de perdida
+        warning = ' Aviso: el factor de perdida para Glassing Beads no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Glassing beads").waste_factor
+        except AttributeError:
+            print(warning)
+            factor_perdida = 0
         #pasamos de porcentaje a fraccion
         factor_perdida = factor_perdida/100.0
         length_coords = [47, 13]
@@ -108,7 +155,13 @@ def writeInfoProfile(db, project_cost, ws_read_manufacturing, royalty_porcentaje
                             factor_perdida, length_coords, code_coords, True)
  
     #ahora, los Glassing Beads Covers
-        factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Glassing bead cover").waste_factor
+        #recuperamos el factor de perdida
+        warning = ' Aviso: el factor de perdida para Glassing Bead Cover no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Glassing bead cover").waste_factor
+        except AttributeError:
+            print(warning)
+            factor_perdida = 0
         #pasamos de porcentaje a fraccion
         factor_perdida = factor_perdida/100.0
         length_coords = [47, 13]
@@ -153,7 +206,13 @@ def writeProfile(db, ws_read_manufacturing, royalty_porcentaje, seguros_porcenta
 def writeInfoComponents(db, ws_read_manufacturing, royalty_porcentaje, seguros_porcentaje, euro):
     with db_session:
         #partimos por Components to Glass Panes
-        factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Components to glass panes").waste_factor
+        #recuperamos el factor de perdida
+        warning = ' Aviso: el factor de perdida para Components to Glass Panes no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Components to glass panes").waste_factor
+        except AttributeError:
+            print(warning)
+            factor_perdida = 0
         #pasamos de porcentaje a fraccion
         factor_perdida = factor_perdida/100.0
         rows_read = [126, 134]
@@ -164,7 +223,13 @@ def writeInfoComponents(db, ws_read_manufacturing, royalty_porcentaje, seguros_p
                             factor_perdida, rows_read, columns_read, rows)
         
         #seguimos con Components to component box or profiles
-        factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Components to component box or profiles").waste_factor
+        #recuperamos el factor de perdida
+        warning = ' Aviso: el factor de perdida para Components to Component Box or Profiles no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Components to component box or profiles").waste_factor
+        except AttributeError:
+            print(warning)
+            factor_perdida = 0
         #pasamos de porcentaje a fraccion
         factor_perdida = factor_perdida/100.0
         rows_read = [140, 150]
@@ -175,7 +240,13 @@ def writeInfoComponents(db, ws_read_manufacturing, royalty_porcentaje, seguros_p
                             factor_perdida, rows_read, columns_read, rows)
         
         # partimos por Components to component box
-        factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Components to component box").waste_factor
+        #recuperamos el factor de perdida
+        warning = ' Aviso: el factor de perdida para Components to Component Box no se encuentra registrado en la base de datos. Se considerara como 0.'
+        try:
+            factor_perdida = db.Profiles_Fittings_Parameters.get(name = "Components to component box").waste_factor
+        except AttributeError:
+            print(warning)
+            factor_perdida = 0
         #pasamos de porcentaje a fraccion
         factor_perdida = factor_perdida/100.0
         rows_read = [126, 148]

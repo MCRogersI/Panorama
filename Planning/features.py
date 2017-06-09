@@ -36,6 +36,17 @@ def sumDays(dt, days):
             new_dt = new_dt + delta
         days = days - 1
     return new_dt
+    
+#checked
+def substractDays(dt, days):
+    new_dt = dt
+    delta = timedelta(days = 1)
+    while(days > 0):
+        new_dt = new_dt - delta
+        while(isNotWorkday(new_dt)):
+            new_dt = new_dt - delta
+        days = days - 1
+    return new_dt
 
 #checked
 def getAveragePerformance(db, id_skill):
@@ -131,10 +142,24 @@ def fillCommitments(commitments, initial_date, end_date, planned_initial_date, p
 def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
     with db_session:
         emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-
+        
+        # revisamos que la fecha no coincida con fechas de actividades como licencia o vacaciones
         for ea in emp_acts:
             if datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
                 return False
+        
+        # revisamos también si algún Tasks_Delays que tenga al empleado "congelado", funciona similar a un Employees_Activities
+        emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
+        for et in emp_tasks:
+            task = et.task
+            # si la tarea tiene un Tasks_Delays asociados, y ya partió, pero aún no termina, entonces el empleado está congelado
+            if task.effective_initial_date != None and task.effective_end_date == None:
+                tasks_delays = select(td for td in db.Tasks_Delays if td.task == task)
+                if len(tasks_delays > 0) and datesOverlap(initial_date, end_date, date.today(), et.planned_end_date):
+                    return False
+                    
+        
+        # por último, revisamos que no haya problema con las otras Employees_Tasks ya planificadas
         # acá los rectificadores y disenadores se diferencian de los otros dos, porque pueden estar en más de un proyecto por día
         if id_skill == 3 or id_skill == 4:
             emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
@@ -239,7 +264,7 @@ def getChosenIds(possibilities, chosen):
     return ids
     
 #checked (kind of)
-
+#checked
 def findEmployees(db, id_skill, contract_number, num_workers, initial_date, end_date, senior):
     with db_session:
         ids_employees = employeesBySkill(db, id_skill, senior) # elegimos a los empleados con el skill necesario
@@ -382,7 +407,7 @@ def cleanTasks(db):
         
 def shiftDown(db, project, place, original_place):
     with db_session:
-        projects = select(p for p in db.Projects if p.priority >= place and p.finished != True).order_by(lambda p: p.priority)
+        projects = select(p for p in db.Projects if p.priority >= place and p.finished == None).order_by(lambda p: p.priority)
         for p in projects:
             if p.priority == original_place -1:
                 if p.fixed_priority:
@@ -396,6 +421,7 @@ def shiftDown(db, project, place, original_place):
                 project.priority = p.priority
                 shiftDown(db, p, p.priority + 1, original_place)
                 break 
+        commit()
 # Función auxiliar. "empuja" la prioridad cuando es puede cambiar por no ser fijada por el usuario. Al tener que revisar esto
 # preferí hacerlo recursivo y empujar de uno en uno
 #check
@@ -403,9 +429,10 @@ def shiftDown(db, project, place, original_place):
                 
 def shiftUp(db,upper, lower):
     with db_session:
-        projects = select(p for p in db.Projects if p.priority <= lower and p.priority > upper and p.finished !=True).order_by(lambda p: p.priority)
+        projects = select(p for p in db.Projects if p.priority <= lower and p.priority > upper and p.finished == None).order_by(lambda p: p.priority)
         for p in projects:
             p.priority = p.priority - 1
+        commit()
             
 #Función auxiliar. Empuja hacia arriba las prioridades. En este caso la prioridad de todos cambia ya que mejora.
 #check        
@@ -414,7 +441,7 @@ def changePriority(db, contract_number, new_priority):
     with db_session:
         old_priority = db.Projects[contract_number].priority
         if old_priority > new_priority:
-            projects = select(p for p in db.Projects if p.priority >= new_priority and p.priority < db.Projects[contract_number].priority and p.finished != True).order_by(lambda p: p.priority)
+            projects = select(p for p in db.Projects if p.priority >= new_priority and p.priority < old_priority and p.finished == None).order_by(lambda p: p.priority)
             for p in projects:
                 if p.fixed_priority:
                     p.priority = p.priority +1
@@ -424,10 +451,11 @@ def changePriority(db, contract_number, new_priority):
             db.Projects[contract_number].priority = new_priority
             db.Projects[contract_number].fixed_priority = True
         if old_priority < new_priority:
-            shiftUp(db, db.Projects[contract_number].priority, new_priority)
+            shiftUp(db, old_priority, new_priority)
             db.Projects[contract_number].priority = new_priority
             db.Projects[contract_number].fixed_priority = True
             db.Projects.select().order_by(lambda p: p.contract_number)
+        commit()
             
 ############
 #Este evento debe gatillar una replanificación
@@ -486,8 +514,19 @@ def checkVeto(db, contract_number, skill_id):
         return True
     else:
         return Veto
-    
 
+
+# para crear, por primera vez, una orden de compra de cristales, el programa lo hace automáticamente           
+def createCrystalSalesOrder(db, project):
+    #recuperamos el leadtime de los cristales y la fecha en que termina el diseño
+    crystal_leadtime = project.crystal_leadtime
+    design = db.Tasks.get(skill = db.Skills[2], project = project, failed = None)
+    design_end_date = design.original_end_date
+    #creamos la orden de compra con la información que tenemos  
+    db.Crystals_Sales_Order(project = project, original_issuing_date = sumDays(design_end_date, 1), original_arrival_date = sumDays(design_end_date, 1 + crystal_leadtime))
+    commit()
+
+#método quye realiza la planificación
 def doPlanning(db):
     import Projects.features as Pf
     import Stock.features as Sf
@@ -611,9 +650,16 @@ def doPlanning(db):
                                     task = db.Tasks.get(skill = s, project = p)
                                 assignTask(db, emps, task, initial, ending[num_workers-1])
                                 commit()
+            
+            #finalmente, si es que no existe, generamos la orden de compra de cristales, indicando la poca información que sabemos
+            crystal_sales_order = db.Crystals_Sales_Order.get(project = p)
+            if crystal_sales_order == None:
+                createCrystalSalesOrder(db, p)
+                
+            #borrar lo siguiente
             for e in p.engagements:
                 Sf.updateEngagements(db, e.sku.id)
-
+            
         createReport(db, Delayed, False) #Comenté esta línea para poder ver lo de los engagements (descomentar luego)
 
         
@@ -646,189 +692,3 @@ def doPlanning(db):
                 #         if(num_workers < 4 and d_t+timedelta(days)>p.deadline):
                 #             num_workers=num_workers+1
                 #
-##########
-#eventos que gatillan una replanificación deben ser especificados
-##########
-        
-        
-        
-        
-###########################################################
-##Métodos relacionados a los informes post-planificación #
-########################################################### 
-
-# def createReport(db, Delayed):
-    # with db_session:
-        # wb = Workbook()
-        # createDelayedReport(wb, Delayed)
-        # createPlanningReport(db, wb)
-        # wb.save('ReportePlanificacion.xlsx')
-        # print('\n El reporte de la última planificación se encuentra en el archivo ReportePlanificacion.xlsx.')
-
-
-        
-# def createDelayedReport(wb, Delayed):
-    # ws = wb.create_sheet("Reporte atrasos") #aquí se pueden agregar otras restricciones no cumplidas
-    
-    ##cambiar ancho de columnas
-    # widths = {"A": 20, "B": 30, "C": 30}
-    # columns = ["A", "B", "C"]
-    # for c in columns:
-        # ws.column_dimensions[c].width = widths[c]
-    
-    ##escribir texto en algunas celdas, en negrita
-    # rows = [1, 3, 3, 3]
-    # columns = [1, 1, 2, 3]
-    # texts = ["Reporte de atrasos", "Número de contrato", "Fecha de entrega comprometida", "Fecha de entrega planificada"]
-    # for i in range(0, len(rows)):
-        # cell = ws.cell(row = rows[i], column = columns[i], value = texts[i])
-        # cell.font = Font(bold = True)
-    
-    ##llenar con los datos de Delayed
-    # next_row = 4
-    # for index, row in Delayed.iterrows():
-        # ws.cell(row = next_row, column = 1, value = row['contract number'])
-        # ws.cell(row = next_row, column = 2, value = row['deadline'])
-        # ws.cell(row = next_row, column = 3, value = row['ending date'])
-        # next_row = next_row + 1
-
-        
-
-# def createPlanningReport(db, wb):
-    # ws = wb.create_sheet("Reporte planificación") #aquí se pueden agregar otras restricciones no cumplidas
-    
-    ##cambiar ancho de columnas
-    # widths = {"A": 20, "B": 30, "C": 30, "D": 30, "E": 30, "F": 30, "G": 30, "H": 30, "I": 30, "J": 30, "K": 30, "L": 30, "M": 30}
-    # columns = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]
-    # for c in columns:
-        # ws.column_dimensions[c].width = widths[c]
-    
-    ##escribir texto en algunas celdas, en negrita
-    # rows = [1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
-    # columns = [1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    # texts = ["Reporte de planificación", "Número de contrato", 
-                # "Fecha inicio rectificación", "Fecha término rectificación", "Empleado encargado rectificación", 
-                # "Fecha inicio diseño", "Fecha término diseño", "Empleado encargado diseño", 
-                # "Fecha inicio fabricación", "Fecha término fabricación", "Empleado encargado fabricación", 
-                # "Fecha inicio instalación", "Fecha término instalación", "Empleados encargados instalación"]
-    # for i in range(0, len(rows)):
-        # cell = ws.cell(row = rows[i], column = columns[i], value = texts[i])
-        # cell.font = Font(bold = True)
-    
-    ##llenar con los datos de Delayed
-    # next_row = 4
-    # with db_session:
-        # projects = select(p for p in db.Projects).order_by(lambda p : p.contract_number)
-        # for p in projects:
-            ##primero seleccionamos el Task asociado a este Project y a cada Skill, sabemos que es solo una con failed != True, así que tomamos first():
-            # task_rect = select(t for t in db.Tasks if t.project == p and t.skill == db.Skills[1] and (t.failed == None or t.failed == False)).first()
-            # task_des = select(t for t in db.Tasks if t.project == p and t.skill == db.Skills[2] and (t.failed == None or t.failed == False)).first()
-            # task_fab = select(t for t in db.Tasks if t.project == p and t.skill == db.Skills[3] and (t.failed == None or t.failed == False)).first()
-            # task_inst = select(t for t in db.Tasks if t.project == p and t.skill == db.Skills[4] and (t.failed == None or t.failed == False)).first()
-
-            ##sabemos que para las Skills 1,2,3 solamente puede haber un empleado encargado, así que tomamos el primero. Para la Skill 4 es distinto:
-            # employees_tasks_rect = select(et for et in db.Employees_Tasks if et.task == task_rect).first()
-            # employees_tasks_des = select(et for et in db.Employees_Tasks if et.task == task_des).first()
-            # employees_tasks_fab = select(et for et in db.Employees_Tasks if et.task == task_fab).first()
-            # employees_tasks_inst = select(et for et in db.Employees_Tasks if et.task == task_inst)
-            
-            ##para el Skill 4, pueden ser varios empleados:
-            # instalation_planned_initial_date = employees_tasks_inst.first().planned_initial_date
-            # instalation_planned_end_date = employees_tasks_inst.first().planned_end_date
-            # instalation_employees = ""
-            # for et in employees_tasks_inst:
-                # instalation_employees = instalation_employees + str(et.employee) + " ;"
-            
-            ##finalmente, escribimos en el Excel el resumen de la planificación:
-            # values = [p.contract_number, 
-                        # employees_tasks_rect.planned_initial_date, employees_tasks_rect.planned_end_date, employees_tasks_rect.employee.id, 
-                        # employees_tasks_des.planned_initial_date, employees_tasks_des.planned_end_date, employees_tasks_des.employee.id, 
-                        # employees_tasks_fab.planned_initial_date, employees_tasks_fab.planned_end_date, employees_tasks_fab.employee.id, 
-                        # instalation_planned_initial_date, instalation_planned_end_date, instalation_employees[0:-2]]
-            # for c in range(1, len(columns)):
-                # ws.cell(row = next_row, column = columns[c], value = values[c-1])
-            # next_row = next_row + 1
-
-            
-            
-            
-
-            
-
-##############################################################################
-##Métodos relacionados con cambiar empleados manualmente post-planificación #
-##############################################################################
-
-##método que revisa si las asignaciones de empleados que hizo el usuario entregan una planificación factible
-# def planningChangesPlausible(db):
-    # wb = load_workbook('ReportePlanificacion.xlsx')
-    # ws = wb["Reporte planificación"]
-    # if not employeesSkillsPlausible(db, ws):
-        # return False, "Uno de los empleados fue asignado a una tarea para la cual no está capacitado."
-    # if not employeesActivitiesPlausible(db, ws):
-        # return False, "Uno de los empleados fue asignado a una tarea en fecha que coincide con sus vacaciones o alguna licencia."
-    # if not employeesTasksPlausible(ws):
-        # return False, "Uno de los empleados fue asignado a más de una tarea en la misma fecha."
-    # if not employeesRestrictionsPlausible(db, ws)[0]:
-        # return False, employeesRestrictionsPlausible(db, ws)[1]
-    # return True, "Los cambios hechos a la planificación son válidos, por lo tanto, serán aplicados."
-
-# def employeesSkillsPlausible(db, ws):
-    # with db_session:
-        # for next_row in range(4, ws.max_row):
-            ##revisamos primero el caso de las Skills 1, 2, 3 que es el más sencillo
-            # rectifier = ws.cell(row = next_row, column = 4).value
-            # designer = ws.cell(row = next_row, column = 7).value
-            # fabricator = ws.cell(row = next_row, column = 10).value
-            # if db.Employees_Skills[db.Employees[rectifier], db.Skills[1]].performance == 0 or \
-                # db.Employees_Skills[db.Employees[designer], db.Skills[2]].performance == 0 or \
-                # db.Employees_Skills[db.Employees[fabricator], db.Skills[3]].performance == 0:
-                # return False
-            
-            ##ahora revisamos para el Skill 4
-            # installers = str(ws.cell(row = next_row, column = 13).value).split(';')
-            # print(installers)
-            # for i in installers:
-                # if db.Employees_Skills[db.Employees[i], db.Skills[4]].performance == 0:
-                    # return False
-        # return True
-        
-# def employeesActivitiesPlausible(db, ws):
-    ##with db_session:
-        ##def employeesAvailable(db, ids_employees, initial_date, end_date):
-    ##comentado momentaneamente
-    # with db_session:
-        # emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-        # emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
-
-        # for ea in emp_acts:
-            # if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
-                # return False
-        # for et in emp_tasks:
-            # if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
-                # return False
-        # return True        
-    # return True
-    
-# def employeesTasksPlausible(ws):
-    # return True
-    
-# def employeesRestrictionsPlausible(db, ws):
-    # return True
-
-
-    
-#método auxiliar para ver si un empleado está disponible según sus Activities XOR Tasks (activities = True es Activities, si no, Tasks)
-# def employeesAvailable(db, ids_employees, initial_date, end_date, activities):
-#     with db_session:
-#         employee_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
-#         emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)
-#
-#         for ea in employee_acts:
-#             if not datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
-#                 return False
-#         for et in emp_tasks:
-#             if not datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
-#                 return False
-#         return True
-
