@@ -4,6 +4,7 @@
 #lo mas parecido al real.
 from pony.orm import *
 from database import db
+from datetime import date
 import Employees.features as Ef, Employees.usuario as Eu
 from datetime import date
 import Projects.usuario as Pu
@@ -106,13 +107,13 @@ Sf.createSku(db, 11, 'Profile joint unit plastic bag',4.93, 50,0, waste_factor =
 
 
 Pf.createProject(db, 1, 'Cachagua 102', 'Calera', 'Pedro Sanchez',
-                 '17.094.362-0', 150, 2017, 5, 10, estimated_cost = 200, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
+                 '17.094.362-0', 150, 2017, 5, 10, crystal_leadtime = 15, sale_date = date(2017, 4, 18), sale_price=300)
 Pf.createProject(db, 2, 'Suecia 86', 'Arica', 'Franco Soto',
-                 '16.2254.112-0', 200, 2017, 6, 30, estimated_cost = 300, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
+                 '16.2254.112-0', 200, 2017, 6, 30, crystal_leadtime = 15, sale_date = date(2017, 4, 18),sale_price=300)
 Pf.createProject(db, 3, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
-                 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
+                 '15.114.992-0', 450, 2017, 6, 3, crystal_leadtime = 15, sale_date = date(2017, 4, 18),sale_price=300)
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil', 
-                    '14.214.392-K',220, 2017, 8, 30, estimated_cost = 250, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
+                    '14.214.392-K',220, 2017, 8, 30, crystal_leadtime = 15, sale_date = date(2017, 4, 18),sale_price=300)
 
 # Pf.failedTask(db,1,2,1000)
 # Pf.failedTask(db,3,3,5000)
