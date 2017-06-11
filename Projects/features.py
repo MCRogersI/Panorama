@@ -231,6 +231,7 @@ def createDelay(db, task, delay):
     Después de correr la planificacion en "delay" cantidad de dias, revisa si la planificacion que queda es factible. Si no lo es, 
     realiza una nueva planificacion'''
     with db_session:
+        db.Tasks_Delays(task = task, delay = delay)
         emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
         #corremos la planned_end_date de los Employees_Tasks pertinentes
         if delay > 0:
