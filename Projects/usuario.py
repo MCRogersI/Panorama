@@ -3,7 +3,7 @@ from pony.orm import *
 from Projects.features import createProject, printProjects, editProject, deleteProject, finishProject, createTask, editTask, printTasks, failedTask, createProjectActivity, deleteProjectActivity, printProjectsActivities, createDelay
 from Projects.costs import estimateCost
 from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts, updateCrystalsParameters, updateProfilesParameters
-from Planning.features import sumDays
+from Planning.features import sumDays, editCrystalSalesOrder, editCrystalArrival
 import os
 import convert
 # from Projects.costs import estimateCost
@@ -335,7 +335,8 @@ def tasks_console(db, level):
                                                               \n - 2: Si desea ver las tareas actuales.\
                                                               \n - 3: Para editar parámetros asociados a costos.\
                                                               \n - 4: Para ingresar atrasos.\
-                                                              \n - 5: Para volver atrás.\
+                                                              \n - 5: Para ingresar datos de orden de compra de cristales.\
+                                                              \n - 6: Para volver atrás.\
                                                               \n Ingrese la alternativa elegida: ")
 
         if(opt == '1'):
@@ -523,6 +524,60 @@ def tasks_console(db, level):
             finally:
                 input(' Presione Enter para continuar: ')
         elif(opt == '5'):
+            opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar/editar la orden de compra.\
+                                                                    \n - 2: Si desea ingresar/editar la fecha efectiva de llegada de los cristales.\
+                                                                    \n Ingrese la alternativa elegida: ")
+            if opt2 == '1':
+                # Solo revisar que no sea un string vacío o puros espacios
+                id_issuer_order = input('\n Ingrese su ID: ')
+                
+                # Revisar que el número de contrato esté guardado en la base de datos
+                contract_number = input(' Ingrese el número de contrato del proyecto asociado a la orden de compra de cristales: ')
+                project = db.Projects[contract_number]
+                
+                # Solo revisar que no sea un string vacío o puros espacios
+                id_crystal_provider = input(' Ingrese el ID del proveedor de cristales: ')
+                
+                effective_issuing_date_year = input(' Ingrese el año en que se envío la orden de compra al proveedor (solo presione Enter si la fecha es hoy): ')
+                if effective_issuing_date_year == '':
+                    effective_issuing_date = date.today()
+                else:
+                    effective_issuing_date_month = input(' Ingrese el mes en que se envío la orden de compra al proveedor: ')
+                    effective_issuing_date_day = input(' Ingrese el día en que se envío la orden de compra al proveedor: ')
+                    # Revisar que sea una fecha válida
+                    effective_issuing_date = date(int(effective_issuing_date_year), int(effective_issuing_date_month), int(effective_issuing_date_day))
+                
+                original_arrival_date_year = input(' Ingrese el año en que llegarán los cristales: ')
+                original_arrival_date_month = input(' Ingrese el mes en que llegarán los cristales: ')
+                original_arrival_date_day = input(' Ingrese el día en que llegarán los cristales: ')
+                # Revisar que sea una fecha válida
+                original_arrival_date = date(int(original_arrival_date_year), int(original_arrival_date_month), int(original_arrival_date_day))
+                
+                # Revisar que la función sea llamada correctamente
+                editCrystalSalesOrder(db, project, original_arrival_date, effective_issuing_date, id_issuer_order, id_crystal_provider)
+                
+                # Tirar mensaje de que se hizo con éxito
+                
+            elif opt2 == '2':
+                # Revisar que el número de contrato esté guardado en la base de datos
+                contract_number = input('\n Ingrese el número de contrato del proyecto asociado a la orden de compra de cristales: ')
+                project = db.Projects[contract_number]
+                
+                effective_arrival_date_year = input(' Ingrese el año de llegada de los cristales (solo presione Enter si la fecha es hoy): ')
+                if effective_arrival_date_year == '':
+                    effective_arrival_date = date.today()
+                else:
+                    effective_arrival_date_month = input(' Ingrese el mes de llegada de los cristales: ')
+                    effective_arrival_date_day = input(' Ingrese el día de llegada de los cristales: ')
+                    # Revisar que sea una fecha válida
+                    effective_arrival_date = date(int(effective_arrival_date_year), int(effective_arrival_date_month), int(effective_arrival_date_day))
+                
+                # Revisar que la función sea llamada correctamente
+                editCrystalArrival(db, project, effective_arrival_date)
+                
+                # Tirar mensaje de que se hizo con éxito
+                
+        elif(opt == '6'):
             break
 
 
