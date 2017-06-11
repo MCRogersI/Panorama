@@ -5,6 +5,8 @@ from Projects.costs import estimateCost
 from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts, updateCrystalsParameters, updateProfilesParameters
 from Planning.features import sumDays, editCrystalSalesOrder, editCrystalArrival
 import os
+import pandas
+from tabulate import tabulate
 import convert
 # from Projects.costs import estimateCost
 
@@ -496,23 +498,52 @@ def tasks_console(db, level):
         elif(opt == '4'):
             try:
                 contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
+                try:
+                    contract_number = int(contract_number)
+                except:
+                    raise ValueError('\n Número de contrato inexistente \n')
                 with db_session:
                     if db.Projects.get(contract_number = contract_number) == None:
                         raise ValueError('\n Número de contrato inexistente \n')
                 id_skill = input(" Ingrese el ID de la habilidad donde ocurrió el fallo (1: rect, 2: dis, 3: fab, 4: ins): ")
                 if id_skill != '1' and id_skill != '2' and id_skill != '3' and id_skill != '4':
                     raise ValueError('\n ID de habilidad no válida. \n')
-                delay = input(' Ingrese el número de días que se atrasó la tarea: ')
-                try:
-                    delay = int(delay)
-                except:
-                    raise ValueError('\n ID de habilidad no válida. \n')
+
                 with db_session:
                     task = db.Tasks.get( project = db.Projects[contract_number], skill = db.Skills[id_skill], failed = None)
                     if task == None:
                         raise ValueError('\n Tarea no encontrada.')
                     if task.effective_initial_date == None :
                         raise ValueError('\n Esta tarea aun no ha comenzado.')
+                    td = select( td for td in db.Tasks_Delays if td.task == task)
+                    if len(td) >0 :
+                        largo = str(len(td))
+                        data = [d.to_dict() for d in td]
+                        df = pandas.DataFrame(data, columns = ['delay']) 
+                        df.columns = ['Dias de atraso']
+                        print('\n La tarea tiene ingresada ' + largo + ' atrasos. Los atrasos son los siguientes: ')
+                        print(tabulate(df, headers='keys', tablefmt='psql'))
+                        agree = input(' ¿Desea realizar el ingreso de atrasos de todos modos? : \n - 1: Si \
+                                                                                               \n - 0: No \
+                                                                                               \n Ingrese la alternativa elegida: ')
+                        try:
+                            int(agree)
+                            if int(agree) not in [0,1]:
+                                exception = ' Ingreso incorrecto. Ingreso de atraso cancelado.'
+                                raise
+                            elif int(agree) == 0:
+                                exception = ' Ingreso de atraso cancelado.' 
+                                raise 
+                        except:
+                            if exception:
+                                raise ValueError(exception)
+                            else:
+                                raise ValueError(' Ingreso incorrecto de parámetros. Ingreso de atraso cancelado.')
+                    delay = input(' Ingrese el número de días que se atrasó la tarea: ')
+                    try:
+                        delay = int(delay)
+                    except:
+                        raise ValueError('\n ID de habilidad no válida. \n')
                     if delay < 0 :
                         planned_end_date = select( et for et in db.Employees_Tasks if et.task == task).first().planned_end_date
                         if sumDays(date.today(),-1*delay) > planned_end_date: 
