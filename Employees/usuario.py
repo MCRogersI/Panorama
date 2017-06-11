@@ -234,50 +234,50 @@ def employees_console(db, level, user):
                     try:
                         if int(activity) != 1 and int(activity)!=2:
                             raise ValueError('\n Debe elegir entre licencia y vacaciones. \n')
-                        employee = input(" Ingrese el RUT del empleado asociado a la actividad elegida (sin puntos ni número identificador): ")
+                        employee = input("\n Ingrese el RUT del empleado asociado a la actividad elegida (sin puntos ni número identificador): ")
                         try:
                             with db_session:
                                 e =  db.Employees[employee]
                         except:
-                            raise ValueError('\n Empleado inexistente \n')
+                            raise ValueError('\n Empleado inexistente.')
                         initial_year = input(" Ingrese el año en que comienza la actividad: ")
                         initial_month = input(" Ingrese el mes en que comienza la actividad: ")
                         initial_day = input(" Ingrese el día en que comienza la actividad: ")
                         try:
                             date(int(initial_year),int(initial_month),int(initial_day))
                         except:
-                            raise ValueError('\n No es una fecha válida \n')
+                            raise ValueError('\n No es una fecha válida.')
                         end_year = input(" Ingrese el año en que termina la actividad: ")
                         end_month = input(" Ingrese el mes en que termina la actividad: ")
                         end_day = input(" Ingrese el día en que termina la actividad: ")
                         try:
                             date(int(end_year),int(end_month),int(end_day))
                         except:
-                            raise ValueError('\n La fecha es inválida. \n')
+                            raise ValueError('\n La fecha es inválida.')
                         createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day)
-                        input(' \n Actividad creada. Presione Enter para continuar. ')
+                        input('\n Actividad creada. Presione Enter para continuar. ')
                     except ValueError as ve:
                         print(ve)
-                        input('\n Presione Enter para continuar. ')
+                        input(' Presione Enter para continuar. ')
                 elif opt_employees_activities == '2':
                     try:
                         id_employee_activity = input("\n Ingrese el ID de la actividad que quiere eliminar: ")
                         deleteEmployeeActivity(db, id_employee_activity)
                         input(' \n Actividad eliminada. Presione Enter para continuar. ')
                     except:
-                        print('\n Actividad inexistente. \n')
-                        input('\n Presione Enter para continuar. ')
+                        print('\n Actividad inexistente.')
+                        input(' Presione Enter para continuar. ')
                 elif opt_employees_activities == '3':
-                    print('\n')
+                    print('')
                     ea = db.Employees_Activities.select()
                     data = [p.to_dict() for p in ea]
                     df = pandas.DataFrame(data, columns = ['id','employee','activity','initial_date','end_date'])                    
                     df.columns = ['ID','Empleado','Tipo Actividad', 'Fecha Inicio', 'Fecha Fin']
                     print( tabulate(df, headers='keys', tablefmt='psql'))
-                    input(' \n Presione Enter para continuar. ')
+                    input(' Presione Enter para continuar. ')
             else:
                 print('\n Acceso denegado.')
-                input('\n Presione Enter para continuar. ')
+                input(' Presione Enter para continuar. ')
         if(opt == '5'):
             if (level in [1,2]):
                 opt_ver_empleados = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver empleados. \

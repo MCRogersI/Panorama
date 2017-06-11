@@ -9,7 +9,7 @@ def planning_console(db,level):
     while True:
         opt = input( "\n Marque una de las siguientes opciones:\n - 1: Generar planificación.\
                                                                \n - 2: Cambiar la prioridad de un proyecto.\
-                                                               \n - 3: Para ver restricciones.\
+                                                               \n - 3: Para manejar restricciones.\
                                                                \n - 4: Para generar informe.\
                                                                \n - 5: Para volver atrás. \
                                                                \n Ingrese la alternativa elegida: ")
