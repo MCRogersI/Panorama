@@ -559,54 +559,71 @@ def tasks_console(db, level):
                                                                     \n - 2: Si desea ingresar/editar la fecha efectiva de llegada de los cristales.\
                                                                     \n Ingrese la alternativa elegida: ")
             if opt2 == '1':
-                # Solo revisar que no sea un string vacío o puros espacios
-                id_issuer_order = input('\n Ingrese su ID: ')
-                
-                # Revisar que el número de contrato esté guardado en la base de datos
-                contract_number = input(' Ingrese el número de contrato del proyecto asociado a la orden de compra de cristales: ')
-                project = db.Projects[contract_number]
-                
-                # Solo revisar que no sea un string vacío o puros espacios
-                id_crystal_provider = input(' Ingrese el ID del proveedor de cristales: ')
-                
-                effective_issuing_date_year = input(' Ingrese el año en que se envío la orden de compra al proveedor (solo presione Enter si la fecha es hoy): ')
-                if effective_issuing_date_year == '':
-                    effective_issuing_date = date.today()
-                else:
-                    effective_issuing_date_month = input(' Ingrese el mes en que se envío la orden de compra al proveedor: ')
-                    effective_issuing_date_day = input(' Ingrese el día en que se envío la orden de compra al proveedor: ')
-                    # Revisar que sea una fecha válida
-                    effective_issuing_date = date(int(effective_issuing_date_year), int(effective_issuing_date_month), int(effective_issuing_date_day))
-                
-                original_arrival_date_year = input(' Ingrese el año en que llegarán los cristales: ')
-                original_arrival_date_month = input(' Ingrese el mes en que llegarán los cristales: ')
-                original_arrival_date_day = input(' Ingrese el día en que llegarán los cristales: ')
-                # Revisar que sea una fecha válida
-                original_arrival_date = date(int(original_arrival_date_year), int(original_arrival_date_month), int(original_arrival_date_day))
-                
-                # Revisar que la función sea llamada correctamente
-                editCrystalSalesOrder(db, project, original_arrival_date, effective_issuing_date, id_issuer_order, id_crystal_provider)
-                
-                # Tirar mensaje de que se hizo con éxito
+                try:
+                    id_issuer_order = input('\n Ingrese su ID: ')
+                    if len(id_issuer_order.replace(' ','')) < 1:
+                        raise ValueError(' Debe ingresar su ID. ')
+                    contract_number = input(' Ingrese el número de contrato del proyecto asociado a la orden de compra de cristales: ')
+                    try:
+                        with db_session:
+                            db.Projects[int(contract_number)].contract_number
+                    except:
+                        raise ValueError('\n No existe ese número de contrato.')
+                    project = db.Projects[contract_number]
+                    id_crystal_provider = input(' Ingrese el ID del proveedor de cristales: ')
+                    if len(id_crystal_provider.replace(' ','')) < 1:
+                        raise ValueError(' Debe ingresar el ID del proveedor. ')
+                    effective_issuing_date_year = input(' Ingrese el año en que se envío la orden de compra al proveedor (solo presione Enter si la fecha es hoy): ')
+                    if effective_issuing_date_year == '':
+                        effective_issuing_date = date.today()
+                    else:
+                        effective_issuing_date_month = input(' Ingrese el mes en que se envío la orden de compra al proveedor: ')
+                        effective_issuing_date_day = input(' Ingrese el día en que se envío la orden de compra al proveedor: ')
+                        try:
+                            effective_issuing_date = date(int(effective_issuing_date_year),int(effective_issuing_date_month),int(effective_issuing_date_day))
+                        except:
+                            raise ValueError('\n No se ha ingresado una fecha válida.')
+                    original_arrival_date_year = input(' Ingrese el año en que llegarán los cristales: ')
+                    original_arrival_date_month = input(' Ingrese el mes en que llegarán los cristales: ')
+                    original_arrival_date_day = input(' Ingrese el día en que llegarán los cristales: ')
+                    try:
+                        original_arrival_date = date(int(original_arrival_date_year),int(original_arrival_date_month),int(original_arrival_date_day))
+                    except:
+                        raise ValueError('\n No se ha ingresado una fecha válida.')
+                    editCrystalSalesOrder(db, project, original_arrival_date, effective_issuing_date, id_issuer_order, id_crystal_provider)
+                    print(' Edición realizada exitosamente.')
+                    input(' Presione Enter para continuar: ')
+                except ValueError as ve:
+                    print(ve)
+                    input(' Presione Enter para continuar: ')
                 
             elif opt2 == '2':
-                # Revisar que el número de contrato esté guardado en la base de datos
-                contract_number = input('\n Ingrese el número de contrato del proyecto asociado a la orden de compra de cristales: ')
-                project = db.Projects[contract_number]
-                
-                effective_arrival_date_year = input(' Ingrese el año de llegada de los cristales (solo presione Enter si la fecha es hoy): ')
-                if effective_arrival_date_year == '':
-                    effective_arrival_date = date.today()
-                else:
-                    effective_arrival_date_month = input(' Ingrese el mes de llegada de los cristales: ')
-                    effective_arrival_date_day = input(' Ingrese el día de llegada de los cristales: ')
-                    # Revisar que sea una fecha válida
-                    effective_arrival_date = date(int(effective_arrival_date_year), int(effective_arrival_date_month), int(effective_arrival_date_day))
-                
-                # Revisar que la función sea llamada correctamente
-                editCrystalArrival(db, project, effective_arrival_date)
-                
-                # Tirar mensaje de que se hizo con éxito
+                try:
+                    contract_number = input('\n Ingrese el número de contrato del proyecto asociado a la orden de compra de cristales: ')
+                    try:
+                        with db_session:
+                            db.Projects[int(contract_number)].contract_number
+                    except:
+                        raise ValueError('\n No existe ese número de contrato.')
+                    project = db.Projects[contract_number]
+                    
+                    effective_arrival_date_year = input(' Ingrese el año de llegada de los cristales (solo presione Enter si la fecha es hoy): ')
+                    if effective_arrival_date_year == '':
+                        effective_arrival_date = date.today()
+                    else:
+                        effective_arrival_date_month = input(' Ingrese el mes de llegada de los cristales: ')
+                        effective_arrival_date_day = input(' Ingrese el día de llegada de los cristales: ')
+                        try:
+                            effective_arrival_date = date(int(effective_arrival_date_year), int(effective_arrival_date_month), int(effective_arrival_date_day))
+                        except:
+                            raise ValueError('\n No se ha ingresado una fecha válida.')
+                    editCrystalArrival(db, project, effective_arrival_date)
+                    print(' Edición realizada exitosamente.')
+                    input(' Presione Enter para continuar: ')
+                    
+                except ValueError as ve:
+                    print(ve)
+                    input(' Presione Enter para continuar: ')
                 
         elif(opt == '6'):
             break

@@ -155,7 +155,7 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
             # si la tarea tiene un Tasks_Delays asociados, y ya partió, pero aún no termina, entonces el empleado está congelado
             if task.effective_initial_date != None and task.effective_end_date == None:
                 tasks_delays = select(td for td in db.Tasks_Delays if td.task == task)
-                if len(tasks_delays > 0) and datesOverlap(initial_date, end_date, date.today(), et.planned_end_date):
+                if len(tasks_delays) > 0 and datesOverlap(initial_date, end_date, date.today(), et.planned_end_date):
                     return False
                     
         
