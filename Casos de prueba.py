@@ -48,11 +48,11 @@ Las lineas comentadas son las que están revisadas
 
 6) Revisar que editar empleados funcione:
 
-# -que cambiar un rendimiento a cero le quite la skill 
-# -que reclame si un empleado es editado para no tener skill 
-# -que replanifique si se cambia de skill y estaba en la planificación 
+# - Que cambiar un rendimiento a cero le quite la skill 
+# - Que reclame si un empleado es editado para no tener skill 
+# - Que replanifique si se cambia de skill y estaba en la planificación 
 
 7) Revisar que editar proyectos funcione:
 
-# -Que cambie la prioridad de el resto de los proyectos adecuadamente
--Que meter al agregar restricciones cambie la planificación si corresponde.
+# - Que cambie la prioridad de el resto de los proyectos adecuadamente
+- Que meter al agregar restricciones cambie la planificación si corresponde.
