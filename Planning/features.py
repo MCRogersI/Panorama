@@ -525,6 +525,24 @@ def createCrystalSalesOrder(db, project):
     #creamos la orden de compra con la información que tenemos  
     db.Crystals_Sales_Order(project = project, original_issuing_date = sumDays(design_end_date, 1), original_arrival_date = sumDays(design_end_date, 1 + crystal_leadtime))
     commit()
+    
+def editCrystalSalesOrder(db, project, original_arrival_date, effective_issuing_date, id_issuer_order, id_crystal_provider):
+    #con esto tenemos los datos necesarios para tseguir llenando la info de Crystals_Sales_Order
+    crystal_sales_order = db.Crystals_Sales_Order.get(project = project)
+    if crystal_sales_order != None:
+        crystal_sales_order.original_arrival_date = original_arrival_date
+        crystal_sales_order.effective_issuing_date = effective_issuing_date
+        crystal_sales_order.id_issuer_order = id_issuer_order
+        crystal_sales_order.id_crystal_provider = id_crystal_provider
+    commit()
+    
+def editCrystalArrival(db, project, effective_arrival_date):
+    #con esto tenemos los datos necesarios para terminar de llenar la info de Crystals_Sales_Order
+    crystal_sales_order = db.Crystals_Sales_Order.get(project = project)
+    if crystal_sales_order != None:
+        crystal_sales_order.effective_arrival_date = effective_arrival_date
+    commit()
+    
 
 #método quye realiza la planificación
 def doPlanning(db):

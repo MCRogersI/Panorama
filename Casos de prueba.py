@@ -46,13 +46,13 @@ Las lineas comentadas son las que están revisadas
 # - Que los Projects_X desaparezcan todos con X = Activities, Costs, Delays.
 # - También que desaparezcan las Tasks, Deadlines_Restrictions, Employees_Restrictions, Employees_Tasks asociadas.
 
-6) Revisar que editar empleados funcione:
+6) Revisar que editar Employees funcione:
 
 # - Que cambiar un rendimiento a cero le quite la skill 
 # - Que reclame si un empleado es editado para no tener skill 
 # - Que replanifique si se cambia de skill y estaba en la planificación 
 
-7) Revisar que editar proyectos funcione:
+7) Revisar que editar Projects funcione:
 
 # - Que cambie la prioridad de el resto de los proyectos adecuadamente
 - Que meter al agregar restricciones cambie la planificación si corresponde.

@@ -110,9 +110,9 @@ def define_models(db):
         # esto lo indica la persona que registra el pedido, cuándo efectivamente llegan los cristales
         effective_arrival_date = Optional(date)
         # esto lo indica la persona que registra el pedido, ID del emisor de la orden de compra de los cristales
-        id_issuer_order = Optional(int)
+        id_issuer_order = Optional(str)
         # esto lo indica la persona que registra el pedido, ID del emisor de la orden de compra de los cristales
-        id_crystal_provider = Optional(int)
+        id_crystal_provider = Optional(str)
 
         def __repr__(self):
             return str(self.id)
