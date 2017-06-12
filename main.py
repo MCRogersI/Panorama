@@ -9,7 +9,7 @@ import Planning.features as PLf
 import Planning.reports as PLr
 import Users.features as Uf
 import Stock.usuario as Su
-# import Tests.Case9 as case9
+import Tests.Case9 as case9
 import Planning.usuario as PlanU
 import Stock.reports as Sr
 import Stock.features as Sf
@@ -18,15 +18,15 @@ import numpy as np
 import getpass
 import os
 
-# Uf.createUser(db,'1', 1,'1')
-# Uf.createUser(db,'2', 2,'2')
-# Uf.createUser(db,'3', 3,'3')
-# Uf.createUser(db,'4', 4,'4')
-# Uf.createUser(db,'5', 5,'5')
-# Uf.createUser(db,'6', 6,'6')
-# Uf.createUser(db,'7', 7,'7')
-# Uf.createUser(db,'8', 8,'8')
-# Uf.createUser(db,'9', 9,'9')
+Uf.createUser(db,'1', 1,'1')
+Uf.createUser(db,'2', 2,'2')
+Uf.createUser(db,'3', 3,'3')
+Uf.createUser(db,'4', 4,'4')
+Uf.createUser(db,'5', 5,'5')
+Uf.createUser(db,'6', 6,'6')
+Uf.createUser(db,'7', 7,'7')
+Uf.createUser(db,'8', 8,'8')
+Uf.createUser(db,'9', 9,'9')
 
 
 def console(level, user):

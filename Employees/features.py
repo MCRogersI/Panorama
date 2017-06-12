@@ -4,7 +4,7 @@ from IPython.display import display
 from tabulate import tabulate
 from Planning.features import doPlanning
 
-def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_ins = None, senior = None):
+def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_fab = None, perf_inst = None, senior = None):
     with db_session:
         e = db.Employees(id = id, name = name, zone = zone)
         if perf_rect != None:
@@ -13,8 +13,8 @@ def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_
             db.Employees_Skills(employee = e, skill = 2, performance = perf_des)
         if perf_fab != None:
             db.Employees_Skills(employee = e, skill = 3, performance = perf_fab)
-        if perf_ins != None:
-            db.Employees_Skills(employee = e, skill = 4, performance = perf_ins)
+        if perf_inst != None:
+            db.Employees_Skills(employee = e, skill = 4, performance = perf_inst)
             # solo para el caso de los instaladores, pueden ser senior o junior, por defecto los consideramos como senior:
             if senior != None:
                 e.senior = bool(senior)

@@ -12,9 +12,9 @@ from tabulate import tabulate
 
 
 
-def createProject(db, contract_number, client_address, client_comuna,
-                  client_name, client_rut, linear_meters, year, month,
-                  day, crystal_leadtime, sale_date, sale_price):
+def createProject(db, contract_number = None, client_address = None, client_comuna = None,
+                  client_name = None, client_rut = None, linear_meters = None, year = None, month = None,
+                  day = None, crystal_leadtime = None, sale_date = None, sale_price = None,estimated_cost = None, sale_date_year=None,sale_date_month=None,sale_date_day=None):
     import Planning.features as PLf
     with db_session:
         deadline = date(int(year), int(month), int(day))
