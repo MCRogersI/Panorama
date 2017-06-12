@@ -519,12 +519,13 @@ def checkVeto(db, contract_number, skill_id):
 # para crear, por primera vez, una orden de compra de cristales, el programa lo hace automáticamente           
 def createCrystalSalesOrder(db, project):
     #recuperamos el leadtime de los cristales y la fecha en que termina el diseño
-    crystal_leadtime = project.crystal_leadtime
-    design = db.Tasks.get(skill = db.Skills[2], project = project, failed = None)
-    design_end_date = design.original_end_date
-    #creamos la orden de compra con la información que tenemos  
-    db.Crystals_Sales_Order(project = project, original_issuing_date = sumDays(design_end_date, 1), original_arrival_date = sumDays(design_end_date, 1 + crystal_leadtime))
-    commit()
+    with db_session:
+        crystal_leadtime = project.crystal_leadtime
+        design = db.Tasks.get(skill = db.Skills[2], project = project, failed = None)
+        design_end_date = design.original_end_date
+        #creamos la orden de compra con la información que tenemos  
+        db.Crystals_Sales_Order(project = project, original_issuing_date = sumDays(design_end_date, 1), original_arrival_date = sumDays(design_end_date, 1 + crystal_leadtime))
+        commit()
     
 def editCrystalSalesOrder(db, project, original_arrival_date, effective_issuing_date, id_issuer_order, id_crystal_provider):
     #con esto tenemos los datos necesarios para tseguir llenando la info de Crystals_Sales_Order

@@ -51,27 +51,48 @@ def planning_console(db,level):
             if opt2 == '1':
                 try:
                     contract_number = input('\n Ingrese el número de contrato del proyecto que desea seleccionar: ')
+                    try:
+                        contract_number = int(contract_number)
+                    except:
+                        raise ValueError(' El número de contrato debe ser un número.')
                     with db_session:
                         if db.Projects.get(contract_number = contract_number) == None:
                             raise ValueError('\n El proyecto no existe \n')
                     employee_id = input(' Ingrese el ID del empleado que desea asociar o vetar del proyecto: ')
+                    try:
+                        employee_id = int(employee_id)
+                    except:
+                        raise ValueError(' El ID del empleado debe ser un número.')
                     with db_session:
                         if db.Employees.get(id = employee_id) == None:
                             raise ValueError('\n El empleado no existe \n')
+                        er = db.Employees_Restrictions.get(employee = db.Employees[employee_id], project = db.Projects[contract_number])
                     like = input(' Marque una de las siguientes opciones: \n - 1: Si quiere asociar al empleado con el proyecto. \n - 0: Si quiere vetar a este empleado del proyecto. \n Ingrese la alternativa elegida: ')
-                    with db_session:
-                        if like == '1':
-                            r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = True)
-                            input('\n Restricción agregada con éxito. Presione una tecla para continuar. \n')
-                        if like == '0':
-                            r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = False)
-                            if checkVeto(db, int(contract_number),4) or checkVeto(db, int(contract_number),1):
-                                db.Employees_Restrictions[db.Employees[int(employee_id)],db.Projects[int(contract_number)]].delete()
-                                print('\n La planificación se hace infactible al vetar a todos los empleados \n')
-                            else:
-                                input('\n Restricción agregada con éxito. Presione una tecla para continuar. \n')
+                    if like == '1':
+                        like = True
+                    elif like == '0':
+                        like = False
+                    else:
+                        raise ValueError('\n debe elegir entre 1 ó 0 \n')
+                    if er == None:
+                        createEmployeesRestrictions(db,contract_number, employee_id, like)
+                        
+                        input('\n Restricción agregada con éxito. Presione una tecla para continuar. \n')
+                    # else:
+                        # with db_session:
+                            
+                            # r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = True)
+                            # input('\n Restricción agregada con éxito. Presione una tecla para continuar. \n')
+                        # elif like == '0':
+                            # like = False
+                            # r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = False)
+                            # if checkVeto(db, int(contract_number),4) or checkVeto(db, int(contract_number),1):
+                                # db.Employees_Restrictions[db.Employees[int(employee_id)],db.Projects[int(contract_number)]].delete()
+                                # print('\n La planificación se hace infactible al vetar a todos los empleados \n')
+                            # else:
+                                # input('\n Restricción agregada con éxito. Presione una tecla para continuar. \n')
                         else:
-                            print('\n debe elegir entre 1 ó 0 \n')
+                            raise ValueError('\n debe elegir entre 1 ó 0 \n')
                 except ValueError as ve:
                     print(ve)
                         

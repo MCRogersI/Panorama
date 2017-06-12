@@ -20,7 +20,7 @@ def createProject(db, contract_number, client_address, client_comuna,
         deadline = date(int(year), int(month), int(day))
         p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, 
                             client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline = deadline, crystal_leadtime = crystal_leadtime, sale_date = sale_date, sale_price = sale_price)
-        db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished == None).count()
+        p.priority = select(p for p in db.Projects if p.finished == None).count()
         
         commit()
     PLf.doPlanning(db)
