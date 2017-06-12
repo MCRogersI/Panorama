@@ -155,7 +155,7 @@ def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
             # si la tarea tiene un Tasks_Delays asociados, y ya partió, pero aún no termina, entonces el empleado está congelado
             if task.effective_initial_date != None and task.effective_end_date == None:
                 tasks_delays = select(td for td in db.Tasks_Delays if td.task == task)
-                if len(tasks_delays > 0) and datesOverlap(initial_date, end_date, date.today(), et.planned_end_date):
+                if len(tasks_delays) > 0 and datesOverlap(initial_date, end_date, date.today(), et.planned_end_date):
                     return False
                     
         
@@ -472,7 +472,7 @@ def addDelayed(db, Delayed, contract_number, task, num_workers, initial, ending,
     Delayed =  Delayed.append({'contract number': contract_number, 'task': task, 'num workers': num_workers, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
     return Delayed
 
-def checkVeto(db, contract_number, skill_id):
+def checkVeto(db, contract_number, skill_id, employee_id):
     Veto = True
     Veto1 = True
     with db_session:
@@ -480,35 +480,44 @@ def checkVeto(db, contract_number, skill_id):
         employees = select(es.employee for es in db.Employees_Skills if es.skill.id == skill_id)
         if skill_id == 1:
             for e in employees:
-                er = db.Employees_Restrictions.get(employee = e,project =project)
-                if er != None:
-                    if er.fixed == True :
+                if e.id == employee_id:
+                    pass
+                else:
+                    er = db.Employees_Restrictions.get(employee = e,project =project)
+                    if er != None:
+                        if er.fixed == True :
+                            Veto = False
+                            break
+                    else:
                         Veto = False
                         break
-                else:
-                    Veto = False
-                    break
 
         elif skill_id == 4:
             for e in employees:
-                er = db.Employees_Restrictions.get(employee = e,project =project)
-                if er != None:
-                    if er.fixed == True and e.senior == True:
+                if e.id == employee_id:
+                    pass
+                else:
+                    er = db.Employees_Restrictions.get(employee = e,project =project)
+                    if er != None:
+                        if er.fixed == True and e.senior == True:
+                            Veto = False
+                            break
+                    elif e.senior == True:
                         Veto = False
                         break
-                elif e.senior == True:
-                    Veto = False
-                    break
             for e in employees:
-                er = db.Employees_Restrictions.get(employee = e,project =project)
-                if er != None:
-                    if er.fixed == True and e.senior == False:
+                if e.id == employee_id:
+                    pass
+                else:
+                    er = db.Employees_Restrictions.get(employee = e,project =project)
+                    if er != None:
+                        if er.fixed == True and e.senior == False:
+                            Veto1 = False
+                            break
+                    elif e.senior == False:
                         Veto1 = False
                         break
-                elif e.senior == False:
-                    Veto1 = False
-                    break
-    if  not Veto and not Veto1 and skill_id ==4:
+    if   not Veto and not Veto1 and skill_id ==4:
         return Veto
     elif skill_id ==4:
         return True
@@ -519,12 +528,53 @@ def checkVeto(db, contract_number, skill_id):
 # para crear, por primera vez, una orden de compra de cristales, el programa lo hace automáticamente           
 def createCrystalSalesOrder(db, project):
     #recuperamos el leadtime de los cristales y la fecha en que termina el diseño
-    crystal_leadtime = project.crystal_leadtime
-    design = db.Tasks.get(skill = db.Skills[2], project = project, failed = None)
-    design_end_date = design.original_end_date
-    #creamos la orden de compra con la información que tenemos  
-    db.Crystals_Sales_Order(project = project, original_issuing_date = sumDays(design_end_date, 1), original_arrival_date = sumDays(design_end_date, 1 + crystal_leadtime))
+    with db_session:
+        crystal_leadtime = project.crystal_leadtime
+        design = db.Tasks.get(skill = db.Skills[2], project = project, failed = None)
+        design_end_date = design.original_end_date
+        #creamos la orden de compra con la información que tenemos  
+        db.Crystals_Sales_Order(project = project, original_issuing_date = sumDays(design_end_date, 1), original_arrival_date = sumDays(design_end_date, 1 + crystal_leadtime))
+        commit()
+    
+def editCrystalSalesOrder(db, project, original_arrival_date, effective_issuing_date, id_issuer_order, id_crystal_provider):
+    #con esto tenemos los datos necesarios para tseguir llenando la info de Crystals_Sales_Order
+    crystal_sales_order = db.Crystals_Sales_Order.get(project = project)
+    if crystal_sales_order != None:
+        crystal_sales_order.original_arrival_date = original_arrival_date
+        crystal_sales_order.effective_issuing_date = effective_issuing_date
+        crystal_sales_order.id_issuer_order = id_issuer_order
+        crystal_sales_order.id_crystal_provider = id_crystal_provider
     commit()
+    
+def editCrystalArrival(db, project, effective_arrival_date):
+    #con esto tenemos los datos necesarios para terminar de llenar la info de Crystals_Sales_Order
+    crystal_sales_order = db.Crystals_Sales_Order.get(project = project)
+    if crystal_sales_order != None:
+        crystal_sales_order.effective_arrival_date = effective_arrival_date
+    commit()
+    
+    
+def createEmployeesRestrictions(db, employee, project, fixed):
+    er = db.Employees_Restrictions(employee = employee, project = project, fixed = fixed)
+    # si estaba asignado al proyecto y acaba de ser vetado, hay que replanificar
+    if not fixed:
+        emp_tasks = select(et for et in db.Employees_Tasks if et.employee == employee)
+        for et in emp_tasks:
+            task = et.task
+            if task.project == project:
+                doPlanning(db)
+    # si está siendo fijado al proyecto, y actualmente no está asignado al proyecto, hay que replanificar
+    else:
+        in_project = False
+        emp_tasks = select(et for et in db.Employees_Tasks if et.task.project == project)
+        for et in emp_tasks:
+            if et.employee == employee:
+                in_project = True
+        if not in_project:
+            doPlanning(db)
+
+    return er
+    
 
 #método quye realiza la planificación
 def doPlanning(db):

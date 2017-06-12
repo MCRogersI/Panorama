@@ -1,6 +1,6 @@
 from datetime import date
 from pony.orm import *
-from Planning.features import changePriority, addDelayed, doPlanning, checkVeto
+from Planning.features import changePriority, addDelayed, doPlanning, checkVeto, createEmployeesRestrictions
 from Planning.reports import createGlobalReportCompact, createGlobalReportModified
 import pandas
 from IPython.display import display
@@ -9,7 +9,7 @@ def planning_console(db,level):
     while True:
         opt = input( "\n Marque una de las siguientes opciones:\n - 1: Generar planificación.\
                                                                \n - 2: Cambiar la prioridad de un proyecto.\
-                                                               \n - 3: Para ver restricciones.\
+                                                               \n - 3: Para manejar restricciones.\
                                                                \n - 4: Para generar informe.\
                                                                \n - 5: Para volver atrás. \
                                                                \n Ingrese la alternativa elegida: ")
@@ -51,30 +51,45 @@ def planning_console(db,level):
             if opt2 == '1':
                 try:
                     contract_number = input('\n Ingrese el número de contrato del proyecto que desea seleccionar: ')
+                    try:
+                        contract_number = int(contract_number)
+                    except:
+                        raise ValueError(' El número de contrato debe ser un número.')
                     with db_session:
                         if db.Projects.get(contract_number = contract_number) == None:
-                            raise ValueError('\n El proyecto no existe \n')
+                            raise ValueError('\n El proyecto no existe.')
+                        else:
+                            p = db.Projects.get(contract_number = contract_number)
                     employee_id = input(' Ingrese el ID del empleado que desea asociar o vetar del proyecto: ')
+                    try:
+                        employee_id = int(employee_id)
+                    except:
+                        raise ValueError(' El ID del empleado debe ser un número.')
                     with db_session:
                         if db.Employees.get(id = employee_id) == None:
                             raise ValueError('\n El empleado no existe \n')
-                    like = input(' Marque una de las siguientes opciones: \n - 1: Si quiere asociar al empleado con el proyecto. \n - 0: Si quiere vetar a este empleado del proyecto. \n Ingrese la alternativa elegida: ')
-                    with db_session:
-                        if like == '1':
-                            r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = True)
-                            input('\n Restricción agregada con éxito. Presione una tecla para continuar. \n')
-                        if like == '0':
-                            r = db.Employees_Restrictions(employee = db.Employees[int(employee_id)], project = db.Projects[int(contract_number)], fixed = False)
-                            if checkVeto(db, int(contract_number),4) or checkVeto(db, int(contract_number),1):
-                                db.Employees_Restrictions[db.Employees[int(employee_id)],db.Projects[int(contract_number)]].delete()
-                                print('\n La planificación se hace infactible al vetar a todos los empleados \n')
-                            else:
-                                input('\n Restricción agregada con éxito. Presione una tecla para continuar. \n')
                         else:
-                            print('\n debe elegir entre 1 ó 0 \n')
+                            e = db.Employees.get(id = employee_id)
+                        er = db.Employees_Restrictions.get(employee = db.Employees[employee_id], project = db.Projects[contract_number])
+                    like = input(' Marque una de las siguientes opciones: \n - 1: Si quiere asociar al empleado con el proyecto. \n - 0: Si quiere vetar a este empleado del proyecto. \n Ingrese la alternativa elegida: ')
+                    if like == '1':
+                        like = True
+                    elif like == '0':
+                        like = False
+                    else:
+                        raise ValueError('\n debe elegir entre 1 ó 0.')
+                    if er == None and not like:
+                        if checkVeto(db, int(contract_number),4,employee_id) or checkVeto(db, int(contract_number),1,employee_id):
+                            raise ValueError('\n La planificación se hace infactible al vetar a todos los empleados con esa habilidad.')
+                        else:
+                            r = createEmployeesRestrictions(db,e,p, like)
+                    elif er == None:
+                        r = createEmployeesRestrictions(db, e, p, like)
+                    else:
+                        raise(' Ya existe una restricción asociada a este empleado con este proyecto. ')
                 except ValueError as ve:
                     print(ve)
-                        
+                    input(' Presione Enter para continuar: ')
             if opt2 == '2':
                 contract_number = input('\n Ingrese el número de contrato del proyecto que desea seleccionar: ')
                 employee_id = input(' Ingrese el ID del empleado que desea liberar: ')

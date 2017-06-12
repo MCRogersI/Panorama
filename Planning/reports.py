@@ -945,8 +945,8 @@ def createReport(db, Delayed, caused_by_delay):
         #entramos en el siguiente ciclo para ver si el usuario acepta la planificación o quiere cambiar datos de los empleados
         while(True):
             print('\n El reporte de la última planificación se encuentra en el archivo ReportePlanificacion.xlsx.')
-            opt = input(" Marque una de las siguientes opciones:\n - 1: si acepta la planificación propuesta. \
-                                                                \n - 2: si desea cambiar la asignación de empleados. \
+            opt = input(" Marque una de las siguientes opciones:\n - 1: Si acepta la planificación propuesta. \
+                                                                \n - 2: Si desea cambiar la asignación de empleados. \
                                                                 \n Ingrese la alternativa elegida: ")
             if opt == '1':
                 break

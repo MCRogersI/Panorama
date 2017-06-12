@@ -4,6 +4,7 @@
 #lo mas parecido al real.
 from pony.orm import *
 from database import db
+from datetime import date
 import Employees.features as Ef, Employees.usuario as Eu
 from datetime import date
 import Projects.usuario as Pu
@@ -76,16 +77,16 @@ with db_session:
 Ef.createEmployee(db,1, "Juan", "Vitacura", perf_rect = 2)
 Ef.createEmployee(db,2,  "Pedro", "Vitacura", perf_des = 2)
 Ef.createEmployee(db,3,  "Diego", "Vitacura", perf_fab = 30)
-Ef.createEmployee(db,4,  "Miguel", "Vitacura", perf_inst = 40, senior = True)
+Ef.createEmployee(db,4,  "Miguel", "Vitacura", perf_ins = 40, senior = True)
 Ef.createEmployee(db,5,  "Mario", "Vitacura", perf_rect = 1)
 Ef.createEmployee(db,6,  "Felipe", "Vitacura", perf_des = 1)
 Ef.createEmployee(db,7,  "Miguel", "Vitacura", perf_fab = 40)
-Ef.createEmployee(db,8,  "Mario", "Vitacura", perf_inst = 50, senior = False)
+Ef.createEmployee(db,8,  "Mario", "Vitacura", perf_ins = 50, senior = False)
 Ef.createEmployee(db,9,  "Felipe", "Vitacura", perf_rect = 2)
 Ef.createEmployee(db,10,  "Miguel", "Vitacura", perf_des = 1)
 Ef.createEmployee(db,11,  "Mario", "Vitacura", perf_fab = 50)
-Ef.createEmployee(db,12,  "Felipe", "Vitacura", perf_inst = 60, senior = True)
-Ef.createEmployee(db,13,  "Iker", "Vitacura", perf_inst = 70, senior = False)
+Ef.createEmployee(db,12,  "Felipe", "Vitacura", perf_ins = 60, senior = True)
+Ef.createEmployee(db,13,  "Iker", "Vitacura", perf_ins = 70, senior = False)
 
 
 ##############################################
@@ -106,13 +107,13 @@ Sf.createSku(db, 11, 'Profile joint unit plastic bag',4.93, 50,0, waste_factor =
 
 
 Pf.createProject(db, 1, 'Cachagua 102', 'Calera', 'Pedro Sanchez',
-                 '17.094.362-0', 150, 2017, 5, 10, estimated_cost = 200, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
+                 '17.094.362-0', 150, 2017, 5, 10, crystal_leadtime = 15, sale_date = date(2017, 4, 18), sale_price=300)
 Pf.createProject(db, 2, 'Suecia 86', 'Arica', 'Franco Soto',
-                 '16.2254.112-0', 200, 2017, 6, 30, estimated_cost = 300, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
+                 '16.2254.112-0', 200, 2017, 6, 30, crystal_leadtime = 15, sale_date = date(2017, 4, 18),sale_price=300)
 Pf.createProject(db, 3, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
-                 '15.114.992-0', 450, 2017, 6, 3, estimated_cost = 150, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
+                 '15.114.992-0', 450, 2017, 6, 3, crystal_leadtime = 15, sale_date = date(2017, 4, 18),sale_price=300)
 Pf.createProject(db, 4, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil', 
-                    '14.214.392-K',220, 2017, 8, 30, estimated_cost = 250, sale_date_year=2017,sale_date_month=4,sale_date_day=18,sale_price=300)
+                    '14.214.392-K',220, 2017, 8, 30, crystal_leadtime = 15, sale_date = date(2017, 4, 18),sale_price=300)
 
 # Pf.failedTask(db,1,2,1000)
 # Pf.failedTask(db,3,3,5000)

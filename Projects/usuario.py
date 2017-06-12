@@ -3,8 +3,10 @@ from pony.orm import *
 from Projects.features import createProject, printProjects, editProject, deleteProject, finishProject, createTask, editTask, printTasks, failedTask, createProjectActivity, deleteProjectActivity, printProjectsActivities, createDelay
 from Projects.costs import estimateCost
 from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts, updateCrystalsParameters, updateProfilesParameters
-from Planning.features import sumDays
+from Planning.features import sumDays, editCrystalSalesOrder, editCrystalArrival
 import os
+import pandas
+from tabulate import tabulate
 import convert
 # from Projects.costs import estimateCost
 
@@ -335,7 +337,8 @@ def tasks_console(db, level):
                                                               \n - 2: Si desea ver las tareas actuales.\
                                                               \n - 3: Para editar parámetros asociados a costos.\
                                                               \n - 4: Para ingresar atrasos.\
-                                                              \n - 5: Para volver atrás.\
+                                                              \n - 5: Para ingresar datos de orden de compra de cristales.\
+                                                              \n - 6: Para volver atrás.\
                                                               \n Ingrese la alternativa elegida: ")
 
         if(opt == '1'):
@@ -495,23 +498,52 @@ def tasks_console(db, level):
         elif(opt == '4'):
             try:
                 contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
+                try:
+                    contract_number = int(contract_number)
+                except:
+                    raise ValueError('\n Número de contrato inexistente \n')
                 with db_session:
                     if db.Projects.get(contract_number = contract_number) == None:
                         raise ValueError('\n Número de contrato inexistente \n')
                 id_skill = input(" Ingrese el ID de la habilidad donde ocurrió el fallo (1: rect, 2: dis, 3: fab, 4: ins): ")
                 if id_skill != '1' and id_skill != '2' and id_skill != '3' and id_skill != '4':
                     raise ValueError('\n ID de habilidad no válida. \n')
-                delay = input(' Ingrese el número de días que se atrasó la tarea: ')
-                try:
-                    delay = int(delay)
-                except:
-                    raise ValueError('\n ID de habilidad no válida. \n')
+
                 with db_session:
                     task = db.Tasks.get( project = db.Projects[contract_number], skill = db.Skills[id_skill], failed = None)
                     if task == None:
                         raise ValueError('\n Tarea no encontrada.')
                     if task.effective_initial_date == None :
                         raise ValueError('\n Esta tarea aun no ha comenzado.')
+                    td = select( td for td in db.Tasks_Delays if td.task == task)
+                    if len(td) >0 :
+                        largo = str(len(td))
+                        data = [d.to_dict() for d in td]
+                        df = pandas.DataFrame(data, columns = ['delay']) 
+                        df.columns = ['Dias de atraso']
+                        print('\n La tarea tiene ingresada ' + largo + ' atrasos. Los atrasos son los siguientes: ')
+                        print(tabulate(df, headers='keys', tablefmt='psql'))
+                        agree = input(' ¿Desea realizar el ingreso de atrasos de todos modos? : \n - 1: Si \
+                                                                                               \n - 0: No \
+                                                                                               \n Ingrese la alternativa elegida: ')
+                        try:
+                            int(agree)
+                            if int(agree) not in [0,1]:
+                                exception = ' Ingreso incorrecto. Ingreso de atraso cancelado.'
+                                raise
+                            elif int(agree) == 0:
+                                exception = ' Ingreso de atraso cancelado.' 
+                                raise 
+                        except:
+                            if exception:
+                                raise ValueError(exception)
+                            else:
+                                raise ValueError(' Ingreso incorrecto de parámetros. Ingreso de atraso cancelado.')
+                    delay = input(' Ingrese el número de días que se atrasó la tarea: ')
+                    try:
+                        delay = int(delay)
+                    except:
+                        raise ValueError('\n ID de habilidad no válida. \n')
                     if delay < 0 :
                         planned_end_date = select( et for et in db.Employees_Tasks if et.task == task).first().planned_end_date
                         if sumDays(date.today(),-1*delay) > planned_end_date: 
@@ -523,6 +555,77 @@ def tasks_console(db, level):
             finally:
                 input(' Presione Enter para continuar: ')
         elif(opt == '5'):
+            opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar/editar la orden de compra.\
+                                                                    \n - 2: Si desea ingresar/editar la fecha efectiva de llegada de los cristales.\
+                                                                    \n Ingrese la alternativa elegida: ")
+            if opt2 == '1':
+                try:
+                    id_issuer_order = input('\n Ingrese su ID: ')
+                    if len(id_issuer_order.replace(' ','')) < 1:
+                        raise ValueError(' Debe ingresar su ID. ')
+                    contract_number = input(' Ingrese el número de contrato del proyecto asociado a la orden de compra de cristales: ')
+                    try:
+                        with db_session:
+                            db.Projects[int(contract_number)].contract_number
+                    except:
+                        raise ValueError('\n No existe ese número de contrato.')
+                    project = db.Projects[contract_number]
+                    id_crystal_provider = input(' Ingrese el ID del proveedor de cristales: ')
+                    if len(id_crystal_provider.replace(' ','')) < 1:
+                        raise ValueError(' Debe ingresar el ID del proveedor. ')
+                    effective_issuing_date_year = input(' Ingrese el año en que se envío la orden de compra al proveedor (solo presione Enter si la fecha es hoy): ')
+                    if effective_issuing_date_year == '':
+                        effective_issuing_date = date.today()
+                    else:
+                        effective_issuing_date_month = input(' Ingrese el mes en que se envío la orden de compra al proveedor: ')
+                        effective_issuing_date_day = input(' Ingrese el día en que se envío la orden de compra al proveedor: ')
+                        try:
+                            effective_issuing_date = date(int(effective_issuing_date_year),int(effective_issuing_date_month),int(effective_issuing_date_day))
+                        except:
+                            raise ValueError('\n No se ha ingresado una fecha válida.')
+                    original_arrival_date_year = input(' Ingrese el año en que llegarán los cristales: ')
+                    original_arrival_date_month = input(' Ingrese el mes en que llegarán los cristales: ')
+                    original_arrival_date_day = input(' Ingrese el día en que llegarán los cristales: ')
+                    try:
+                        original_arrival_date = date(int(original_arrival_date_year),int(original_arrival_date_month),int(original_arrival_date_day))
+                    except:
+                        raise ValueError('\n No se ha ingresado una fecha válida.')
+                    editCrystalSalesOrder(db, project, original_arrival_date, effective_issuing_date, id_issuer_order, id_crystal_provider)
+                    print(' Edición realizada exitosamente.')
+                    input(' Presione Enter para continuar: ')
+                except ValueError as ve:
+                    print(ve)
+                    input(' Presione Enter para continuar: ')
+                
+            elif opt2 == '2':
+                try:
+                    contract_number = input('\n Ingrese el número de contrato del proyecto asociado a la orden de compra de cristales: ')
+                    try:
+                        with db_session:
+                            db.Projects[int(contract_number)].contract_number
+                    except:
+                        raise ValueError('\n No existe ese número de contrato.')
+                    project = db.Projects[contract_number]
+                    
+                    effective_arrival_date_year = input(' Ingrese el año de llegada de los cristales (solo presione Enter si la fecha es hoy): ')
+                    if effective_arrival_date_year == '':
+                        effective_arrival_date = date.today()
+                    else:
+                        effective_arrival_date_month = input(' Ingrese el mes de llegada de los cristales: ')
+                        effective_arrival_date_day = input(' Ingrese el día de llegada de los cristales: ')
+                        try:
+                            effective_arrival_date = date(int(effective_arrival_date_year), int(effective_arrival_date_month), int(effective_arrival_date_day))
+                        except:
+                            raise ValueError('\n No se ha ingresado una fecha válida.')
+                    editCrystalArrival(db, project, effective_arrival_date)
+                    print(' Edición realizada exitosamente.')
+                    input(' Presione Enter para continuar: ')
+                    
+                except ValueError as ve:
+                    print(ve)
+                    input(' Presione Enter para continuar: ')
+                
+        elif(opt == '6'):
             break
 
 

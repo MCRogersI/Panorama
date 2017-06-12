@@ -4,7 +4,7 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font
 from os import remove
 import Stock.features as Sf
-from Planning.features import sumDays, substractDays, doPlanning ,changePriority
+from Planning.features import sumDays, substractDays, doPlanning, changePriority, datesOverlap
 from Planning.reports import createReport
 import pandas
 from IPython.display import display
@@ -20,7 +20,7 @@ def createProject(db, contract_number = None, client_address = None, client_comu
         deadline = date(int(year), int(month), int(day))
         p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, 
                             client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline = deadline, crystal_leadtime = crystal_leadtime, sale_date = sale_date, sale_price = sale_price)
-        db.Projects[contract_number].priority = select(p for p in db.Projects if p.finished == None).count()
+        p.priority = select(p for p in db.Projects if p.finished == None).count()
         
         commit()
     PLf.doPlanning(db)
@@ -231,6 +231,7 @@ def createDelay(db, task, delay):
     Después de correr la planificacion en "delay" cantidad de dias, revisa si la planificacion que queda es factible. Si no lo es, 
     realiza una nueva planificacion'''
     with db_session:
+        db.Tasks_Delays(task = task, delay = delay)
         emp_tasks = select(et for et in db.Employees_Tasks if et.task == task)
         #corremos la planned_end_date de los Employees_Tasks pertinentes
         if delay > 0:
@@ -262,28 +263,22 @@ def createEmployeeActivity(db, employee, activity, initial_year, initial_month, 
     with db_session:
         db.Employees_Activities(employee = employee, activity = activity, initial_date = initial_date, end_date = end_date)
         commit()
-    if updateEmployeeProjects(db, employee, initial_date, end_date):
+    if activitiyEmployeeOverlap(db, employee, initial_date, end_date):
         PLf.doPlanning(db)
 
         
-def updateEmployeeProjects(db, employee, initial_date, end_date):
+def activitiyEmployeeOverlap(db, employee, initial_date, end_date):
     '''
     Este metodo revisa si un empleado tiene tareas asignadas durante las fechas impuestas y ,de ser cierto, deja móviles dichas actividades para una
     futura replanificación. Es un método auxiliar, por lo que no es recomendable usarlo directamente.
     '''
-    changed = False
     with db_session:
         emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id == employee)
         for et in emp_tasks:
-            if (initial_date >= et.planned_initial_date and initial_date <= et.planned_end_date)\
-                    or (end_date >= et.planned_initial_date and end_date <= et.planned_end_date):
-                et.task.project.fixed_planning = False
-                ##aqui se va a desfijar el proyecto para que no haga planificaciones infactibles
-                delete(er for er in db.Employees_Restrictions if er.employee.id == employee and er.project == et.task.project and er.fixed == True)
-                ## esto desfija al empleado de un proyecto si se va de vacaciones, privilegiando la fecha de entrega sobre la preferencia del cliente
-                changed = True
+            if datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
+                return True
         commit()
-    return changed
+    return False
 
         
 def deleteEmployeeActivity(db, id_employee_activity):
@@ -305,25 +300,23 @@ def createProjectActivity(db, project, activity, initial_year, initial_month, in
     with db_session:
         db.Projects_Activities(project = project, activity = activity, initial_date = initial_date, end_date = end_date)
         commit()
-    if updateProjectActivities(db, project, initial_date, end_date):
-        PLf.doPlanning(db)
+    if activitiyProjectOverlap(db, project, initial_date, end_date):
+        doPlanning(db)
 
-def updateProjectActivities(db, project, initial_date, end_date):
+def activitiyProjectOverlap(db, project, initial_date, end_date):
     '''
     Este metodo revisa si un proyecto tiene tareas asignadas durante las fechas impuestas y ,de ser cierto, deja móviles dichas actividades para una
     futura replanificación. Es un método auxiliar, por lo que no es recomendable usarlo directamente.
     '''
-    changed = False
     with db_session:
-        tasks_project = select(tp for tp in db.Employees_Tasks if tp.task.project.contract_number == project and tp.task.skill.id in [1,4])
+        emp_tasks = select(et for et in db.Employees_Tasks if et.task.project == project)
         for tp in tasks_project:
-            if (initial_date >= tp.planned_initial_date and initial_date <= tp.planned_end_date)\
-                    or (end_date >= tp.planned_initial_date and end_date <= tp.planned_end_date):
+            if datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
+                # Se desfija el proyecto para que no haga planificaciones infactibles
                 tp.task.project.fixed_planning = False
-                ##aqui se va a desfijar el proyecto para que no haga planificaciones infactibles
-                changed = True
+                return True
         commit()
-    return changed
+    return False
         
 def deleteProjectActivity(db, id_project_activity):
     with db_session:
