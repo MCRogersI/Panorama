@@ -472,7 +472,7 @@ def addDelayed(db, Delayed, contract_number, task, num_workers, initial, ending,
     Delayed =  Delayed.append({'contract number': contract_number, 'task': task, 'num workers': num_workers, 'initial date': initial, 'ending date': ending, 'deadline': deadline}, ignore_index = True)
     return Delayed
 
-def checkVeto(db, contract_number, skill_id):
+def checkVeto(db, contract_number, skill_id, employee_id):
     Veto = True
     Veto1 = True
     with db_session:
@@ -480,35 +480,44 @@ def checkVeto(db, contract_number, skill_id):
         employees = select(es.employee for es in db.Employees_Skills if es.skill.id == skill_id)
         if skill_id == 1:
             for e in employees:
-                er = db.Employees_Restrictions.get(employee = e,project =project)
-                if er != None:
-                    if er.fixed == True :
+                if e.id == employee_id:
+                    pass
+                else:
+                    er = db.Employees_Restrictions.get(employee = e,project =project)
+                    if er != None:
+                        if er.fixed == True :
+                            Veto = False
+                            break
+                    else:
                         Veto = False
                         break
-                else:
-                    Veto = False
-                    break
 
         elif skill_id == 4:
             for e in employees:
-                er = db.Employees_Restrictions.get(employee = e,project =project)
-                if er != None:
-                    if er.fixed == True and e.senior == True:
+                if e.id == employee_id:
+                    pass
+                else:
+                    er = db.Employees_Restrictions.get(employee = e,project =project)
+                    if er != None:
+                        if er.fixed == True and e.senior == True:
+                            Veto = False
+                            break
+                    elif e.senior == True:
                         Veto = False
                         break
-                elif e.senior == True:
-                    Veto = False
-                    break
             for e in employees:
-                er = db.Employees_Restrictions.get(employee = e,project =project)
-                if er != None:
-                    if er.fixed == True and e.senior == False:
+                if e.id == employee_id:
+                    pass
+                else:
+                    er = db.Employees_Restrictions.get(employee = e,project =project)
+                    if er != None:
+                        if er.fixed == True and e.senior == False:
+                            Veto1 = False
+                            break
+                    elif e.senior == False:
                         Veto1 = False
                         break
-                elif e.senior == False:
-                    Veto1 = False
-                    break
-    if  not Veto and not Veto1 and skill_id ==4:
+    if   not Veto and not Veto1 and skill_id ==4:
         return Veto
     elif skill_id ==4:
         return True
@@ -543,6 +552,28 @@ def editCrystalArrival(db, project, effective_arrival_date):
     if crystal_sales_order != None:
         crystal_sales_order.effective_arrival_date = effective_arrival_date
     commit()
+    
+    
+def createEmployeesRestrictions(db, employee, project, fixed):
+    er = db.Employees_Restrictions(employee = employee, project = project, fixed = fixed)
+    # si estaba asignado al proyecto y acaba de ser vetado, hay que replanificar
+    if not fixed:
+        emp_tasks = select(et for et in db.Employees_Tasks if et.employee == employee)
+        for et in emp_tasks:
+            task = et.task
+            if task.project == project:
+                doPlanning(db)
+    # si está siendo fijado al proyecto, y actualmente no está asignado al proyecto, hay que replanificar
+    else:
+        in_project = False
+        emp_tasks = select(et for et in db.Employees_Tasks if et.task.project == project)
+        for et in emp_tasks:
+            if et.employee == employee:
+                in_project = True
+        if not in_project:
+            doPlanning(db)
+
+    return er
     
 
 #método quye realiza la planificación
