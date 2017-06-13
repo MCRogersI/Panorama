@@ -548,7 +548,7 @@ def createEmployeesRestrictions(db, employee, project, fixed):
     er = db.Employees_Restrictions(employee = employee, project = project, fixed = fixed)
     # si estaba asignado al proyecto y acaba de ser vetado, hay que replanificar
     if not fixed:
-        emp_tasks = select(et for et in db.Employees_Tasks if et.employee = employee)
+        emp_tasks = select(et for et in db.Employees_Tasks if et.employee == employee)
         for et in emp_tasks:
             task = et.task
             if task.project == project:
@@ -556,7 +556,7 @@ def createEmployeesRestrictions(db, employee, project, fixed):
     # si está siendo fijado al proyecto, y actualmente no está asignado al proyecto, hay que replanificar
     else:
         in_project = False
-        emp_tasks = select(et for et in db.Employees_Tasks if et.task.project = project)
+        emp_tasks = select(et for et in db.Employees_Tasks if et.task.project == project)
         for et in emp_tasks:
             if et.employee == employee:
                 in_project = True
