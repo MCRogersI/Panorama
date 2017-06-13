@@ -4,11 +4,6 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Tarea11" />
-    <orderEntry type="module" module-name="I2DisMec" />
-    <orderEntry type="module" module-name="TAREA 4 ANALISIS Y DISEÑO HIDRÁULICO" />
-    <orderEntry type="module" module-name="Tarea 12" />
-    <orderEntry type="module" module-name="I2secondRound" />
   </component>
   <component name="TestRunnerService">
     <option name="projectConfiguration" value="Nosetests" />

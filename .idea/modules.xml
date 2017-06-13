@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://D:/PUC 2017-1/Diseño Mecánico/Estudio I2/I2DisMec/.idea/I2DisMec.iml" filepath="D:/PUC 2017-1/Diseño Mecánico/Estudio I2/I2DisMec/.idea/I2DisMec.iml" />
-      <module fileurl="file://D:/PUC 2017-1/ADH/I2secondRound/.idea/I2secondRound.iml" filepath="D:/PUC 2017-1/ADH/I2secondRound/.idea/I2secondRound.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Panorama.iml" filepath="$PROJECT_DIR$/.idea/Panorama.iml" />
-      <module fileurl="file://D:/PUC 2017-1/ADH/TAREA 4 ANALISIS Y DISEÑO HIDRÁULICO/.idea/TAREA 4 ANALISIS Y DISEÑO HIDRÁULICO.iml" filepath="D:/PUC 2017-1/ADH/TAREA 4 ANALISIS Y DISEÑO HIDRÁULICO/.idea/TAREA 4 ANALISIS Y DISEÑO HIDRÁULICO.iml" />
-      <module fileurl="file://D:/PUC 2017-1/Hidrología/Tarea 12/.idea/Tarea 12.iml" filepath="D:/PUC 2017-1/Hidrología/Tarea 12/.idea/Tarea 12.iml" />
-      <module fileurl="file://D:/PUC 2017-1/Hidrología/Tarea11/.idea/Tarea11.iml" filepath="D:/PUC 2017-1/Hidrología/Tarea11/.idea/Tarea11.iml" />
     </modules>
   </component>
 </project>
