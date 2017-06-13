@@ -9,7 +9,7 @@ import Planning.features as PLf
 import Planning.reports as PLr
 import Users.features as Uf
 import Stock.usuario as Su
-import Tests.Case9 as case9
+# import Tests.Case9 as case9
 import Planning.usuario as PlanU
 import Stock.reports as Sr
 import Stock.features as Sf
