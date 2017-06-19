@@ -13,13 +13,13 @@ from tabulate import tabulate
 
 
 def createProject(db, contract_number = None, client_address = None, client_comuna = None,
-                  client_name = None, client_rut = None, linear_meters = None, year = None, month = None,
+                  client_name = None, client_rut = None, linear_meters = None, square_meters = None, year = None, month = None,
                   day = None, crystal_leadtime = None, sale_date = None, sale_price = None,estimated_cost = None, sale_date_year=None,sale_date_month=None,sale_date_day=None):
     import Planning.features as PLf
     with db_session:
         deadline = date(int(year), int(month), int(day))
         p = db.Projects(contract_number = contract_number, client_address = client_address, client_comuna=client_comuna, 
-                            client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, deadline = deadline, crystal_leadtime = crystal_leadtime, sale_date = sale_date, sale_price = sale_price)
+                            client_name = client_name, client_rut = client_rut, linear_meters = linear_meters, square_meters = square_meters, deadline = deadline, crystal_leadtime = crystal_leadtime, sale_date = sale_date, sale_price = sale_price)
         p.priority = select(p for p in db.Projects if p.finished == None).count()
         
         commit()
@@ -30,13 +30,13 @@ def printProjects(db):
         print('\n')
         pr = db.Projects.select()
         data = [p.to_dict() for p in pr]
-        df = pandas.DataFrame(data, columns = ['contract_number','client_address','client_comuna','client_name','client_rut','linear_meters','deadline','priority','real_linear_meters'\
+        df = pandas.DataFrame(data, columns = ['contract_number','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
         ,'estimated_cost','real_cost','sale_price','fixed_planning','fixed_priority','crystal_leadtime','sale_date','finished'])                    
-        df.columns = ['Número de Contrato','Dirección','Comuna','Nombre','Rut','Metros Lineales','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
+        df.columns = ['Número de Contrato','Dirección','Comuna','Nombre','Rut','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
         ,'Costo Estimado','Costo Real','Precio de Venta','Planificación Fija','Prioridad Fijada','Tiempo Entrega Cristales','Fecha de Venta','Proyecto Finalizado']
-        print( tabulate(df.drop(df.columns[[8,9,10,11,12,13,14,15,16]], axis = 1), headers='keys', tablefmt='psql'))
-        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7]], axis = 1), headers='keys', tablefmt='psql'))
-def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None):
+        print( tabulate(df.drop(df.columns[[9,10,11,12,13,14,15,16,17]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8]], axis = 1), headers='keys', tablefmt='psql'))
+def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None,new_square_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None):
     with db_session:
         p = db.Projects[contract_number]
         if new_client_address != None:
@@ -49,6 +49,8 @@ def editProject(db, contract_number, new_client_address = None, new_client_comun
             p.client_rut = new_client_rut
         if new_linear_meters != None:
             p.linear_meters = new_linear_meters
+        if new_square_meters != None:
+            p.square_meters = new_square_meters
         if new_deadline != None:
             p.deadline = new_deadline
         if new_real_linear_meters != None:

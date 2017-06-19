@@ -18,41 +18,23 @@ import numpy as np
 import getpass
 import os
 
-#para ajustar el tamaño de la consola desde Python, sin perder la capacidad de hacer scrolling
-# try:
-# from ctypes import windll, byref
-# from ctypes import wintypes
-# STDOUT = -11
+try:
+    from win32console import PyConsoleScreenBufferType, GetStdHandle, STD_OUTPUT_HANDLE, PyCOORDType, PySMALL_RECTType
 
-# hdl = windll.kernel32.GetStdHandle(STDOUT)
-
-
-# rect = wintypes.SMALL_RECT(0, 200, 100, 150) # (left, top, right, bottom)
-# windll.kernel32.SetConsoleWindowInfo(hdl, True, byref(rect))
-
-# bufsize = wintypes._COORD(200, 90) # rows, columns
-# windll.kernel32.SetConsoleScreenBufferSize(hdl, bufsize)
-# except:
-    # print("Fuck you")
-
-    
-    
-from win32console import PyConsoleScreenBufferType, GetStdHandle, STD_OUTPUT_HANDLE, PyCOORDType, PySMALL_RECTType
-
-# Get the standard output buffers.
-win_out = PyConsoleScreenBufferType(GetStdHandle(STD_OUTPUT_HANDLE))
-PyCOORD = win_out.GetLargestConsoleWindowSize()
-win_out.SetConsoleScreenBufferSize(PyCOORDType(2*PyCOORD.X, 2*PyCOORD.Y))
-Left = 0
-Right = PyCOORD.X - 1
-Top = 0
-Bottom = PyCOORD.Y - 1
-win_out.SetConsoleWindowInfo(True, PySMALL_RECTType(Left, Top, Right, Bottom))
-win_out.Close()
-
-
-# PyCOORDType(160, 200)
-    
+    # Get the standard output buffers.
+    win_out = PyConsoleScreenBufferType(GetStdHandle(STD_OUTPUT_HANDLE))
+    # Get largest console window size
+    PyCOORD = win_out.GetLargestConsoleWindowSize()
+    # Set console buffer and console window size
+    win_out.SetConsoleScreenBufferSize(PyCOORDType(2*PyCOORD.X, 2*PyCOORD.Y))
+    Left = 0
+    Right = PyCOORD.X - 1
+    Top = 0
+    Bottom = PyCOORD.Y - 1
+    win_out.SetConsoleWindowInfo(True, PySMALL_RECTType(Left, Top, Right, Bottom))
+    win_out.Close()
+except:
+    pass
 
 def console(level, user):
     while True:
