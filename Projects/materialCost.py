@@ -239,7 +239,7 @@ def writeInfoComponents(db, ws_read_manufacturing, royalty_porcentaje, seguros_p
         component2 = writeComponent(db, ws_read_manufacturing, royalty_porcentaje, seguros_porcentaje, euro, \
                             factor_perdida, rows_read, columns_read, rows)
         
-        # partimos por Components to component box
+        #ahora Components to component box
         #recuperamos el factor de perdida
         warning = ' Aviso: el factor de perdida para Components to Component Box no se encuentra registrado en la base de datos. Se considerara como 0.'
         try:
