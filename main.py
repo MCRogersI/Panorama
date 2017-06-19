@@ -18,15 +18,15 @@ import numpy as np
 import getpass
 import os
 
-Uf.createUser(db,'1', 1,'1')
-Uf.createUser(db,'2', 2,'2')
-Uf.createUser(db,'3', 3,'3')
-Uf.createUser(db,'4', 4,'4')
-Uf.createUser(db,'5', 5,'5')
-Uf.createUser(db,'6', 6,'6')
-Uf.createUser(db,'7', 7,'7')
-Uf.createUser(db,'8', 8,'8')
-Uf.createUser(db,'9', 9,'9')
+# Uf.createUser(db,'1', 1,'1')
+# Uf.createUser(db,'2', 2,'2')
+# Uf.createUser(db,'3', 3,'3')
+# Uf.createUser(db,'4', 4,'4')
+# Uf.createUser(db,'5', 5,'5')
+# Uf.createUser(db,'6', 6,'6')
+# Uf.createUser(db,'7', 7,'7')
+# Uf.createUser(db,'8', 8,'8')
+# Uf.createUser(db,'9', 9,'9')
 
 
 def console(level, user):

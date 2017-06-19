@@ -4,6 +4,7 @@ from Projects.features import createProject, printProjects, editProject, deleteP
 from Projects.costs import estimateCost
 from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts, updateCrystalsParameters, updateProfilesParameters
 from Planning.features import sumDays, editCrystalSalesOrder, editCrystalArrival
+from Projects.engagements import createEngagements
 import os
 import pandas
 from tabulate import tabulate
@@ -52,11 +53,18 @@ def projects_console(db, level):
                         raise ValueError('\n Debe ingresar un rut \n')
                     linear_meters = input(" Ingrese los metros lineales del proyecto: ")
                     try:
-                        float(linear_meters)
+                        linear_meters = float(linear_meters)
                     except:
                         raise ValueError('\n Los metros lineales deben ser un número\n')
                     if float(linear_meters) <0:
-                        raise ValueError('\n Los metros lineales deben ser un número entero positivo \n')
+                        raise ValueError('\n Los metros lineales deben ser un número positivo \n')
+                    square_meters = input(" Ingrese los metros cuadrados del proyecto: ")
+                    try:
+                        square_meters = float(square_meters)
+                    except:
+                        raise ValueError('\n Los metros cuadrados deben ser un número\n')
+                    if float(linear_meters) <0:
+                        raise ValueError('\n Los metros cuadrados deben ser un número positivo \n')
                     year = input(" Ingrese el año de la fecha de entrega pactada del proyecto: ")
                     try:
                         int(year)
@@ -113,7 +121,7 @@ def projects_console(db, level):
                             raise ValueError('\n El precio de venta debe ser un número posititvo.')
                     except:
                         raise ValueError('\n El precio debe ser un número entero.')
-                    createProject(db, contract_number, client_address, client_comuna_parsed, client_name, client_rut, linear_meters, year, month, day, crystal_leadtime, sale_date, sale_price)
+                    createProject(db, contract_number, client_address, client_comuna_parsed, client_name, client_rut, linear_meters, square_meters, year, month, day, crystal_leadtime, sale_date, sale_price)
                     input('\n Proyecto creado con éxito. Presione Enter para continuar: ')
                 except ValueError as ve:
                     print(ve)
@@ -169,20 +177,30 @@ def projects_console(db, level):
                         if new_linear_meters != None:
                             try:
                                 new_linear_meters = float(new_linear_meters)
-                                if new_linear_meters < 0:
-                                    raise ValueError('\n Los metros lineales deben ser un número positivo. \n')
                             except:
                                 raise ValueError('\n Los metros lineales deben ser un número. \n')
+                            if new_linear_meters < 0:
+                                raise ValueError('\n Los metros lineales deben ser un número positivo. \n')                            
+                        new_square_meters = input("Ingrese los metros cuadrados del proyecto, solo presione Enter si se mantienen: ")
+                        if new_linear_meters.replace(' ','') == '':
+                            new_linear_meters = None
+                        if new_linear_meters != None:
+                            try:
+                                new_linear_meters = float(new_linear_meters)
+                            except:
+                                raise ValueError('\n Los metros lineales deben ser un número. \n')
+                            if new_linear_meters < 0:
+                                raise ValueError('\n Los metros lineales deben ser un número positivo. \n')                        
                         new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto, solo presione Enter si no se conocen: ")
                         if new_real_linear_meters.replace(' ','') == '':
                             new_real_linear_meters = None
                         if new_real_linear_meters != None:
                             try:
                                 new_real_linear_meters = float(new_real_linear_meters)
-                                if new_real_linear_meters < 0:
-                                    raise ValueError('\n Los metros lineales deben ser un número positivo. \n')
                             except:
                                 raise ValueError('\n Los metros lineales deben ser un número positivo. \n')
+                            if new_real_linear_meters < 0:
+                                raise ValueError('\n Los metros lineales deben ser un número positivo. \n')                            
                         new_deadline_year = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
                         new_deadline_month = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
                         new_deadline_day = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
@@ -222,7 +240,7 @@ def projects_console(db, level):
                                 new_crystal_leadtime = int(new_crystal_leadtime)
                             except:
                                 raise ValueError('\n La cantidad de días debe ser un número entero \n')
-                        editProject(db, contract_number, new_client_address, new_client_comuna_parsed, new_client_name, new_client_rut, new_linear_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost, new_crystal_leadtime=new_crystal_leadtime)
+                        editProject(db, contract_number, new_client_address, new_client_comuna_parsed, new_client_name, new_client_rut, new_linear_meters, new_square_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost, new_crystal_leadtime=new_crystal_leadtime)
                     except ValueError as ve:
                         print(ve)
                         input('Presione cualquier tecla para volver \n')
@@ -318,7 +336,8 @@ def projects_console(db, level):
                     file_dir = file_name + ".xlsx"
                     if os.path.isfile(file_dir):
                         if (estimateCost(db, contract_number, file_name)):
-                           input('\n Costo estimado exitosamente.')
+                            createEngagements(db, contract_number, file_name)
+                            input('\n Costo estimado exitosamente.')
 
                     else:
                         raise ValueError('\n Archivo no encontrado.')
