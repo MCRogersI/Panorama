@@ -10,6 +10,7 @@ import os
 #para crear nombres de archivo al azar
 import random
 import string
+import copy
 
 #################
 # Global report #
@@ -436,22 +437,26 @@ def createGlobalReportModified(db):
     by_default_sheet.title = 'Introducción del informe'
     wb.remove_sheet(by_default_sheet)
     ws = wb.create_sheet(
-        "Informe BD compacto",index=0)
+        "Informe BD",index=0)
 
     widths = {"A": 5, "B": 35, "C": 5,"D": 35, "E": 35, "F": 35,
               "G": 35, "H": 35, "I": 35,"J": 35, "K": 35, "L": 35,
               "M": 35, "N": 35, "O": 45,"P": 45, "Q": 45, "R": 45,
               "S": 45, "T": 45, "U": 45,"V": 45, "W": 45, "X": 45,
               "Y": 45, "Z": 45, "AA": 45, "AB": 45, "AC": 45,"AD":45,
-              "AE": 45, "AF":45, "AG":45, "AH":45, "AI":45, "AJ":45, "AK":45, "AL":45}
-    # , "AF":45, "AG":45, "AH":45, "AI":45, "AJ":45, "AK":45, "AL":45
+              "AE": 45, "AF":45, "AG":45, "AH":45, "AI":45, "AJ":45, "AK":45, "AL":45,
+              "AM":45,"AN":45,"AO":45,"AP":45,"AQ":45,"AR":45,"AS":45,"AT":45,"AU":45,
+              "AV":45,"AW":45,"AX":45,"AY":45,"AZ":45,"BA":45,"BB":45,"BC":45,"BD":45,"BE":45,"BF":45,"BG":45}
+
     heights = {"A": 10, "B": 10, "C": 10, "D": 10, "E": 10, "F": 10,
               "G": 10, "H": 10, "I": 10, "J": 10, "K": 10, "L": 10,
               "M": 10, "N": 10, "O": 10,"P": 10, "Q": 10, "R": 10,
               "S": 10, "T": 10, "U": 10,"V": 10, "W": 10, "X": 10,
               "Y": 10, "Z": 10, "AA": 10, "AB": 10, "AC": 10,"AD":10,
-               "AE":10, "AF":10, "AG":10, "AH":10, "AI":10, "AJ":10, "AK":10, "AL":10}
-    # , "AF":10, "AG":10, "AH":10, "AI":10, "AJ":10, "AK":10, "AL":10
+               "AE":10, "AF":10, "AG":10, "AH":10, "AI":10, "AJ":10, "AK":10, "AL":10,
+               "AM": 10, "AN": 10, "AO": 10, "AP": 10, "AQ": 10,"AR":10,"AS":10,"AT":10,"AU":10,
+               "AV":10,"AW":10,"AX":10,"AY":10,"AZ":10,"BA":10,"BB":10,"BC":10,"BD":10,"BE":10,"BF":10,"BG":10}
+
 
     thin_border = Border(left=Side(style='thin'),
                          right=Side(style='thin'),
@@ -460,8 +465,9 @@ def createGlobalReportModified(db):
 
 
     columns = ["A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB",
-               "AC","AD","AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL"]
-    # , "AF", "AG", "AH", "AI", "AJ", "AK", "AL"
+               "AC","AD","AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ",
+               "BA","BB","BC","BD","BE","BF","BG"]
+
     for c in columns:
         ws.column_dimensions[c].width = widths[c]
         ws.column_dimensions[c].height = heights[c]
@@ -481,7 +487,14 @@ def createGlobalReportModified(db):
         ,"FECHA ORIGINAL TÉRMINO DISEÑO","FECHA EFECTIVA INICIO DISEÑO","FECHA EFECTIVA TÉRMINO DISEÑO",
              "FECHA ORIGINAL INICIO FABRICACIÓN","FECHA ORIGINAL TÉRMINO FABRICACIÓN","FECHA EFECTIVA INICIO FABRICACIÓN",
              "FECHA EFECTIVA TÉRMINO FABRICACIÓN","FECHA ORIGINAL INICIO INSTALACIÓN","FECHA ORIGINAL TÉRMINO INSTALACIÓN",
-             "FECHA EFECTIVA INICIO INSTALACIÓN","FECHA EFECTIVA TÉRMINO INSTALACIÓN","MAYOR PLAZO (ATRASO)"]
+             "FECHA EFECTIVA INICIO INSTALACIÓN","FECHA EFECTIVA TÉRMINO INSTALACIÓN","MAYOR PLAZO (ATRASO) TOTAL","COSTO ESTANDAR PERFILES",
+             "COSTO ESTANDAR HERRAJES","COSTO ESTANDAR CRISTALES","COSTO ESTANDAR M PRIMAS","COSTO ESTANDAR FABRICACION",
+             "COSTO ESTANDAR INTALACION","COSTO ESTANDAR ADICIONALES","COSTO ESTANDAR TOTAL","COSTO EFECTIVO M PRIMAS","COSTO EFECTIVO FABRICACION",
+             "COSTO EFECTIVO INSTALACION","COSTO EFECTIVO COMPLEMENTOS","ID RECTIFICADOR","ID DISEÑADOR","ID FABRICADORES","IDs INSTALADORES",
+             "FECHA PLANIFICADA RECEPCION CRISTALES","FECHA EFECTIVA RECEPCION CRISTALES","FECHA PLANIFICADA LLEGADA CRISTALES",
+             "FECHA EFECTIVA LLEGADA CRISTALES","ID EMISOR HC","ID PROVEEDOR CRISTALES","MAYOR PLAZO (ATRASO) EMISION HC",
+             "MAYOR PLAZO (ATRASO) LLEGADA CRISTALES","MAYOR PLAZO (ATRASO) RECTIFICACION","MAYOR PLAZO (ATRASO) DISEÑO",
+             "MAYOR PLAZO (ATRASO) FABRICACION","MAYOR PLAZO (ATRASO) INSTALACION"]
 
     for i in range(4,len(num_columns)+1):
         cell = ws.cell(row=3, column=i, value=texts[i-1])
@@ -494,11 +507,27 @@ def createGlobalReportModified(db):
 
     with db_session:
         projects = select(p for p in db.Projects).order_by(lambda p: p.contract_number)
+        projects = list(projects)
         r=4
         for p in projects:
+
             #Escribe el número de contrato
             project_tasks = select(t for t in db.Tasks if t.project == p)
             project_tasks = list(project_tasks)
+
+            #Revisa si hay algún fallo en alguna de las etapas del proyecto
+            hay_un_fallo = False
+            for tarea in project_tasks:
+                if tarea.failed == True:
+                    hay_un_fallo = True
+
+            #Duplica el proyecto para imprimir que tuvo fallos en una versión anterior.
+            if hay_un_fallo:
+                if projects.index(p)<len(projects)-1:
+                    projects.insert(projects.index(p),copy.deepcopy(p))
+                else:
+                    projects.append(copy.deepcopy(p))
+
             rectification = project_tasks[0]
             design = project_tasks[1]
             fabrication = project_tasks[2]
@@ -931,6 +960,301 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
+            # Escribe los costos estandar totales, en caso de haberlos
+            if p_costs != None and p_costs.standard_cost_total != None:
+                cell = ws.cell(row=r, column=39, value=p.p_costs.standard_cost_total)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=39, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe los costos efectivos de materias primas, en caso de haberlos
+            if p_costs != None and p_costs.effective_cost_material != None:
+                cell = ws.cell(row=r, column=40, value=p.p_costs.effective_cost_material)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=40, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe los costos efectivos de fabricación, en caso de haberlos
+            if p_costs != None and p_costs.effective_cost_fabrication != None:
+                cell = ws.cell(row=r, column=41, value=p.p_costs.effective_cost_fabrication)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=41, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe los costos efectivos de instalación, en caso de haberlos
+            if p_costs != None and p_costs.effective_cost_installation != None:
+                cell = ws.cell(row=r, column=42, value=p.p_costs.effective_cost_installation)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=42, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe los costos efectivos de complementos, en caso de haberlos
+            if p_costs != None and p_costs.effective_cost_complements != None:
+                cell = ws.cell(row=r, column=43, value=p.p_costs.effective_cost_complements)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=43, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+
+            # Obtenemos información de los trabajadores para cada tarea
+            # primero seleccionamos el Task asociado a este Project y a cada Skill, sabemos que es solo una con failed != True, así que tomamos first():
+            task_rect = select(t for t in db.Tasks if
+                               t.project == p and t.skill == db.Skills[1] and (
+                               t.failed == None or t.failed == False)).first()
+            task_des = select(t for t in db.Tasks if
+                              t.project == p and t.skill == db.Skills[2] and (
+                              t.failed == None or t.failed == False)).first()
+            task_fab = select(t for t in db.Tasks if
+                              t.project == p and t.skill == db.Skills[3] and (
+                              t.failed == None or t.failed == False)).first()
+            task_inst = select(t for t in db.Tasks if
+                               t.project == p and t.skill == db.Skills[4] and (
+                               t.failed == None or t.failed == False)).first()
+
+            # sabemos que para las Skills 1,2,3 solamente puede haber un empleado encargado, así que tomamos el primero. Para la Skill 4 es distinto:
+            employees_tasks_rect = select(
+                et for et in db.Employees_Tasks if et.task == task_rect).first()
+            employees_tasks_des = select(
+                et for et in db.Employees_Tasks if et.task == task_des).first()
+            employees_tasks_fab = select(
+                et for et in db.Employees_Tasks if et.task == task_fab).first()
+            employees_tasks_inst = select(
+                et for et in db.Employees_Tasks if et.task == task_inst)
+
+            instalation_employees = ""
+            for et in employees_tasks_inst:
+                instalation_employees = instalation_employees + str(et.employee) + " ;"
+
+            # Escribe el ID del rectificador, en caso de haberlos
+            if employees_tasks_rect != None:
+                cell = ws.cell(row=r, column=44, value=employees_tasks_rect.employee.id)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=44, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el ID del diseñador, en caso de haberlos
+            if employees_tasks_des != None:
+                cell = ws.cell(row=r, column=45, value=employees_tasks_des.employee.id)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=45, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el ID del fabricador, en caso de haberlos
+            if employees_tasks_fab != None:
+                cell = ws.cell(row=r, column=46, value=employees_tasks_fab.employee.id)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=46, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe los IDs de los instaladores, en caso de haberlos
+            if employees_tasks_inst != None:
+                cell = ws.cell(row=r, column=47, value=instalation_employees[0:-2])
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=47, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Obtenemos la fila correspondiente de la tabla de la información de las hojas de corte
+            p_hc = db.Crystals_Sales_Order.get(project=p)
+
+            # Escribe la fecha planificada de emisión de la hoja de corte, en caso de haberlos
+            if p_hc!= None and p_hc.original_issuing_date != None:
+                cell = ws.cell(row=r, column=48, value=p_hc.original_issuing_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=48, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha efectiva de emisión de la hoja de corte, en caso de haberlos
+            if p_hc!= None and p_hc.effective_issuing_date != None:
+                cell = ws.cell(row=r, column=49, value=p_hc.effective_issuing_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=49, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha planificada de llegada de la hoja de corte, en caso de haberlos
+            if p_hc != None and p_hc.original_arrival_date != None:
+                cell = ws.cell(row=r, column=50, value=p_hc.original_arrival_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=50, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe la fecha efectiva de llegada de la hoja de corte, en caso de haberlos
+            if p_hc != None and p_hc.effective_arrival_date != None:
+                cell = ws.cell(row=r, column=51, value=p_hc.effective_arrival_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=51, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el ID del emisor de la HC, en caso de haberlos
+            if p_hc != None and p_hc.id_issuer_order != None:
+                cell = ws.cell(row=r, column=52, value=p_hc.id_issuer_order)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=52, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el ID del proveedor de cristales, en caso de haberlos
+            if p_hc != None and p_hc.id_crystal_provider != None:
+                cell = ws.cell(row=r, column=53, value=p_hc.id_crystal_provider)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=53, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el atraso en la emisión de la HC, en caso de haberlo
+            if p_hc != None and p_hc.original_issuing_date!=None and p_hc.effective_issuing_date != None and p_hc.original_issuing_date < p_hc.effective_issuing_date:
+                cell = ws.cell(row=r, column=54, value=(
+                "{} días".format((p_hc.effective_issuing_date - p_hc.original_issuing_date).days)))
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=54, value="A tiempo")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el atraso en la recepción de los cristales, en caso de haberlo
+            if p_hc != None and p_hc.original_arrival_date!=None and p_hc.effective_arrival_date!= None and p_hc.original_arrival_date < p_hc.effective_arrival_date:
+                cell = ws.cell(row=r, column=55, value=(
+                    "{} días".format(
+                        (p_hc.effective_arrival_date - p_hc.original_arrival_date).days)))
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=55, value="A tiempo")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el atraso de la rectificación, en caso de haberlo
+            if rectification.original_end_date != None and rectification.effective_end_date != None and rectification.original_end_date < rectification.effective_end_date:
+                cell = ws.cell(row=r, column=56, value=(
+                "{} días".format((rectification.effective_end_date - rectification.original_end_date).days)))
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=56, value="A tiempo")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el atraso del diseño, en caso de haberlo
+            if design.original_end_date != None and design.effective_end_date != None and design.original_end_date < design.effective_end_date:
+                cell = ws.cell(row=r, column=57, value=(
+                    "{} días".format((
+                                         design.effective_end_date - design.original_end_date).days)))
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=57, value="A tiempo")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el atraso de la fabricación, en caso de haberlo
+            if fabrication.original_end_date != None and fabrication.effective_end_date != None and fabrication.original_end_date < fabrication.effective_end_date:
+                cell = ws.cell(row=r, column=58, value=(
+                    "{} días".format((
+                                         fabrication.effective_end_date - fabrication.original_end_date).days)))
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=58, value="A tiempo")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                
+            # Escribe el atraso de la fabricación, en caso de haberlo
+            if installation.original_end_date != None and installation.effective_end_date != None and installation.original_end_date < installation.effective_end_date:
+                cell = ws.cell(row=r, column=59, value=(
+                    "{} días".format((
+                                         installation.effective_end_date - installation.original_end_date).days)))
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=59, value="A tiempo")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
             project_counter = 1
             for pt in project_tasks:
                 if pt.fail_cost != None:
@@ -956,7 +1280,9 @@ def createGlobalReportModified(db):
 
 # from database import db
 # createGlobalReportModified(db)
-
+# with db_session:
+#     t = db.Tasks[3]
+#     t.failed = True
 #--------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------
