@@ -52,12 +52,12 @@ Las lineas comentadas son las que están revisadas
 # - Que reclame si un empleado es editado para no tener skill 
 # - Que replanifique si se cambia de skill y estaba en la planificación 
 
-7) Revisar que editar Projects funcione:
+7) Revisar que Editar Projects funcione:
 
 # - Que cambie la prioridad de el resto de los proyectos adecuadamente
 - Que meter al agregar restricciones cambie la planificación si corresponde.
     nota: agregar restricciones de asignación funciona bien pero las de tiempo no hacen nada
     
 8) Revisar que createSku funcione:
--Que se agregue efectivamente
--Que reclame si ya existe
+# -Que se agregue efectivamente
+# -Que reclame si ya existe
