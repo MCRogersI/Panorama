@@ -253,7 +253,7 @@ def employees_console(db, level, user):
                         try:
                             date(int(end_year),int(end_month),int(end_day))
                         except:
-                            raise ValueError('\n La fecha es inválida.')
+                            raise ValueError('\n No es una fecha válida.')
                         createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day)
                         input('\n Actividad creada. Presione Enter para continuar. ')
                     except ValueError as ve:

@@ -526,13 +526,13 @@ def createGlobalReportModified(db):
                     numero_de_fallos +=1
 
             #Duplica el proyecto para imprimir que tuvo fallos en una versión anterior.
-            for fallo in range(0,numero_de_fallos):
-                p_clon = copy.deepcopy(p)
+            # for fallo in range(0,numero_de_fallos):
+                # p_clon = copy.deepcopy(p)
 
-                if projects.index(p)<len(projects)-1:
-                    projects.insert(projects.index(p),p_clon)
-                else:
-                    projects.append(p_clon)
+                # if projects.index(p)<len(projects)-1:
+                    # projects.insert(projects.index(p),p_clon)
+                # else:
+                    # projects.append(p_clon)
 
             rectification = project_tasks[0]
             design = project_tasks[1]
@@ -1313,8 +1313,8 @@ def createGlobalReportModified(db):
             raise
         input("\n Ha ocurrido un error porque el archivo Reporte global de planificación.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.")
 
-from database import db
-createGlobalReportModified(db)
+# from database import db
+# createGlobalReportModified(db)
 # with db_session:
 #     t = db.Tasks[3]
 #     t.failed = True
