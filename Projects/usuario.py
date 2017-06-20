@@ -534,7 +534,6 @@ def tasks_console(db, level):
                 with db_session:
                     if db.Projects.get(contract_number = contract_number) == None:
                         raise ValueError('\n Número de contrato inexistente \n')
-<<<<<<< HEAD
                 id_skill = input(" Ingrese el ID de la habilidad donde ocurrió el atraso (1: rect, 2: dis, 3: fab, 4: ins): ")
                 try:
                     id_skill = int(id_skill)
@@ -542,12 +541,6 @@ def tasks_console(db, level):
                     raise ValueError('\n Ingreso de habilidad inválida. ')
                 if int(id_skill) not in [1,2,3,4]:
                     raise ValueError('\n ID de habilidad no válida. \n')
-=======
-                id_skill = input(" Ingrese el ID de la habilidad donde ocurrió el fallo (1: rect, 2: dis, 3: fab, 4: ins): ")
-                if id_skill != '1' and id_skill != '2' and id_skill != '3' and id_skill != '4':
-                    raise ValueError('\n ID de habilidad no válida.')
-
->>>>>>> 2d88c47a3b8d4e0ea4db7a56b29eaab599323ae5
                 with db_session:
                     task = db.Tasks.get( project = db.Projects[contract_number], skill = db.Skills[id_skill], failed = None)
                     if task == None:

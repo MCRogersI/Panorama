@@ -72,6 +72,8 @@ def deleteProject(db, contract_number):
 
 def finishProject(db, contract_number):
     with db_session:
+        new_priority = select(p for p in db.Projects if p.finished == None).count()
+        changePriority(db, contract_number, new_priority)
         db.Projects[contract_number].finished = True
         select(r for r in db.Employees_Restrictions if r.project.contract_number == contract_number).delete()
         db.Projects[contract_number].priority = -1
