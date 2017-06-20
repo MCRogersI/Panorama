@@ -526,13 +526,13 @@ def createGlobalReportModified(db):
                     numero_de_fallos +=1
 
             #Duplica el proyecto para imprimir que tuvo fallos en una versión anterior.
-            for fallo in range(0,numero_de_fallos):
-                p_clon = copy.deepcopy(p)
+            # for fallo in range(0,numero_de_fallos):
+                # p_clon = copy.deepcopy(p)
 
-                if projects.index(p)<len(projects)-1:
-                    projects.insert(projects.index(p),p_clon)
-                else:
-                    projects.append(p_clon)
+                # if projects.index(p)<len(projects)-1:
+                    # projects.insert(projects.index(p),p_clon)
+                # else:
+                    # projects.append(p_clon)
 
             rectification = project_tasks[0]
             design = project_tasks[1]
@@ -1313,8 +1313,8 @@ def createGlobalReportModified(db):
             raise
         input("\n Ha ocurrido un error porque el archivo Reporte global de planificación.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.")
 
-from database import db
-createGlobalReportModified(db)
+# from database import db
+# createGlobalReportModified(db)
 # with db_session:
 #     t = db.Tasks[3]
 #     t.failed = True
@@ -1468,7 +1468,7 @@ def createPlanningReport(db, wb):
     # llenar con los datos de Delayed
     next_row = 4
     with db_session:
-        projects = select(p for p in db.Projects).order_by(lambda p: p.contract_number)
+        projects = select(p for p in db.Projects if p.finished == None).order_by(lambda p: p.contract_number)
         for p in projects:
             # primero seleccionamos el Task asociado a este Project y a cada Skill, sabemos que es solo una con failed != True, así que tomamos first():
             task_rect = select(t for t in db.Tasks if t.project == p and t.skill == db.Skills[1] and (t.failed == None or t.failed == False)).first()

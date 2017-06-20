@@ -109,7 +109,7 @@ def employees_console(db, level, user):
                         with db_session:
                             e = db.Employees[id_empleado]
                     except:
-                        raise ValueError('\n Empleado inexistente. \n')
+                        raise ValueError('\n Empleado inexistente.')
                     new_name = input(" Ingrese el nuevo nombre del empleado, solo presione Enter si lo mantiene: ")
                     new_zone = input(" Ingrese el código de la nueva zona del empleado, solo presione Enter si la mantiene: ")
                     new_perf_rect = input(" Ingrese el rendimiento histórico en rectificación del empleado, solo presione Enter si mantiene la información actual: ")
@@ -132,26 +132,26 @@ def employees_console(db, level, user):
                         try:
                             new_perf_rect = float(new_perf_rect)
                             if new_perf_rect < 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                                raise ValueError('\n El rendimiento no puede ser negativo.')
                             elif new_perf_rect == 0:
                                 skills.remove(1)
                             else:
                                 skill_added = True
                         except:
-                            raise ValueError('\n El rendimiento debe ser un número. \n')
+                            raise ValueError('\n El rendimiento debe ser un número.')
                     if new_perf_des == '':
                         new_perf_des = None
                     else:
                         try:
                             new_perf_des = float(new_perf_des)
                             if new_perf_des < 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                                raise ValueError('\n El rendimiento no puede ser negativo.')
                             elif new_perf_des == 0:
                                 skills.remove(2)
                             else:
                                 skill_added = True
                         except:
-                            raise ValueError('\n El rendimiento debe ser un número. \n')
+                            raise ValueError('\n El rendimiento debe ser un número.')
                        
                     if new_perf_fab == '':
                         new_perf_fab = None
@@ -159,26 +159,26 @@ def employees_console(db, level, user):
                         try:
                             new_perf_fab = float(new_perf_fab)
                             if new_perf_fab < 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                                raise ValueError('\n El rendimiento no puede ser negativo.')
                             elif new_perf_fab == 0:
                                 skills.remove(3)
                             else:
                                 skill_added = True
                         except:
-                            raise ValueError('\n El rendimiento debe ser un número. \n')
+                            raise ValueError('\n El rendimiento debe ser un número.')
                     if new_perf_ins == '':
                         new_perf_ins = None
                     else:
                         try:
                             new_perf_ins = float(new_perf_ins)
                             if new_perf_ins < 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo. \n')
+                                raise ValueError('\n El rendimiento no puede ser negativo.')
                             elif new_perf_ins == 0:
                                 skills.remove(4)
                             else:
                                 skill_added = True
                         except:
-                            raise ValueError('\n El rendimiento debe ser un número. \n')
+                            raise ValueError('\n El rendimiento debe ser un número.')
                         new_senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
                         try:
                             if int(new_senior) == 0:
@@ -186,9 +186,9 @@ def employees_console(db, level, user):
                             elif int(new_senior) == 1:
                                 new_senior = True
                             else:
-                                raise ValueError('\n Debe ingresar 0 ó 1. \n')
+                                raise ValueError('\n Debe ingresar 0 ó 1.')
                         except:
-                            raise ValueError('\n Debe ingresar 0 ó 1. \n')
+                            raise ValueError('\n Debe ingresar 0 ó 1.')
                     with db_session:
                         es = select(es for es in db.Employees_Skills if es.employee == db.Employees[id_empleado] and es.skill.id in skills)
                         if len(es) == 0 and not skill_added:
@@ -197,10 +197,10 @@ def employees_console(db, level, user):
                     input('\n Empleado editado exitosamente. Presione Enter para continuar. ')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione Enter para continuar \n')
+                    input(' Presione Enter para continuar \n')
             else:
                 print('\n Acceso denegado.')
-                input('\n Presione Enter para continuar. ')
+                input(' Presione Enter para continuar. ')
         if(opt == '3'):
             if (level == 1):
                 try:
@@ -209,17 +209,17 @@ def employees_console(db, level, user):
                         try:
                             int(idEmpleado)
                         except:
-                            raise ValueError('\n El rut de un empleado debe ser un número entero \n')
+                            raise ValueError('\n El rut de un empleado debe ser un número entero.')
                         if db.Employees.get(id = int(idEmpleado)) == None:
-                            raise ValueError('\n Empleado inexistente \n')
+                            raise ValueError('\n Empleado inexistente')
                     deleteEmployee(db, idEmpleado)
                     input('\n Empleado eliminado. Presione Enter para continuar. ')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione cualquier tecla para continuar \n')
+                    input('\n Presione Enter para continuar.')
             else:
                 print('\n Acceso denegado.')
-                input('\n Presione Enter para continuar. ')
+                input(' Presione Enter para continuar. ')
         if(opt == '4'):
             if(level == 1):
                 opt_employees_activities = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de una actividad. \
@@ -233,7 +233,7 @@ def employees_console(db, level, user):
                                                                                 \n Ingrese la alternativa elegida: ")
                     try:
                         if int(activity) != 1 and int(activity)!=2:
-                            raise ValueError('\n Debe elegir entre licencia y vacaciones. \n')
+                            raise ValueError('\n Debe elegir entre licencia y vacaciones.')
                         employee = input("\n Ingrese el RUT del empleado asociado a la actividad elegida (sin puntos ni número identificador): ")
                         try:
                             with db_session:
@@ -255,15 +255,15 @@ def employees_console(db, level, user):
                         except:
                             raise ValueError('\n La fecha es inválida.')
                         createEmployeeActivity(db, employee, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day)
-                        input('\n Actividad creada. Presione Enter para continuar. ')
+                        input('\n Actividad creada. Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
-                        input(' Presione Enter para continuar. ')
+                        input(' Presione Enter para continuar.')
                 elif opt_employees_activities == '2':
                     try:
                         id_employee_activity = input("\n Ingrese el ID de la actividad que quiere eliminar: ")
                         deleteEmployeeActivity(db, id_employee_activity)
-                        input(' \n Actividad eliminada. Presione Enter para continuar. ')
+                        input('\n Actividad eliminada. Presione Enter para continuar. ')
                     except:
                         print('\n Actividad inexistente.')
                         input(' Presione Enter para continuar. ')
