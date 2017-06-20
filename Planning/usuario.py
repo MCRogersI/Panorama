@@ -193,5 +193,6 @@ def planning_console(db,level):
             except IndexError:
                 print('\n No se pudo hacer reporte debido a que la planificación no está actualizada.')
                 input(' Presione Enter para continuar: ')
+
         if opt == '5':
             break

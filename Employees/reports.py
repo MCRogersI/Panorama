@@ -4584,7 +4584,7 @@ def createWorkersReportWide(db):
                             # assign
                             cell.alignment = wrap_alignment
                             cell.fill = PatternFill("solid", fgColor="ffff00")
-                    task_counter = 0
+                    task_counter +=1
                 activity_counter = 0
                 for activity_date_block in activities_dates_blocks:
                     for d in activity_date_block:
@@ -4604,7 +4604,7 @@ def createWorkersReportWide(db):
                                 cell.fill = PatternFill("solid", fgColor="E60404")
                             elif activities[activity_counter].id == 2:
                                 cell.fill = PatternFill("solid", fgColor="810777")
-                    activity_counter = 0
+                    activity_counter +=1
                 if isHoliday(dates[i]):
                     cell = ws.cell(row=r + 10, column=4 + i, value="Feriado")
                     cell.font = Font(bold=True)

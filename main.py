@@ -18,16 +18,23 @@ import numpy as np
 import getpass
 import os
 
-# Uf.createUser(db,'1', 1,'1')
-# Uf.createUser(db,'2', 2,'2')
-# Uf.createUser(db,'3', 3,'3')
-# Uf.createUser(db,'4', 4,'4')
-# Uf.createUser(db,'5', 5,'5')
-# Uf.createUser(db,'6', 6,'6')
-# Uf.createUser(db,'7', 7,'7')
-# Uf.createUser(db,'8', 8,'8')
-# Uf.createUser(db,'9', 9,'9')
+try:
+    from win32console import PyConsoleScreenBufferType, GetStdHandle, STD_OUTPUT_HANDLE, PyCOORDType, PySMALL_RECTType
 
+    # Get the standard output buffers.
+    win_out = PyConsoleScreenBufferType(GetStdHandle(STD_OUTPUT_HANDLE))
+    # Get largest console window size
+    PyCOORD = win_out.GetLargestConsoleWindowSize()
+    # Set console buffer and console window size
+    win_out.SetConsoleScreenBufferSize(PyCOORDType(2*PyCOORD.X, 2*PyCOORD.Y))
+    Left = 0
+    Right = PyCOORD.X - 1
+    Top = 0
+    Bottom = PyCOORD.Y - 1
+    win_out.SetConsoleWindowInfo(True, PySMALL_RECTType(Left, Top, Right, Bottom))
+    win_out.Close()
+except:
+    pass
 
 def console(level, user):
     while True:
