@@ -517,16 +517,20 @@ def createGlobalReportModified(db):
 
             #Revisa si hay algún fallo en alguna de las etapas del proyecto
             hay_un_fallo = False
+            numero_de_fallos = 0
             for tarea in project_tasks:
-                if tarea.failed == True:
+                if tarea.fail_cost != None:
                     hay_un_fallo = True
+                    numero_de_fallos +=1
 
             #Duplica el proyecto para imprimir que tuvo fallos en una versión anterior.
-            if hay_un_fallo:
+            for fallo in numero_de_fallos:
+                p_clon = copy.deepcopy(p)
+
                 if projects.index(p)<len(projects)-1:
-                    projects.insert(projects.index(p),copy.deepcopy(p))
+                    projects.insert(projects.index(p),p_clon)
                 else:
-                    projects.append(copy.deepcopy(p))
+                    projects.append(p_clon)
 
             rectification = project_tasks[0]
             design = project_tasks[1]
