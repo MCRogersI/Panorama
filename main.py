@@ -45,7 +45,7 @@ def console(level, user):
                                                                   \n - 3: Tareas. \
                                                                   \n - 4: Stock. \
                                                                   \n - 5: Planificación. \
-                                                                  \n - 6: Usuarios de consola. \
+                                                                  \n - 6: Usuarios de consola.\
                                                                   \n - 7: Para salir. \
                                                                   \n Ingrese la alternativa elegida: ")
         else:

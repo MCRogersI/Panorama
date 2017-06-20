@@ -57,7 +57,25 @@ Las lineas comentadas son las que están revisadas
 # - Que cambie la prioridad de el resto de los proyectos adecuadamente
 # - Que meter al agregar restricciones cambie la planificación si corresponde.
     nota: agregar restricciones de asignación funciona bien pero las de tiempo no hacen nada
+  - Que te reclame si metes mal los datos y tire mensaje de éxito.
     
 8) Revisar que createSku funcione:
+
 # - Que se agregue efectivamente
 # - Que reclame si ya existe
+
+9) Revisar que Manejar vacaciones/periodos de licencia funcione:
+
+# - Que te permita ver la lista (y que la actualice altiro, sin tener que cerrar el programa).
+# - Que permita ingresar la actividad, reclamando si los datos se meten mal.
+# - Que al ingresar replanifique si topa con un trabajo.
+    nota: por alguna razón a Rogers le hacía el doPlanning en casos en que no era necesario
+# - Que elimine efectivamente la actividad.
+# - Que imprima todo correctamente
+
+10) Revisar que Terminar Projects funcione:
+
+# - Que te reclame si el proyecto no existe, y que entregue mensaje de éxito.
+# - Que cambie finished a True.
+# - Que se reajusten las prioridades.
+# - Borrar todos los Employees_Tasks.
