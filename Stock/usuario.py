@@ -66,6 +66,13 @@ def stock_console(db, level):
             if(opt2 == '1'):
                 try:
                     id = input("\n Ingrese el id del producto: ")
+                    try:
+                        id = int(id)
+                    except:
+                        raise ValueError('\n El ID del producto debe ser un número entero positivo \n')
+                    with db_session:
+                        if db.Stock.get(id = id) == None:
+                            raise ValueError(' El ID del producto ya existe.')
                     name = input("\n Ingrese el nuevo nombre del producto, solo presione Enter si lo mantiene: ")
                     if name == '':
                         name = None
@@ -105,16 +112,18 @@ def stock_console(db, level):
                         except:
                             raise ValueError('\n El factor de pérdida debe ser un número positivo \n')
                     editSku(db,id = id, name=name, price=price, critical_level=critical_level, real_quantity=real_quantity, waste_factor = waste_factor)
+                    input('\n Presione Enter para continuar \n')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione una tecla para continuar \n')
+                    input('\n Presione Enter para continuar \n')
             if (opt2 == '2'):
                 try:
                     file_name = input('\n Ingrese el nombre del archivo con los datos: ')
                     file_dir = file_name + ".xlsx"
                     if os.path.isfile(file_dir):
                         editAllSkus(db, file_name)
-                        input('\n Datos cargados exitosamente. Presione una tecla para continuar. ')
+                        print('\n Datos cargados exitosamente. ')
+                        input(' Presione Enter para continuar. ')
                     else:
                         raise ValueError('\n Archivo no encontrado.')
                 except ValueError as ve:
@@ -125,31 +134,32 @@ def stock_console(db, level):
                 try:
                     int(id)
                 except:
-                    raise ValueError('\n No es un ID válido. \n')
+                    raise ValueError('\n No es un ID válido.')
                 with db_session:
                     if db.Stock.get(id = id) == None:
-                        raise ValueError('\n Producto inexistente. \n')
+                        raise ValueError('\n Producto inexistente.')
                 deleteSku(db, id)
             except ValueError as ve:
                 print(ve)
-                input('\n Presione una tecla para continuar \n')
+                input('\n Presione Enter para continuar: ')
         if (opt == '4'):
             printStockConsole(db)
-            input('\n Presione una tecla para continuar \n')
+            input('\n Presione Enter para continuar: ')
         if (opt =='5') :
             try:
                 file_name = input(' Ingrese el nombre del archivo de la orden de compra: ')
                 file_dir = file_name + ".xlsx"
                 if os.path.isfile(file_dir):
                     makePurchases(db, file_name)
-                    input('\n Orden de compra ingresada exitosamente. Presione una tecla para continuar.')
+                    print('\n Orden de compra ingresada exitosamente. ')
+                    input(' Presione Enter para continuar: ')
                 else:
                     raise ValueError('\n Archivo no encontrado.')
             except ValueError as ve:
                 print(ve)
-                input(' Presione una tecla para continuar.')
+                input(' Presione Enter para continuar: ')
         if opt =='6' and level ==1:
             createStockReport(db)
-            input('\n Informe creado con éxito. Presione cualquier tecla para continuar. \n')
+            input('\n Informe creado con éxito. Presione Enter para continuar: ')
         if (opt == '7'):
             break

@@ -418,11 +418,15 @@ def tasks_console(db, level):
                     try:
                         contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
                         with db_session:
-                            if db.Tasks.get(contract_number = contract_number_fail) != None:
+                            if db.Projects.get(contract_number = contract_number_fail) == None:
                                 raise ValueError('\n Número de contrato inexistente \n')
                         if(level == 1) or (level == 2):
                             id_skill_fail = input(" Ingrese el ID de la habilidad donde ocurrió el fallo (1: rect, 2: dis, 3: fab, 4: ins): ")
-                            if int(id_skill_fail) != 1 and int(id_skill_fail) != 2 and int(id_skill_fail) != 3 and int(id_skill_fail) != 4:
+                            try:
+                                id_skill_fail = int(id_skill_fail)
+                            except:
+                                raise ValueError('\n Ingreso de habilidad inválida. ')
+                            if int(id_skill_fail) not in [1,2,3,4]:
                                 raise ValueError('\n ID de habilidad no válida. \n')
                         if(level == 4) or (level == 6) :
                             new_id_skill = 1
@@ -439,21 +443,19 @@ def tasks_console(db, level):
                             if new_id_skill == '2':
                                 new_id_skill = 4
                             else:
-                                raise ValueError('\n Error de ingreso. \n ')
-                        try:
-                            if 0 > int(id_skill_fail) or int(id_skill_fail) > 4:
-                                raise ValueError(' \n Ingreso inválido de habilidad \n')
-                        except:
-                            raise ValueError(' \n Ingreso inválido de habilidad \n')
+                                raise ValueError('\n Error de ingreso. ')
                         fail_cost = input("\n Ingrese el costo estimado de la falla: ")
                         try:
-                            if float(fail_cost) < 0 :
-                                raise ValueError(' \n El costo debe ser un número no negativo \n')
+                            fail_cost = float(fail_cost)
                         except:
                             raise ValueError(' \n El costo debe ser un número no negativo \n')
+                        if float(fail_cost) < 0 :
+                                raise ValueError(' \n El costo debe ser un número no negativo \n')
+                        
                         failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
                     except ValueError as ve:
-                        print(ve) 
+                        print(ve)
+                        input(' Presione Enter para continuar. ')
             else:
                 print('\n Acceso denegado. \n')
                 input(' Presione Enter para continuar. ')
@@ -520,7 +522,7 @@ def tasks_console(db, level):
                 try:
                     contract_number = int(contract_number)
                 except:
-                    raise ValueError('\n Número de contrato inexistente \n')
+                    raise ValueError('\n Número de contrato inexistente. ')
                 with db_session:
                     if db.Projects.get(contract_number = contract_number) == None:
                         raise ValueError('\n Número de contrato inexistente \n')
