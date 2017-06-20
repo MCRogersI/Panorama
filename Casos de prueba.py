@@ -77,5 +77,5 @@ Las lineas comentadas son las que están revisadas
 
 # - Que te reclame si el proyecto no existe, y que entregue mensaje de éxito.
 # - Que cambie finished a True.
-- Que se reajusten las prioridades.
-- Borrar todos los Employees_Tasks.
+# - Que se reajusten las prioridades.
+# - Borrar todos los Employees_Tasks.

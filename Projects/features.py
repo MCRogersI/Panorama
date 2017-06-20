@@ -72,11 +72,17 @@ def deleteProject(db, contract_number):
 
 def finishProject(db, contract_number):
     with db_session:
+        #recalculamos las prioridades
         new_priority = select(p for p in db.Projects if p.finished == None).count()
         changePriority(db, contract_number, new_priority)
-        db.Projects[contract_number].finished = True
-        select(r for r in db.Employees_Restrictions if r.project.contract_number == contract_number).delete()
         db.Projects[contract_number].priority = -1
+        #cambiamos el Project a finished = True
+        db.Projects[contract_number].finished = True
+        #eliminamos las Employees_Restrictions asociadas al proyecto
+        select(er for er in db.Employees_Restrictions if er.project.contract_number == contract_number).delete()
+        #eliminamos las Employees_Tasks asociadas al proyecto
+        select(et for et in db.Employees_Tasks if et.task.project == db.Projects[contract_number]).delete()
+        
         commit()
         
 def getNumberConcurrentProjects(db, contract_number, date):
