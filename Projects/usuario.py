@@ -144,8 +144,11 @@ def projects_console(db, level):
                         except:
                             raise ValueError('\n No existe ese número de contrato.')
                         finishProject(db, int(contract_number))
+                        print(' Proyecto terminado con éxito.')
+                        input(' Presione Enter para continuar. ')
                     except ValueError as ve:
                         print(ve)
+                        input(' Presione Enter para continuar. ')
                 if (opt2 == '2'):
                     try:
                         contract_number = input("\n Ingrese el número de contrato del proyecto a editar: ")
