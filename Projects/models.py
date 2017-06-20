@@ -9,6 +9,7 @@ def define_models(db):
         client_name = Required(str)
         client_rut = Required(str)
         linear_meters = Required(float)
+        square_meters = Required(float)
         deadline = Required(date)
         priority = Optional(int)
         real_linear_meters = Optional(float)

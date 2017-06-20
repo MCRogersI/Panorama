@@ -56,3 +56,8 @@ Las lineas comentadas son las que están revisadas
 
 # - Que cambie la prioridad de el resto de los proyectos adecuadamente
 - Que meter al agregar restricciones cambie la planificación si corresponde.
+    nota: agregar restricciones de asignación funciona bien pero las de tiempo no hacen nada
+    
+8) Revisar que createSku funcione:
+-Que se agregue efectivamente
+-Que reclame si ya existe

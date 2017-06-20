@@ -19,10 +19,13 @@ def stock_console(db, level):
             try:
                 id = input("\n Ingrese el ID del producto: ")
                 try:
-                    if int(id) < 0:
-                        raise ValueError('\n El ID del producto debe ser un número entero positivo \n')
+                    id = int(id)
                 except:
                     raise ValueError('\n El ID del producto debe ser un número entero positivo \n')
+                with db_session:
+                    if db.Stock.get(id = id) != None:
+                        raise ValueError(' El ID del producto ya existe.')
+
                 name = input(" Ingrese el nombre del producto: ")
                 if name == '':
                     raise ValueError('\n Debe ingresar un nombre para el producto \n')
