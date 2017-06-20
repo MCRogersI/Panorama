@@ -24,9 +24,10 @@ try:
     # Get the standard output buffers.
     win_out = PyConsoleScreenBufferType(GetStdHandle(STD_OUTPUT_HANDLE))
     # Get largest console window size
+    buffer_size = win_out.GetConsoleScreenBufferInfo()['Size']
     PyCOORD = win_out.GetLargestConsoleWindowSize()
     # Set console buffer and console window size
-    win_out.SetConsoleScreenBufferSize(PyCOORDType(2*PyCOORD.X, 2*PyCOORD.Y))
+    win_out.SetConsoleScreenBufferSize(PyCOORDType(2*PyCOORD.X, 5*buffer_size.Y))
     Left = 0
     Right = PyCOORD.X - 1
     Top = 0
@@ -43,8 +44,8 @@ def console(level, user):
                                                                   \n - 2: Proyectos. \
                                                                   \n - 3: Tareas. \
                                                                   \n - 4: Stock. \
-                                                                  \n - 5: Planificación \
-                                                                  \n - 6: Usuarios de consola\
+                                                                  \n - 5: Planificación. \
+                                                                  \n - 6: Usuarios de consola. \
                                                                   \n - 7: Para salir. \
                                                                   \n Ingrese la alternativa elegida: ")
         else:
@@ -94,7 +95,7 @@ def console(level, user):
 def signIn():
     while True:
         user = input(" Ingrese su usuario: ")
-        password = input("Ingrese su contraseña: ")
+        password = input(" Ingrese su contraseña: ")
         # password = getpass.getpass(' Ingrese su contraseña: ')
         if Uf.checkPassEntry(db, user, password):
             with db_session:
