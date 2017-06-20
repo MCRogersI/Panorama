@@ -446,10 +446,10 @@ def tasks_console(db, level):
                                 raise ValueError('\n Error de ingreso. ')
                         fail_cost = input(" Ingrese el costo estimado de la falla: ")
                         try:
-                            fail_cost = float(fail_cost)
+                            fail_cost = int(fail_cost)
                         except:
-                            raise ValueError('\n El costo debe ser un número no negativo.')
-                        if float(fail_cost) < 0 :
+                            raise ValueError('\n El costo debe ser un número entero.')
+                        if fail_cost < 0 :
                                 raise ValueError('\n El costo debe ser un número no negativo.')
                         failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
                     except ValueError as ve:
@@ -463,7 +463,7 @@ def tasks_console(db, level):
                 printTasks(db)
             else:
                 print('\n Acceso denegado.')
-                input(' Presione Enter para continuar. ')
+                input(' Presione Enter para continuar.')
         elif(opt == '3'):
             if(level == 1):
                 opt2 = input('\n Marque una de las siguientes opciones: \n - 1: Si desea editar costos de flete.\
