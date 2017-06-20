@@ -446,7 +446,8 @@ def createGlobalReportModified(db):
               "Y": 45, "Z": 45, "AA": 45, "AB": 45, "AC": 45,"AD":45,
               "AE": 45, "AF":45, "AG":45, "AH":45, "AI":45, "AJ":45, "AK":45, "AL":45,
               "AM":45,"AN":45,"AO":45,"AP":45,"AQ":45,"AR":45,"AS":45,"AT":45,"AU":45,
-              "AV":45,"AW":45,"AX":45,"AY":45,"AZ":45,"BA":45,"BB":45,"BC":45,"BD":45,"BE":45,"BF":45,"BG":45}
+              "AV":45,"AW":45,"AX":45,"AY":45,"AZ":45,"BA":45,"BB":45,"BC":45,"BD":45,"BE":45,"BF":45,"BG":45,
+              "BH":45,"BI":45}
 
     heights = {"A": 10, "B": 10, "C": 10, "D": 10, "E": 10, "F": 10,
               "G": 10, "H": 10, "I": 10, "J": 10, "K": 10, "L": 10,
@@ -455,7 +456,8 @@ def createGlobalReportModified(db):
               "Y": 10, "Z": 10, "AA": 10, "AB": 10, "AC": 10,"AD":10,
                "AE":10, "AF":10, "AG":10, "AH":10, "AI":10, "AJ":10, "AK":10, "AL":10,
                "AM": 10, "AN": 10, "AO": 10, "AP": 10, "AQ": 10,"AR":10,"AS":10,"AT":10,"AU":10,
-               "AV":10,"AW":10,"AX":10,"AY":10,"AZ":10,"BA":10,"BB":10,"BC":10,"BD":10,"BE":10,"BF":10,"BG":10}
+               "AV":10,"AW":10,"AX":10,"AY":10,"AZ":10,"BA":10,"BB":10,"BC":10,"BD":10,"BE":10,"BF":10,"BG":10,
+               "BH":10,"BI":10}
 
 
     thin_border = Border(left=Side(style='thin'),
@@ -466,7 +468,7 @@ def createGlobalReportModified(db):
 
     columns = ["A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB",
                "AC","AD","AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ",
-               "BA","BB","BC","BD","BE","BF","BG"]
+               "BA","BB","BC","BD","BE","BF","BG","BH","BI"]
 
     for c in columns:
         ws.column_dimensions[c].width = widths[c]
@@ -494,7 +496,7 @@ def createGlobalReportModified(db):
              "FECHA PLANIFICADA RECEPCION CRISTALES","FECHA EFECTIVA RECEPCION CRISTALES","FECHA PLANIFICADA LLEGADA CRISTALES",
              "FECHA EFECTIVA LLEGADA CRISTALES","ID EMISOR HC","ID PROVEEDOR CRISTALES","MAYOR PLAZO (ATRASO) EMISION HC",
              "MAYOR PLAZO (ATRASO) LLEGADA CRISTALES","MAYOR PLAZO (ATRASO) RECTIFICACION","MAYOR PLAZO (ATRASO) DISEÑO",
-             "MAYOR PLAZO (ATRASO) FABRICACION","MAYOR PLAZO (ATRASO) INSTALACION"]
+             "MAYOR PLAZO (ATRASO) FABRICACION","MAYOR PLAZO (ATRASO) INSTALACION","STATUS","ORIGEN FALLA"]
 
     for i in range(4,len(num_columns)+1):
         cell = ws.cell(row=3, column=i, value=texts[i-1])
@@ -524,7 +526,7 @@ def createGlobalReportModified(db):
                     numero_de_fallos +=1
 
             #Duplica el proyecto para imprimir que tuvo fallos en una versión anterior.
-            for fallo in numero_de_fallos:
+            for fallo in range(0,numero_de_fallos):
                 p_clon = copy.deepcopy(p)
 
                 if projects.index(p)<len(projects)-1:
@@ -1259,6 +1261,35 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
+            # Escribe si el proyecto tiene reparos (fallos)
+            if hay_un_fallo:
+                cell = ws.cell(row=r, column=60, value="CON REPAROS")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=60, value="OK")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe en qué etapa se originó el fallo
+            id_tarea_origen_fallo = 0
+            for tarea in project_tasks:
+                if tarea.fail_cost != None:
+                    id_tarea_origen_fallo = tarea.id
+
+            if hay_un_fallo:
+                cell = ws.cell(row=r, column=61, value=id_tarea_origen_fallo)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=61, value="No aplica")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
             project_counter = 1
             for pt in project_tasks:
                 if pt.fail_cost != None:
@@ -1282,8 +1313,8 @@ def createGlobalReportModified(db):
             raise
         input("\n Ha ocurrido un error porque el archivo Reporte global de planificación.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.")
 
-# from database import db
-# createGlobalReportModified(db)
+from database import db
+createGlobalReportModified(db)
 # with db_session:
 #     t = db.Tasks[3]
 #     t.failed = True
