@@ -443,14 +443,15 @@ def createGlobalReportModified(db):
               "M": 35, "N": 35, "O": 45,"P": 45, "Q": 45, "R": 45,
               "S": 45, "T": 45, "U": 45,"V": 45, "W": 45, "X": 45,
               "Y": 45, "Z": 45, "AA": 45, "AB": 45, "AC": 45,"AD":45,
-              "AE": 45}
-
+              "AE": 45, "AF":45, "AG":45, "AH":45, "AI":45, "AJ":45, "AK":45, "AL":45}
+    # , "AF":45, "AG":45, "AH":45, "AI":45, "AJ":45, "AK":45, "AL":45
     heights = {"A": 10, "B": 10, "C": 10, "D": 10, "E": 10, "F": 10,
               "G": 10, "H": 10, "I": 10, "J": 10, "K": 10, "L": 10,
               "M": 10, "N": 10, "O": 10,"P": 10, "Q": 10, "R": 10,
               "S": 10, "T": 10, "U": 10,"V": 10, "W": 10, "X": 10,
               "Y": 10, "Z": 10, "AA": 10, "AB": 10, "AC": 10,"AD":10,
-               "AE":10}
+               "AE":10, "AF":10, "AG":10, "AH":10, "AI":10, "AJ":10, "AK":10, "AL":10}
+    # , "AF":10, "AG":10, "AH":10, "AI":10, "AJ":10, "AK":10, "AL":10
 
     thin_border = Border(left=Side(style='thin'),
                          right=Side(style='thin'),
@@ -459,7 +460,8 @@ def createGlobalReportModified(db):
 
 
     columns = ["A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB",
-               "AC","AD","AE"]
+               "AC","AD","AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL"]
+    # , "AF", "AG", "AH", "AI", "AJ", "AK", "AL"
     for c in columns:
         ws.column_dimensions[c].width = widths[c]
         ws.column_dimensions[c].height = heights[c]
@@ -831,12 +833,100 @@ def createGlobalReportModified(db):
 
             # Escribe el atraso, en caso de haberlo
             if p.deadline < installation.original_end_date :
-                cell = ws.cell(row=r, column=31, value=("{} días".format(installation.original_end_date-p.deadline).days))
+                cell = ws.cell(row=r, column=31, value=("{} días".format((installation.original_end_date-p.deadline).days)))
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
                 cell = ws.cell(row=r, column=31, value="A tiempo")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            #Obtenemos la fila de costos de la tabla de los costos del proyecto
+            p_costs = db.Projects_Costs.get(project=p)
+
+            # Escribe el costo estandar de los perfiles, en caso de haberlo
+            # Sería más ordenado separar lo siguiente en un gran if en lugar de usar "and"
+            if p_costs!= None and p_costs.standard_cost_profiles != None:
+                cell = ws.cell(row=r, column=32, value=p.p_costs.standard_cost_profiles)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=32, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el costo estandar de los herrajes, en caso de haberlo
+            if p_costs!= None and p_costs.standard_cost_fittings != None:
+                cell = ws.cell(row=r, column=33, value=p.p_costs.standard_cost_fittings)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=33, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el costo estandar de los cristales, en caso de haberlo
+            if p_costs!= None and p_costs.standard_cost_crystals != None:
+                cell = ws.cell(row=r, column=34, value=p.p_costs.standard_cost_crystals)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=34, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el costo estandar de las materias primas, en caso de haberlo
+            if p_costs!= None and p_costs.standard_cost_material != None:
+                cell = ws.cell(row=r, column=35, value=p.p_costs.standard_cost_material)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=35, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el costo estandar de la fabricación, en caso de haberlo
+            if p_costs!= None and p_costs.standard_cost_fabrication != None:
+                cell = ws.cell(row=r, column=36, value=p.p_costs.standard_cost_fabrication)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=36, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el costo estandar de la instalación, en caso de haberlo
+            if p_costs!= None and p_costs.standard_cost_installation != None:
+                cell = ws.cell(row=r, column=37, value=p.p_costs.standard_cost_installation)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=37, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe los constos estandar "adicionales", en caso de haberlos
+            if p_costs!= None and p_costs.standard_cost_additionals != None:
+                cell = ws.cell(row=r, column=38, value=p.p_costs.standard_cost_additionals)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=38, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
