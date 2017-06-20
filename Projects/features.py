@@ -215,7 +215,7 @@ def failedTask(db, contract_number, id_skill, fail_cost):
     # import Planning.features as PLf
     with db_session:
 
-        tasks = select(t for t in db.Tasks if t.skill >= db.Skills[id_skill] and t.project == db.Projects[contract_number] and t.failed == None)
+        tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project == db.Projects[contract_number] and t.failed == None)
         for t in tasks:
             t.failed = True
             if t.skill == db.Skills[id_skill]:

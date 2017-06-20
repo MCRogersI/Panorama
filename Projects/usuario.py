@@ -418,12 +418,12 @@ def tasks_console(db, level):
                     try:
                         contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
                         with db_session:
-                            if db.Tasks.get(contract_number = contract_number_fail) != None:
-                                raise ValueError('\n Número de contrato inexistente \n')
+                            if db.Projects.get(contract_number = contract_number_fail) == None:
+                                raise ValueError('\n Número de contrato inexistente.')
                         if(level == 1) or (level == 2):
                             id_skill_fail = input(" Ingrese el ID de la habilidad donde ocurrió el fallo (1: rect, 2: dis, 3: fab, 4: ins): ")
                             if int(id_skill_fail) != 1 and int(id_skill_fail) != 2 and int(id_skill_fail) != 3 and int(id_skill_fail) != 4:
-                                raise ValueError('\n ID de habilidad no válida. \n')
+                                raise ValueError('\n ID de habilidad no válida.')
                         if(level == 4) or (level == 6) :
                             new_id_skill = 1
                         if (level == 7) :   
@@ -439,29 +439,29 @@ def tasks_console(db, level):
                             if new_id_skill == '2':
                                 new_id_skill = 4
                             else:
-                                raise ValueError('\n Error de ingreso. \n ')
+                                raise ValueError('\n Error de ingreso.')
                         try:
                             if 0 > int(id_skill_fail) or int(id_skill_fail) > 4:
-                                raise ValueError(' \n Ingreso inválido de habilidad \n')
+                                raise ValueError('\n Ingreso inválido de habilidad.')
                         except:
-                            raise ValueError(' \n Ingreso inválido de habilidad \n')
-                        fail_cost = input("\n Ingrese el costo estimado de la falla: ")
+                            raise ValueError(' \n Ingreso inválido de habilidad.')
+                        fail_cost = input(" Ingrese el costo estimado de la falla: ")
                         try:
                             if float(fail_cost) < 0 :
-                                raise ValueError(' \n El costo debe ser un número no negativo \n')
+                                raise ValueError('\n El costo debe ser un número no negativo.')
                         except:
-                            raise ValueError(' \n El costo debe ser un número no negativo \n')
+                            raise ValueError('\n El costo debe ser un número no negativo.')
                         failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
                     except ValueError as ve:
                         print(ve) 
             else:
-                print('\n Acceso denegado. \n')
+                print('\n Acceso denegado.')
                 input(' Presione Enter para continuar. ')
         elif(opt == '2'):
             if (level == 1):
                 printTasks(db)
             else:
-                print('\n Acceso denegado. \n')
+                print('\n Acceso denegado.')
                 input(' Presione Enter para continuar. ')
         elif(opt == '3'):
             if(level == 1):
@@ -526,7 +526,7 @@ def tasks_console(db, level):
                         raise ValueError('\n Número de contrato inexistente \n')
                 id_skill = input(" Ingrese el ID de la habilidad donde ocurrió el fallo (1: rect, 2: dis, 3: fab, 4: ins): ")
                 if id_skill != '1' and id_skill != '2' and id_skill != '3' and id_skill != '4':
-                    raise ValueError('\n ID de habilidad no válida. \n')
+                    raise ValueError('\n ID de habilidad no válida.')
 
                 with db_session:
                     task = db.Tasks.get( project = db.Projects[contract_number], skill = db.Skills[id_skill], failed = None)
