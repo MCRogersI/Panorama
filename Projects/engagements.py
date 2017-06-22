@@ -112,10 +112,18 @@ def engageProfile(db, project, ws_read_manufacturing, factor_perdida, length_coo
     metros_lineales = 0
     length = ws_read_manufacturing.cell(row = length_coords[0], column = length_coords[1]).value
     next_row = length_coords[0] + 1
-    while(length > 0):
-        metros_lineales = metros_lineales + length/1000
-        length = ws_read_manufacturing.cell(row = next_row, column = length_coords[1]).value
-        next_row = next_row + 1
+    
+    #si el formato está mal (por ejemplo un length es una palabra) entonces nos saltamos esto, y avisamos de un posible error
+    try:
+        while(length > 0):
+            metros_lineales = metros_lineales + length/1000
+            length = ws_read_manufacturing.cell(row = next_row, column = length_coords[1]).value
+            next_row = next_row + 1
+    except TypeError:
+        print(' Error: hay un problema de formato. La actualizacion de stock continuara continuara, pero puede haber errores relacionados al formato de la hoja de corte.')
+        return
+    
+    #si esta todo bien, seguimos
     if bead:
         metros_lineales = 2*metros_lineales
     metros_lineales_totales = metros_lineales/(1 - factor_perdida)
@@ -128,8 +136,18 @@ def engageProfile(db, project, ws_read_manufacturing, factor_perdida, length_coo
     
     #por último, generamos el Engagement
     with db_session:
-        sku = db.Stock[code]
-        db.Engagements(project = project, sku = sku, quantity = ceil(metros_lineales_totales), withdrawal_date = withdrawal_date)
+        warning = ' Aviso: el SKU de codigo ' + str(code) + ' no se encuentra registrado en la base de datos. No se actualizara su nivel de stock.'
+        try:
+            sku = db.Stock[code]
+            #vemos si el Engagement ya existe, en ese caso, lo actualizamos. Debiera ser solo uno, a lo más, por eso el get() y no el select()
+            engagement = db.Engagements.get(project = project, sku = sku)
+            if engagement == None:
+                db.Engagements(project = project, sku = sku, quantity = ceil(metros_lineales_totales), withdrawal_date = withdrawal_date)
+            else:
+                engagement.quantity = ceil(metros_lineales_totales)
+                engagement.withdrawal_date = withdrawal_date
+        except ObjectNotFound:
+            print(warning)
         
         
         
@@ -153,9 +171,7 @@ def createEngagementsComponents(db, project, ws_read_manufacturing, withdrawal_d
         factor_perdida = factor_perdida/100.0
         rows_read = [126, 134]
         columns_read = [1, 6]
-        rows = [22, 30]
-        column = 2
-        engageComponent(db, project, ws_read_manufacturing, factor_perdida, rows_read, columns_read, rows, withdrawal_date)
+        engageComponent(db, project, ws_read_manufacturing, factor_perdida, rows_read, columns_read, withdrawal_date)
         
         #seguimos con Components to component box or profiles
         #recuperamos el factor de perdida
@@ -169,9 +185,7 @@ def createEngagementsComponents(db, project, ws_read_manufacturing, withdrawal_d
         factor_perdida = factor_perdida/100.0
         rows_read = [140, 150]
         columns_read = [1, 6]
-        rows = [36, 45]
-        column = 2
-        engageComponent(db, project, ws_read_manufacturing, factor_perdida, rows_read, columns_read, rows, withdrawal_date)
+        engageComponent(db, project, ws_read_manufacturing, factor_perdida, rows_read, columns_read, withdrawal_date)
         
         #ahora Components to component box
         #recuperamos el factor de perdida
@@ -185,30 +199,49 @@ def createEngagementsComponents(db, project, ws_read_manufacturing, withdrawal_d
         factor_perdida = factor_perdida/100.0
         rows_read = [126, 148]
         columns_read = [8, 15]
-        rows = [51, 73]
-        column = 2
-        engageComponent(db, project, ws_read_manufacturing, factor_perdida, rows_read, columns_read, rows, withdrawal_date)
+        engageComponent(db, project, ws_read_manufacturing, factor_perdida, rows_read, columns_read, withdrawal_date)
         
-def engageComponent(db, project, ws_read_manufacturing, factor_perdida, rows_read, columns_read, rows):
+def engageComponent(db, project, ws_read_manufacturing, factor_perdida, rows_read, columns_read, withdrawal_date):
     precio_total = 0
     for i in range(0, rows_read[1] - rows_read[0] + 1):
         #vemos primero unidades totales requeridas del producto
         units = ws_read_manufacturing.cell(column = columns_read[1], row = rows_read[0] + i).value
         if units == None:
             units = 0
-        if units > 500:
-            units = units/1000
+        
+        #si el formato está mal (por ejemplo un length es una palabra) entonces nos saltamos la iteracion, y avisamos de un posible error
+        try:
+            if units > 500:
+                units = units/1000
+        except TypeError:
+            print(' Error: hay un problema de formato. La actualizacion de stock continuara, pero puede haber errores relacionados al formato de la hoja de corte.')
+            continue
+        
+        #si esta todo bien, seguimos
         units_total = units/(1 - factor_perdida)
         
         #ahora recuperamos el codigo y precio del producto
         code = ws_read_manufacturing.cell(column = columns_read[0], row = rows_read[0] + i).value
         if i > 19:
             code = 51220110
-        
-        #por último, generamos el Engagement
-        with db_session:
-            sku = db.Stock[code]
-            db.Engagements(project = project, sku = sku, quantity = ceil(units_total), withdrawal_date = withdrawal_date)
+        #si leemos un espacio en blanco en el rango, nos saltamos
+        if code == None:
+            pass
+        else:
+            #por último, si el código no es None, generamos el Engagement
+            with db_session:
+                warning = ' Aviso: el SKU de codigo ' + str(code) + ' no se encuentra registrado en la base de datos. No se actualizara su nivel de stock.'
+                try:
+                    sku = db.Stock[code]
+                    #vemos si el Engagement ya existe, en ese caso, lo actualizamos. Debiera ser solo uno, a lo más, por eso el get() y no el select()
+                    engagement = db.Engagements.get(project = project, sku = sku)
+                    if engagement == None:
+                        db.Engagements(project = project, sku = sku, quantity = ceil(units_total), withdrawal_date = withdrawal_date)
+                    else:
+                        engagement.quantity = ceil(units_total)
+                        engagement.withdrawal_date = withdrawal_date
+                except ObjectNotFound:
+                    print(warning)
             
 
 
@@ -223,20 +256,36 @@ def createEngagementsSealings(db, project, ws_read_manufacturing, withdrawal_dat
     hojas = 0
     width = ws_read_manufacturing.cell(row = 7, column = 4).value
     next_row = 8
-    while(width > 0): #float(width.replace(',', '.')) en caso que width sea leido como string
-        hojas = hojas + 1
-        width = ws_read_manufacturing.cell(row = next_row, column = 4).value
-        next_row = next_row + 1
-        
+    
+    #si el formato está mal (por ejemplo un width es una palabra) entonces retornamos 0, y avisamos de un posible error
+    try:
+        while(width > 0): #float(width.replace(',', '.')) en caso que width sea leido como string
+            hojas = hojas + 1
+            width = ws_read_manufacturing.cell(row = next_row, column = 4).value
+            next_row = next_row + 1
+    except TypeError:
+        print(' Error: hay un problema de formato con la hoja de corte. El calculo de costos continuara, pero se consideraran los metros lineales como 0.')
+        return 0
+    
     #ahora recuperamos el codigo del producto
     precio_total = 0
     for code in [54043034, 54043044, 54043064, 54043014, 54043024, 54043054, 54042014, 54042024, 54200204, 54200104, 11116200, 11116201]:
         if code in [54043034, 54043044, 54043064]:
             #por último, generamos el Engagement
             with db_session:
-                sku = db.Stock[code]
-                db.Engagements(project = project, sku = sku, quantity = hojas, withdrawal_date = withdrawal_date)
-            
+                warning = ' Aviso: el SKU de codigo ' + str(code) + ' no se encuentra registrado en la base de datos. No se actualizara su nivel de stock.'
+                try:
+                    sku = db.Stock[code]
+                    #vemos si el Engagement ya existe, en ese caso, lo actualizamos. Debiera ser solo uno, a lo más, por eso el get() y no el select()
+                    engagement = db.Engagements.get(project = project, sku = sku)
+                    if engagement == None:
+                        db.Engagements(project = project, sku = sku, quantity = hojas, withdrawal_date = withdrawal_date)
+                    else:
+                        engagement.quantity = hojas
+                        engagement.withdrawal_date = withdrawal_date
+                except ObjectNotFound:
+                    print(warning)
+                
             
 
 

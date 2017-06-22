@@ -322,16 +322,16 @@ def projects_console(db, level):
                                                                       \n Ingrese la alternativa elegida: ")
                 if opt2 == '1':
                     printCurrentProjects(db)
-                    input('\n Presione Enter para continuar. ')
+                    input(' Presione Enter para continuar.')
                 elif opt2 == '2':
                     printFinishedProjects(db)
-                    input('\n Presione Enter para continuar. ')
+                    input(' Presione Enter para continuar.')
                 elif opt2 == '3':
                     printProjects(db)
-                    input('\n Presione Enter para continuar. ')
+                    input(' Presione Enter para continuar.')
                 else:
-                    print(' Ingreso inválido. ')
-                    input('\n Presione Enter para continuar. ')
+                    print('\n Ingreso inválido.')
+                    input(' Presione Enter para continuar.')
             else:
                 print('\n Acceso denegado.')
                 input(' Presione Enter para continuar.')
@@ -356,6 +356,7 @@ def projects_console(db, level):
                     if os.path.isfile(file_dir):
                         if (estimateCost(db, contract_number, file_name)):
                             createEngagements(db, contract_number, file_name)
+                            commit()
                             input('\n Costo estimado exitosamente.')
 
                     else:

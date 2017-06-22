@@ -37,10 +37,17 @@ def linearMeters(ws_read_manufacturing):
     metros_lineales = 0
     width = ws_read_manufacturing.cell(row = 7, column = 4).value
     next_row = 8
-    while(width > 0): #float(width.replace(',', '.')) en caso que width sea leido como string
-        metros_lineales = metros_lineales + width/1000
-        width = ws_read_manufacturing.cell(row = next_row, column = 4).value
-        next_row = next_row + 1
+    
+    #si el formato está mal (por ejemplo un width es una palabra) entonces retornamos 0, y avisamos de un posible error
+    try:
+        while(width > 0): #float(width.replace(',', '.')) en caso que width sea leido como string
+            metros_lineales = metros_lineales + width/1000
+            width = ws_read_manufacturing.cell(row = next_row, column = 4).value
+            next_row = next_row + 1
+    except TypeError:
+        print(' Error: hay un problema de formato con la hoja de corte. El calculo de costos continuara, pero se consideraran los metros lineales como 0.')
+        return 0
+        
     return metros_lineales
 
         

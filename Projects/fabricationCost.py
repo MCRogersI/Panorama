@@ -35,10 +35,10 @@ def computation(db, wb_read, project_cost):
     #parametros que deben obtenerse del archivo en cuestion, si el formato es suficientemente estandar
     metros_lineales = linearMeters(ws_read_manufacturing)
     with db_session:
-        warning = ' Aviso: la cantidad de metros lineales vendidos en el mes no se encuentra registrada en la base de datos. Se considerara como la cantidad de metros lineales de este proyecto.'
+        warning = ' Aviso: la cantidad de metros lineales vendidos en el mes no se encuentra registrada en la base de datos. Se considerara como el maximo entre la cantidad de metros lineales de este proyecto y 1.'
         metros_lineales_mes = getParameter(db.Operating_Parameters, "Metros lineales vendidos en el mes", pony.orm.core.ObjectNotFound, warning)
         if metros_lineales_mes == 0:
-            metros_lineales_mes = metros_lineales
+            metros_lineales_mes = max(1, metros_lineales)
     
     #ahora terminamos de escribir en el archivo
     writeInfo(db, project_cost, metros_lineales, metros_lineales_mes, remuneraciones_fijas, remuneraciones_variables, \
@@ -50,10 +50,17 @@ def linearMeters(ws_read_manufacturing):
     metros_lineales = 0
     width = ws_read_manufacturing.cell(row = 7, column = 4).value
     next_row = 8
-    while(width > 0): #float(width.replace(',', '.')) en caso que width sea leido como string
-        metros_lineales = metros_lineales + width/1000
-        width = ws_read_manufacturing.cell(row = next_row, column = 4).value
-        next_row = next_row + 1
+    
+    #si el formato está mal (por ejemplo un width es una palabra) entonces retornamos 0, y avisamos de un posible error
+    try:
+        while(width > 0): #float(width.replace(',', '.')) en caso que width sea leido como string
+            metros_lineales = metros_lineales + width/1000
+            width = ws_read_manufacturing.cell(row = next_row, column = 4).value
+            next_row = next_row + 1
+    except TypeError:
+        print(' Error: hay un problema de formato con la hoja de corte. El calculo de costos continuara, pero se consideraran los metros lineales como 0.')
+        return 0
+        
     return metros_lineales
         
         

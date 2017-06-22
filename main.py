@@ -18,6 +18,7 @@ import numpy as np
 import getpass
 import os
 
+#para cambiar el tamaño de la ventana y el buffer de la consola
 try:
     from win32console import PyConsoleScreenBufferType, GetStdHandle, STD_OUTPUT_HANDLE, PyCOORDType, PySMALL_RECTType
 

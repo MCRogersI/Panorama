@@ -70,20 +70,52 @@ def writeInfoGlass(db, project_cost, ws_read_manufacturing):
     metros_lineales = 0
     width = ws_read_manufacturing.cell(row = 7, column = 4).value
     next_row = 8
-    while(width > 0): #float(width.replace(',', '.')) en caso que width sea leido como string
-        metros_lineales = metros_lineales + width/1000
-        width = ws_read_manufacturing.cell(row = next_row, column = 4).value
-        next_row = next_row + 1
+    
+    #si el formato está mal (por ejemplo un width es una palabra) entonces retornamos 0, y avisamos de un posible error
+    try:
+        while(width > 0): #float(width.replace(',', '.')) en caso que width sea leido como string
+            metros_lineales = metros_lineales + width/1000
+            width = ws_read_manufacturing.cell(row = next_row, column = 4).value
+            next_row = next_row + 1
+    except TypeError:
+        print(' Error: hay un problema de formato con la hoja de corte. El calculo de costos continuara, pero se consideraran los metros lineales como 0.')
+        return 0
     
     #segundo, calculamos los metros cuadrados
     metros_cuadrados = 0
     height = ws_read_manufacturing.cell(row = 7, column = 3).value
     width = ws_read_manufacturing.cell(row = 7, column = 4).value
+    #revisamos si el height es efectivamente un numero, si no, lo consideramos como 0
+    try:
+        height = float(height)
+    except ValueError:
+        print(' Error: hay un problema de formato con la hoja de corte. El calculo de costos continuara, pero la altura de una de las hojas se considerara como 0.')
+        height = 0
+    #revisamos si el width es efectivamente un numero, si no, lo consideramos como 0
+    try:
+        width = float(width)
+    except ValueError:
+        print(' Error: hay un problema de formato con la hoja de corte. El calculo de costos continuara, pero el ancho de una de las hojas se considerara como 0.')
+        width = 0
+    
     next_row = 8
     while(width > 0): #float(width.replace(',', '.')) en caso que width sea leido como string
         metros_cuadrados = metros_cuadrados + (height*width)/1000000
         height = ws_read_manufacturing.cell(row = next_row, column = 3).value
         width = ws_read_manufacturing.cell(row = next_row, column = 4).value
+        #revisamos si el height es efectivamente un numero, si no, lo consideramos como 0
+        try:
+            height = float(height)
+        except ValueError:
+            print(' Error: hay un problema de formato con la hoja de corte. El calculo de costos continuara, pero la altura de una de las hojas se considerara como 0.')
+            height = 0
+        #revisamos si el width es efectivamente un numero, si no, lo consideramos como 0
+        try:
+            width = float(width)
+        except ValueError:
+            print(' Error: hay un problema de formato con la hoja de corte. El calculo de costos continuara, pero el ancho de una de las hojas se considerara como 0.')
+            width = 0
+        
         next_row = next_row + 1
         
     #calculamos el ultimo dato necesario
@@ -178,10 +210,18 @@ def writeProfile(db, ws_read_manufacturing, royalty_porcentaje, seguros_porcenta
     metros_lineales = 0
     length = ws_read_manufacturing.cell(row = length_coords[0], column = length_coords[1]).value
     next_row = length_coords[0] + 1
-    while(length > 0): #float(length.replace(',', '.')) en caso que length sea leido como string
-        metros_lineales = metros_lineales + length/1000
-        length = ws_read_manufacturing.cell(row = next_row, column = length_coords[1]).value
-        next_row = next_row + 1
+    
+    #si el formato está mal (por ejemplo un length es una palabra) entonces nos saltamos esto, y avisamos de un posible error
+    try:
+        while(length > 0): #float(length.replace(',', '.')) en caso que length sea leido como string
+            metros_lineales = metros_lineales + length/1000
+            length = ws_read_manufacturing.cell(row = next_row, column = length_coords[1]).value
+            next_row = next_row + 1
+    except TypeError:
+        print(' Error: hay un problema de formato. El calculo de costos continuara, pero puede haber errores relacionados al formato de la hoja de corte.')
+        return 0
+    
+    #si esta todo bien, seguimos
     if bead:
         metros_lineales = 2*metros_lineales
     metros_lineales_totales = metros_lineales/(1 - factor_perdida)
@@ -267,8 +307,16 @@ def writeComponent(db, ws_read_manufacturing, royalty_porcentaje, seguros_porcen
         units = ws_read_manufacturing.cell(column = columns_read[1], row = rows_read[0] + i).value
         if units == None:
             units = 0
-        if units > 500:
-            units = units/1000
+            
+        #si el formato está mal (por ejemplo un length es una palabra) entonces nos saltamos la iteracion, y avisamos de un posible error
+        try:
+            if units > 500:
+                units = units/1000
+        except TypeError:
+            print(' Error: hay un problema de formato. El calculo de costos continuara, pero puede haber errores relacionados al formato de la hoja de corte.')
+            continue
+        
+        #si esta todo bien, seguimos
         units_total = units/(1 - factor_perdida)
         
         #ahora recuperamos el codigo y precio del producto
@@ -290,10 +338,16 @@ def writeInfoSealings(db, ws_read_manufacturing, royalty_porcentaje, seguros_por
     hojas = 0
     width = ws_read_manufacturing.cell(row = 7, column = 4).value
     next_row = 8
-    while(width > 0): #float(width.replace(',', '.')) en caso que width sea leido como string
-        hojas = hojas + 1
-        width = ws_read_manufacturing.cell(row = next_row, column = 4).value
-        next_row = next_row + 1
+    
+    #si el formato está mal (por ejemplo un width es una palabra) entonces retornamos 0, y avisamos de un posible error
+    try:
+        while(width > 0): #float(width.replace(',', '.')) en caso que width sea leido como string
+            hojas = hojas + 1
+            width = ws_read_manufacturing.cell(row = next_row, column = 4).value
+            next_row = next_row + 1
+    except TypeError:
+        print(' Error: hay un problema de formato con la hoja de corte. El calculo de costos continuara, pero se consideraran los metros lineales como 0.')
+        return 0
         
     #ahora recuperamos el codigo y precio del producto
     precio_total = 0
