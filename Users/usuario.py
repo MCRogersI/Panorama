@@ -13,19 +13,25 @@ def users_console(db):
             try:
                 level = input('\n Ingrese el nivel de usuario que quiere crear: ')
                 try:
-                    int(level)
+                    level = int(level)
                 except:
-                    raise ValueError('\n Nivel inválido \n')
-                if level not in [6,7,8,9]:
+                    raise ValueError(' Nivel inválido.')
+                if level not in range(1,10):
+                    raise ValueError(' Nivel no válido. ')
+                elif level not in [6,7,8,9]:
                     name = input('\n Ingrese el Nombre del usuario: ')
                 else:
-                    name = input('\n Ingrese el rut del usuario sin puntos ni número verificador: ')
+                    name = input(' Ingrese el rut del usuario sin puntos ni número verificador: ')
                     try:
                         int(name)
                     except:
-                        raise ValueError('\n rut inválido. \n')
-                password = getpass.getpass('\n Ingrese contraseña para el usuario: ')
-                check_password = getpass.getpass('\n Ingrese nuevamente la contraseña para el usuario: ')
+                        raise ValueError(' rut inválido. ')
+                with db_session:
+                    u = db.Users.get(user_name = name)
+                    if u != None:
+                        raise ValueError(' Usuario ya existente. ')
+                password = getpass.getpass(' Ingrese contraseña para el usuario: ')
+                check_password = getpass.getpass(' Ingrese nuevamente la contraseña para el usuario: ')
                 if password == check_password:
                     createUser(db,name, level,password)
                     print(' Usuario creado con éxito.')
