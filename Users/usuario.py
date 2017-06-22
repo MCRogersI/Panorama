@@ -15,15 +15,21 @@ def users_console(db):
                 try:
                     level = int(level)
                 except:
-                    raise ValueError('\n Nivel inválido.')
-                if level not in [6,7,8,9]:
-                    name = input(' Ingrese el nombre del usuario: ')
+                    raise ValueError(' Nivel inválido.')
+                if level not in range(1,10):
+                    raise ValueError(' Nivel no válido. ')
+                elif level not in [6,7,8,9]:
+                    name = input('\n Ingrese el Nombre del usuario: ')
                 else:
-                    name = input(' Ingrese el RUT del usuario sin puntos ni número verificador: ')
+                    name = input(' Ingrese el rut del usuario sin puntos ni número verificador: ')
                     try:
                         int(name)
                     except:
-                        raise ValueError('\n RUT inválido.')
+                        raise ValueError(' rut inválido. ')
+                with db_session:
+                    u = db.Users.get(user_name = name)
+                    if u != None:
+                        raise ValueError(' Usuario ya existente. ')
                 password = getpass.getpass(' Ingrese contraseña para el usuario: ')
                 check_password = getpass.getpass(' Ingrese nuevamente la contraseña para el usuario: ')
                 if password == check_password:

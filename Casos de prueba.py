@@ -92,7 +92,7 @@ Las lineas comentadas son las que están revisadas
 
 12) Revisar que imprimir Projects funcione:
 
-- Que ofrezca opciones de imprimir proyectos vigentes/terminados/todos, y que lo haga bien.
+# - Que ofrezca opciones de imprimir proyectos vigentes/terminados/todos, y que lo haga bien.
 # - Que muestre todo actualziado, incluidos proyectos recientemente agregados/eliminados (que no haya que cerrar el programa para actualizar).
 
 13) Revisar que estimar costos del Project funcione:
