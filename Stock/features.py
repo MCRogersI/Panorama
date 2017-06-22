@@ -8,7 +8,7 @@ from threading import Thread
 import pandas
 from tabulate import tabulate
 
-def createSku(db,id, name, price, critical_level, real_quantity, waste_factor):
+def createSku(db,id, name, price, critical_level, real_quantity):
     ''' Este método crea una unidad nueva de stock, asigna automáticamente el ID de la misma.
         La cantidad estimada es la que se ve afectada por una planificación que podría cambiarse 
         en el futuro. Parte siendo igual a la cantidad real'''
@@ -19,7 +19,7 @@ def createSku(db,id, name, price, critical_level, real_quantity, waste_factor):
         if real_quantity == None:
             real_quantity = 0
         s = db.Stock(id=id, name=name, price=price, critical_level=critical_level,
-                     real_quantity=real_quantity, estimated_quantity=real_quantity, waste_factor = waste_factor)
+                     real_quantity=real_quantity, estimated_quantity=real_quantity)
         commit()
 
 

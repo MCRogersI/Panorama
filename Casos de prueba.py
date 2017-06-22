@@ -101,9 +101,9 @@ Las lineas comentadas son las que están revisadas
 - No poder hacerlo si el proyecto ya está terminado (revisar eso en consola).
 # - Que el cálculo de costos no se caiga si hay parámetros faltantes en la base de datos.
 # - Que el cálculo de costos no se caiga si el archivo viene en formato erróneo.
-- Que la creación de los Engagements no se caiga si hay parámetros faltantes en la base de datos.
-- Que la creación de los Engagements no se caiga si el archivo viene en formato erróneo.
-- Que se pueda ingresar una nueva hoja de corte para el mismo proyecto, y que el programa actualice los costos y los engagements.
+# - Que la creación de los Engagements no se caiga si hay parámetros faltantes en la base de datos.
+# - Que la creación de los Engagements no se caiga si el archivo viene en formato erróneo.
+# - Que se pueda ingresar una nueva hoja de corte para el mismo proyecto, y que el programa actualice los costos y los engagements.
 
 14) Revisar que createSku funcione:
 

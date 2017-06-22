@@ -3,12 +3,12 @@
 block_cipher = None
 
 
-a = Analysis(['main.py'],
+a = Analysis(['hook-pony.orm.py', 'main.py'],
              pathex=['C:\\Users\\Alberto\\Desktop\\Universidad\\Practica\\Panorama'],
              binaries=[],
              datas=[],
              hiddenimports=[],
-             hookspath=[],
+             hookspath=['.'],
              runtime_hooks=[],
              excludes=[],
              win_no_prefer_redirects=False,
@@ -18,11 +18,16 @@ pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
-          a.binaries,
-          a.zipfiles,
-          a.datas,
-          name='main',
+          exclude_binaries=True,
+          name='hook-pony.orm',
           debug=False,
           strip=False,
           upx=True,
           console=True )
+coll = COLLECT(exe,
+               a.binaries,
+               a.zipfiles,
+               a.datas,
+               strip=False,
+               upx=True,
+               name='hook-pony.orm')
