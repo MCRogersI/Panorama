@@ -20,6 +20,35 @@ Las lineas comentadas son las que están revisadas
 # - Que pregunte por la comuna de residencia y no por el "código de zona".
 # - Que parsee el nombre de la comuna.
 
+3) Revisar que editar Employees funcione:
+
+# - Que cambiar un rendimiento a cero le quite la skill 
+# - Que reclame si un empleado es editado para no tener skill 
+# - Que replanifique si se cambia de skill y estaba en la planificación 
+
+4) Revisar que eliminar Employees funcione: 
+
+# - Que efectivamente salga de la base de datos.
+# - En caso de que el Employee haya estado en la planificación, hacer de nuevo doPlanning().
+# - Que no sea considerado en nuevas planificaciones.
+# - Que los Employees_X desaparezcan todos con X = Skills, Tasks, Activities, Restrictions.
+
+5) Revisar que Manejar vacaciones/periodos de licencia funcione:
+
+# - Que te permita ver la lista (y que la actualice altiro, sin tener que cerrar el programa).
+# - Que permita ingresar la actividad, reclamando si los datos se meten mal.
+# - Que al ingresar replanifique si topa con un trabajo.
+    nota: por alguna razón a Rogers le hacía el doPlanning en casos en que no era necesario
+# - Que elimine efectivamente la actividad.
+# - Que imprima todo correctamente
+
+6) Revisar que imprimir Employees funcione:
+
+# - Que al pedir la lista de cada trabajo específicio, entregue los empleados solo de esa tarea.
+# - Que genere los calendarios de trabajo pedidos de manera correcta.
+# - Que tire mensajes de éxito al crear los calendarios de trabajo.
+# - Que reclame si se mete mal el ID del empleado al pedir un calendario de trabajo.
+
 3) Revisar que crear Projects funcione: 
 
 # - Que funcione si se ingresa todo bien.
@@ -31,14 +60,14 @@ Las lineas comentadas son las que están revisadas
 # - Que te avise que la creación fue exitosa.
 # - Que parsee el nombre de la comuna.
 
-4) Revisar que eliminar Employees funcione: 
+7) Revisar que Editar Projects funcione:
 
-# - Que efectivamente salga de la base de datos.
-# - En caso de que el Employee haya estado en la planificación, hacer de nuevo doPlanning().
-# - Que no sea considerado en nuevas planificaciones.
-# - Que los Employees_X desaparezcan todos con X = Skills, Tasks, Activities, Restrictions.
+# - Que cambie la prioridad de el resto de los proyectos adecuadamente
+# - Que meter al agregar restricciones cambie la planificación si corresponde.
+    nota: agregar restricciones de asignación funciona bien pero las de tiempo no hacen nada
+  - Que te reclame si metes mal los datos y tire mensaje de éxito.
 
-5) Revisar que eliminar Projects funcione:
+8) Revisar que eliminar Projects funcione:
 
 # - Que efectvamente salga de la base de datos.
 # - Que actualice las prioridades de los Projects restantes.
@@ -46,36 +75,35 @@ Las lineas comentadas son las que están revisadas
 # - Que los Projects_X desaparezcan todos con X = Activities, Costs, Delays.
 # - También que desaparezcan las Tasks, Deadlines_Restrictions, Employees_Restrictions, Employees_Tasks asociadas.
 
-6) Revisar que editar Employees funcione:
-
-# - Que cambiar un rendimiento a cero le quite la skill 
-# - Que reclame si un empleado es editado para no tener skill 
-# - Que replanifique si se cambia de skill y estaba en la planificación 
-
-7) Revisar que Editar Projects funcione:
-
-# - Que cambie la prioridad de el resto de los proyectos adecuadamente
-# - Que meter al agregar restricciones cambie la planificación si corresponde.
-    nota: agregar restricciones de asignación funciona bien pero las de tiempo no hacen nada
-  - Que te reclame si metes mal los datos y tire mensaje de éxito.
-    
-8) Revisar que createSku funcione:
-
-# - Que se agregue efectivamente
-# - Que reclame si ya existe
-
-9) Revisar que Manejar vacaciones/periodos de licencia funcione:
-
-# - Que te permita ver la lista (y que la actualice altiro, sin tener que cerrar el programa).
-# - Que permita ingresar la actividad, reclamando si los datos se meten mal.
-# - Que al ingresar replanifique si topa con un trabajo.
-    nota: por alguna razón a Rogers le hacía el doPlanning en casos en que no era necesario
-# - Que elimine efectivamente la actividad.
-# - Que imprima todo correctamente
-
-10) Revisar que Terminar Projects funcione:
+9) Revisar que Terminar Projects funcione:
 
 # - Que te reclame si el proyecto no existe, y que entregue mensaje de éxito.
 # - Que cambie finished a True.
 # - Que se reajusten las prioridades.
 # - Borrar todos los Employees_Tasks.
+
+10) Revisar que Manejar disponibilidad del cliente funcione:
+
+- Que te permita ver la lista (y que la actualice altiro, sin tener que cerrar el programa).
+- Que permita ingresar la actividad, reclamando si los datos se meten mal.
+- Que al ingresar replanifique si topa con un trabajo.
+- Que elimine efectivamente la actividad.
+- Que imprima todo correctamente
+
+12) Revisar que imprimir Projects funcione:
+
+- Que ofrezca opciones de imprimir proyectos vigentes/terminados/todos, y que lo haga bien.
+# - Que muestre todo actualziado, incluidos proyectos recientemente agregados/eliminados (que no haya que cerrar el programa para actualizar).
+
+13) Revisar que estimar costos del Project funcione:
+
+14) Revisar que createSku funcione:
+
+# - Que se agregue efectivamente
+# - Que reclame si ya existe
+
+15) Revisar que Eliminar SKU funcione:
+
+- Que reclame si se meten mal los datos, y tire mensaje de éxito si se hace bien.
+# - Que efectivamente elimine el producto, y que lo muestre altiro.
+

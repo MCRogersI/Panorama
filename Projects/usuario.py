@@ -34,49 +34,49 @@ def projects_console(db, level):
                         raise ValueError('No es un número válido')
                     with db_session:
                         if len(select( p for p in db.Projects if p.contract_number == int(contract_number))) > 0:
-                            raise ValueError('\n Este número de contrato ya existe \n')
+                            raise ValueError('\n Este número de contrato ya existe.')
                     client_address = input(" Ingrese la direccion del cliente: ")
                     if len(client_address.replace(' ','')) < 1:
-                        raise ValueError('\n Debe ingresar una dirección \n')
+                        raise ValueError('\n Debe ingresar una dirección.')
                     client_comuna = input(" Ingrese la comuna del cliente: ")
                     if len(client_comuna.replace(' ','')) < 1:
-                        raise ValueError('\n Debe ingresar una comuna \n')
+                        raise ValueError('\n Debe ingresar una comuna.')
                     try:
                         client_comuna_parsed = convert.get_fuzzy(client_comuna)
                     except:
                         raise ValueError('\n La comuna ingresada es inválida.')
                     client_name = input(" Ingrese el nombre del cliente: ")
                     if len(client_name.replace(' ','')) < 1:
-                        raise ValueError('\n Debe ingresar un nombre \n')
+                        raise ValueError('\n Debe ingresar un nombre.')
                     client_rut = input(" Ingrese el RUT del cliente: ")
                     if len(client_rut.replace(' ','')) < 1:
-                        raise ValueError('\n Debe ingresar un rut \n')
+                        raise ValueError('\n Debe ingresar un RUT.')
                     linear_meters = input(" Ingrese los metros lineales del proyecto: ")
                     try:
                         linear_meters = float(linear_meters)
                     except:
-                        raise ValueError('\n Los metros lineales deben ser un número\n')
+                        raise ValueError('\n Los metros lineales deben ser un número.')
                     if float(linear_meters) <0:
-                        raise ValueError('\n Los metros lineales deben ser un número positivo \n')
+                        raise ValueError('\n Los metros lineales deben ser un número positivo.')
                     square_meters = input(" Ingrese los metros cuadrados del proyecto: ")
                     try:
                         square_meters = float(square_meters)
                     except:
-                        raise ValueError('\n Los metros cuadrados deben ser un número\n')
+                        raise ValueError('\n Los metros cuadrados deben ser un número.')
                     if float(linear_meters) <0:
-                        raise ValueError('\n Los metros cuadrados deben ser un número positivo \n')
+                        raise ValueError('\n Los metros cuadrados deben ser un número positivo.')
                     year = input(" Ingrese el año de la fecha de entrega pactada del proyecto: ")
                     try:
                         int(year)
                     except:
-                        raise ValueError('\n El año debe ser un número entero \n')
+                        raise ValueError('\n El año debe ser un número entero.')
                     month = input(" Ingrese el mes de la fecha de entrega pactada del proyecto: ")
                     try:
                         int(month)
                     except:
-                        raise ValueError('\n ser un número entero.')
-                    if int(month) >12 or int(month) < 1:
-                        raise ValueError('\n El mes debe ser un número entero entre 1 y 12 \n')
+                        raise ValueError('\n El mes debe ser un número entero.')
+                    if int(month) > 12 or int(month) < 1:
+                        raise ValueError('\n El mes debe ser un número entero entre 1 y 12.')
                     day = input(" Ingrese el día de la fecha de entrega pactada del proyecto: ")
                     try:
                         int(day)
@@ -103,7 +103,7 @@ def projects_console(db, level):
                     try:
                         int(sale_month)
                     except:
-                        raise ValueError('\n ser un número entero. ')
+                        raise ValueError('\n El mes debe ser un número entero. ')
                     if int(sale_month) >12 or int(sale_month) < 1:
                         raise ValueError('\n El mes debe ser un número entero entre 1 y 12.')
                     sale_day = input(" Ingrese el día de la fecha de venta del proyecto: ")
@@ -122,14 +122,14 @@ def projects_console(db, level):
                     except:
                         raise ValueError('\n El precio debe ser un número entero.')
                     createProject(db, contract_number, client_address, client_comuna_parsed, client_name, client_rut, linear_meters, square_meters, year, month, day, crystal_leadtime, sale_date, sale_price)
-                    input('\n Proyecto creado con éxito. Presione Enter para continuar: ')
+                    input('\n Proyecto creado con éxito. Presione Enter para continuar.')
                 except ValueError as ve:
                     print(ve)
                 # except:
                     # print('\n No se pudo ingresar correctamente el proyecto \n')
             else: 
-                print('\n Acceso denegado. \n')
-                input(' Presione Enter para continuar. ')
+                print('\n Acceso denegado.')
+                input(' Presione Enter para continuar.')
         elif(opt == '2'):
             if(level ==1):
                 opt2 = input('\n Seleccione una de las siguientes alternativas: \n - 1: Si desea terminar un proyecto.\
@@ -145,10 +145,10 @@ def projects_console(db, level):
                             raise ValueError('\n No existe ese número de contrato.')
                         finishProject(db, int(contract_number))
                         print('\n Proyecto terminado con éxito.')
-                        input(' Presione Enter para continuar. ')
+                        input(' Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
-                        input(' Presione Enter para continuar. ')
+                        input(' Presione Enter para continuar.')
                 if (opt2 == '2'):
                     try:
                         contract_number = input("\n Ingrese el número de contrato del proyecto a editar: ")
@@ -181,9 +181,9 @@ def projects_console(db, level):
                             try:
                                 new_linear_meters = float(new_linear_meters)
                             except:
-                                raise ValueError('\n Los metros lineales deben ser un número. \n')
+                                raise ValueError('\n Los metros lineales deben ser un número.')
                             if new_linear_meters < 0:
-                                raise ValueError('\n Los metros lineales deben ser un número positivo. \n')                            
+                                raise ValueError('\n Los metros lineales deben ser un número positivo.')                            
                         new_square_meters = input("Ingrese los metros cuadrados del proyecto, solo presione Enter si se mantienen: ")
                         if new_linear_meters.replace(' ','') == '':
                             new_linear_meters = None
@@ -191,9 +191,9 @@ def projects_console(db, level):
                             try:
                                 new_linear_meters = float(new_linear_meters)
                             except:
-                                raise ValueError('\n Los metros lineales deben ser un número. \n')
+                                raise ValueError('\n Los metros lineales deben ser un número.')
                             if new_linear_meters < 0:
-                                raise ValueError('\n Los metros lineales deben ser un número positivo. \n')                        
+                                raise ValueError('\n Los metros lineales deben ser un número positivo.')                        
                         new_real_linear_meters = input("Ingrese los metros lineales (reales) del proyecto, solo presione Enter si no se conocen: ")
                         if new_real_linear_meters.replace(' ','') == '':
                             new_real_linear_meters = None
@@ -201,9 +201,9 @@ def projects_console(db, level):
                             try:
                                 new_real_linear_meters = float(new_real_linear_meters)
                             except:
-                                raise ValueError('\n Los metros lineales deben ser un número positivo. \n')
+                                raise ValueError('\n Los metros lineales deben ser un número positivo.')
                             if new_real_linear_meters < 0:
-                                raise ValueError('\n Los metros lineales deben ser un número positivo. \n')                            
+                                raise ValueError('\n Los metros lineales deben ser un número positivo.')                            
                         new_deadline_year = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
                         new_deadline_month = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
                         new_deadline_day = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
@@ -225,7 +225,7 @@ def projects_console(db, level):
                         try:
                             new_deadline =date(int(new_deadline_year), int(new_deadline_month), int(new_deadline_day))
                         except:
-                            raise ValueError('\n Debe ingresar una fecha válida. \n')
+                            raise ValueError('\n Debe ingresar una fecha válida.')
                         new_real_cost = input("Ingrese el costo real del proyecto, solo presione Enter si no se conoce: ")
                         if new_real_cost.replace(' ','') == '':
                             new_real_cost = None
@@ -233,26 +233,26 @@ def projects_console(db, level):
                             try:
                                 new_real_cost = float(new_real_cost)
                                 if float(new_real_cost) < 0:
-                                    raise ValueError('\n Los costos deben ser un número positivo \n')
+                                    raise ValueError('\n Los costos deben ser un número positivo.')
                             except:
-                                raise ValueError('\n Los costos deben ser un número positivo \n')
+                                raise ValueError('\n Los costos deben ser un número positivo.')
 
                         new_crystal_leadtime = input("Ingrese la cantidad de días que demorarán en llegar los cristales, solo presione Enter si se mantiene: ")
                         if new_crystal_leadtime != None:
                             try:
                                 new_crystal_leadtime = int(new_crystal_leadtime)
                             except:
-                                raise ValueError('\n La cantidad de días debe ser un número entero \n')
+                                raise ValueError('\n La cantidad de días debe ser un número entero.')
                         editProject(db, contract_number, new_client_address, new_client_comuna_parsed, new_client_name, new_client_rut, new_linear_meters, new_square_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost, new_crystal_leadtime=new_crystal_leadtime)
                     except ValueError as ve:
                         print(ve)
-                        input('Presione cualquier tecla para volver \n')
+                        input('Presione Enter para continuar.')
                     except:
-                        print('\n No se pudo realizar la edición. \n')
-                        input('Presione cualquier tecla para volver \n')
+                        print('\n No se pudo realizar la edición.')
+                        input('Presione Enter para continuar.')
             else:
-                print('\n Acceso denegado. \n')
-                input(' Presione Enter para continuar. ')                
+                print('\n Acceso denegado.')
+                input(' Presione Enter para continuar.')                
         elif(opt == '3'):
             if(level == 1):
                 contract_number = input("\n Ingrese el número de contrato del proyecto a eliminar: ")
@@ -261,11 +261,11 @@ def projects_console(db, level):
                     print('\n Proyecto eliminado exitosamente. Es altamente recomendable realizar una nueva planificación para mejorar las fechas de entrega.')
                     input(' Presione Enter para continuar: ')
                 except:
-                    print('\n Proyecto inexistente \n')
-                    input('Precione cualquier tecla para volver \n')
+                    print('\n Proyecto inexistente.')
+                    input('Precione Enter para continuar.')
             else:
-                print('\n Acceso denegado. \n')
-                input(' Presione Enter para continuar. ')
+                print('\n Acceso denegado.')
+                input(' Presione Enter para continuar.')
         elif(opt == '4'):
             if(level == 1):
                 opt_projects_activities = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar datos de disponibilidad de un cliente. \
@@ -280,49 +280,50 @@ def projects_console(db, level):
                             try:
                                 db.Projects[int(project)].contract_number
                             except:
-                                raise ValueError('\n No existe ese número de contrato \n')
+                                raise ValueError('\n No existe ese número de contrato.')
                         initial_year = input(" Ingrese el año en que comienza la actividad: ")
                         initial_month = input(" Ingrese el mes en que comienza la actividad: ")
                         initial_day = input(" Ingrese el día en que comienza la actividad: ")
                         try:
                             date(int(initial_year),int(initial_month),int(initial_day))
                         except:
-                            raise ValueError('\n Fecha de inicio inválida \n')
+                            raise ValueError('\n Fecha de inicio inválida.')
                         end_year = input(" Ingrese el año en que termina la actividad: ")
                         end_month = input(" Ingrese el mes en que termina la actividad: ")
                         end_day = input(" Ingrese el día en que termina la actividad: ")
                         try:
                             date(int(end_year),int(end_month),int(end_day))
                         except:
-                            raise ValueError('\n Fecha de término inválida \n')
+                            raise ValueError('\n Fecha de término inválida.')
                         createProjectActivity(db, project, 3, initial_year, initial_month, initial_day, end_year, end_month, end_day)
-                        input('\n Indisponibilidad ingresada. Presione Enter para continuar. ')
+                        input('\n Indisponibilidad ingresada. Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
-                        input('Precione cualquier tecla para volver \n')
+                        input('Precione Enter para continuar.')
                 elif opt_projects_activities == '2':
                     id_project_activity = input("\n Ingrese el ID de la indisponibilidad que quiere eliminar: ")
                     try:
                         deleteProjectActivity(db, id_project_activity)
                     except:
-                        print('\n No existe esa indisponibilidad \n')
-                        input('Precione cualquier tecla para volver \n')
+                        print('\n No existe esa indisponibilidad.')
+                        input(' Presione Enter para continuar.')
                 elif opt_projects_activities == '3':
                     print('\n')
                     printProjectsActivities(db)
             else:
-                print('\n Acceso denegado. \n')
-                input(' Presione Enter para continuar. ')
+                print('\n Acceso denegado.')
+                input(' Presione Enter para continuar.')
         elif(opt == '5'):
             if (level == 1):
                 printProjects(db)
-                input('\n Presione Enter para continuar. ')
+                input('\n Presione Enter para continuar.')
             else:
-                print('\n Acceso denegado. \n')
-                input(' Presione Enter para continuar. ')
+                print('\n Acceso denegado.')
+                input(' Presione Enter para continuar.')
         elif (opt =='6'):
             if (level not in [1,2,3,4,5]) :
-                input('\n Acceso denegado. Presione Enter para continuar: ')
+                print('\n Acceso denegado.')
+                input(' Presione Enter para continuar.')
             else:
                 try:
                     contract_number = input('\n Ingrese el número de contrato del cual quiere estimar el costo: ')
@@ -349,7 +350,7 @@ def projects_console(db, level):
                     if (level not in [1,2,3,4,5]) :
                         break
                 finally:
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
         elif(opt == '7'):
             break
 
@@ -371,11 +372,11 @@ def tasks_console(db, level):
                         new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
                         with db_session:
                             if db.Projects.get(contract_number = new_contract_number) == None:
-                                raise ValueError('\n Proyecto inexistente. \n')
+                                raise ValueError('\n Proyecto inexistente.')
                         if(level == 1) or (level == 2):
                             new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
                             if int(new_id_skill) != 1 and int(new_id_skill) != 2 and int(new_id_skill) != 3 and int(new_id_skill) != 4:
-                                raise ValueError('\n ID de habilidad no válida. \n')
+                                raise ValueError('\n ID de habilidad no válida.')
                         if(level == 4):
                             new_id_skill = 1  
                         if (level == 3) :   
@@ -387,7 +388,7 @@ def tasks_console(db, level):
                             if new_id_skill == '2':
                                 new_id_skill = 4
                             else:
-                                raise ValueError('\n Error de ingreso. \n ')
+                                raise ValueError('\n Error de ingreso.')
                         new_effective_initial_year = input(" Ingrese el año efectivo de inicio, solo presione Enter si no ha comenzado: ")
                         if new_effective_initial_year != '':
                             new_effective_initial_month = input(" Ingrese el mes efectivo de inicio: ")
@@ -395,7 +396,7 @@ def tasks_console(db, level):
                             try:
                                 new_effective_initial_date = date(int(new_effective_initial_year),int(new_effective_initial_month),int(new_effective_initial_day))
                             except:
-                                raise ValueError('\n No es una fecha válida \n')
+                                raise ValueError('\n No es una fecha válida.')
                         if(new_effective_initial_year != ''):
                             new_effective_end_year = input(" Ingrese el año efectivo de término, solo presione Enter si no ha terminado: ")
                             if new_effective_end_year != '':
@@ -404,7 +405,7 @@ def tasks_console(db, level):
                                 try:
                                     new_effective_end_date = date(int(new_effective_end_year),int(new_effective_end_month),int(new_effective_end_day))
                                 except:
-                                    raise ValueError('\n Fecha de término inválida. \n')
+                                    raise ValueError('\n Fecha de término inválida.')
                             else:
                                 new_effective_end_date = None
 
@@ -414,7 +415,7 @@ def tasks_console(db, level):
                         # new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
                         # new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
                         editTask(db, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, effective_initial_date = new_effective_initial_date, effective_end_date = new_effective_end_date)
-                        input('\n Fecha agregada con éxito. Presione Enter para continuar. ')
+                        input('\n Fecha agregada con éxito. Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
                 elif(opt2 == '2'):
@@ -428,7 +429,7 @@ def tasks_console(db, level):
                             try:
                                 id_skill_fail = int(id_skill_fail)
                             except:
-                                raise ValueError('\n Ingreso de habilidad inválida. ')
+                                raise ValueError('\n Ingreso de habilidad inválida.')
                             if int(id_skill_fail) not in [1,2,3,4]:
                                 raise ValueError('\n ID de habilidad no válida.')
                         if(level == 4) or (level == 6) :
@@ -463,10 +464,10 @@ def tasks_console(db, level):
                         failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
                     except ValueError as ve:
                         print(ve)
-                        input(' Presione Enter para continuar. ')
+                        input(' Presione Enter para continuar.')
             else:
                 print('\n Acceso denegado.')
-                input(' Presione Enter para continuar. ')
+                input(' Presione Enter para continuar.')
         elif(opt == '2'):
             if (level == 1):
                 printTasks(db)
@@ -514,33 +515,33 @@ def tasks_console(db, level):
                             if opt2 == '6':
                                 if updateProfilesParameters(db, file_name):
                                     print('\n Edición realizada exitosamente.')
-                            input(' Presione Enter para continuar: ')
+                            input(' Presione Enter para continuar.')
                         else:
                             raise ValueError('\n Archivo no encontrado.')
                 except ValueError as ve:
                     print(ve)
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
                 
             else:
                 print('\n Acceso denegado.')
-                input(' Presione Enter para continuar: ')
+                input(' Presione Enter para continuar.')
         elif(opt == '4'):
             try:
                 contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
                 try:
                     contract_number = int(contract_number)
                 except:
-                    raise ValueError('\n Número de contrato inexistente. ')
+                    raise ValueError('\n Número de contrato inexistente.')
                 with db_session:
                     if db.Projects.get(contract_number = contract_number) == None:
-                        raise ValueError('\n Número de contrato inexistente \n')
+                        raise ValueError('\n Número de contrato inexistente.')
                 id_skill = input(" Ingrese el ID de la habilidad donde ocurrió el atraso (1: rect, 2: dis, 3: fab, 4: ins): ")
                 try:
                     id_skill = int(id_skill)
                 except:
-                    raise ValueError('\n Ingreso de habilidad inválida. ')
+                    raise ValueError('\n Ingreso de habilidad inválida.')
                 if int(id_skill) not in [1,2,3,4]:
-                    raise ValueError('\n ID de habilidad no válida. \n')
+                    raise ValueError('\n ID de habilidad no válida.')
                 with db_session:
                     task = db.Tasks.get( project = db.Projects[contract_number], skill = db.Skills[id_skill], failed = None)
                     if task == None:
@@ -575,7 +576,7 @@ def tasks_console(db, level):
                     try:
                         delay = int(delay)
                     except:
-                        raise ValueError('\n ID de habilidad no válida. \n')
+                        raise ValueError('\n ID de habilidad no válida.')
                     if delay < 0 :
                         planned_end_date = select( et for et in db.Employees_Tasks if et.task == task).first().planned_end_date
                         if sumDays(date.today(),-1*delay) > planned_end_date: 
@@ -585,7 +586,7 @@ def tasks_console(db, level):
             except ValueError as ve:
                 print(ve)
             finally:
-                input(' Presione Enter para continuar: ')
+                input(' Presione Enter para continuar.')
         elif(opt == '5'):
             opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar/editar la orden de compra.\
                                                                     \n - 2: Si desea ingresar/editar la fecha efectiva de llegada de los cristales.\
@@ -624,10 +625,10 @@ def tasks_console(db, level):
                         raise ValueError('\n No se ha ingresado una fecha válida.')
                     editCrystalSalesOrder(db, project, original_arrival_date, effective_issuing_date, id_issuer_order, id_crystal_provider)
                     print(' Edición realizada exitosamente.')
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
                 except ValueError as ve:
                     print(ve)
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
                 
             elif opt2 == '2':
                 try:
@@ -651,11 +652,11 @@ def tasks_console(db, level):
                             raise ValueError('\n No se ha ingresado una fecha válida.')
                     editCrystalArrival(db, project, effective_arrival_date)
                     print(' Edición realizada exitosamente.')
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
                     
                 except ValueError as ve:
                     print(ve)
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
                 
         elif(opt == '6'):
             break

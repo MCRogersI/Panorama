@@ -59,7 +59,7 @@ def deleteSku(db, id):
 def printStockConsole(db):
     ''' Este método elimina una de las entradas de SKU de la tabla de Stock '''
     with db_session:
-        print('\n')
+        print('')
         st = db.Stock.select()
         data = [s.to_dict() for s in st]
         df = pandas.DataFrame(data, columns = ['id','name','price','critical_level','real_quantity','waste_factor','estimated_quantity'])

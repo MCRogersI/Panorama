@@ -30,7 +30,7 @@ def printEmployees(db):
         df.columns = ['RUT','Nombre','Comuna', '¿Es Senior?']
         print()
         print(tabulate(df, headers='keys', tablefmt='psql'))
-        input(' \n Presione Enter para continuar. ')
+        input(' Presione Enter para continuar. ')
 
 def editEmployee(db, id, new_name = None, new_zone = None, perf_rect = None, perf_des = None, perf_fab = None, perf_ins = None, senior = None):
     replan = False

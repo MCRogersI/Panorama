@@ -21,59 +21,59 @@ def stock_console(db, level):
                 try:
                     id = int(id)
                 except:
-                    raise ValueError('\n El ID del producto debe ser un número entero positivo \n')
+                    raise ValueError('\n El ID del producto debe ser un número entero positivo.')
                 with db_session:
                     if db.Stock.get(id = id) != None:
-                        raise ValueError(' El ID del producto ya existe.')
+                        raise ValueError('\n El ID del producto ya existe.')
 
                 name = input(" Ingrese el nombre del producto: ")
                 if name == '':
-                    raise ValueError('\n Debe ingresar un nombre para el producto \n')
+                    raise ValueError('\n Debe ingresar un nombre para el producto.')
                 price = input(" Ingrese el precio unitario del producto: ")
                 try:
                     if float(price) < 0:
-                        raise ValueError('\n El precio unitario del producto debe ser un número positivo \n')
+                        raise ValueError('\n El precio unitario del producto debe ser un número positivo.')
                 except:
-                    raise ValueError('\n El precio unitario del producto debe ser un número positivo \n')
+                    raise ValueError('\n El precio unitario del producto debe ser un número positivo.')
                 critical_level = input(" Ingrese el nivel crítico del producto: ")
                 try:
                     if float(critical_level) < 0:
-                        raise ValueError('\n El nivel crítico del producto debe ser un número positivo \n')
+                        raise ValueError('\n El nivel crítico del producto debe ser un número positivo.')
                 except:
-                    raise ValueError('\n El nivel crítico del producto debe ser un número positivo \n')
+                    raise ValueError('\n El nivel crítico del producto debe ser un número positivo.')
                 real_quantity = input(" Ingrese la cantidad en bodega del producto: ")
                 try:
                     if float(real_quantity) < 0:
-                        raise ValueError('\n La cantidad en bodega debe ser un número positivo \n')
+                        raise ValueError('\n La cantidad en bodega debe ser un número positivo.')
                 except:
                     raise ValueError('\n La cantidad en bodega debe ser un número positivo \n')
                 waste_factor = input(' Ingrese el factor de pérdida del SKU: ')
                 if waste_factor !='':
                     try:
                         if float(waste_factor) <0:
-                            raise ValueError('\n El factor de pérdida debe ser un número positivo \n')
+                            raise ValueError('\n El factor de pérdida debe ser un número positivo.')
                     except:
-                        raise ValueError('\n El factor de pérdida debe ser un número positivo \n')
+                        raise ValueError('\n El factor de pérdida debe ser un número positivo.')
                 createSku(db,id, name, price, critical_level, real_quantity , waste_factor)
-                input('\n SKU creado con éxito. Presione una tecla para continuar. \n')
+                input('\n SKU creado con éxito. Presione una tecla para continuar.')
             except ValueError as ve:
                 print(ve)
-                input('\n Presione una tecla para continuar \n')
+                input(' Presione Enter para continuar.')
         if (opt == '2'):
             opt2 = input('\n Marque una de las siguientes opciones:\n - 1: Edición manual de un SKU. \
                                                                    \n - 2: Cargar adiciones de un archivo. \
                                                                    \n Ingrese la alternativa elegida: ')
             if(opt2 == '1'):
                 try:
-                    id = input("\n Ingrese el id del producto: ")
+                    id = input("\n Ingrese el ID del producto: ")
                     try:
                         id = int(id)
                     except:
-                        raise ValueError('\n El ID del producto debe ser un número entero positivo \n')
+                        raise ValueError('\n El ID del producto debe ser un número entero positivo.')
                     with db_session:
                         if db.Stock.get(id = id) == None:
-                            raise ValueError(' El ID del producto ya existe.')
-                    name = input("\n Ingrese el nuevo nombre del producto, solo presione Enter si lo mantiene: ")
+                            raise ValueError('\n El ID del producto ya existe.')
+                    name = input(" Ingrese el nuevo nombre del producto, solo presione Enter si lo mantiene: ")
                     if name == '':
                         name = None
                     price = input(" Ingrese el nuevo precio unitario del producto, solo presione Enter si lo mantiene: ")
@@ -82,40 +82,40 @@ def stock_console(db, level):
                     else:
                         try:
                             if float(price) < 0:
-                                raise ValueError('\n El precio unitario del producto debe ser un número positivo \n')
+                                raise ValueError('\n El precio unitario del producto debe ser un número positivo.')
                         except:
-                            raise ValueError('\n El precio unitario del producto debe ser un número positivo \n')
+                            raise ValueError('\n El precio unitario del producto debe ser un número positivo.')
                     critical_level = input(" Ingrese el nuevo nivel crítico del producto, solo presione Enter si lo mantiene: ")
                     if critical_level == '':
                         critical_level = None
                     else:
                         try:
                             if float(critical_level) < 0:
-                                raise ValueError('\n El nivel crítico del producto debe ser un número positivo \n')
+                                raise ValueError('\n El nivel crítico del producto debe ser un número positivo.')
                         except:
-                            raise ValueError('\n El nivel crítico del producto debe ser un número positivo \n')
+                            raise ValueError('\n El nivel crítico del producto debe ser un número positivo.')
                     real_quantity = input(" Ingrese la nueva cantidad en bodega del producto, solo presione Enter si es que desea ingresar este valor en el futuro: ")
                     if real_quantity == '':
                         real_quantity = None
                     else:
                         try:
                             if float(real_quantity) < 0:
-                                raise ValueError('\n La cantidad en bodega debe ser un número positivo \n')
+                                raise ValueError('\n La cantidad en bodega debe ser un número positivo.')
                         except:
-                            raise ValueError('\n La cantidad en bodega debe ser un número positivo \n')
+                            raise ValueError('\n La cantidad en bodega debe ser un número positivo.')
                     if waste_factor == '':
                         waste_factor = None
                     else:
                         try:
                             if float(waste_factor) < 0:
-                                raise ValueError('\n El factor de pérdida debe ser un número positivo \n')
+                                raise ValueError('\n El factor de pérdida debe ser un número positivo.')
                         except:
-                            raise ValueError('\n El factor de pérdida debe ser un número positivo \n')
+                            raise ValueError('\n El factor de pérdida debe ser un número positivo.')
                     editSku(db,id = id, name=name, price=price, critical_level=critical_level, real_quantity=real_quantity, waste_factor = waste_factor)
-                    input('\n Presione Enter para continuar \n')
+                    input(' Presione Enter para continuar.')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione Enter para continuar \n')
+                    input(' Presione Enter para continuar.')
             if (opt2 == '2'):
                 try:
                     file_name = input('\n Ingrese el nombre del archivo con los datos: ')
@@ -141,10 +141,10 @@ def stock_console(db, level):
                 deleteSku(db, id)
             except ValueError as ve:
                 print(ve)
-                input('\n Presione Enter para continuar: ')
+                input(' Presione Enter para continuar.')
         if (opt == '4'):
             printStockConsole(db)
-            input('\n Presione Enter para continuar: ')
+            input(' Presione Enter para continuar.')
         if (opt =='5') :
             try:
                 file_name = input(' Ingrese el nombre del archivo de la orden de compra: ')
@@ -160,6 +160,6 @@ def stock_console(db, level):
                 input(' Presione Enter para continuar: ')
         if opt =='6' and level ==1:
             createStockReport(db)
-            input('\n Informe creado con éxito. Presione Enter para continuar: ')
+            input('\n Informe creado con éxito. Presione Enter para continuar.')
         if (opt == '7'):
             break
