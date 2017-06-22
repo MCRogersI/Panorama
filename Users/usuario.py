@@ -13,47 +13,47 @@ def users_console(db):
             try:
                 level = input('\n Ingrese el nivel de usuario que quiere crear: ')
                 try:
-                    int(level)
+                    level = int(level)
                 except:
-                    raise ValueError('\n Nivel inválido \n')
+                    raise ValueError('\n Nivel inválido.')
                 if level not in [6,7,8,9]:
-                    name = input('\n Ingrese el Nombre del usuario: ')
+                    name = input(' Ingrese el nombre del usuario: ')
                 else:
-                    name = input('\n Ingrese el rut del usuario sin puntos ni número verificador: ')
+                    name = input(' Ingrese el RUT del usuario sin puntos ni número verificador: ')
                     try:
                         int(name)
                     except:
-                        raise ValueError('\n rut inválido. \n')
-                password = getpass.getpass('\n Ingrese contraseña para el usuario: ')
-                check_password = getpass.getpass('\n Ingrese nuevamente la contraseña para el usuario: ')
+                        raise ValueError('\n RUT inválido.')
+                password = getpass.getpass(' Ingrese contraseña para el usuario: ')
+                check_password = getpass.getpass(' Ingrese nuevamente la contraseña para el usuario: ')
                 if password == check_password:
                     createUser(db,name, level,password)
-                    print(' Usuario creado con éxito.')
+                    print('\n Usuario creado con éxito.')
                     input(' Presione Enter para continuar. ')
                 else:
-                    raise ValueError('Contraseñas no coinciden. ')
+                    raise ValueError('\n Contraseñas no coinciden.')
             except ValueError as ve:
                 print(ve)
-                input(' Presione Enter para continuar. ')
+                input(' Presione Enter para continuar.')
                 
                 
         if (opt == '2'):
-            name = input(' Ingrese el rut del usuario: ')
+            name = input('\n Ingrese el RUT del usuario: ')
             new_level = input(' Ingrese el nuevo nivel de usuario: ')
             password = getpass.getpass(' Ingrese la contraseña del usuario: ')
             editUserLevel(db,name,new_level, password)
-            input( ' Presione Enter para continuar. ')
+            input(' Presione Enter para continuar.')
         if (opt == '3'):
             name = input(' Ingrese usuario que desea eliminar: ')
             with db_session:
                 user = db.Users.get(user_name = name)
             if user == None:
-                print(' El usuario no existe. ')
-                input( ' Presione Enter para continuar. ')
+                print('\n El usuario no existe.')
+                input(' Presione Enter para continuar.')
             else:
                 deleteUser(db,name)
-                print(' Usuario eliminado con éxito. ')
-                input( ' Presione Enter para continuar. ')
+                print('\n Usuario eliminado con éxito.')
+                input( ' Presione Enter para continuar.')
         if (opt =='4'):
             printUsers(db)
         if (opt == '5'):

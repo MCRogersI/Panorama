@@ -3,8 +3,8 @@ import Projects.models as Pr, Employees.models as E, Planning.models as Pl, User
 
 
 
-# Esta parte del código busca sobreescribir la base de datos con una base de
-#  datos vacía (limpiar/restart)
+# Esta parte del codigo busca sobreescribir la base de datos con una base de
+#  datos vacia (limpiar/restart)
 # Probablemente sea posible hacerlo usando el
 # comando db.drop_all_tables(with_all_data=True)
 #PENDIENTE

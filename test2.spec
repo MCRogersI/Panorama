@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['main.py'],
+a = Analysis(['C:\\pyqttest\\test2.py'],
              pathex=['C:\\Users\\Alberto\\Desktop\\Universidad\\Practica\\Panorama'],
              binaries=[],
              datas=[],
@@ -18,11 +18,16 @@ pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
-          a.binaries,
-          a.zipfiles,
-          a.datas,
-          name='main',
-          debug=False,
+          exclude_binaries=True,
+          name='test2',
+          debug=True,
           strip=False,
           upx=True,
           console=True )
+coll = COLLECT(exe,
+               a.binaries,
+               a.zipfiles,
+               a.datas,
+               strip=False,
+               upx=True,
+               name='test2')
