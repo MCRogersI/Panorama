@@ -84,11 +84,11 @@ Las lineas comentadas son las que están revisadas
 
 10) Revisar que Manejar disponibilidad del cliente funcione:
 
-- Que te permita ver la lista (y que la actualice altiro, sin tener que cerrar el programa).
-- Que permita ingresar la actividad, reclamando si los datos se meten mal.
+# - Que te permita ver la lista (y que la actualice altiro, sin tener que cerrar el programa).
+# - Que permita ingresar la actividad, reclamando si los datos se meten mal.
 - Que al ingresar replanifique si topa con un trabajo.
-- Que elimine efectivamente la actividad.
-- Que imprima todo correctamente
+# - Que elimine efectivamente la actividad.
+# - Que imprima todo correctamente
 
 12) Revisar que imprimir Projects funcione:
 
