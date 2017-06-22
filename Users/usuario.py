@@ -1,12 +1,13 @@
 import getpass
-from Users.features import createUser, deleteUser, editUserLevel
-
+from Users.features import createUser, deleteUser, editUserLevel, printUsers
+from pony.orm import *
 def users_console(db):
     while True:
         opt = input( "\n Marque una de las siguientes opciones:\n - 1: Crear usuario.\
                                                                \n - 2: Editar nivel de usuario.\
                                                                \n - 3: Eliminar usuario.\
-                                                               \n - 4: Para volver atrás. \
+                                                               \n - 4: Ver usuarios actuales.\
+                                                               \n - 5: Para volver atrás. \
                                                                \n Ingrese la alternativa elegida: ")
         if (opt == '1') :
             try:
@@ -16,7 +17,7 @@ def users_console(db):
                 except:
                     raise ValueError('\n Nivel inválido \n')
                 if level not in [6,7,8,9]:
-                    name = input('\n Ingrese el nombre del usuario: ')
+                    name = input('\n Ingrese el Nombre del usuario: ')
                 else:
                     name = input('\n Ingrese el rut del usuario sin puntos ni número verificador: ')
                     try:
@@ -27,20 +28,30 @@ def users_console(db):
                 check_password = getpass.getpass('\n Ingrese nuevamente la contraseña para el usuario: ')
                 if password == check_password:
                     createUser(db,name, level,password)
+                    print(' Usuario creado con éxito.')
+                    input(' Presione Enter para continuar. ')
                 else:
-                    raise ValueError('\n Contraseñas no coinciden! \n')
+                    raise ValueError('Contraseñas no coinciden. ')
             except ValueError as ve:
                 print(ve)
-                input('\n Presione Enter para continuar. ')
+                input(' Presione Enter para continuar. ')
                 
                 
         if (opt == '2'):
-            name = input('\n Ingrese el nombre del usuario: ')
-            new_level = input('\n Ingrese el nuevo nivel de usuario: ')
-            password = getpass.getpass('\n Ingrese la contraseña del usuario: ')
+            name = input(' Ingrese el rut del usuario: ')
+            new_level = input(' Ingrese el nuevo nivel de usuario: ')
+            password = getpass.getpass(' Ingrese la contraseña del usuario: ')
             editUserLevel(db,name,new_level, password)
         if (opt == '3'):
-            name = input('\n Ingrese usuario que desea eliminar: ')
-            deleteUser(db,name)
-        if (opt == '4'):
+            name = input(' Ingrese usuario que desea eliminar: ')
+            with db_session:
+                user = db.Users.get(user_name = name)
+            if user == None:
+                print(' El usuario no existe. ')
+                input( ' Presione Enter para continuar. ')
+            else:
+                deleteUser(db,name)
+        if (opt =='4'):
+            printUsers(db)
+        if (opt == '5'):
             break

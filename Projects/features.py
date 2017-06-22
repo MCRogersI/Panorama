@@ -333,7 +333,8 @@ def createProjectActivity(db, project, activity, initial_year, initial_month, in
     with db_session:
         db.Projects_Activities(project = project, activity = activity, initial_date = initial_date, end_date = end_date)
         commit()
-    if activitiyProjectOverlap(db, project, initial_date, end_date):
+        p = db.Projects[project]
+    if activitiyProjectOverlap(db, p, initial_date, end_date):
         doPlanning(db)
 
 def activitiyProjectOverlap(db, project, initial_date, end_date):
@@ -343,7 +344,7 @@ def activitiyProjectOverlap(db, project, initial_date, end_date):
     '''
     with db_session:
         emp_tasks = select(et for et in db.Employees_Tasks if et.task.project == project)
-        for tp in tasks_project:
+        for et in emp_tasks:
             if datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
                 # Se desfija el proyecto para que no haga planificaciones infactibles
                 tp.task.project.fixed_planning = False
@@ -359,6 +360,14 @@ def deleteProjectActivity(db, id_project_activity):
 def printProjectsActivities(db):
     with db_session:
         db.Projects_Activities.select().show()
+        
+        print('\n')
+        pr = db.Projects_Activities.select()
+        data = [p.to_dict() for p in pr]
+        df = pandas.DataFrame(data, columns = ['id','project','activity','initial_date','end_date'])                    
+        df.columns = ['ID','Numero de contrato','Actividad','Fecha de inicio','Fecha de finalización']
+        print( tabulate(df, headers='keys', tablefmt='psql'))
+        
 def getListProducts(db):
     with db_session:
         wb = load_workbook('Products.xlsx')
