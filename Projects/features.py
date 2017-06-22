@@ -24,7 +24,7 @@ def createProject(db, contract_number = None, client_address = None, client_comu
         
         commit()
     PLf.doPlanning(db)
-
+    
 def printProjects(db):
     with db_session:
         print('\n')
@@ -36,6 +36,32 @@ def printProjects(db):
         ,'Costo Estimado','Costo Real','Precio de Venta','Planificación Fija','Prioridad Fijada','Tiempo Entrega Cristales','Fecha de Venta','Proyecto Finalizado']
         print( tabulate(df.drop(df.columns[[9,10,11,12,13,14,15,16,17]], axis = 1), headers='keys', tablefmt='psql'))
         print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8]], axis = 1), headers='keys', tablefmt='psql'))
+
+def printCurrentProjects(db):
+    with db_session:
+        print('\n')
+        pr = select(p for p in db.Projects if p.finished == None)
+        data = [p.to_dict() for p in pr]
+        df = pandas.DataFrame(data, columns = ['contract_number','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
+        ,'estimated_cost','real_cost','sale_price','fixed_planning','fixed_priority','crystal_leadtime','sale_date','finished'])                    
+        df.columns = ['Número de Contrato','Dirección','Comuna','Nombre','Rut','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
+        ,'Costo Estimado','Costo Real','Precio de Venta','Planificación Fija','Prioridad Fijada','Tiempo Entrega Cristales','Fecha de Venta','Proyecto Finalizado']
+        print( tabulate(df.drop(df.columns[[9,10,11,12,13,14,15,16,17]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8,17]], axis = 1), headers='keys', tablefmt='psql'))
+        
+def printFinishedProjects(db):
+    with db_session:
+        print('\n')
+        pr = select(p for p in db.Projects if p.finished == True)
+        data = [p.to_dict() for p in pr]
+        df = pandas.DataFrame(data, columns = ['contract_number','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
+        ,'estimated_cost','real_cost','sale_price','fixed_planning','fixed_priority','crystal_leadtime','sale_date','finished'])                    
+        df.columns = ['Número de Contrato','Dirección','Comuna','Nombre','Rut','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
+        ,'Costo Estimado','Costo Real','Precio de Venta','Planificación Fija','Prioridad Fijada','Tiempo Entrega Cristales','Fecha de Venta','Proyecto Finalizado']
+        print( tabulate(df.drop(df.columns[[8,9,10,11,12,13,14,15,16,17]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8,17]], axis = 1), headers='keys', tablefmt='psql'))
+        
+        
 def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None,new_square_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None):
     with db_session:
         p = db.Projects[contract_number]

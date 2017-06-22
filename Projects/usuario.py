@@ -1,6 +1,6 @@
 from datetime import date
 from pony.orm import *
-from Projects.features import createProject, printProjects, editProject, deleteProject, finishProject, createTask, editTask, printTasks, failedTask, createProjectActivity, deleteProjectActivity, printProjectsActivities, createDelay
+from Projects.features import createProject, printProjects, printFinishedProjects, printCurrentProjects, editProject, deleteProject, finishProject, createTask, editTask, printTasks, failedTask, createProjectActivity, deleteProjectActivity, printProjectsActivities, createDelay
 from Projects.costs import estimateCost
 from Projects.updateParameters import   updateFreightCosts, updateOperatingCosts,  updateViaticCosts,  updateMovilizationCosts, updateCrystalsParameters, updateProfilesParameters
 from Planning.features import sumDays, editCrystalSalesOrder, editCrystalArrival
@@ -18,7 +18,7 @@ def projects_console(db, level):
                                                                   \n - 2: Si desea editar un proyecto. \
                                                                   \n - 3: Eliminar un proyecto. \
                                                                   \n - 4: Si desea manejar datos sobre disponibilidad de un cliente. \
-                                                                  \n - 5: Para ver proyectos actuales. \
+                                                                  \n - 5: Para ver proyectos. \
                                                                   \n - 6: Para estimar costos del proyecto. \
                                                                   \n - 7: Para volver atrás. \
                                                                   \n Ingrese la alternativa elegida: ")
@@ -315,8 +315,23 @@ def projects_console(db, level):
                 input(' Presione Enter para continuar.')
         elif(opt == '5'):
             if (level == 1):
-                printProjects(db)
-                input('\n Presione Enter para continuar.')
+                opt2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver proyectos vigentes. \
+                                                                      \n - 2: Si desea ver proyectos terminados.\
+                                                                      \n - 3: Si desea ver todos los proyectos. \
+                                                                      \n - 4: Para volver atrás. \
+                                                                      \n Ingrese la alternativa elegida: ")
+                if opt2 == '1':
+                    printCurrentProjects(db)
+                    input('\n Presione Enter para continuar. ')
+                elif opt2 == '2':
+                    printFinishedProjects(db)
+                    input('\n Presione Enter para continuar. ')
+                elif opt2 == '3':
+                    printProjects(db)
+                    input('\n Presione Enter para continuar. ')
+                else:
+                    print(' Ingreso inválido. ')
+                    input('\n Presione Enter para continuar. ')
             else:
                 print('\n Acceso denegado.')
                 input(' Presione Enter para continuar.')
