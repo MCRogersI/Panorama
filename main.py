@@ -16,28 +16,28 @@ import Planning.usuario as PlanU
 # import Stock.features as Sf
 import Users.usuario as Uu
 import numpy as np
-import getpass
+# import getpass
 import os
 
 #para cambiar el tamaño de la ventana y el buffer de la consola
-try:
-    from win32console import PyConsoleScreenBufferType, GetStdHandle, STD_OUTPUT_HANDLE, PyCOORDType, PySMALL_RECTType
+# try:
+    # from win32console import PyConsoleScreenBufferType, GetStdHandle, STD_OUTPUT_HANDLE, PyCOORDType, PySMALL_RECTType
 
-    # Get the standard output buffers.
-    win_out = PyConsoleScreenBufferType(GetStdHandle(STD_OUTPUT_HANDLE))
-    # Get largest console window size
-    buffer_size = win_out.GetConsoleScreenBufferInfo()['Size']
-    PyCOORD = win_out.GetLargestConsoleWindowSize()
-    # Set console buffer and console window size
-    win_out.SetConsoleScreenBufferSize(PyCOORDType(2*PyCOORD.X, 5*buffer_size.Y))
-    Left = 0
-    Right = PyCOORD.X - 1
-    Top = 0
-    Bottom = PyCOORD.Y - 1
-    win_out.SetConsoleWindowInfo(True, PySMALL_RECTType(Left, Top, Right, Bottom))
-    win_out.Close()
-except:
-    pass
+    # # Get the standard output buffers.
+    # win_out = PyConsoleScreenBufferType(GetStdHandle(STD_OUTPUT_HANDLE))
+    # # Get largest console window size
+    # buffer_size = win_out.GetConsoleScreenBufferInfo()['Size']
+    # PyCOORD = win_out.GetLargestConsoleWindowSize()
+    # # Set console buffer and console window size
+    # win_out.SetConsoleScreenBufferSize(PyCOORDType(2*PyCOORD.X, 5*buffer_size.Y))
+    # Left = 0
+    # Right = PyCOORD.X - 1
+    # Top = 0
+    # Bottom = PyCOORD.Y - 1
+    # win_out.SetConsoleWindowInfo(True, PySMALL_RECTType(Left, Top, Right, Bottom))
+    # win_out.Close()
+# except:
+    # pass
 
 def console(level, user):
     while True:
@@ -97,8 +97,8 @@ def console(level, user):
 def signIn():
     while True:
         user = input(" Ingrese su usuario: ")
-        # password = input(" Ingrese su contrasena: ")
-        password = getpass.getpass(' Ingrese su contrasena: ')
+        password = input(" Ingrese su contrasena: ")
+        # password = getpass.getpass(' Ingrese su contrasena: ')
         if Uf.checkPassEntry(db, user, password):
             with db_session:
                 level=Uf.getUserLevel(db, user)
