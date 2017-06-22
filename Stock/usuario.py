@@ -103,6 +103,7 @@ def stock_console(db, level):
                                 raise ValueError('\n La cantidad en bodega debe ser un número positivo.')
                         except:
                             raise ValueError('\n La cantidad en bodega debe ser un número positivo.')
+                    waste_factor = input(' Ingrese el nuevo factor de pérdida del producto, solo presione Enter si lo mantiene: ')
                     if waste_factor == '':
                         waste_factor = None
                     else:
@@ -139,6 +140,8 @@ def stock_console(db, level):
                     if db.Stock.get(id = id) == None:
                         raise ValueError('\n Producto inexistente.')
                 deleteSku(db, id)
+                print(' Producto eliminado con éxito. ')
+                input( ' Presione Enter para continuar. ')
             except ValueError as ve:
                 print(ve)
                 input(' Presione Enter para continuar.')

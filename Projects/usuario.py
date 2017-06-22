@@ -244,15 +244,17 @@ def projects_console(db, level):
                             except:
                                 raise ValueError('\n La cantidad de días debe ser un número entero.')
                         editProject(db, contract_number, new_client_address, new_client_comuna_parsed, new_client_name, new_client_rut, new_linear_meters, new_square_meters, new_real_linear_meters, new_deadline, new_estimated_cost=None, new_real_cost=new_real_cost, new_crystal_leadtime=new_crystal_leadtime)
+                        print(' Edición realizada con éxito. ')
+                        input(' Presione Enter para continuar: ')
                     except ValueError as ve:
                         print(ve)
-                        input('Presione Enter para continuar.')
+                        input('Presione Enter para continuar: ')
                     except:
                         print('\n No se pudo realizar la edición.')
-                        input('Presione Enter para continuar.')
+                        input('Presione Enter para continuar: ')
             else:
                 print('\n Acceso denegado.')
-                input(' Presione Enter para continuar.')                
+                input(' Presione Enter para continuar: ')                
         elif(opt == '3'):
             if(level == 1):
                 contract_number = input("\n Ingrese el número de contrato del proyecto a eliminar: ")

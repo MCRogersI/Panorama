@@ -2,6 +2,8 @@ from pony.orm import *
 #Luego deberíamos cambiar la importación de pony para que no se importen todas las cosas con * (mala práctica).
 import os
 import hashlib
+import pandas
+from tabulate import tabulate
 
 def createUser(db,name, level,password):
     ''' Este método crea una nueva entrada en la tabla de Usuarios de la base de datos
@@ -19,12 +21,22 @@ def editUserLevel(db,name,new_level, password):
         if checkPassEntry(db,name, password):
             u = db.Users.get(user_name = name)
             u.level = new_level
+            print(' Usuario editado con éxito. ')
         else:
             print('\n Usuario o contraseña incorrectos.\n')
             
 def deleteUser(db,name):
     with db_session:
         db.Users.get(user_name = name).delete()
+        
+def printUsers(db):
+    with db_session:
+        print('\n')
+        Users = db.Users.select()
+        data = [u.to_dict() for u in Users]
+        df = pandas.DataFrame(data, columns = ['user_name','user_level'])
+        df.columns = ['Rut de usuario', 'Nivel de usuario']
+        print( tabulate(df, headers='keys', tablefmt='psql'))
 
 def checkPassEntry(db,name_request, password):
     ''' Este método revisa que los datos ingresados para el sign-up sean correctos
