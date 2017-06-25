@@ -1,20 +1,22 @@
 Cambios en funciones
 
-edit project tiene que revisar la ultima versión
+# 1) edit project tiene que revisar la ultima versión
 
-DeleteProject borra la ultima versión o borra todas las versiones??
+# 2) DeleteProject borra la ultima versión o borra todas las versiones??
 
-finishProject debe revisar la ultima versión
+# 3) finishProject debe revisar la ultima versión
 
-Ahora al terminar una versión del proyecto por fallo la prioridad no cambia. La versión nueva hereda la prioridad del anterior. No se puede usar la función finnishProject para esto
+# 4) Ahora al terminar una versión del proyecto por fallo la prioridad no cambia. La versión nueva hereda la prioridad del anterior. No se puede usar la función finnishProject para esto
 
-getNumberConcurrentProjects debe revisar la última versión
+# 5) getNumberConcurrentProjects debe revisar la última versión
+    nota: no sabemos que es ni la usamos
 
-getCostRM debe revisar la última versión? o es que debe sumar los de todas las versiones? idem para getCostInstallation, getCostProject y getCostFabrication
+# 6) getCostRM debe revisar la última versión? o es que debe sumar los de todas las versiones? idem para getCostInstallation, getCostProject y getCostFabrication
+    nota: no sabemos que es ni la usamos
 
-createTask debe revisar la versión del proyecto. Edit task tambien para la query de proyecto
+# 7) createTask debe revisar la versión del proyecto. Edit task tambien para la query de proyecto
+    nota: EditTask no se usa
 
-las tablas de printTasks no van a mostrar versiones del proyecto
+8) las tablas de printTasks no van a mostrar versiones del proyecto
 
-failedTask necesita cambios mayores
-
+9) failedTask necesita cambios mayores

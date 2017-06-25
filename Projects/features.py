@@ -248,17 +248,46 @@ def printTasks(db):
 def failedTask(db, contract_number, id_skill, fail_cost):
     # import Planning.features as PLf
     with db_session:
-
-        tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project == db.Projects.get(contract_number = contract_number, finished = None) and t.failed == None)
+        
+        #primero, detectamos todos los Tasks asociados a ese Skill y contract_number
+        tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project.contract_number == contract_number)
+        
+        #después, detectamos cuál es la última versión en la cuál ese Skill aparece como no fallado
+        version = 1
+        for t in tasks:
+            if t.skill.id == db.Skills[id_skill] and t.project.version > 1:
+                version = t.project.version
+        
+        #después, marcamos que las Tasks, para ese Skill y los que lo siguen, falló en las versiones anteriores también
         for t in tasks:
             t.failed = True
-            if t.skill == db.Skills[id_skill]:
-                t.fail_cost = fail_cost
         
+        #después, eliminamos las tareas, de la última versión, que no se habían alcanzado a terminar
         tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects.get(contract_number = contract_number, finished = None) and t.effective_end_date == None)
         for t in tasks:
             t.delete()
-
+            
+        #por último, asignamos los costos a la última versión del Skill que no aparece como fallada
+        tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project.contract_number == contract_number and t.project.version >= version)
+        task_responsible = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects.get(contract_number = contract_number, version = version))
+        task_responsible.fail_cost = task_responsible.fail_cost + fail_cost
+        for t in tasks:
+            task_responsible.fail_cost = task_responsible.fail_cost + t.fail_cost
+            t.fail_cost = 0
+        
+        #terminamos version anterior del proyecto
+        last_version = db.Projects.get(contract_number = contract_number, finished = None)
+        priority = last_version.priority
+        finishProject(db, contract_number)
+        
+        #creamos nueva version del proyecto
+        new_version = db.Projects(contract_number = last_version.contract_number, version = last_version.version + 1, client_address = last_version.client_address,
+                        client_comuna = last_version.client_comuna, client_name = last_version.client_name, client_rut = last_version.client_rut, 
+                        linear_meters = last_version.linear_meters, square_meters = last_version.square_meters, deadline = last_version.deadline, 
+                        crystal_leadtime = last_version.crystal_leadtime, sale_date = last_version.sale_date, sale_price = last_version.sale_price)
+        new_version.priority = priority
+        
+        commit()
         doPlanning(db)
 
 def createDelay(db, task, delay):

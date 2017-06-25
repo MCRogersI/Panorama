@@ -580,7 +580,7 @@ def taskCompletedBefore(db, project, skill):
     with db_session:
         previous_versions = select(p for p in db.Projects if p.contract_number == project.contract_number and p.finished == True)
         for p in previous_versions:
-            task = db.Tasks.get(project = p and skill = skill and failed = None)
+            task = db.Tasks.get(project = p, skill = skill, failed = None)
             if task != None:
                 return True
         return False
