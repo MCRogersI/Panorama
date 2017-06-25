@@ -64,36 +64,37 @@ def printFinishedProjects(db):
         
 def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None,new_square_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None):
     with db_session:
-        p = db.Projectsget(contract_number= contract_number, finished = None)
-        if new_client_address != None:
-            p.client_addres = new_client_address
-        if new_client_comuna != None:
-            p.client_comuna = new_client_comuna
-        if new_client_name != None:
-            p.client_name = new_client_name
-        if new_client_rut != None:
-            p.client_rut = new_client_rut
-        if new_linear_meters != None:
-            p.linear_meters = new_linear_meters
-        if new_square_meters != None:
-            p.square_meters = new_square_meters
-        if new_deadline != None:
-            p.deadline = new_deadline
-        if new_real_linear_meters != None:
-            p.real_linear_meters = new_real_linear_meters
-        if new_estimated_cost != None:
-            p.estimated_cost = new_estimated_cost
-        if new_real_cost != None:
-            p.real_cost = new_real_cost
-        if new_crystal_leadtime != None:
-            p.crystal_leadtime = new_crystal_leadtime
+        projects = solect(p for p in db.Projects if contract_number == contract_number)
+        for p in projects:
+            if new_client_address != None:
+                p.client_addres = new_client_address
+            if new_client_comuna != None:
+                p.client_comuna = new_client_comuna
+            if new_client_name != None:
+                p.client_name = new_client_name
+            if new_client_rut != None:
+                p.client_rut = new_client_rut
+            if new_linear_meters != None:
+                p.linear_meters = new_linear_meters
+            if new_square_meters != None:
+                p.square_meters = new_square_meters
+            if new_deadline != None:
+                p.deadline = new_deadline
+            if new_real_linear_meters != None:
+                p.real_linear_meters = new_real_linear_meters
+            if new_estimated_cost != None:
+                p.estimated_cost = new_estimated_cost
+            if new_real_cost != None:
+                p.real_cost = new_real_cost
+            if new_crystal_leadtime != None:
+                p.crystal_leadtime = new_crystal_leadtime
         commit()
 
 def deleteProject(db, contract_number):
     with db_session:
         new_priority = select(p for p in db.Projects if p.finished == None).count()
         changePriority(db, contract_number, new_priority)
-        db.Projects.get(contract_number = contract_number, finished = None).delete()
+        select(p for p in db.Projects if contract_number == contract_number and finished == None).delete()
         commit()
 
 def finishProject(db, contract_number):
@@ -107,8 +108,7 @@ def finishProject(db, contract_number):
         #eliminamos las Employees_Restrictions asociadas al proyecto
         select(er for er in db.Employees_Restrictions if er.project.contract_number == contract_number).delete()
         #eliminamos las Employees_Tasks asociadas al proyecto
-        select(et for et in db.Employees_Tasks if et.task.project == db.Projects.get(contract_number = contract_number, finished = None)).delete()
-        
+        select(et for et in db.Employees_Tasks if et.task.project == db.Projects.get(contract_number = contract_number, finished = None) and et.task.effective_end_date == None).delete()
         commit()
         
 def getNumberConcurrentProjects(db, contract_number, date):
@@ -189,7 +189,7 @@ def getCostProject(db, contract_number):
         return rmc + ic + fc
 def createTask(db, id_skill, contract_number, original_initial_date, original_end_date, effective_initial_date = None, effective_end_date = None):
     with db_session:
-        t = db.Tasks(skill = id_skill, project = contract_number, original_initial_date = original_initial_date, original_end_date = original_end_date)
+        t = db.Tasks(skill = id_skill, project = db.Projects.get(contract_number = contract_number, finished = None), original_initial_date = original_initial_date, original_end_date = original_end_date)
         commit()
 
 
@@ -241,9 +241,14 @@ def printTasks(db):
         print('\n')
         ts = db.Tasks.select()
         data = [t.to_dict() for t in ts]
+        version =pandas.Series([t.project.version for t in ts], name = 'Versión')
         df = pandas.DataFrame(data, columns = ['id','skill','project','original_initial_date','original_end_date','effective_initial_date','effective_end_date','failed','fail_cost'])
         df.columns = ['ID','Tarea','Proyecto','Fecha de Inicio Original','Fecha de Finalización Original','Fecha de Inicio Efectiva','Fecha de Finalización Efectiva','Falló','Costo de Falla']
-        print( tabulate(df, headers='keys', tablefmt='psql'))
+        df2 = pandas.concat([df,version], axis = 1)
+        cols = df2.columns.tolist()
+        cols = cols[0:3] + cols[-1:] + cols[4:-1]
+        df2 = df2[cols]
+        print( tabulate(df2, headers='keys', tablefmt='psql'))
 
 def failedTask(db, contract_number, id_skill, fail_cost):
     # import Planning.features as PLf

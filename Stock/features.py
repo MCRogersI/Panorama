@@ -75,11 +75,11 @@ def printStockConsole(db):
             # for sku_row in skus_list:
                 # try:
                     # sku = db.Stock[sku_row[0]]
-                    '''
-                    IMPORTANTE: En 'project' se podría haber guardado simplemente el id del proyecto (contract_number),
-                    pero de esta forma el proyecto puede ser accedido de forma directa a través del engagement.
-                    Deberíamos instaurar una convención al respecto.
-                    '''
+    '''
+    IMPORTANTE: En 'project' se podría haber guardado simplemente el id del proyecto (contract_number),
+    pero de esta forma el proyecto puede ser accedido de forma directa a través del engagement.
+    Deberíamos instaurar una convención al respecto.
+    '''
                     # db.Engagements(project=db.Projects[contract_number], sku=sku, quantity=sku_row[1],
                                    # withdrawal_date=withdrawal_date)
                 # except ObjectNotFound as e:

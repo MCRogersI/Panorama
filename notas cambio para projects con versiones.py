@@ -1,10 +1,10 @@
 Cambios en funciones
 
-edit project tiene que revisar la ultima versión
+# edit project tiene que revisar todas las versiones
 
-DeleteProject borra la ultima versión o borra todas las versiones??
+# DeleteProject borra la ultima versión o borra todas las versiones?? borra todas las versiones
 
-finishProject debe revisar la ultima versión
+# finishProject debe revisar la ultima versión
 
 Ahora al terminar una versión del proyecto por fallo la prioridad no cambia. La versión nueva hereda la prioridad del anterior. No se puede usar la función finnishProject para esto
 
