@@ -3,7 +3,9 @@ from datetime import date
 
 def define_models(db):
     class Projects(db.Entity):
-        contract_number = PrimaryKey(int, auto=False)
+        contract_number = Required(int)
+        version = Required (int)
+        PrimaryKey(contract_number, version)
         client_address = Required(str)
         client_comuna = Required(str)
         client_name = Required(str)
@@ -16,7 +18,6 @@ def define_models(db):
         estimated_cost = Optional(int)
         real_cost = Optional(int)
         sale_price = Optional(int)
-        difficulties = Set('Difficulties')
         tasks = Set('Tasks')
         employees = Set('Employees_Restrictions')
         restrictions = Set('Deadlines_Restrictions')
@@ -33,14 +34,6 @@ def define_models(db):
         def __repr__(self):
             return str(self.contract_number)
 
-    # dificultades tipo "construcción en altura"
-    class Difficulties(db.Entity):
-        id = PrimaryKey(int, auto=False)
-        description = Required(str)
-        projects = Set(Projects)
-
-        def __repr__(self):
-            return self.description
 
     # actividades tipo "licencia", "vacaciones", etc. Una actividad necesariamente implica no trabajar.
     class Activities(db.Entity):
