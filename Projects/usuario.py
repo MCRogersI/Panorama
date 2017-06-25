@@ -159,6 +159,7 @@ def projects_console(db, level):
                             try:
                                 contract_number = int(contract_number)
                             except:
+                                raise ValueError(' El número de contrato debe ser un número.' )
                         with db_session:
                             p = db.Projects.get(contract_number = contract_number, finished = None)
                             if p == None:
