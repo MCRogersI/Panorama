@@ -68,7 +68,7 @@ def getDays(db, id_skill, contract_number, num_workers):
         # rectificadores y disenadores solo demoran un día, funcionan en base a proyectos/día.
         if id_skill == 1 or id_skill == 2:
             return 1
-        project = db.Projects[contract_number]
+        project = db.Projects.get(contract_number = contract_number, finished = None)
         linear_meters = project.linear_meters
         if project.real_linear_meters != None:
             linear_meters = project.real_linear_meters
@@ -81,9 +81,9 @@ def getDays(db, id_skill, contract_number, num_workers):
 #checked with several project_activity
 def clientAvailable(db, contract_number, initial_date, end_date):
     with db_session:
-        proj_acts = select(pa for pa in db.Projects_Activities if pa.project == db.Projects[contract_number])
+        proj_acts = select(pa for pa in db.Projects_Activities if pa.project == db.Projects.get(contract_number = contract_number, finished = None))
         for pa in proj_acts:
-            if (pa.initial_date >= initial_date and pa.initial_date <= end_date) or (pa.end_date >= initial_date and pa.end_date <= end_date):
+            if datesOverlap(initial_date, end_date, pa.initial_date, pa.end_date):
                 return False
         return True
 
@@ -110,9 +110,9 @@ def employeesByStatus(db, contract_number, ids_employees, this_project, fixed):
         for id in ids_employees:
             emp_rests = select(er for er in db.Employees_Restrictions if er.employee == db.Employees[id])
             for es in emp_rests:
-                if es != None and this_project and es.project == db.Projects[contract_number] and es.fixed == fixed:
+                if es != None and this_project and es.project == db.Projects.get(contract_number = contract_number, finished = None) and es.fixed == fixed:
                     ids_status.append(id)
-                elif es != None and (not this_project) and es.project != db.Projects[contract_number] and es.fixed == fixed:
+                elif es != None and (not this_project) and es.project != db.Projects.get(contract_number = contract_number, finished = None) and es.fixed == fixed:
                     ids_status.append(id)
         return ids_status
 
@@ -439,7 +439,7 @@ def shiftUp(db,upper, lower):
         
 def changePriority(db, contract_number, new_priority):
     with db_session:
-        old_priority = db.Projects[contract_number].priority
+        old_priority = db.Projects.get(contract_number = contract_number, finished = None).priority
         if old_priority > new_priority:
             projects = select(p for p in db.Projects if p.priority >= new_priority and p.priority < old_priority and p.finished == None).order_by(lambda p: p.priority)
             for p in projects:
@@ -448,12 +448,12 @@ def changePriority(db, contract_number, new_priority):
                 else:
                     shiftDown(db,p, p.priority +1, old_priority)
                     break
-            db.Projects[contract_number].priority = new_priority
-            db.Projects[contract_number].fixed_priority = True
+            db.Projects.get(contract_number = contract_number, finished = None).priority = new_priority
+            db.Projects.get(contract_number = contract_number, finished = None).fixed_priority = True
         if old_priority < new_priority:
             shiftUp(db, old_priority, new_priority)
-            db.Projects[contract_number].priority = new_priority
-            db.Projects[contract_number].fixed_priority = True
+            db.Projects.get(contract_number = contract_number, finished = None).priority = new_priority
+            db.Projects.get(contract_number = contract_number, finished = None).fixed_priority = True
             db.Projects.select().order_by(lambda p: p.contract_number)
         commit()
             
@@ -476,14 +476,14 @@ def checkVeto(db, contract_number, skill_id, employee_id):
     Veto = True
     Veto1 = True
     with db_session:
-        project = db.Projects.get(contract_number = contract_number)
+        project = db.Projects.get(contract_number = contract_number, finished = None)
         employees = select(es.employee for es in db.Employees_Skills if es.skill.id == skill_id)
         if skill_id == 1:
             for e in employees:
                 if e.id == employee_id:
                     pass
                 else:
-                    er = db.Employees_Restrictions.get(employee = e,project =project)
+                    er = db.Employees_Restrictions.get(employee = e, project = project)
                     if er != None:
                         if er.fixed == True :
                             Veto = False
@@ -497,7 +497,7 @@ def checkVeto(db, contract_number, skill_id, employee_id):
                 if e.id == employee_id:
                     pass
                 else:
-                    er = db.Employees_Restrictions.get(employee = e,project =project)
+                    er = db.Employees_Restrictions.get(employee = e, project = project)
                     if er != None:
                         if er.fixed == True and e.senior == True:
                             Veto = False
@@ -509,7 +509,7 @@ def checkVeto(db, contract_number, skill_id, employee_id):
                 if e.id == employee_id:
                     pass
                 else:
-                    er = db.Employees_Restrictions.get(employee = e,project =project)
+                    er = db.Employees_Restrictions.get(employee = e, project = project)
                     if er != None:
                         if er.fixed == True and e.senior == False:
                             Veto1 = False
@@ -574,7 +574,17 @@ def createEmployeesRestrictions(db, employee, project, fixed):
             doPlanning(db)
 
     return er
+
     
+def taskCompletedBefore(db, project, skill):
+    with db_session:
+        previous_versions = select(p for p in db.Projects if p.contract_number == project.contract_number and p.finished == True)
+        for p in previous_versions:
+            task = db.Tasks.get(project = p and skill = skill and failed = None)
+            if task != None:
+                return True
+        return False
+
 
 #método quye realiza la planificación
 def doPlanning(db):
@@ -583,37 +593,38 @@ def doPlanning(db):
     Delayed = pd.DataFrame(np.nan, index=[], columns = ['contract number', 
     'task', 'num workers', 'initial date', 'ending date', 'deadline'])#Esto debería
     # estar encapsulado en otro método.
-    cleanTasks(db) #Aquí se borran todas las tasks de planificaciones anteriores (las 'borrables')
+    cleanTasks(db) #Aquí se borran todos los Employees_Tasks de planificaciones anteriores (las 'borrables')
     with db_session:
+        #primero revisamos si es que se puede hacer una planificación (si hay al menos un empleado de cada tipo)
         for i in range(1,5):
             if i == 1:
                 employees = select(es.employee for es in db.Employees_Skills if es.skill.id == i)
                 if len(employees) < 1:
                     print('\n No se puede hacer la planificación porque no hay rectificadores.')
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
                     return
             elif i == 2:
                 employees = select(es.employee for es in db.Employees_Skills if es.skill.id == i)
                 if len(employees) < 1:
                     print('\n No se puede hacer la planificación porque no hay diseñadores.')
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
                     return
             if i == 3:
                 employees = select(es.employee for es in db.Employees_Skills if es.skill.id == i)
                 if len(employees) < 1:
                     print('\n No se puede hacer la planificación porque no hay fabricadores.')
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
                     return
             if i == 4:
                 employees1 = select(es.employee for es in db.Employees_Skills if es.skill.id == i and es.employee.senior == True)
                 if len(employees1) < 1:
                     print('\n No se puede hacer la planificación porque no hay instaladores senior.')
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
                     return
                 employees2 = select(es.employee for es in db.Employees_Skills if es.skill.id == i and es.employee.senior == False)
                 if len(employees2) < 1:
                     print('\n No se puede hacer la planificación porque no hay instaladores junior.')
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
                     return
 
         projects = select(p for p in db.Projects if p.finished == None).order_by(lambda p : p.priority)
@@ -625,6 +636,9 @@ def doPlanning(db):
                 num_workers = 1
                 for s in skills:
                     if s.id < 4:
+                        #primero, revisamos si la tarea ya se completó satisfactoriamente en una versión anterior, en ese caso, la saltamos
+                        if taskCompletedBefore(db, p, s):
+                            continue
                         # obtiene el id del skill correspondiente a esa tarea y revisa que no corresponda a una 'Instalación'.
                         task = db.Tasks.get(skill = s, project = p, failed = None)
                         employees_tasks = select(et for et in db.Employees_Tasks if et.task == task)

@@ -67,36 +67,38 @@ def printStockConsole(db):
         print( tabulate(df, headers='keys', tablefmt='psql'))
 
 
-def createEngagement(db, contract_number, skus_list, withdrawal_date=None):
-    ''' Este método crea una nueva entrada en la tabla de engagements a partir de los datos ingresados  '''
-    # skus_list es una lista de tuplas con el id del SKU y la cantidad correspondiente.
-    with db_session:
-        if type(skus_list) == list:  # Caso en el que se ingresa un lista de tuplas.
-            for sku_row in skus_list:
-                try:
-                    sku = db.Stock[sku_row[0]]
-                    # IMPORTANTE: En 'project' se podría haber guardado simplemente el id del proyecto (contract_number),
-                    # pero de esta forma el proyecto puede ser accedido de forma directa a través del engagement.
-                    # Deberíamos instaurar una convención al respecto.
-                    db.Engagements(project=db.Projects[contract_number], sku=sku, quantity=sku_row[1],
-                                   withdrawal_date=withdrawal_date)
-                except ObjectNotFound as e:
-                    print('Object not found: {}'.format(e))
-                except ValueError as e:
-                    print('Value error: {}'.format(e))
-        else:
-            try:
-                sku = db.Stock[skus_list[0]]
-                db.Engagements(project=db.Projects[contract_number], sku=sku, quantity=skus_list[1],
-                               withdrawal_date=withdrawal_date)
+# def createEngagement(db, contract_number, skus_list, withdrawal_date=None):
+    # ''' Este método crea una nueva entrada en la tabla de engagements a partir de los datos ingresados  '''
+    # # skus_list es una lista de tuplas con el id del SKU y la cantidad correspondiente.
+    # with db_session:
+        # if type(skus_list) == list:  # Caso en el que se ingresa un lista de tuplas.
+            # for sku_row in skus_list:
+                # try:
+                    # sku = db.Stock[sku_row[0]]
+                    '''
+                    IMPORTANTE: En 'project' se podría haber guardado simplemente el id del proyecto (contract_number),
+                    pero de esta forma el proyecto puede ser accedido de forma directa a través del engagement.
+                    Deberíamos instaurar una convención al respecto.
+                    '''
+                    # db.Engagements(project=db.Projects[contract_number], sku=sku, quantity=sku_row[1],
+                                   # withdrawal_date=withdrawal_date)
+                # except ObjectNotFound as e:
+                    # print('Object not found: {}'.format(e))
+                # except ValueError as e:
+                    # print('Value error: {}'.format(e))
+        # else:
+            # try:
+                # sku = db.Stock[skus_list[0]]
+                # db.Engagements(project=db.Projects[contract_number], sku=sku, quantity=skus_list[1],
+                               # withdrawal_date=withdrawal_date)
 
-            except ObjectNotFound as e:
-                print('Object not found: {}'.format(e))
-            except ValueError as e:
-                print('Value error: {}'.format(e))
-            except TypeError as e:
-                print('Type error: {}'.format(e))
-        commit()
+            # except ObjectNotFound as e:
+                # print('Object not found: {}'.format(e))
+            # except ValueError as e:
+                # print('Value error: {}'.format(e))
+            # except TypeError as e:
+                # print('Type error: {}'.format(e))
+        # commit()
 
 
 def createPurchases(db, skus_list, arrival_date):
