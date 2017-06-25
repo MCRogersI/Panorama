@@ -30,11 +30,11 @@ def printProjects(db):
         print('\n')
         pr = db.Projects.select()
         data = [p.to_dict() for p in pr]
-        df = pandas.DataFrame(data, columns = ['contract_number','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
+        df = pandas.DataFrame(data, columns = ['contract_number','version','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
         ,'estimated_cost','real_cost','sale_price','fixed_planning','fixed_priority','crystal_leadtime','sale_date','finished'])                    
-        df.columns = ['Número de Contrato','Dirección','Comuna','Nombre','RUT','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
+        df.columns = ['Número de Contrato','Versión','Dirección','Comuna','Nombre','RUT','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
         ,'Costo Estimado','Costo Real','Precio de Venta','Planificación Fija','Prioridad Fijada','Tiempo Entrega Cristales','Fecha de Venta','Proyecto Finalizado']
-        print( tabulate(df.drop(df.columns[[9,10,11,12,13,14,15,16,17]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[9,10,11,12,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
         print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8]], axis = 1), headers='keys', tablefmt='psql'))
 
 def printCurrentProjects(db):
@@ -42,29 +42,29 @@ def printCurrentProjects(db):
         print('\n')
         pr = select(p for p in db.Projects if p.finished == None)
         data = [p.to_dict() for p in pr]
-        df = pandas.DataFrame(data, columns = ['contract_number','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
+        df = pandas.DataFrame(data, columns = ['contract_number','version','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
         ,'estimated_cost','real_cost','sale_price','fixed_planning','fixed_priority','crystal_leadtime','sale_date','finished'])                    
-        df.columns = ['Número de Contrato','Dirección','Comuna','Nombre','Rut','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
+        df.columns = ['Número de Contrato','Versión','Dirección','Comuna','Nombre','Rut','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
         ,'Costo Estimado','Costo Real','Precio de Venta','Planificación Fija','Prioridad Fijada','Tiempo Entrega Cristales','Fecha de Venta','Proyecto Finalizado']
-        print( tabulate(df.drop(df.columns[[9,10,11,12,13,14,15,16,17]], axis = 1), headers='keys', tablefmt='psql'))
-        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8,17]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[9,10,11,12,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8,18]], axis = 1), headers='keys', tablefmt='psql'))
         
 def printFinishedProjects(db):
     with db_session:
         print('\n')
         pr = select(p for p in db.Projects if p.finished == True)
         data = [p.to_dict() for p in pr]
-        df = pandas.DataFrame(data, columns = ['contract_number','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
+        df = pandas.DataFrame(data, columns = ['contract_number','version','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
         ,'estimated_cost','real_cost','sale_price','fixed_planning','fixed_priority','crystal_leadtime','sale_date','finished'])                    
-        df.columns = ['Número de Contrato','Dirección','Comuna','Nombre','Rut','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
+        df.columns = ['Número de Contrato','Versión','Dirección','Comuna','Nombre','Rut','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
         ,'Costo Estimado','Costo Real','Precio de Venta','Planificación Fija','Prioridad Fijada','Tiempo Entrega Cristales','Fecha de Venta','Proyecto Finalizado']
-        print( tabulate(df.drop(df.columns[[8,9,10,11,12,13,14,15,16,17]], axis = 1), headers='keys', tablefmt='psql'))
-        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8,17]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[8,9,10,11,12,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8,18]], axis = 1), headers='keys', tablefmt='psql'))
         
         
 def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None,new_square_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None):
     with db_session:
-        p = db.Projects[contract_number]
+        p = db.Projectsget(contract_number= contract_number, finished = None)
         if new_client_address != None:
             p.client_addres = new_client_address
         if new_client_comuna != None:
@@ -93,7 +93,7 @@ def deleteProject(db, contract_number):
     with db_session:
         new_priority = select(p for p in db.Projects if p.finished == None).count()
         changePriority(db, contract_number, new_priority)
-        db.Projects[contract_number].delete()
+        db.Projects.get(contract_number = contract_number, finished = None).delete()
         commit()
 
 def finishProject(db, contract_number):
@@ -101,13 +101,13 @@ def finishProject(db, contract_number):
         #recalculamos las prioridades
         new_priority = select(p for p in db.Projects if p.finished == None).count()
         changePriority(db, contract_number, new_priority)
-        db.Projects[contract_number].priority = -1
+        db.Projects.get(contract_number = contract_number, finished = None).priority = -1
         #cambiamos el Project a finished = True
-        db.Projects[contract_number].finished = True
+        db.Projects.get(contract_number = contract_number, finished = None).finished = True
         #eliminamos las Employees_Restrictions asociadas al proyecto
         select(er for er in db.Employees_Restrictions if er.project.contract_number == contract_number).delete()
         #eliminamos las Employees_Tasks asociadas al proyecto
-        select(et for et in db.Employees_Tasks if et.task.project == db.Projects[contract_number]).delete()
+        select(et for et in db.Employees_Tasks if et.task.project == db.Projects.get(contract_number = contract_number, finished = None)).delete()
         
         commit()
         
@@ -115,7 +115,7 @@ def getNumberConcurrentProjects(db, contract_number, date):
     ''' Método que entrega la cantidad de proyectos que son realizados en la misma comuna,
     en la misma fecha, para calcular los costos de transporte si es que hay más de uno en un lugar
     en la misma fecha '''
-    p = db.Projects[contract_number]
+    p = db.Projects.get(contract_number = contract_number, finished = None)
     candidates = select(pr for pr in db.Projects if pr.client_comuna == p.client_comuna and pr != p)
     quant = 1
     for pr in candidates:
@@ -129,7 +129,7 @@ def getNumberConcurrentProjects(db, contract_number, date):
 def getCostRM(db, contract_number):#RM = Raw Materials
     ''' Este método obtiene el costo de las materias primas según lo especificado en el Excel'''
     with db_session:
-        p = db.Projects[contract_number]
+        p = db.Projects.get(contract_number = contract_number, finished = None)
         total_sum = 0
 
         for e in p.engagements:
@@ -139,7 +139,7 @@ def getCostInstallation(db, contract_number, internal = True):
     ''' Cálculo de los costos de instalación según lo especificado en el excel '''
     with db_session:
         total_cost = 0
-        p = db.Projects[contract_number]
+        p = db.Projects.get(contract_number = contract_number, finished = None)
         price_ml = db.Operating_Parameters['Costo por metro lineal de instalacion'].cost
         task_aux = db.Tasks.get(skill = 4, project = p)
         et_ins = select(et for et in db.Employees_Tasks if et.task == task_aux)
@@ -167,7 +167,7 @@ def getCostFabrication(db, contract_number):
     monthly_selled_ml = 240
     monthly_income = 80000000 #venta promedio mensual, basada en el año
     total_cost = 0
-    p = db.Projects[contract_number]
+    p = db.Projects.get(contract_number = contract_number, finished = None)
     total_cost += db.Operating_Parameters['Remuneracion fija fabrica'].cost
     total_cost += db.Operating_Parameters['Remuneracion variable fabrica'].cost
     total_cost += db.Operating_Parameters['Porcentaje ventas para materiales'].cost*monthly_income
@@ -196,11 +196,11 @@ def createTask(db, id_skill, contract_number, original_initial_date, original_en
 def editTask(db , id_skill, contract_number, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
     with db_session:
         try:
-            t = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects[contract_number], failed = None)
+            t = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects.get(contract_number = contract_number, finished = None), failed = None)
             if id_skill != None:
                 t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
             if contract_number != None: 
-                t.project = contract_number #pendiente: revisar si funciona así o si tiene que ser como t.project = db.Projects[contract_number]
+                t.project = contract_number #pendiente: revisar si funciona así o si tiene que ser como t.project = db.Projects.get(contract_number = contract_number, finished = None)
             if original_initial_date != None:
                 t.original_initial_date = original_initial_date
             if original_end_date != None:
@@ -249,13 +249,13 @@ def failedTask(db, contract_number, id_skill, fail_cost):
     # import Planning.features as PLf
     with db_session:
 
-        tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project == db.Projects[contract_number] and t.failed == None)
+        tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project == db.Projects.get(contract_number = contract_number, finished = None) and t.failed == None)
         for t in tasks:
             t.failed = True
             if t.skill == db.Skills[id_skill]:
                 t.fail_cost = fail_cost
         
-        tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects[contract_number] and t.effective_end_date == None)
+        tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects.get(contract_number = contract_number, finished = None) and t.effective_end_date == None)
         for t in tasks:
             t.delete()
 
@@ -333,7 +333,7 @@ def createProjectActivity(db, project, activity, initial_year, initial_month, in
     with db_session:
         db.Projects_Activities(project = project, activity = activity, initial_date = initial_date, end_date = end_date)
         commit()
-        p = db.Projects[project]
+        p = db.Projects.get(contract_number = contract_number, finished = None)
     if activitiyProjectOverlap(db, p, initial_date, end_date):
         doPlanning(db)
 
@@ -392,12 +392,10 @@ def getProjectFeatures(db, contract_number):
     ''' Método para obtener los parámetros de un proyecto desde un archivo de excel estandarizado '''
     wb = load_workbook('EjemploPropuestaProyecto '+str(contract_number)+'.xlsx')
     ws = wb['Edif A_Hoja Corte']
-    
-    
-    
+
     with db_session:
         #Asumiremos, para fijar una fecha inicial, que los engagement se realizarán al comienzo de la fabricación
-        p = db.Projects[contract_number]
+        p = db.Projects.get(contract_number, finished = None)
         task_aux = db.Tasks.get(skill = 3, project = p)
         et_fab = db.Employees_Tasks.get(task = task_aux)
         withdrawal = et_fab.planned_initial_date

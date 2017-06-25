@@ -36,7 +36,7 @@ def estimateCost(db, contract_number, file_name):
         freight_cost = 0
     
     # segundo, obtenemos la lista de instaladores ligados al proyecto
-    tasks = select(t for t in db.Tasks if t.skill == db.Skills[4] and t.project == db.Projects[contract_number])
+    tasks = select(t for t in db.Tasks if t.skill == db.Skills[4] and t.project == db.Projects.get(contract_number = contract_number, finished = None))
     installers = []
     for t in tasks:
         if t.failed != True:
@@ -65,9 +65,9 @@ def estimateCost(db, contract_number, file_name):
             print(warning)
     
     # hacemos un query para el Projects_Costs que usaremos en adelante, si no existe, lo creamos
-    project_cost = db.Projects_Costs.get(project = db.Projects[contract_number])
+    project_cost = db.Projects_Costs.get(project = db.Projects.get(contract_number = contract_number, finished = None))
     if project_cost == None:
-        project_cost = db.Projects_Costs(project = db.Projects[contract_number])
+        project_cost = db.Projects_Costs(project = db.Projects.get(contract_number = contract_number, finished = None))
     
     parameters = viatic_cost, movilization_cost, num_installers, freight_cost, 1, file_name
     return standardCostCalculation(db, project_cost, parameters)

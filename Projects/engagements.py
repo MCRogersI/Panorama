@@ -15,7 +15,7 @@ def createEngagements(db, contract_number, file_name):
         print(' Formato invalido del archivo. El archivo debe tener una hoja llamada Measures.')
         return
     with db_session:
-        project = db.Projects[contract_number]
+        project = db.Projects.get(contract_number = contract_number, finished = None)
         
     #obtenemos la fecha de requerimiento, que se considera como el principio de la fabricación
     try:

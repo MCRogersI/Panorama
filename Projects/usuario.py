@@ -137,12 +137,15 @@ def projects_console(db, level):
                                                                                 \n Ingrese la alternativa elegida: ')
                 if (opt2 == '1'):
                     try:
-                        contract_number = input("\n Ingrese el número de contrato del proyecto a editar: ")
+                        contract_number = input(" Ingrese el número de contrato del proyecto a editar: ")
                         try:
-                            with db_session:
-                                db.Projects[int(contract_number)].contract_number
+                            contract_number = int(contract_number)
                         except:
-                            raise ValueError('\n No existe ese número de contrato.')
+                            raise ValueError(' El número de contrato debe ser un número entero.')
+                        with db_session:
+                            p = db.Projects.get(contract_number = contract_number, finished = None)
+                            if p == None:
+                                raise ValueError(' No existe el número de contrato.')
                         finishProject(db, int(contract_number))
                         print('\n Proyecto terminado con éxito.')
                         input(' Presione Enter para continuar.')
@@ -154,8 +157,11 @@ def projects_console(db, level):
                         contract_number = input("\n Ingrese el número de contrato del proyecto a editar: ")
                         with db_session:
                             try:
-                                db.Projects[int(contract_number)].contract_number
+                                contract_number = int(contract_number)
                             except:
+                        with db_session:
+                            p = db.Projects.get(contract_number = contract_number, finished = None)
+                            if p == None:
                                 raise ValueError('\n No existe ese número de contrato.')
                         new_client_address = input("Ingrese la nueva direccion del cliente, solo presione Enter si la mantiene: ")
                         if new_client_address.replace(' ','') == '':
@@ -209,19 +215,19 @@ def projects_console(db, level):
                         new_deadline_day = input("Ingrese el nuevo año de entrega pactada del proyecto, solo presione Enter si se mantiene: ")
                         if new_deadline_day.replace(' ','') == '':
                             with db_session:
-                                new_deadline_day = db.Projects[int(contract_number)].deadline.day
+                                new_deadline_day = db.Projects.get(contract_number = contract_number, finished = None).deadline.day
                                 if new_deadline_month.replace(' ','') == '':
-                                    new_deadline_month = db.Projects[int(contract_number)].deadline.month
+                                    new_deadline_month = db.Projects.get(contract_number = contract_number, finished = None).deadline.month
                                     if new_deadline_year.replace(' ','') == '':
-                                        new_deadline_year = db.Projects[int(contract_number)].deadline.year
+                                        new_deadline_year = db.Projects.get(contract_number = contract_number, finished = None).deadline.year
                         elif new_deadline_month == '':
                             with db_session:
-                                new_deadline_month = db.Projects[int(contract_number)].deadline.month
+                                new_deadline_month = db.Projects.get(contract_number = contract_number, finished = None).deadline.month
                                 if new_deadline_year == '':
-                                    new_deadline_year = db.Projects[int(contract_number)].deadline.year
+                                    new_deadline_year = db.Projects.get(contract_number = contract_number, finished = None).deadline.year
                         elif new_deadline_year == '':
                             with db_session:
-                                new_deadline_year = db.Projects[int(contract_number)].deadline.year
+                                new_deadline_year = db.Projects.get(contract_number = contract_number, finished = None).deadline.year
                         try:
                             new_deadline =date(int(new_deadline_year), int(new_deadline_month), int(new_deadline_day))
                         except:
@@ -277,12 +283,15 @@ def projects_console(db, level):
 
                 if opt_projects_activities == '1':
                     try:
-                        project = input("\n Ingrese el número de contrato asociado al cliente: ")
+                        contract_number = input("\n Ingrese el número de contrato asociado al cliente: ")
                         with db_session:
                             try:
-                                db.Projects[int(project)].contract_number
+                                contract_number = int(contract_number)
                             except:
-                                raise ValueError('\n No existe ese número de contrato.')
+                                raise ValueError(' El número de contrato debe ser un número entero.')
+                            p = db.Projects.get(contract_number = contract_number, finished = None)
+                            if p == None:
+                                raise ValueError(' Proyecto no encontrado. ')
                         initial_year = input(" Ingrese el año en que comienza la actividad: ")
                         initial_month = input(" Ingrese el mes en que comienza la actividad: ")
                         initial_day = input(" Ingrese el día en que comienza la actividad: ")
@@ -351,7 +360,7 @@ def projects_console(db, level):
                     if int(contract_number)  < 0:
                         raise ValueError('\n El número de contrato debe ser un número entero positivo.')
                     with db_session:
-                        if db.Projects.get(contract_number = contract_number) == None:
+                        if db.Projects.get(contract_number = contract_number, finished = None) == None:
                             raise ValueError('\n Número de contrato no existente.')
                     file_name = input(' Ingrese el nombre del archivo de la hoja de corte: ')
                     file_dir = file_name + ".xlsx"
@@ -389,7 +398,7 @@ def tasks_console(db, level):
                     try:
                         new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
                         with db_session:
-                            if db.Projects.get(contract_number = new_contract_number) == None:
+                            if db.Projects.get(contract_number = new_contract_number, finished = None) == None:
                                 raise ValueError('\n Proyecto inexistente.')
                         if(level == 1) or (level == 2):
                             new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
@@ -440,7 +449,7 @@ def tasks_console(db, level):
                     try:
                         contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
                         with db_session:
-                            if db.Projects.get(contract_number = contract_number_fail) == None:
+                            if db.Projects.get(contract_number = contract_number_fail, finished = None) == None:
                                 raise ValueError('\n Número de contrato inexistente.')
                         if(level == 1) or (level == 2):
                             id_skill_fail = input(" Ingrese el ID de la habilidad donde ocurrió el fallo (1: rect, 2: dis, 3: fab, 4: ins): ")
@@ -467,7 +476,7 @@ def tasks_console(db, level):
                             else:
                                 raise ValueError('\n Error de ingreso. ')
                         with db_session:
-                            task = db.Tasks.get( project = db.Projects[contract_number_fail], skill = db.Skills[id_skill_fail], failed = None)
+                            task = db.Tasks.get( project = db.Projects.get(contract_number = contract_number__fail, finished = None), skill = db.Skills[id_skill_fail], failed = None)
                             if task == None:
                                 raise ValueError('\n Tarea no encontrada.')
                             if task.effective_initial_date == None :
@@ -551,7 +560,7 @@ def tasks_console(db, level):
                 except:
                     raise ValueError('\n Número de contrato inexistente.')
                 with db_session:
-                    if db.Projects.get(contract_number = contract_number) == None:
+                    if db.Projects.get(contract_number = contract_number, finished = None) == None:
                         raise ValueError('\n Número de contrato inexistente.')
                 id_skill = input(" Ingrese el ID de la habilidad donde ocurrió el atraso (1: rect, 2: dis, 3: fab, 4: ins): ")
                 try:
@@ -561,7 +570,7 @@ def tasks_console(db, level):
                 if int(id_skill) not in [1,2,3,4]:
                     raise ValueError('\n ID de habilidad no válida.')
                 with db_session:
-                    task = db.Tasks.get( project = db.Projects[contract_number], skill = db.Skills[id_skill], failed = None)
+                    task = db.Tasks.get( project = db.Projects.get(contract_number = contract_number, finished = None), skill = db.Skills[id_skill], failed = None)
                     if task == None:
                         raise ValueError('\n Tarea no encontrada.')
                     if task.effective_initial_date == None :
@@ -616,11 +625,13 @@ def tasks_console(db, level):
                         raise ValueError(' Debe ingresar su ID. ')
                     contract_number = input(' Ingrese el número de contrato del proyecto asociado a la orden de compra de cristales: ')
                     try:
-                        with db_session:
-                            db.Projects[int(contract_number)].contract_number
+                        contract_number = int(contract_number)
                     except:
-                        raise ValueError('\n No existe ese número de contrato.')
-                    project = db.Projects[contract_number]
+                        raise ValueError(' El número de contrato debe ser un número positivo.')
+                    with db_session:
+                        project = db.Projects.get(contract_number = contract_number, finished = None)
+                        if project == None:
+                            raise ValueError(' No existe ese número de contrato. ')
                     id_crystal_provider = input(' Ingrese el ID del proveedor de cristales: ')
                     if len(id_crystal_provider.replace(' ','')) < 1:
                         raise ValueError(' Debe ingresar el ID del proveedor. ')
@@ -652,12 +663,13 @@ def tasks_console(db, level):
                 try:
                     contract_number = input('\n Ingrese el número de contrato del proyecto asociado a la orden de compra de cristales: ')
                     try:
-                        with db_session:
-                            db.Projects[int(contract_number)].contract_number
+                        contract_number = int(contract_number)
                     except:
-                        raise ValueError('\n No existe ese número de contrato.')
-                    project = db.Projects[contract_number]
-                    
+                        raise ValueError(' El número de contrato debe ser un número entero.')
+                    with db_session:
+                        project = db.Projects.get(contract_number = contract_number, finished = None)
+                        if project == None:
+                            raise ValueError(' No existe ese número de contrato. ')
                     effective_arrival_date_year = input(' Ingrese el año de llegada de los cristales (solo presione Enter si la fecha es hoy): ')
                     if effective_arrival_date_year == '':
                         effective_arrival_date = date.today()
