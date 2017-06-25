@@ -3,7 +3,9 @@ from datetime import date
 
 def define_models(db):
     class Projects(db.Entity):
-        contract_number = PrimaryKey(int, auto=False)
+        contract_number = Required(int)
+        version = Required (int, auto = True)
+        PrimaryKey(contract_number, version)
         client_address = Required(str)
         client_comuna = Required(str)
         client_name = Required(str)
