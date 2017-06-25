@@ -1,0 +1,1 @@
+1) Cambio de model de projects, agregando version = Required(int) y PrimaryKey(contract_number, version)
