@@ -10,7 +10,11 @@ import pandas
 from IPython.display import display
 from tabulate import tabulate
 
-
+def noneInt(x):
+    if x == None:
+        return 0
+    else:
+        return x
 
 def createProject(db, contract_number = None, version = None, client_address = None, client_comuna = None,
                   client_name = None, client_rut = None, linear_meters = None, square_meters = None, year = None, month = None,
@@ -64,7 +68,7 @@ def printFinishedProjects(db):
         
 def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None,new_square_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None):
     with db_session:
-        projects = solect(p for p in db.Projects if contract_number == contract_number)
+        projects = select(p for p in db.Projects if contract_number == contract_number)
         for p in projects:
             if new_client_address != None:
                 p.client_addres = new_client_address
@@ -193,43 +197,28 @@ def createTask(db, id_skill, contract_number, original_initial_date, original_en
         commit()
 
 
-def editTask(db , id_skill, contract_number, original_initial_date = None, original_end_date = None, effective_initial_date = None, effective_end_date = None, fail_cost = None):
+def editTask(db , id_skill, contract_number, effective_initial_date = None, effective_end_date = None):
     with db_session:
-        try:
-            t = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects.get(contract_number = contract_number, finished = None), failed = None)
-            if id_skill != None:
-                t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
-            if contract_number != None: 
-                t.project = contract_number #pendiente: revisar si funciona así o si tiene que ser como t.project = db.Projects.get(contract_number = contract_number, finished = None)
-            if original_initial_date != None:
-                t.original_initial_date = original_initial_date
-            if original_end_date != None:
-                t.original_end_date = original_end_date
-            if effective_initial_date != None:
-                t.effective_initial_date = effective_initial_date
-                #vemos si la tarea se inició con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
-                #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
-                et = select(et for et in db.Employees_Tasks if et.task == t).first()
-                # if effective_initial_date > et.planned_initial_date:
-                    # print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
-                    # delay = (effective_initial_date - et.planned_initial_date).days
-                    # createDelay(db, t.project.contract_number, t.skill.id, delay)
-            if effective_end_date != None:
-                t.effective_end_date = effective_end_date
-                #vemos si la tarea se terminó con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
-                #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
-                et = select(et for et in db.Employees_Tasks if et.task == t).first()
-                # if effective_end_date > et.planned_end_date:
-                    # print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
-                    # delay = (effective_end_date - et.planned_end_date).days
-                    # createDelay(db, t.project.contract_number, t.skill.id, delay)
-            if fail_cost != None:
-                t.fail_cost = fail_cost
-            commit()
-        except ObjectNotFound as e:
-            print('Object not found: {}'.format(e))
-        except ValueError as e:
-            print('Value error: {}'.format(e))
+        t = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects.get(contract_number = contract_number, finished = None), failed = None)
+        if effective_initial_date != None:
+            t.effective_initial_date = effective_initial_date
+            #vemos si la tarea se inició con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
+            #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
+            et = select(et for et in db.Employees_Tasks if et.task == t).first()
+            # if effective_initial_date > et.planned_initial_date:
+                # print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
+                # delay = (effective_initial_date - et.planned_initial_date).days
+                # createDelay(db, t.project.contract_number, t.skill.id, delay)
+        if effective_end_date != None:
+            t.effective_end_date = effective_end_date
+            #vemos si la tarea se terminó con atraso, si fue así, entonces llamamos a createDelay() con la diferencia de días
+            #para esto, primero recuperamos algún Employees_Task que contenga esta tarea
+            et = select(et for et in db.Employees_Tasks if et.task == t).first()
+            # if effective_end_date > et.planned_end_date:
+                # print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
+                # delay = (effective_end_date - et.planned_end_date).days
+                # createDelay(db, t.project.contract_number, t.skill.id, delay)
+        commit()
 
 def deleteTask(db, id_task):
     with db_session:
@@ -241,14 +230,15 @@ def printTasks(db):
         print('\n')
         ts = db.Tasks.select()
         data = [t.to_dict() for t in ts]
+        project =pandas.Series([t.project.contract_number for t in ts], name = 'Proyecto')
         version =pandas.Series([t.project.version for t in ts], name = 'Versión')
         df = pandas.DataFrame(data, columns = ['id','skill','project','original_initial_date','original_end_date','effective_initial_date','effective_end_date','failed','fail_cost'])
-        df.columns = ['ID','Tarea','Proyecto','Fecha de Inicio Original','Fecha de Finalización Original','Fecha de Inicio Efectiva','Fecha de Finalización Efectiva','Falló','Costo de Falla']
-        df2 = pandas.concat([df,version], axis = 1)
+        df.columns = ['ID','Tarea','Proyecto-Versión','Fecha de Inicio Original','Fecha de Finalización Original','Fecha de Inicio Efectiva','Fecha de Finalización Efectiva','Falló','Costo de Falla']
+        df2 = pandas.concat([df,project,version], axis = 1)
         cols = df2.columns.tolist()
-        cols = cols[0:3] + cols[-1:] + cols[4:-1]
+        cols = cols[0:3] + cols[-2:] + cols[4:-3]
         df2 = df2[cols]
-        print( tabulate(df2, headers='keys', tablefmt='psql'))
+        print( tabulate(df2.drop(df2.columns[2], axis = 1), headers='keys', tablefmt='psql'))
 
 def failedTask(db, contract_number, id_skill, fail_cost):
     # import Planning.features as PLf
@@ -275,9 +265,9 @@ def failedTask(db, contract_number, id_skill, fail_cost):
         #por último, asignamos los costos a la última versión del Skill que no aparece como fallada
         tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project.contract_number == contract_number and t.project.version >= version)
         task_responsible = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects.get(contract_number = contract_number, version = version))
-        task_responsible.fail_cost = task_responsible.fail_cost + fail_cost
+        task_responsible.fail_cost = noneInt(task_responsible.fail_cost) + fail_cost
         for t in tasks:
-            task_responsible.fail_cost = task_responsible.fail_cost + t.fail_cost
+            task_responsible.fail_cost = noneInt(task_responsible.fail_cost) + t.fail_cost
             t.fail_cost = 0
         
         #terminamos version anterior del proyecto

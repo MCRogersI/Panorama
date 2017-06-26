@@ -394,12 +394,20 @@ def tasks_console(db, level):
 
         if(opt == '1'):
             if level in  [1,2,3,4,5]:
-                opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n - 3: Volver. \n Ingrese la alternativa elegida: ")
+                opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas.\
+                                                                        \n - 2: Ingreso de fallos.\
+                                                                        \n - 3: Volver.\
+                                                                        \n Ingrese la alternativa elegida: ")
                 if (opt2 =='1'):
                     try:
                         new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
+                        try:
+                            new_contract_number = int(new_contract_number)
+                        except:
+                            raise ValueError(' El número de contrato debe ser un número entero.' )
                         with db_session:
-                            if db.Projects.get(contract_number = new_contract_number, finished = None) == None:
+                            p = db.Projects.get(contract_number = new_contract_number, finished = None)
+                            if p == None:
                                 raise ValueError('\n Proyecto inexistente.')
                         if(level == 1) or (level == 2):
                             new_id_skill = input(" Ingrese el ID de la habilidad requerida (1: rect, 2: dis, 3: fab, 4: ins): ")
@@ -417,7 +425,11 @@ def tasks_console(db, level):
                                 new_id_skill = 4
                             else:
                                 raise ValueError('\n Error de ingreso.')
-                        new_effective_initial_year = input(" Ingrese el año efectivo de inicio, solo presione Enter si no ha comenzado: ")
+                        with db_session:
+                            t = db.Tasks.get(skill = db.Skills[new_id_skill], project = p)
+                            if t == None:
+                                raise ValueError( ' La tarea no existe en esta versión del proyecto.')
+                        new_effective_initial_year = input(" Ingrese el año efectivo de inicio, solo presione Enter si mantiene la fecha efectiva actual: ")
                         if new_effective_initial_year != '':
                             new_effective_initial_month = input(" Ingrese el mes efectivo de inicio: ")
                             new_effective_initial_day = input(" Ingrese el dia efectivo de inicio: ")
@@ -425,7 +437,9 @@ def tasks_console(db, level):
                                 new_effective_initial_date = date(int(new_effective_initial_year),int(new_effective_initial_month),int(new_effective_initial_day))
                             except:
                                 raise ValueError('\n No es una fecha válida.')
-                        if(new_effective_initial_year != ''):
+                        else:
+                            new_effective_initial_date = None
+                        if(new_effective_initial_year != None or t.effective_initial_date != None):
                             new_effective_end_year = input(" Ingrese el año efectivo de término, solo presione Enter si no ha terminado: ")
                             if new_effective_end_year != '':
                                 new_effective_end_month = input(" Ingrese el mes efectivo de término, solo presione Enter si no ha terminado: ")
@@ -438,19 +452,22 @@ def tasks_console(db, level):
                                 new_effective_end_date = None
 
                         else:
-                            new_effective_initial_date = None
                             new_effective_end_date = None
-                        # new_original_initial_date = datetime.strptime(new_original_initial_date, '%Y-%m-%d')
-                        # new_original_end_date = datetime.strptime(new_original_end_date, '%Y-%m-%d')
-                        editTask(db, new_id_skill, new_contract_number, original_initial_date =None, original_end_date = None, effective_initial_date = new_effective_initial_date, effective_end_date = new_effective_end_date)
+                        editTask(db, new_id_skill, new_contract_number, effective_initial_date = new_effective_initial_date, effective_end_date = new_effective_end_date)
                         input('\n Fecha agregada con éxito. Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
+                        input(' Presione Enter para continuar.')
                 elif(opt2 == '2'):
                     try:
                         contract_number_fail = input("\n Ingrese el número de contrato del proyecto en el que ha fallado una tarea: ")
+                        try:
+                            contract_number_fail = int(contract_number_fail)
+                        except:
+                            raise ValueError(' El número de contrato debe ser un número entero.' )
                         with db_session:
-                            if db.Projects.get(contract_number = contract_number_fail, finished = None) == None:
+                            p = db.Projects.get(contract_number = contract_number_fail, finished = None)
+                            if p == None:
                                 raise ValueError('\n Número de contrato inexistente.')
                         if(level == 1) or (level == 2):
                             id_skill_fail = input(" Ingrese el ID de la habilidad donde ocurrió el fallo (1: rect, 2: dis, 3: fab, 4: ins): ")
@@ -475,13 +492,12 @@ def tasks_console(db, level):
                             if id_skill_fail == '2':
                                 id_skill_fail = 4
                             else:
-                                raise ValueError('\n Error de ingreso. ')
+                                raise ValueError(' Error de ingreso. ')
                         with db_session:
-                            task = db.Tasks.get( project = db.Projects.get(contract_number = contract_number__fail, finished = None), skill = db.Skills[id_skill_fail], failed = None)
-                            if task == None:
-                                raise ValueError('\n Tarea no encontrada.')
-                            if task.effective_initial_date == None :
-                                raise ValueError('\n Esta tarea aun no ha comenzado.')
+                            task = db.Tasks.get( project = p, skill = db.Skills[id_skill_fail])
+                            if task != None:
+                                if task.effective_initial_date == None :
+                                    raise ValueError('\n Esta tarea aun no ha comenzado.')
                         fail_cost = input("\n Ingrese el costo estimado de la falla: ")
                         try:
                             fail_cost = int(fail_cost)
@@ -490,6 +506,7 @@ def tasks_console(db, level):
                         if fail_cost < 0 :
                                 raise ValueError(' \n El costo debe ser un número no negativo. ')
                         failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
+                        input(' Fallo ingresado con éxito. Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
                         input(' Presione Enter para continuar.')
@@ -559,23 +576,23 @@ def tasks_console(db, level):
                 try:
                     contract_number = int(contract_number)
                 except:
-                    raise ValueError('\n Número de contrato inexistente.')
+                    raise ValueError(' El número de contrato debe ser un número entero.')
                 with db_session:
                     if db.Projects.get(contract_number = contract_number, finished = None) == None:
-                        raise ValueError('\n Número de contrato inexistente.')
+                        raise ValueError(' Número de contrato inexistente.')
                 id_skill = input(" Ingrese el ID de la habilidad donde ocurrió el atraso (1: rect, 2: dis, 3: fab, 4: ins): ")
                 try:
                     id_skill = int(id_skill)
                 except:
-                    raise ValueError('\n Ingreso de habilidad inválida.')
+                    raise ValueError(' Ingreso de habilidad inválida.')
                 if int(id_skill) not in [1,2,3,4]:
-                    raise ValueError('\n ID de habilidad no válida.')
+                    raise ValueError(' ID de habilidad no válida.')
                 with db_session:
                     task = db.Tasks.get( project = db.Projects.get(contract_number = contract_number, finished = None), skill = db.Skills[id_skill], failed = None)
                     if task == None:
-                        raise ValueError('\n Tarea no encontrada.')
+                        raise ValueError(' Tarea no encontrada.')
                     if task.effective_initial_date == None :
-                        raise ValueError('\n Esta tarea aun no ha comenzado.')
+                        raise ValueError(' Esta tarea aun no ha comenzado.')
                     td = select( td for td in db.Tasks_Delays if td.task == task)
                     if len(td) >0 :
                         largo = str(len(td))

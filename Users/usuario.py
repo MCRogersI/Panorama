@@ -20,6 +20,8 @@ def users_console(db):
                     raise ValueError(' Nivel no válido. ')
                 elif level not in [6,7,8,9]:
                     name = input('\n Ingrese el Nombre del usuario: ')
+                    if name == '':
+                        raise ValueError(' El usuario debe tener un nombre.')
                 else:
                     name = input(' Ingrese el rut del usuario sin puntos ni número verificador: ')
                     try:
