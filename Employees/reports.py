@@ -637,7 +637,7 @@ def createRectificatorsReport(db):
                             # assign
                             cell.alignment = wrap_alignment
                             cell.fill = PatternFill("solid", fgColor="ffff00")
-                    task_counter = 0
+                    task_counter +=1
                 activity_counter = 0
                 for activity_date_block in activities_dates_blocks:
                     for d in activity_date_block:
@@ -657,7 +657,7 @@ def createRectificatorsReport(db):
                                 cell.fill = PatternFill("solid", fgColor="E60404")
                             elif activities[activity_counter].id == 2:
                                 cell.fill = PatternFill("solid", fgColor="810777")
-                    activity_counter = 0
+                    activity_counter +=1
                 if isHoliday(dates[i]):
                     cell = ws.cell(row=r + 10, column=4 + i, value="Feriado")
                     cell.font = Font(bold=True)
@@ -1304,7 +1304,7 @@ def createDesignersReport(db):
                             # assign
                             cell.alignment = wrap_alignment
                             cell.fill = PatternFill("solid", fgColor="ffff00")
-                    task_counter = 0
+                    task_counter +=1
                 activity_counter = 0
                 for activity_date_block in activities_dates_blocks:
                     for d in activity_date_block:
@@ -1324,7 +1324,7 @@ def createDesignersReport(db):
                                 cell.fill = PatternFill("solid", fgColor="E60404")
                             elif activities[activity_counter].id == 2:
                                 cell.fill = PatternFill("solid", fgColor="810777")
-                    activity_counter = 0
+                    activity_counter +=1
                 if isHoliday(dates[i]):
                     cell = ws.cell(row=r + 10, column=4 + i, value="Feriado")
                     cell.font = Font(bold=True)
@@ -1972,7 +1972,7 @@ def createFabricatorsReport(db):
                             # assign
                             cell.alignment = wrap_alignment
                             cell.fill = PatternFill("solid", fgColor="ffff00")
-                    task_counter = 0
+                    task_counter +=1
                 activity_counter = 0
                 for activity_date_block in activities_dates_blocks:
                     for d in activity_date_block:
@@ -1992,7 +1992,7 @@ def createFabricatorsReport(db):
                                 cell.fill = PatternFill("solid", fgColor="E60404")
                             elif activities[activity_counter].id == 2:
                                 cell.fill = PatternFill("solid", fgColor="810777")
-                    activity_counter = 0
+                    activity_counter +=1
                 if isHoliday(dates[i]):
                     cell = ws.cell(row=r + 10, column=4 + i, value="Feriado")
                     cell.font = Font(bold=True)
@@ -2640,7 +2640,7 @@ def createInstallersReport(db):
                             # assign
                             cell.alignment = wrap_alignment
                             cell.fill = PatternFill("solid", fgColor="ffff00")
-                    task_counter = 0
+                    task_counter +=1
                 activity_counter = 0
                 for activity_date_block in activities_dates_blocks:
                     for d in activity_date_block:
@@ -2660,7 +2660,7 @@ def createInstallersReport(db):
                                 cell.fill = PatternFill("solid", fgColor="E60404")
                             elif activities[activity_counter].id == 2:
                                 cell.fill = PatternFill("solid", fgColor="810777")
-                    activity_counter = 0
+                    activity_counter +=1
                 if isHoliday(dates[i]):
                     cell = ws.cell(row=r + 10, column=4 + i, value="Feriado")
                     cell.font = Font(bold=True)
@@ -3302,7 +3302,7 @@ def createRectificatorsReportWide(db):
                             # assign
                             cell.alignment = wrap_alignment
                             cell.fill = PatternFill("solid", fgColor="ffff00")
-                    task_counter = 0
+                    task_counter +=1
                 activity_counter = 0
                 for activity_date_block in activities_dates_blocks:
                     for d in activity_date_block:
@@ -3322,7 +3322,7 @@ def createRectificatorsReportWide(db):
                                 cell.fill = PatternFill("solid", fgColor="E60404")
                             elif activities[activity_counter].id == 2:
                                 cell.fill = PatternFill("solid", fgColor="810777")
-                    activity_counter = 0
+                    activity_counter +=1
                 if isHoliday(dates[i]):
                     cell = ws.cell(row=r + 10, column=4 + i, value="Feriado")
                     cell.font = Font(bold=True)
@@ -3615,7 +3615,7 @@ def createDesignersReportWide(db):
                             # assign
                             cell.alignment = wrap_alignment
                             cell.fill = PatternFill("solid", fgColor="ffff00")
-                    task_counter = 0
+                    task_counter +=1
                 activity_counter = 0
                 for activity_date_block in activities_dates_blocks:
                     for d in activity_date_block:
@@ -3635,7 +3635,7 @@ def createDesignersReportWide(db):
                                 cell.fill = PatternFill("solid", fgColor="E60404")
                             elif activities[activity_counter].id == 2:
                                 cell.fill = PatternFill("solid", fgColor="810777")
-                    activity_counter = 0
+                    activity_counter +=1
                 if isHoliday(dates[i]):
                     cell = ws.cell(row=r + 10, column=4 + i, value="Feriado")
                     cell.font = Font(bold=True)
@@ -3928,7 +3928,7 @@ def createFabricatorsReportWide(db):
                             # assign
                             cell.alignment = wrap_alignment
                             cell.fill = PatternFill("solid", fgColor="ffff00")
-                    task_counter = 0
+                    task_counter +=1
                 activity_counter = 0
                 for activity_date_block in activities_dates_blocks:
                     for d in activity_date_block:
@@ -3948,7 +3948,7 @@ def createFabricatorsReportWide(db):
                                 cell.fill = PatternFill("solid", fgColor="E60404")
                             elif activities[activity_counter].id == 2:
                                 cell.fill = PatternFill("solid", fgColor="810777")
-                    activity_counter = 0
+                    activity_counter +=1
                 if isHoliday(dates[i]):
                     cell = ws.cell(row=r + 10, column=4 + i, value="Feriado")
                     cell.font = Font(bold=True)
@@ -4243,7 +4243,7 @@ def createInstallatorsReportWide(db):
                             # assign
                             cell.alignment = wrap_alignment
                             cell.fill = PatternFill("solid", fgColor="ffff00")
-                    task_counter = 0
+                    task_counter +=1
                 activity_counter = 0
                 for activity_date_block in activities_dates_blocks:
                     for d in activity_date_block:
@@ -4263,7 +4263,7 @@ def createInstallatorsReportWide(db):
                                 cell.fill = PatternFill("solid", fgColor="E60404")
                             elif activities[activity_counter].id == 2:
                                 cell.fill = PatternFill("solid", fgColor="810777")
-                    activity_counter = 0
+                    activity_counter +=1
                 if isHoliday(dates[i]):
                     cell = ws.cell(row=r + 10, column=4 + i, value="Feriado")
                     cell.font = Font(bold=True)
@@ -4570,20 +4570,36 @@ def createWorkersReportWide(db):
                 for tasks_dates_block in tasks_dates_blocks:
                     for d in tasks_dates_block:
                         if d == dates[i]:
-                            cell = ws.cell(row=r + 10, column=4 + i,
-                                           value="Proyecto {0}\n{1}".format(
-                                               tasks[task_counter].project,
-                                               tasks[task_counter].project.client_address))
-                            cell.font = Font(bold=True)
-                            cell.border = thin_border
-                            cell.alignment = Alignment(horizontal='center')
-                            # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
-                            # create alignment style
-                            wrap_alignment = Alignment(wrap_text=True, horizontal="center",
-                                                       vertical="center")
-                            # assign
-                            cell.alignment = wrap_alignment
-                            cell.fill = PatternFill("solid", fgColor="ffff00")
+                            cell_aux_check = ws.cell(row=r + 10, column=4 + i)
+                            if cell_aux_check.value ==None:
+                                cell = ws.cell(row=r + 10, column=4 + i,
+                                               value="Proyecto {0}\n{1}".format(
+                                                   tasks[task_counter].project,
+                                                   tasks[task_counter].project.client_address))
+                                cell.font = Font(bold=True)
+                                cell.border = thin_border
+                                cell.alignment = Alignment(horizontal='center')
+                                # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                                # create alignment style
+                                wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                                                           vertical="center")
+                                # assign
+                                cell.alignment = wrap_alignment
+                                cell.fill = PatternFill("solid", fgColor="ffff00")
+                            else:
+                                existing_value = cell_aux_check.value
+                                cell = ws.cell(row=r + 10, column=4 + i,
+                                               value="{0} / Proyecto {1}\n{2}".format(existing_value,tasks[task_counter].project,tasks[task_counter].project.client_address))
+                                cell.font = Font(bold=True)
+                                cell.border = thin_border
+                                cell.alignment = Alignment(horizontal='center')
+                                # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                                # create alignment style
+                                wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                                                           vertical="center")
+                                # assign
+                                cell.alignment = wrap_alignment
+                                cell.fill = PatternFill("solid", fgColor="ffff00")
                     task_counter +=1
                 activity_counter = 0
                 for activity_date_block in activities_dates_blocks:

@@ -16,420 +16,6 @@ import copy
 # Global report #
 #################
 
-
-def createGlobalReport(db):
-    ''' Este método crea un informe en Excel completo con la información de la base de datos. '''
-    wb = Workbook()
-    by_default_sheet = wb.get_sheet_by_name('Sheet')
-    by_default_sheet.title = 'Introducción del informe'
-    ws = wb.create_sheet(
-        "BASE DE DATOS OUTPUT A EXCEL")
-
-    widths = {"A": 5, "B": 35, "C": 5,"D": 35, "E": 35, "F": 35,
-              "G": 35, "H": 35, "I": 35,"J": 35, "K": 35, "L": 35,
-              "M": 35, "N": 35, "O": 35,"P": 35, "Q": 35, "R": 35,
-              "S": 35, "T": 35, "U": 35,"V": 35, "W": 35, "X": 35,
-              "Y": 35, "Z": 35, "AA": 35, "AB": 35, "AC": 35, "AD": 35,
-              "AE": 35, "AF": 35, "AG": 35, "AH": 35, "AI": 35, "AJ": 35,
-              "AK": 35, "AL": 35, "AM": 35, "AN": 35, "AO": 35, "AP": 35,
-              "AQ": 35, "AR": 35, "AS": 35, "AT": 35, "AU": 35, "AV": 35,
-              "AW": 35, "AX": 35, "AY": 35, "AZ": 35,"BA": 35, "BB": 35,
-              "BC": 35, "BD": 35,"BE": 35, "BF": 35, "BG": 35, "BH": 35,
-              "BI": 35, "BJ": 35,"BK": 35, "BL": 35, "BM": 35}
-
-    heights = {"A": 10, "B": 10, "C": 10, "D": 10, "E": 10, "F": 10,
-              "G": 10, "H": 10, "I": 10, "J": 10, "K": 10, "L": 10,
-              "M": 10, "N": 10, "O": 10, "P": 10, "Q": 10, "R": 10,
-              "S": 10, "T": 10, "U": 10, "V": 10, "W": 10, "X": 10,
-              "Y": 10, "Z": 10, "AA": 10, "AB": 10, "AC": 10, "AD": 10,
-              "AE": 10, "AF": 10, "AG": 10, "AH": 10, "AI": 10, "AJ": 10,
-              "AK": 10, "AL": 10, "AM": 10, "AN": 10, "AO": 10, "AP": 10,
-              "AQ": 10, "AR": 10, "AS": 10, "AT": 10, "AU": 10, "AV": 10,
-              "AW": 10, "AX": 10, "AY": 10, "AZ": 10, "BA": 10, "BB": 10,
-              "BC": 10, "BD": 10, "BE": 10, "BF": 10, "BG": 10, "BH": 10,
-              "BI": 10, "BJ": 10, "BK": 10, "BL": 10, "BM": 10}
-
-    thin_border = Border(left=Side(style='thin'),
-                         right=Side(style='thin'),
-                         top=Side(style='thin'),
-                         bottom=Side(style='thin'))
-
-
-    columns = ["A", "B", "C","D","E","F","G","H","I","J","K","L","M","N",
-               "O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB",
-               "AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN",
-               "AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ",
-               "BA","BB","BC","BD","BE","BF","BG","BH","BI","BJ","BK","BL","BM"]
-    for c in columns:
-        ws.column_dimensions[c].width = widths[c]
-        ws.column_dimensions[c].height = heights[c]
-
-
-    num_columns, letter_columns = zip(*list(enumerate(columns)))
-    num_columns = list(num_columns)
-    num_columns = [x + 1 for x in num_columns] #Desplazamos los valores en 1 porque Excel está indexado desde el 1 y no desde el 0
-    letter_columns = list(letter_columns)
-
-    # escribir los títulos de las columnas, en negrita
-
-    texts = ["","","","NRO CONTRATO", "FECHA VENTA CONTRATO", "MES_AÑO VENTA CONTRATO", "PRECIO VENTA CTTO",
-             "MTS LINEALES CTTO", "MTS 2 CTTO", "STATUS INICIAL_CTTO", "STATUS FINAL_CTTO",
-             "UNIDAD ORIGEN FALLA CALIDAD", "COSTO ESTANDAR PERFILES", "COSTO ESTANDAR HERRAJES",
-             "COSTO ESTANDAR CRISTALES", "COSTO ESTANDAR M PRIMAS", "COSTO ESTANDAR FABRICACION",
-             "COSTO ESTANDAR INSTALACION", "COSTO ESTANDAR ADICIONALES", "COSTO ESTANDAR TOTAL",
-             "COSTO EFECTIVO M PRIMAS", "COSTO EFECTIVO FABRICACION", "COSTO EFECTIVO INSTALACION",
-             "COSTO EFECTIVO COMPLEMENTOS", "FECHA LIMITE ENTREGA_CTTO",
-             "FECHA EFECTIVA ENTREGA_CTTO",
-             "MAYOR PLAZO ENTREGA_CTTO", "MES_AÑO RECTIFIC CONTRATO", "FECHA PLANIF ENTREGA_RECTIF",
-             "FECHA EFECTIVA ENTREGA_RECTIF", "MAYOR PLAZO RECTIFICACION", "ID RECTIFICADOR",
-             "MES_AÑO ENTREGA HOJA CORTE CTTO", "FECHA PLANIF ENTREGA_HC",
-             "FECHA EFECTIVA ENTREGA_HC",
-             "MAYOR PLAZO ENTREGA_HC", "ID DISEÑADOR_HC",
-             "FECHA PLANIFICACION EMISION O.C. CRISTALES",
-             "FECHA EFECTIVA EMISION O.C. CRISTALES", "MAYOR PLAZO EMISION O.C. CRISTALES",
-             "MES_AÑO EMISION O.C. CRISTALES", "ID EMISOR_OC CRISTALES",
-             "FECHA PLANIF RECEPCION CRISTALES",
-             "FEHCA EFECTIVA RECEPCION CRISTALES", "MAYOR PLAZO RECEPCION CRISTALES",
-             "MES_AÑO RECEP CRISTALES",
-             "ID PROVEEDOR CRISTALES", "FECHA PLANIF INICIO FABRICACION",
-             "FECHA EFECTIVA INICIO FABRICACION",
-             "MAYOR PLAZO INICIO FABRICACION", "MES_AÑO INICIO FABRICACION", "ID RESPONS FABRICAC",
-             "FECHA PLANIFIC FINALIZAC FABRICAC", "FECHA EFECTIVA FINALIZAC FABRICAC",
-             "MAYOR PLAZO FINALIZ FABRICACION", "MEZ_AÑO FINALIZ FABRICACION", "I.D FABRICACION",
-             "FECHA INICIO PLANIF INSTALACION", "FECHA INICIO EFECTIVA INSTALACION",
-             "MAYOR PLAZO INICIO INSTALACION", "ID INSTALADOR",
-             "FECHA PLANIFICADA FINALIZ INSTALACION",
-             "FECHA EFECTIVA FINALIZ INSTALACION", "MAYOR PLAZO INSTALACION", "ID INSTALADOR"]
-
-    for i in range(4,len(num_columns)+1):
-        cell = ws.cell(row=3, column=i, value=texts[i-1])
-        cell.font = Font(bold=True,)
-        cell.border = thin_border
-        cell.alignment = Alignment(horizontal='center')
-
-    # Escribir título general
-    cell = ws.cell(row=1, column=2, value="PLANNER OPERATION SYSTEM")
-    cell.font = Font(bold=True,underline="single")
-    cell.alignment = Alignment(horizontal='center')
-
-
-    # Escribir título general
-    cell = ws.cell(row=4, column=2, value="RESPONSABLE DIGITAC INFORMAC")
-    # cell.font = Font(bold=True)
-    cell.border = thin_border
-    cell.alignment = Alignment(horizontal='center')
-
-    # Escribir título general
-    cell = ws.cell(row=6, column=2, value="UNIDAD DE MEDIDA")
-    # cell.font = Font(bold=True)
-    cell.border = thin_border
-    cell.alignment = Alignment(horizontal='center')
-
-    # Escribir título general
-    cell = ws.cell(row=8, column=2, value="STATUS POSIBLES")
-    # cell.font = Font(bold=True)
-    cell.border = thin_border
-    cell.alignment = Alignment(horizontal='center')
-
-    # Escribir título general
-    cell = ws.cell(row=10, column=2, value="OBSERVACIONES")
-    # cell.font = Font(bold=True)
-    cell.border = thin_border
-    cell.alignment = Alignment(horizontal='center')
-
-    # Escribir título general
-    cell = ws.cell(row=16, column=2, value="COSTOS ESTANDARES")
-    # cell.font = Font(bold=True)
-    cell.border = thin_border
-    cell.alignment = Alignment(horizontal='center')
-
-
-
-
-    # llenar con los datos
-
-
-    with db_session:
-        projects = select(p for p in db.Projects).order_by(lambda p: p.contract_number)
-        r=4
-        for p in projects:
-            #Escribe el número de contrato
-            cell = ws.cell(row=4, column=4, value=p.contract_number)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
-
-            #Escribe la fecha de venta del contrato
-            cell = ws.cell(row=4, column=5, value=p.sale_date)
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
-
-            # Escribe el mes y año de venta del contrato
-            sale_year = p.sale_date.year
-            sale_month = p.sale_dale.month
-            months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto",
-                      "Septiembre","Octubre","Noviembre","Diciembre"]
-            sale_month = months[sale_month-1]
-            cell = ws.cell(row=4, column=6, value="{0}_{1}".format(sale_month,sale_year))
-            cell.font = Font(bold=True)
-            cell.border = thin_border
-            cell.alignment = Alignment(horizontal='center')
-
-            # # Escribe el precio de venta del contrato
-            # cell = ws.cell(row=4, column=7, value=p.sale_price)
-            # cell.font = Font(bold=True)
-            # cell.border = thin_border
-            # cell.alignment = Alignment(horizontal='center')
-            #
-            # # Escribe la cantidad de metros lineales del proyecto (contrato)
-            # cell = ws.cell(row=4, column=8, value=p.linear_meters)
-            # cell.font = Font(bold=True)
-            # cell.border = thin_border
-            # cell.alignment = Alignment(horizontal='center')
-            #
-            # # Escribe la cantidad de metros lineales del proyecto (contrato)
-            # cell = ws.cell(row=4, column=8, value=p.linear_meters)
-            # cell.font = Font(bold=True)
-            # cell.border = thin_border
-            # cell.alignment = Alignment(horizontal='center')
-
-            r+=1
-    try:
-        module_path = os.path.dirname(__file__)
-        panorama_folder_path = os.path.abspath(os.path.join(module_path, os.pardir))
-        report_folder_path = os.path.join(panorama_folder_path, "Reportes")
-        if not os.path.exists(report_folder_path):
-            os.makedirs(report_folder_path)
-        fn = os.path.join(report_folder_path, "Global Report.xlsx")
-        wb.save(fn)
-    except OSError as e:
-        if e.args[0] != 13:
-            raise
-        input("\n Ha ocurrido un error porque el archivo Global Report.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.")
-
-
-
-# # from pony.orm import *
-# from database import db
-# createGlobalReport(db)
-
-def createGlobalReportCompact(db):
-    ''' Este método crea un informe en Excel compacto con una proción de la información de la base de datos. '''
-    wb = Workbook()
-    by_default_sheet = wb.get_sheet_by_name('Sheet')
-    by_default_sheet.title = 'Introducción del informe'
-    wb.remove_sheet(by_default_sheet)
-    ws = wb.create_sheet(
-        "Informe BD compacto",index=0)
-
-    widths = {"A": 5, "B": 35, "C": 5,"D": 35, "E": 35, "F": 35,
-              "G": 35, "H": 35, "I": 35,"J": 35, "K": 35, "L": 35,
-              "M": 35, "N": 35}
-
-    heights = {"A": 10, "B": 10, "C": 10, "D": 10, "E": 10, "F": 10,
-              "G": 10, "H": 10, "I": 10, "J": 10, "K": 10, "L": 10,
-              "M": 10, "N": 10}
-
-    thin_border = Border(left=Side(style='thin'),
-                         right=Side(style='thin'),
-                         top=Side(style='thin'),
-                         bottom=Side(style='thin'))
-
-
-    columns = ["A", "B", "C","D","E","F","G","H","I","J","K","L","M","N"]
-    for c in columns:
-        ws.column_dimensions[c].width = widths[c]
-        ws.column_dimensions[c].height = heights[c]
-
-
-    num_columns, letter_columns = zip(*list(enumerate(columns)))
-    num_columns = list(num_columns)
-    num_columns = [x + 1 for x in num_columns] #Desplazamos los valores en 1 porque Excel está indexado desde el 1 y no desde el 0
-    letter_columns = list(letter_columns)
-
-    # escribir los títulos de las columnas, en negrita
-
-    texts = ["","","","NUMERO DE CONTRATO", "NOMBRE CLIENTE", "PRIORIDAD", "METROS LINEALES",
-             "FECHA LÍMITE","COMUNA CLIENTE", "DIRECCIÓN CLIENTE", "METROS LINEALES REALES", "COSTO ESTIMADO",
-             "PRECIO DE VENTA", "FECHA DE VENTA"]
-
-    for i in range(4,len(num_columns)+1):
-        cell = ws.cell(row=3, column=i, value=texts[i-1])
-        cell.font = Font(bold=True,)
-        cell.border = thin_border
-        cell.alignment = Alignment(horizontal='center')
-
-
-    # A continuación llenamos con los datos
-
-
-    with db_session:
-        projects = select(p for p in db.Projects).order_by(lambda p: p.contract_number)
-        r=4
-        for p in projects:
-            #Escribe el número de contrato
-            if p.contract_number != None:
-                cell = ws.cell(row=r, column=4, value=p.contract_number)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-            else:
-                cell = ws.cell(row=r, column=4, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            # Escribe el nombre del cliente
-            if p.client_name != None:
-                cell = ws.cell(row=r, column=5, value=p.client_name)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-            else:
-                cell = ws.cell(row=r, column=5, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            # Escribe la prioridad del proyecto
-            if p.priority != None:
-                cell = ws.cell(row=r, column=6, value=p.priority)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-            else:
-                cell = ws.cell(row=r, column=6, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            # Escribe los metros lineales del proyecto
-            if p.linear_meters != None:
-                cell = ws.cell(row=r, column=7, value=p.linear_meters)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            else:
-                cell = ws.cell(row=r, column=7, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            # Escribe la fecha límite del proyecto
-            if p.deadline != None:
-                cell = ws.cell(row=r, column=8, value=p.deadline)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-            else:
-                cell = ws.cell(row=r, column=8, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            # Escribe la comuna del cliente
-            if p.client_comuna != None:
-                cell = ws.cell(row=r, column=9, value=p.client_comuna)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-            else:
-                cell = ws.cell(row=r, column=9, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            # Escribe la dirección del cliente
-            if p.client_address != None:
-                cell = ws.cell(row=r, column=10, value=p.client_address)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-            else:
-                cell = ws.cell(row=r, column=10, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            # Escribe los metros lineales reales
-            if p.real_linear_meters != None:
-                cell = ws.cell(row=r, column=11, value=p.real_linear_meters)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-            else:
-                cell = ws.cell(row=r, column=11, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            # Escribe el costo estimado del proyecto
-            if p.estimated_cost != None:
-                cell = ws.cell(row=r, column=12, value=p.estimated_cost)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-            else:
-                cell = ws.cell(row=r, column=12, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            # Escribe el precio de venta del proyecto
-            if p.sale_price != None:
-                cell = ws.cell(row=r, column=13, value=p.sale_price)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-            else:
-                cell = ws.cell(row=r, column=13, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            # Escribe la fecha de venta del proyecto
-            if p.sale_date != None:
-                cell = ws.cell(row=r, column=14, value=p.sale_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-            else:
-                cell = ws.cell(row=r, column=14, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-
-            r+=1
-
-    module_path = os.path.dirname(__file__)
-    panorama_folder_path = os.path.abspath(os.path.join(module_path, os.pardir))
-    report_folder_path = os.path.join(panorama_folder_path,"Reportes")
-    if not os.path.exists(report_folder_path):
-        os.makedirs(report_folder_path)
-    fn = os.path.join(report_folder_path,"Global Report Compact.xlsx")
-    wb.save(fn)
-
-# # from pony.orm import *
-# from database import db
-# createGlobalReportCompact(db)
-
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
 def createGlobalReportModified(db):
     ''' Este método crea un informe en Excel compacto con una proción de la información de la base de datos. '''
     wb = Workbook()
@@ -447,7 +33,7 @@ def createGlobalReportModified(db):
               "AE": 45, "AF":45, "AG":45, "AH":45, "AI":45, "AJ":45, "AK":45, "AL":45,
               "AM":45,"AN":45,"AO":45,"AP":45,"AQ":45,"AR":45,"AS":45,"AT":45,"AU":45,
               "AV":45,"AW":45,"AX":45,"AY":45,"AZ":45,"BA":45,"BB":45,"BC":45,"BD":45,"BE":45,"BF":45,"BG":45,
-              "BH":45,"BI":45}
+              "BH":45,"BI":45,"BJ":45}
 
     heights = {"A": 10, "B": 10, "C": 10, "D": 10, "E": 10, "F": 10,
               "G": 10, "H": 10, "I": 10, "J": 10, "K": 10, "L": 10,
@@ -457,7 +43,7 @@ def createGlobalReportModified(db):
                "AE":10, "AF":10, "AG":10, "AH":10, "AI":10, "AJ":10, "AK":10, "AL":10,
                "AM": 10, "AN": 10, "AO": 10, "AP": 10, "AQ": 10,"AR":10,"AS":10,"AT":10,"AU":10,
                "AV":10,"AW":10,"AX":10,"AY":10,"AZ":10,"BA":10,"BB":10,"BC":10,"BD":10,"BE":10,"BF":10,"BG":10,
-               "BH":10,"BI":10}
+               "BH":10,"BI":10,"BJ":10}
 
 
     thin_border = Border(left=Side(style='thin'),
@@ -468,7 +54,7 @@ def createGlobalReportModified(db):
 
     columns = ["A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB",
                "AC","AD","AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ",
-               "BA","BB","BC","BD","BE","BF","BG","BH","BI"]
+               "BA","BB","BC","BD","BE","BF","BG","BH","BI","BJ"]
 
     for c in columns:
         ws.column_dimensions[c].width = widths[c]
@@ -496,7 +82,7 @@ def createGlobalReportModified(db):
              "FECHA PLANIFICADA RECEPCION CRISTALES","FECHA EFECTIVA RECEPCION CRISTALES","FECHA PLANIFICADA LLEGADA CRISTALES",
              "FECHA EFECTIVA LLEGADA CRISTALES","ID EMISOR HC","ID PROVEEDOR CRISTALES","MAYOR PLAZO (ATRASO) EMISION HC",
              "MAYOR PLAZO (ATRASO) LLEGADA CRISTALES","MAYOR PLAZO (ATRASO) RECTIFICACION","MAYOR PLAZO (ATRASO) DISEÑO",
-             "MAYOR PLAZO (ATRASO) FABRICACION","MAYOR PLAZO (ATRASO) INSTALACION","STATUS","ORIGEN FALLA"]
+             "MAYOR PLAZO (ATRASO) FABRICACION","MAYOR PLAZO (ATRASO) INSTALACION","ESTADO INICIAL","ESTADO FINAL","ORIGEN FALLA"]
 
     for i in range(4,len(num_columns)+1):
         cell = ws.cell(row=3, column=i, value=texts[i-1])
@@ -513,35 +99,23 @@ def createGlobalReportModified(db):
         r=4
         for p in projects:
 
-            #Escribe el número de contrato
+
             project_tasks = select(t for t in db.Tasks if t.project == p)
             project_tasks = list(project_tasks)
-
-            #Revisa si hay algún fallo en alguna de las etapas del proyecto
-            hay_un_fallo = False
-            numero_de_fallos = 0
-            for tarea in project_tasks:
-                if tarea.fail_cost != None:
-                    hay_un_fallo = True
-                    numero_de_fallos +=1
-
-            #Duplica el proyecto para imprimir que tuvo fallos en una versión anterior.
-            # for fallo in range(0,numero_de_fallos):
-                # p_clon = copy.deepcopy(p)
-
-                # if projects.index(p)<len(projects)-1:
-                    # projects.insert(projects.index(p),p_clon)
-                # else:
-                    # projects.append(p_clon)
 
             rectification = project_tasks[0]
             design = project_tasks[1]
             fabrication = project_tasks[2]
             installation = project_tasks[3]
 
+            num_of_versions = 1
+            project_contract_number = p.contract_number
+            project_versions = select(v for v in db.Projects if v.contract_number ==project_contract_number)
+            num_of_versions = len(project_versions)
             # for t in project_tasks:
             #     print(t.skill.name)
 
+            # Escribe el número de contrato
             if p.contract_number != None:
                 cell = ws.cell(row=r, column=4, value=p.contract_number)
                 cell.font = Font(bold=True)
@@ -674,9 +248,9 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
-            # Escribe la fecha de original de inicio de diseño
-            if design.original_initial_date != None:
-                cell = ws.cell(row=r, column=15, value=design.original_initial_date)
+            # Escribe la fecha de original de inicio de rectificación
+            if rectification.original_initial_date != None:
+                cell = ws.cell(row=r, column=15, value=rectification.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -686,9 +260,9 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
-            # Escribe la fecha de original de término de diseño
-            if design.original_end_date != None:
-                cell = ws.cell(row=r, column=16, value=design.original_end_date)
+            # Escribe la fecha de original de término de rectificación
+            if rectification.original_end_date != None:
+                cell = ws.cell(row=r, column=16, value=rectification.original_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -698,9 +272,9 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
-            # Escribe la fecha efectiva de inicio de diseño
-            if design.effective_initial_date != None:
-                cell = ws.cell(row=r, column=17, value=design.effective_initial_date)
+            # Escribe la fecha efectiva inicio de rectificación
+            if rectification.effective_initial_date != None:
+                cell = ws.cell(row=r, column=17, value=rectification.effective_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -710,9 +284,9 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
-            # Escribe la fecha efectiva de término de diseño
-            if design.effective_end_date != None:
-                cell = ws.cell(row=r, column=18, value=design.effective_end_date)
+            # Escribe la fecha efectiva de término de rectificación
+            if rectification.effective_end_date != None:
+                cell = ws.cell(row=r, column=18, value=rectification.effective_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -722,9 +296,9 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
-            # Escribe la fecha de original de inicio de rectificación
-            if rectification.original_initial_date != None:
-                cell = ws.cell(row=r, column=19, value=rectification.original_initial_date)
+            # Escribe la fecha de original de inicio de diseño
+            if design.original_initial_date != None:
+                cell = ws.cell(row=r, column=19, value=design.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -734,9 +308,9 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
-            # Escribe la fecha de original de término de rectificación
-            if rectification.original_end_date != None:
-                cell = ws.cell(row=r, column=20, value=rectification.original_end_date)
+            # Escribe la fecha de original de término de diseño
+            if design.original_end_date != None:
+                cell = ws.cell(row=r, column=20, value=design.original_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -746,9 +320,9 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
-            # Escribe la fecha efectiva inicio de rectificación
-            if rectification.effective_initial_date != None:
-                cell = ws.cell(row=r, column=21, value=rectification.effective_initial_date)
+            # Escribe la fecha efectiva de inicio de diseño
+            if design.effective_initial_date != None:
+                cell = ws.cell(row=r, column=21, value=design.effective_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -758,9 +332,9 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
-            # Escribe la fecha efectiva de término de rectificación
-            if rectification.effective_end_date != None:
-                cell = ws.cell(row=r, column=22, value=rectification.effective_end_date)
+            # Escribe la fecha efectiva de término de diseño
+            if design.effective_end_date != None:
+                cell = ws.cell(row=r, column=22, value=design.effective_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -1154,9 +728,9 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
-            
+
             # Escribe el ID del emisor de la HC, en caso de haberlos
-            if p_hc != None and p_hc.id_issuer_order != None and p_hc.id_issuer_order != '':
+            if p_hc != None and p_hc.id_issuer_order != None and p_hc.id_issuer_order !="":
                 cell = ws.cell(row=r, column=52, value=p_hc.id_issuer_order)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -1168,7 +742,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe el ID del proveedor de cristales, en caso de haberlos
-            if p_hc != None and p_hc.id_crystal_provider != None and p_hc.id_crystal_provider != '':
+            if p_hc != None and p_hc.id_crystal_provider != None and p_hc.id_crystal_provider != "":
                 cell = ws.cell(row=r, column=53, value=p_hc.id_crystal_provider)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -1261,14 +835,43 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
-            # Escribe si el proyecto tiene reparos (fallos)
-            if hay_un_fallo:
-                cell = ws.cell(row=r, column=60, value="CON REPAROS")
+            # Escribe el estado inicial del proyecto
+            if num_of_versions > 1:#hay_un_fallo
+                if p.version == 1:
+                    cell = ws.cell(row=r, column=60, value="NUEVO")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif p.version < num_of_versions:
+                    cell = ws.cell(row=r, column=60, value="CON REPAROS")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else: #última versión
+                    cell = ws.cell(row=r, column=60, value="CON REPAROS")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=60, value="NUEVO")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el estado final del proyecto
+            if num_of_versions > 1:  # hay_un_fallo
+                if p.version < num_of_versions:
+                    cell = ws.cell(row=r, column=61, value="CON REPAROS")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else:  # última versión
+                    cell = ws.cell(row=r, column=61, value="OK")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=60, value="OK")
+                cell = ws.cell(row=r, column=61, value="OK")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -1279,13 +882,13 @@ def createGlobalReportModified(db):
                 if tarea.fail_cost != None:
                     id_tarea_origen_fallo = tarea.id
 
-            if hay_un_fallo:
-                cell = ws.cell(row=r, column=61, value=id_tarea_origen_fallo)
+            if False:#hay_un_fallo
+                cell = ws.cell(row=r, column=62, value=id_tarea_origen_fallo)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=61, value="No aplica")
+                cell = ws.cell(row=r, column=62, value="No aplica")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -1313,8 +916,8 @@ def createGlobalReportModified(db):
             raise
         input("\n Ha ocurrido un error porque el archivo Reporte global de planificación.xlsx está abierto. Por favor ciérrelo y presione cualquier tecla para que el programa pueda continuar.")
 
-# from database import db
-# createGlobalReportModified(db)
+from database import db
+createGlobalReportModified(db)
 # with db_session:
 #     t = db.Tasks[3]
 #     t.failed = True
@@ -1468,7 +1071,7 @@ def createPlanningReport(db, wb):
     # llenar con los datos de Delayed
     next_row = 4
     with db_session:
-        projects = select(p for p in db.Projects if p.finished == None).order_by(lambda p: p.contract_number)
+        projects = select(p for p in db.Projects).order_by(lambda p: p.contract_number)
         for p in projects:
             # primero seleccionamos el Task asociado a este Project y a cada Skill, sabemos que es solo una con failed != True, así que tomamos first():
             task_rect = select(t for t in db.Tasks if t.project == p and t.skill == db.Skills[1] and (t.failed == None or t.failed == False)).first()
