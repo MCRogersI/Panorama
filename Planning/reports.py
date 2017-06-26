@@ -33,7 +33,7 @@ def createGlobalReportModified(db):
               "AE": 45, "AF":45, "AG":45, "AH":45, "AI":45, "AJ":45, "AK":45, "AL":45,
               "AM":45,"AN":45,"AO":45,"AP":45,"AQ":45,"AR":45,"AS":45,"AT":45,"AU":45,
               "AV":45,"AW":45,"AX":45,"AY":45,"AZ":45,"BA":45,"BB":45,"BC":45,"BD":45,"BE":45,"BF":45,"BG":45,
-              "BH":45,"BI":45}
+              "BH":45,"BI":45,"BJ":45}
 
     heights = {"A": 10, "B": 10, "C": 10, "D": 10, "E": 10, "F": 10,
               "G": 10, "H": 10, "I": 10, "J": 10, "K": 10, "L": 10,
@@ -43,7 +43,7 @@ def createGlobalReportModified(db):
                "AE":10, "AF":10, "AG":10, "AH":10, "AI":10, "AJ":10, "AK":10, "AL":10,
                "AM": 10, "AN": 10, "AO": 10, "AP": 10, "AQ": 10,"AR":10,"AS":10,"AT":10,"AU":10,
                "AV":10,"AW":10,"AX":10,"AY":10,"AZ":10,"BA":10,"BB":10,"BC":10,"BD":10,"BE":10,"BF":10,"BG":10,
-               "BH":10,"BI":10}
+               "BH":10,"BI":10,"BJ":10}
 
 
     thin_border = Border(left=Side(style='thin'),
@@ -54,7 +54,7 @@ def createGlobalReportModified(db):
 
     columns = ["A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB",
                "AC","AD","AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ",
-               "BA","BB","BC","BD","BE","BF","BG","BH","BI"]
+               "BA","BB","BC","BD","BE","BF","BG","BH","BI","BJ"]
 
     for c in columns:
         ws.column_dimensions[c].width = widths[c]
@@ -82,7 +82,7 @@ def createGlobalReportModified(db):
              "FECHA PLANIFICADA RECEPCION CRISTALES","FECHA EFECTIVA RECEPCION CRISTALES","FECHA PLANIFICADA LLEGADA CRISTALES",
              "FECHA EFECTIVA LLEGADA CRISTALES","ID EMISOR HC","ID PROVEEDOR CRISTALES","MAYOR PLAZO (ATRASO) EMISION HC",
              "MAYOR PLAZO (ATRASO) LLEGADA CRISTALES","MAYOR PLAZO (ATRASO) RECTIFICACION","MAYOR PLAZO (ATRASO) DISEÑO",
-             "MAYOR PLAZO (ATRASO) FABRICACION","MAYOR PLAZO (ATRASO) INSTALACION","STATUS","ORIGEN FALLA"]
+             "MAYOR PLAZO (ATRASO) FABRICACION","MAYOR PLAZO (ATRASO) INSTALACION","ESTADO INICIAL","ESTADO FINAL","ORIGEN FALLA"]
 
     for i in range(4,len(num_columns)+1):
         cell = ws.cell(row=3, column=i, value=texts[i-1])
@@ -730,7 +730,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe el ID del emisor de la HC, en caso de haberlos
-            if p_hc != None and p_hc.id_issuer_order != None:
+            if p_hc != None and p_hc.id_issuer_order != None and p_hc.id_issuer_order !="":
                 cell = ws.cell(row=r, column=52, value=p_hc.id_issuer_order)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -742,7 +742,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe el ID del proveedor de cristales, en caso de haberlos
-            if p_hc != None and p_hc.id_crystal_provider != None:
+            if p_hc != None and p_hc.id_crystal_provider != None and p_hc.id_crystal_provider != "":
                 cell = ws.cell(row=r, column=53, value=p_hc.id_crystal_provider)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -835,20 +835,43 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
-            # Escribe si el proyecto tiene reparos (fallos)
-            if p.version > 1:#hay_un_fallo
-                if p.version < num_of_versions:
+            # Escribe el estado inicial del proyecto
+            if num_of_versions > 1:#hay_un_fallo
+                if p.version == 1:
+                    cell = ws.cell(row=r, column=60, value="NUEVO")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif p.version < num_of_versions:
                     cell = ws.cell(row=r, column=60, value="CON REPAROS")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                 else: #última versión
-                    cell = ws.cell(row=r, column=60, value="OK CON REPAROS")
+                    cell = ws.cell(row=r, column=60, value="CON REPAROS")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=60, value="OK")
+                cell = ws.cell(row=r, column=60, value="NUEVO")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el estado final del proyecto
+            if num_of_versions > 1:  # hay_un_fallo
+                if p.version < num_of_versions:
+                    cell = ws.cell(row=r, column=61, value="CON REPAROS")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else:  # última versión
+                    cell = ws.cell(row=r, column=61, value="OK")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=61, value="OK")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -860,12 +883,12 @@ def createGlobalReportModified(db):
                     id_tarea_origen_fallo = tarea.id
 
             if False:#hay_un_fallo
-                cell = ws.cell(row=r, column=61, value=id_tarea_origen_fallo)
+                cell = ws.cell(row=r, column=62, value=id_tarea_origen_fallo)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=61, value="No aplica")
+                cell = ws.cell(row=r, column=62, value="No aplica")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -1061,7 +1084,7 @@ def createPlanningReport(db, wb):
             employees_tasks_des = select(et for et in db.Employees_Tasks if et.task == task_des).first()
             employees_tasks_fab = select(et for et in db.Employees_Tasks if et.task == task_fab).first()
             employees_tasks_inst = select(et for et in db.Employees_Tasks if et.task == task_inst)
-
+            
             # para el Skill 4, pueden ser varios empleados:
             instalation_planned_initial_date = employees_tasks_inst.first().planned_initial_date
             instalation_planned_end_date = employees_tasks_inst.first().planned_end_date
@@ -1070,11 +1093,23 @@ def createPlanningReport(db, wb):
                 instalation_employees = instalation_employees + str(et.employee) + " ;"
 
             # finalmente, escribimos en el Excel el resumen de la planificación:
-            values = [p.contract_number,
-                      employees_tasks_rect.planned_initial_date, employees_tasks_rect.planned_end_date, employees_tasks_rect.employee.id,
-                      employees_tasks_des.planned_initial_date, employees_tasks_des.planned_end_date, employees_tasks_des.employee.id,
-                      employees_tasks_fab.planned_initial_date, employees_tasks_fab.planned_end_date, employees_tasks_fab.employee.id,
-                      instalation_planned_initial_date, instalation_planned_end_date, instalation_employees[0:-2]]
+            values = []
+            values.append(p.contract_number)
+            for et in [employees_tasks_rect, employees_tasks_des, employees_tasks_fab]:
+                # algunas tareas pueden haber sido completadas en una versión anterior, en ese caso llenamos con un mensaje apropiado
+                if et != None:
+                    values.append(et.planned_initial_date)
+                    values.append(et.planned_end_date)
+                    values.append(et.employee.id)
+                else:
+                    values.append('Tarea lista en versión anterior.')
+                    values.append('Tarea lista en versión anterior.')
+                    values.append('Tarea lista en versión anterior.')
+            
+            values.append(instalation_planned_initial_date)
+            values.append(instalation_planned_end_date)
+            values.append(instalation_employees[0:-2])
+            
             for c in range(1, len(columns)):
                 ws.cell(row=next_row, column=columns[c], value=values[c - 1])
             next_row = next_row + 1

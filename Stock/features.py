@@ -68,37 +68,37 @@ def printStockConsole(db):
 
 
 # def createEngagement(db, contract_number, skus_list, withdrawal_date=None):
-    # ''' Este método crea una nueva entrada en la tabla de engagements a partir de los datos ingresados  '''
-    # # skus_list es una lista de tuplas con el id del SKU y la cantidad correspondiente.
-    # with db_session:
-        # if type(skus_list) == list:  # Caso en el que se ingresa un lista de tuplas.
-            # for sku_row in skus_list:
-                # try:
-                    # sku = db.Stock[sku_row[0]]
-    '''
-    IMPORTANTE: En 'project' se podría haber guardado simplemente el id del proyecto (contract_number),
-    pero de esta forma el proyecto puede ser accedido de forma directa a través del engagement.
-    Deberíamos instaurar una convención al respecto.
-    '''
-                    # db.Engagements(project=db.Projects[contract_number], sku=sku, quantity=sku_row[1],
-                                   # withdrawal_date=withdrawal_date)
-                # except ObjectNotFound as e:
-                    # print('Object not found: {}'.format(e))
-                # except ValueError as e:
-                    # print('Value error: {}'.format(e))
-        # else:
-            # try:
-                # sku = db.Stock[skus_list[0]]
-                # db.Engagements(project=db.Projects[contract_number], sku=sku, quantity=skus_list[1],
-                               # withdrawal_date=withdrawal_date)
-
-            # except ObjectNotFound as e:
-                # print('Object not found: {}'.format(e))
-            # except ValueError as e:
-                # print('Value error: {}'.format(e))
-            # except TypeError as e:
-                # print('Type error: {}'.format(e))
-        # commit()
+#     ''' Este método crea una nueva entrada en la tabla de engagements a partir de los datos ingresados  '''
+#     # skus_list es una lista de tuplas con el id del SKU y la cantidad correspondiente.
+#     with db_session:
+#         if type(skus_list) == list:  # Caso en el que se ingresa un lista de tuplas.
+#             for sku_row in skus_list:
+#                 try:
+#                     sku = db.Stock[sku_row[0]]
+#     #'''
+#     #IMPORTANTE: En 'project' se podría haber guardado simplemente el id del proyecto (contract_number),
+#     #pero de esta forma el proyecto puede ser accedido de forma directa a través del engagement.
+#     #Deberíamos instaurar una convención al respecto.
+#     #'''
+#                     db.Engagements(project=db.Projects[contract_number], sku=sku, quantity=sku_row[1],
+#                                    withdrawal_date=withdrawal_date)
+#                 except ObjectNotFound as e:
+#                     print('Object not found: {}'.format(e))
+#                 except ValueError as e:
+#                     print('Value error: {}'.format(e))
+#         else:
+#             try:
+#                 sku = db.Stock[skus_list[0]]
+#                 db.Engagements(project=db.Projects[contract_number], sku=sku, quantity=skus_list[1],
+#                                withdrawal_date=withdrawal_date)
+#
+#             except ObjectNotFound as e:
+#                 print('Object not found: {}'.format(e))
+#             except ValueError as e:
+#                 print('Value error: {}'.format(e))
+#             except TypeError as e:
+#                 print('Type error: {}'.format(e))
+#         commit()
 
 
 def createPurchases(db, skus_list, arrival_date):
@@ -160,7 +160,7 @@ def calculateStock(db, id_sku):
 def calculateStockFix(db, id_sku,final_date): #Las fechas de engagements y purchases deben ser futuras (con una fecha mayor al día de hoy) !
     ''' Este método retorna una tupla con los valores (fecha,cantidad) de stock (considerando las fechas en las que se presentan cambios)'''
     with db_session:
-        createEngagement(db, 1, [(id_sku, 0)], final_date) #Fix, engagement ficticio. Los Engagements (o Purchases) de la BD no deben tener una fecha superior a final_date
+        # createEngagement(db, 1, [(id_sku, 0)], final_date) #Fix, engagement ficticio. Los Engagements (o Purchases) de la BD no deben tener una fecha superior a final_date
         try:
             engagements = select(
                 en for en in db.Engagements if en.sku.id == id_sku).order_by(
@@ -179,6 +179,7 @@ def calculateStockFix(db, id_sku,final_date): #Las fechas de engagements y purch
             beginning_date = date.today()
             beginning_quantity = db.Stock[id_sku].real_quantity
             fluxes = [(0, beginning_date)] + fluxes
+            fluxes.append((0,final_date))#MODIFICACION 26-06 PARA NO USAR CREATEENGAGEMENTS
             values = [(beginning_quantity, beginning_date)]
             for i in range(1, len(fluxes)):
                 values.append((values[i - 1][0] + fluxes[i][0], fluxes[i][1]))

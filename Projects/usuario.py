@@ -502,9 +502,9 @@ def tasks_console(db, level):
                         try:
                             fail_cost = int(fail_cost)
                         except:
-                            raise ValueError(' \n El costo debe ser un número entero.')
+                            raise ValueError('\n El costo debe ser un número entero.')
                         if fail_cost < 0 :
-                                raise ValueError(' \n El costo debe ser un número no negativo. ')
+                                raise ValueError('\n El costo debe ser un número no negativo.')
                         failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
                         input(' Fallo ingresado con éxito. Presione Enter para continuar.')
                     except ValueError as ve:
