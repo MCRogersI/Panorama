@@ -1481,7 +1481,7 @@ def createPlanningReport(db, wb):
             employees_tasks_des = select(et for et in db.Employees_Tasks if et.task == task_des).first()
             employees_tasks_fab = select(et for et in db.Employees_Tasks if et.task == task_fab).first()
             employees_tasks_inst = select(et for et in db.Employees_Tasks if et.task == task_inst)
-
+            
             # para el Skill 4, pueden ser varios empleados:
             instalation_planned_initial_date = employees_tasks_inst.first().planned_initial_date
             instalation_planned_end_date = employees_tasks_inst.first().planned_end_date
@@ -1490,11 +1490,23 @@ def createPlanningReport(db, wb):
                 instalation_employees = instalation_employees + str(et.employee) + " ;"
 
             # finalmente, escribimos en el Excel el resumen de la planificación:
-            values = [p.contract_number,
-                      employees_tasks_rect.planned_initial_date, employees_tasks_rect.planned_end_date, employees_tasks_rect.employee.id,
-                      employees_tasks_des.planned_initial_date, employees_tasks_des.planned_end_date, employees_tasks_des.employee.id,
-                      employees_tasks_fab.planned_initial_date, employees_tasks_fab.planned_end_date, employees_tasks_fab.employee.id,
-                      instalation_planned_initial_date, instalation_planned_end_date, instalation_employees[0:-2]]
+            values = []
+            values.append(p.contract_number)
+            for et in [employees_tasks_rect, employees_tasks_des, employees_tasks_fab]:
+                # algunas tareas pueden haber sido completadas en una versión anterior, en ese caso llenamos con un mensaje apropiado
+                if et != None:
+                    values.append(et.planned_initial_date)
+                    values.append(et.planned_end_date)
+                    values.append(et.employee.id)
+                else:
+                    values.append('Tarea lista en versión anterior.')
+                    values.append('Tarea lista en versión anterior.')
+                    values.append('Tarea lista en versión anterior.')
+            
+            values.append(instalation_planned_initial_date)
+            values.append(instalation_planned_end_date)
+            values.append(instalation_employees[0:-2])
+            
             for c in range(1, len(columns)):
                 ws.cell(row=next_row, column=columns[c], value=values[c - 1])
             next_row = next_row + 1

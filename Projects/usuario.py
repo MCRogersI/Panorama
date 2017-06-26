@@ -397,7 +397,7 @@ def tasks_console(db, level):
                 opt2 = input("\n Marque una de las siguientes opciones: \n - 1: Ingresar fechas efectivas. \n - 2: Ingreso de fallos. \n - 3: Volver. \n Ingrese la alternativa elegida: ")
                 if (opt2 =='1'):
                     try:
-                        new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
+                        new_contract_number = input("\n Ingrese el número de contrato del proyecto asociado: ")
                         with db_session:
                             if db.Projects.get(contract_number = new_contract_number, finished = None) == None:
                                 raise ValueError('\n Proyecto inexistente.')
@@ -475,20 +475,20 @@ def tasks_console(db, level):
                             if id_skill_fail == '2':
                                 id_skill_fail = 4
                             else:
-                                raise ValueError('\n Error de ingreso. ')
-                        with db_session:
-                            task = db.Tasks.get( project = db.Projects.get(contract_number = contract_number_fail, finished = None), skill = db.Skills[id_skill_fail], failed = None)
-                            if task == None:
-                                raise ValueError('\n Tarea no encontrada.')
-                            if task.effective_initial_date == None :
-                                raise ValueError('\n Esta tarea aun no ha comenzado.')
-                        fail_cost = input("\n Ingrese el costo estimado de la falla: ")
+                                raise ValueError('\n Error de ingreso.')
+                        # with db_session:
+                            # task = db.Tasks.get( project = db.Projects.get(contract_number = contract_number_fail, finished = None), skill = db.Skills[id_skill_fail], failed = None)
+                            # if task == None:
+                                # raise ValueError('\n Tarea no encontrada.')
+                            # if task.effective_initial_date == None :
+                                # raise ValueError('\n Esta tarea aún no ha comenzado.')
+                        fail_cost = input(" Ingrese el costo estimado de la falla: ")
                         try:
                             fail_cost = int(fail_cost)
                         except:
-                            raise ValueError(' \n El costo debe ser un número entero.')
+                            raise ValueError('\n El costo debe ser un número entero.')
                         if fail_cost < 0 :
-                                raise ValueError(' \n El costo debe ser un número no negativo. ')
+                                raise ValueError('\n El costo debe ser un número no negativo.')
                         failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
                     except ValueError as ve:
                         print(ve)

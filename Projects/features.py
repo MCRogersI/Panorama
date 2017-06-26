@@ -39,7 +39,7 @@ def printProjects(db):
 
 def printCurrentProjects(db):
     with db_session:
-        print('\n')
+        print('')
         pr = select(p for p in db.Projects if p.finished == None)
         data = [p.to_dict() for p in pr]
         df = pandas.DataFrame(data, columns = ['contract_number','version','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
@@ -51,7 +51,7 @@ def printCurrentProjects(db):
         
 def printFinishedProjects(db):
     with db_session:
-        print('\n')
+        print('')
         pr = select(p for p in db.Projects if p.finished == True)
         data = [p.to_dict() for p in pr]
         df = pandas.DataFrame(data, columns = ['contract_number','version','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
@@ -125,68 +125,7 @@ def getNumberConcurrentProjects(db, contract_number, date):
             if(et.planned_initial_date == date):
                 quant += 1
     return quant
-
-def getCostRM(db, contract_number):#RM = Raw Materials
-    ''' Este método obtiene el costo de las materias primas según lo especificado en el Excel'''
-    with db_session:
-        p = db.Projects.get(contract_number = contract_number, finished = None)
-        total_sum = 0
-
-        for e in p.engagements:
-            total_sum += e.sku.price*e.quantity*(1+e.sku.waste_factor)
-    return total_sum
-def getCostInstallation(db, contract_number, internal = True):
-    ''' Cálculo de los costos de instalación según lo especificado en el excel '''
-    with db_session:
-        total_cost = 0
-        p = db.Projects.get(contract_number = contract_number, finished = None)
-        price_ml = db.Operating_Parameters['Costo por metro lineal de instalacion'].cost
-        task_aux = db.Tasks.get(skill = 4, project = p)
-        et_ins = select(et for et in db.Employees_Tasks if et.task == task_aux)
-        aux = 1
-        for et in et_ins:
-            et_aux = et
-            aux += 1
-            if aux >= 1:
-                break
-
-        if internal:
-            total_cost += p.linear_meters*price_ml
-        else:
-            total_cost += p.linear_meters*price_ml*1.5 #suponiendo que contratar un
-            # instalador externo cuesta 1.5 veces más
-        num_projects = getNumberConcurrentProjects(db, contract_number, et_aux.planned_initial_date)
-        total_cost += db.Freight_Costs[p.client_comuna].freight_cost/num_projects
-        total_cost += db.Operating_Parameters['Viatical per day'].cost*len(et_ins)
-        total_cost += db.Operating_Parameters['Costo por metro lineal de instalacion'].cost*p.linear_meters
-        total_cost = total_cost*db.Waste_Factors[5].factor
-        return total_cost
-def getCostFabrication(db, contract_number):
-    '''Cálculo de costos de fabricación según lo especificado en el excel'''
-    #hay que tener los metros lineales vendidos al mes, aqui los fijo según el excel
-    monthly_selled_ml = 240
-    monthly_income = 80000000 #venta promedio mensual, basada en el año
-    total_cost = 0
-    p = db.Projects.get(contract_number = contract_number, finished = None)
-    total_cost += db.Operating_Parameters['Remuneracion fija fabrica'].cost
-    total_cost += db.Operating_Parameters['Remuneracion variable fabrica'].cost
-    total_cost += db.Operating_Parameters['Porcentaje ventas para materiales'].cost*monthly_income
-    total_cost += db.Operating_Parameters['Arriendo fabrica'].cost
-    total_cost += db.Operating_Parameters['Costos operacion'].cost
-    total_cost = total_cost/monthly_selled_ml
-    total_cost = total_cost*p.linear_meters
-    return total_cost
-
-
-
-
-def getCostProject(db, contract_number):
-    ''' Obtención de los costos de un proyecto '''
-    with db_session:
-        rmc = getCostRM(db, contract_number)
-        ic = getCostInstallation(db, contract_number, internal = True)
-        fc = getCostFabrication(db, contract_number)
-        return rmc + ic + fc
+        
 def createTask(db, id_skill, contract_number, original_initial_date, original_end_date, effective_initial_date = None, effective_end_date = None):
     with db_session:
         t = db.Tasks(skill = id_skill, project = db.Projects.get(contract_number = contract_number, finished = None), original_initial_date = original_initial_date, original_end_date = original_end_date)
@@ -197,10 +136,10 @@ def editTask(db , id_skill, contract_number, original_initial_date = None, origi
     with db_session:
         try:
             t = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects.get(contract_number = contract_number, finished = None), failed = None)
-            if id_skill != None:
-                t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
-            if contract_number != None: 
-                t.project = contract_number #pendiente: revisar si funciona así o si tiene que ser como t.project = db.Projects.get(contract_number = contract_number, finished = None)
+            # if id_skill != None:
+                # t.skill = id_skill #pendiente: revisar si funciona así o si tiene que ser como t.skill = db.Skills[id_skill]
+            # if contract_number != None: 
+                # t.project = contract_number #pendiente: revisar si funciona así o si tiene que ser como t.project = db.Projects.get(contract_number = contract_number, finished = None)
             if original_initial_date != None:
                 t.original_initial_date = original_initial_date
             if original_end_date != None:
@@ -223,8 +162,8 @@ def editTask(db , id_skill, contract_number, original_initial_date = None, origi
                     # print(" La fecha entregada indica un atraso respecto a lo planificado, por tanto, el programa quizás deba realizar una re-planificación.")
                     # delay = (effective_end_date - et.planned_end_date).days
                     # createDelay(db, t.project.contract_number, t.skill.id, delay)
-            if fail_cost != None:
-                t.fail_cost = fail_cost
+            # if fail_cost != None:
+                # t.fail_cost = fail_cost
             commit()
         except ObjectNotFound as e:
             print('Object not found: {}'.format(e))
@@ -238,7 +177,7 @@ def deleteTask(db, id_task):
 
 def printTasks(db):
     with db_session:
-        print('\n')
+        print('')
         ts = db.Tasks.select()
         data = [t.to_dict() for t in ts]
         version =pandas.Series([t.project.version for t in ts], name = 'Versión')
@@ -254,31 +193,39 @@ def failedTask(db, contract_number, id_skill, fail_cost):
     # import Planning.features as PLf
     with db_session:
         
-        #primero, detectamos todos los Tasks asociados a ese Skill y contract_number
+        #primero, detectamos todos los Tasks asociados a ese Skill (o mayor) y contract_number
         tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project.contract_number == contract_number)
         
         #después, detectamos cuál es la última versión en la cuál ese Skill aparece como no fallado
         version = 1
         for t in tasks:
-            if t.skill.id == db.Skills[id_skill] and t.project.version > 1:
+            if t.skill.id == db.Skills[id_skill] and t.project.version > version:
                 version = t.project.version
+            
+        #después, asignamos los costos a la última versión del Skill que no aparece como fallada
+        tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project.contract_number == contract_number and t.project.version >= version)
+        for t in tasks:
+            if t.skill.id == db.Skills[id_skill].id:
+                task_responsible = t
+        # por si no está definido antes y sigue siendo None
+        if task_responsible.fail_cost == None:
+            task_responsible.fail_cost = fail_cost
+        else:
+            task_responsible.fail_cost = task_responsible.fail_cost + fail_cost
+        for t in tasks:
+            if t.fail_cost != None and t != task_responsible:
+                task_responsible.fail_cost = task_responsible.fail_cost + t.fail_cost
+                t.fail_cost = 0
         
         #después, marcamos que las Tasks, para ese Skill y los que lo siguen, falló en las versiones anteriores también
+        tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project.contract_number == contract_number)
         for t in tasks:
             t.failed = True
         
-        #después, eliminamos las tareas, de la última versión, que no se habían alcanzado a terminar
+        #por último, eliminamos las tareas, de la última versión, que no se habían alcanzado a terminar
         tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects.get(contract_number = contract_number, finished = None) and t.effective_end_date == None)
         for t in tasks:
             t.delete()
-            
-        #por último, asignamos los costos a la última versión del Skill que no aparece como fallada
-        tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project.contract_number == contract_number and t.project.version >= version)
-        task_responsible = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects.get(contract_number = contract_number, version = version))
-        task_responsible.fail_cost = task_responsible.fail_cost + fail_cost
-        for t in tasks:
-            task_responsible.fail_cost = task_responsible.fail_cost + t.fail_cost
-            t.fail_cost = 0
         
         #terminamos version anterior del proyecto
         last_version = db.Projects.get(contract_number = contract_number, finished = None)
