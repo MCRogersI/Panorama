@@ -1,7 +1,7 @@
 from datetime import date
 from pony.orm import *
 from Planning.features import changePriority, addDelayed, doPlanning, checkVeto, createEmployeesRestrictions
-from Planning.reports import createGlobalReportCompact, createGlobalReportModified
+from Planning.reports import createGlobalReportModified
 import pandas
 from IPython.display import display
 from tabulate import tabulate
