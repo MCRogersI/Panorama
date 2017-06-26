@@ -23,7 +23,7 @@ def createProject(db, contract_number = None, version = None, client_address = N
         p.priority = select(p for p in db.Projects if p.finished == None).count()
         
         commit()
-    # PLf.doPlanning(db)
+    PLf.doPlanning(db)
     
 def printProjects(db):
     with db_session:
