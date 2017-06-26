@@ -730,7 +730,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe el ID del emisor de la HC, en caso de haberlos
-            if p_hc != None and p_hc.id_issuer_order != None:
+            if p_hc != None and p_hc.id_issuer_order != None and p_hc.id_issuer_order !="":
                 cell = ws.cell(row=r, column=52, value=p_hc.id_issuer_order)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -742,7 +742,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe el ID del proveedor de cristales, en caso de haberlos
-            if p_hc != None and p_hc.id_crystal_provider != None:
+            if p_hc != None and p_hc.id_crystal_provider != None and p_hc.id_crystal_provider != "":
                 cell = ws.cell(row=r, column=53, value=p_hc.id_crystal_provider)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
