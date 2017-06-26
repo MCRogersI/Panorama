@@ -65,6 +65,7 @@ def createStockReport(db):
         rows.extend(vals)
 
         row_counter = 0
+        max_value = max(values)
         for row in rows:
             # ws_raw.append(row)
             cell1 = ws_raw.cell(row=1+row_counter,column=1 + counter*4)
@@ -99,7 +100,8 @@ def createStockReport(db):
         chart1.shape = 4
         chart1.width = 100
         chart1.y_axis.scaling.min = -200
-        chart1.y_axis.scaling.max = 500
+        chart1.y_axis.scaling.max = 500# 500 ES UN BUEN VALOR PARA EL DISPLAY FIJO
+        chart1.y_axis.scaling.max = max_value + 50 # VALOR MAXIMO EN EL GRÁFICO
         # set a pattern for the whole series
         fill = PatternFillProperties(prst="ltUpDiag")
         fill.foreground = ColorChoice(prstClr="blue")
