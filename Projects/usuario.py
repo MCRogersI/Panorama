@@ -477,7 +477,7 @@ def tasks_console(db, level):
                             else:
                                 raise ValueError('\n Error de ingreso. ')
                         with db_session:
-                            task = db.Tasks.get( project = db.Projects.get(contract_number = contract_number__fail, finished = None), skill = db.Skills[id_skill_fail], failed = None)
+                            task = db.Tasks.get( project = db.Projects.get(contract_number = contract_number_fail, finished = None), skill = db.Skills[id_skill_fail], failed = None)
                             if task == None:
                                 raise ValueError('\n Tarea no encontrada.')
                             if task.effective_initial_date == None :
