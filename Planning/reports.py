@@ -835,20 +835,43 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
-            # Escribe si el proyecto tiene reparos (fallos)
-            if p.version > 1:#hay_un_fallo
-                if p.version < num_of_versions:
+            # Escribe el estado inicia del proyecto
+            if num_of_versions > 1:#hay_un_fallo
+                if p.version == 1:
+                    cell = ws.cell(row=r, column=60, value="NUEVO")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif p.version < num_of_versions:
                     cell = ws.cell(row=r, column=60, value="CON REPAROS")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                 else: #última versión
-                    cell = ws.cell(row=r, column=60, value="OK CON REPAROS")
+                    cell = ws.cell(row=r, column=60, value="CON REPAROS")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=60, value="OK")
+                cell = ws.cell(row=r, column=60, value="NUEVO")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            # Escribe el estado final del proyecto
+            if num_of_versions > 1:  # hay_un_fallo
+                if p.version < num_of_versions:
+                    cell = ws.cell(row=r, column=61, value="CON REPAROS")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else:  # última versión
+                    cell = ws.cell(row=r, column=61, value="OK")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+            else:
+                cell = ws.cell(row=r, column=61, value="OK")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
