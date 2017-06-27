@@ -49,6 +49,18 @@ def editSku(db, id, name=None, price=None, critical_level=None, real_quantity=No
         commit()
 
 
+def registerSKUFlux(db, id, flux):
+    ''' Este método registra un flujo de bodega para el SKU (cambiando la cantidad efectivade este) '''
+    with db_session:
+        try:
+            s = db.Stock[id]
+            s.real_quantity = s.real_quantity + flux
+        except ObjectNotFound as e:
+            print('Object not found: {}'.format(e))
+        except ValueError as e:
+            print('Value error: {}'.format(e))
+        commit()
+
 def deleteSku(db, id):
     ''' Este método elimina una de las entradas de SKU de la tabla de Stock'''
     with db_session:
@@ -362,11 +374,11 @@ def displayStock(db, id_sku):
         p.join()
 
 def calculateStockForExcel(db, id_sku):
-    '''Este método calcula el comportamiento de un SKU hasta el último de los movimientos registrados HECHO PARA EXCEL'''
+    '''Este método calcula el comportamiento de un SKU desde el día de hoy hasta 120 días en el futuro HECHO PARA EXCEL'''
     with db_session:
         sku = db.Stock.get(id=id_sku)
         critical_level = sku.critical_level
-        values = calculateStockFix(db, id_sku,date(2017,10,1)) #Fecha final del display de los gráficos
+        values = calculateStockFix(db, id_sku,date.today()+timedelta(days=120)) #Fecha final del display de los gráficos
         # values = calculateStock(db, id_sku) #Función sin el fix
         quantities, dates = zip(*values)#<-- wooowowooo (que bonita función)
 
