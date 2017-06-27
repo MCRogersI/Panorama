@@ -104,13 +104,13 @@ Sf.createSku(db, 10, 'Lock Keeper, wall side', 6.52, 50,0)
 Sf.createSku(db, 11, 'Profile joint unit plastic bag',4.93, 50,0)
 
 
-Pf.createProject(db, 1,1, 'Cachagua 102', 'Calera', 'Pedro Sanchez',
+Pf.createProject(db, 1, 1, 'Cachagua 102', 'Calera', 'Pedro Sanchez',
                  '17.094.362-0', 150,20, 2017, 5, 10, crystal_leadtime = 15, sale_date = date(2017, 4, 18), sale_price=300)
-Pf.createProject(db, 2,1, 'Suecia 86', 'Arica', 'Franco Soto',
+Pf.createProject(db, 2, 1, 'Suecia 86', 'Arica', 'Franco Soto',
                  '16.2254.112-0', 200,40, 2017, 6, 30, crystal_leadtime = 15, sale_date = date(2017, 4, 18),sale_price=300)
-Pf.createProject(db, 3,1, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
+Pf.createProject(db, 3, 1, 'Barros Luco 997', 'Curepto', 'Miguel Acevedo',
                  '15.114.992-0', 450,70, 2017, 6, 3, crystal_leadtime = 15, sale_date = date(2017, 4, 18),sale_price=300)
-Pf.createProject(db, 4,1, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil',
+Pf.createProject(db, 4, 1, 'Miguel Angelo 987', 'San Jose', 'Miguel Devil',
                     '14.214.392-K',220, 35, 2017, 8, 30, crystal_leadtime = 15, sale_date = date(2017, 4, 18),sale_price=300)
 
 # Pf.failedTask(db,1,2,1000)

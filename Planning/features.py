@@ -530,7 +530,9 @@ def createCrystalSalesOrder(db, project):
     #recuperamos el leadtime de los cristales y la fecha en que termina el diseño
     with db_session:
         crystal_leadtime = project.crystal_leadtime
-        design = db.Tasks.get(skill = db.Skills[2], project = project, failed = None)
+        #detectamos la última version donde el dideño se hizo bien
+        tasks = select(t for t in db.Tasks if t.skill.id == 2 and t.project.contract_number == project.contract_number and t.failed == None)
+        design = tasks.first()
         design_end_date = design.original_end_date
         #creamos la orden de compra con la información que tenemos  
         db.Crystals_Sales_Order(project = project, original_issuing_date = sumDays(design_end_date, 1), original_arrival_date = sumDays(design_end_date, 1 + crystal_leadtime))
