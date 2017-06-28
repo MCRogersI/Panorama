@@ -109,7 +109,7 @@ def createGlobalReportModified(db):
             installation = None
 
             for project_task in project_tasks:
-                if project_tasks.skill == 1:
+                if project_task.skill == 1:
                     rectification = project_task
                 elif project_task.skill == 2:
                     design = project_task
@@ -1085,7 +1085,7 @@ def createPlanningReport(db, wb):
     # llenar con los datos de Delayed
     next_row = 4
     with db_session:
-        projects = select(p for p in db.Projects if p.finished = None).order_by(lambda p: p.contract_number)
+        projects = select(p for p in db.Projects if p.finished == None).order_by(lambda p: p.contract_number)
         for p in projects:
             # primero seleccionamos el Task asociado a este Project y a cada Skill, sabemos que es solo una con failed != True, así que tomamos first():
             task_rect = select(t for t in db.Tasks if t.project == p and t.skill == db.Skills[1] and (t.failed == None or t.failed == False)).first()
