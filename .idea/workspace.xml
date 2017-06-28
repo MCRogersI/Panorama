@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91b820c1-0a4a-4fa8-8539-505bd0720a10" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Planning/reports.py" afterPath="$PROJECT_DIR$/Planning/reports.py" />
     </list>
     <ignored path="Panorama.iws" />
@@ -37,11 +38,31 @@
       <file leaf-file-name="reports.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Planning/reports.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="111" column="31" selection-start-line="111" selection-start-column="31" selection-end-line="111" selection-end-column="31" />
+            <state relative-caret-position="338">
+              <caret line="1092" column="56" selection-start-line="1092" selection-start-column="56" selection-end-line="1092" selection-end-column="56" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Projects/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="174">
+              <caret line="11" column="34" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Employees/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="88">
+              <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -729,13 +750,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Employees/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Planning/features.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
@@ -775,20 +789,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
           <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Projects/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1002">
-          <caret line="11" column="34" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Employees/reports.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="43494">
-          <caret line="1989" column="0" selection-start-line="1989" selection-start-column="0" selection-end-line="1989" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -853,10 +853,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Employees/reports.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10593">
+          <caret line="1989" column="0" selection-start-line="1989" selection-start-column="0" selection-end-line="1989" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Projects/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="11" column="34" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Employees/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Planning/reports.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="111" column="31" selection-start-line="111" selection-start-column="31" selection-end-line="111" selection-end-column="31" />
+        <state relative-caret-position="338">
+          <caret line="1092" column="56" selection-start-line="1092" selection-start-column="56" selection-end-line="1092" selection-end-column="56" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
