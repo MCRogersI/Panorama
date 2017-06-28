@@ -103,10 +103,26 @@ def createGlobalReportModified(db):
             project_tasks = select(t for t in db.Tasks if t.project == p)
             project_tasks = list(project_tasks)
 
-            rectification = project_tasks[0]
-            design = project_tasks[1]
-            fabrication = project_tasks[2]
-            installation = project_tasks[3]
+            rectification = None
+            design = None
+            fabrication = None
+            installation = None
+
+            for project_task in project_tasks:
+                if project_tasks.skill == 1:
+                    rectification = project_task
+                elif project_task.skill == 2:
+                    design = project_task
+                elif project_task.skill == 3:
+                    fabrication = project_task
+                else:
+                    installation = project_task
+            # rectification = project_tasks[0]
+            # design = project_tasks[1]
+            # fabrication = project_tasks[2]
+            # installation = project_tasks[3]
+
+
 
             num_of_versions = 1
             project_contract_number = p.contract_number
@@ -249,7 +265,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de inicio de rectificación
-            if rectification.original_initial_date != None:
+            if rectification != None and rectification.original_initial_date != None:
                 cell = ws.cell(row=r, column=15, value=rectification.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -261,7 +277,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de término de rectificación
-            if rectification.original_end_date != None:
+            if rectification != None and rectification.original_end_date != None:
                 cell = ws.cell(row=r, column=16, value=rectification.original_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -273,7 +289,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva inicio de rectificación
-            if rectification.effective_initial_date != None:
+            if rectification != None and rectification.effective_initial_date != None:
                 cell = ws.cell(row=r, column=17, value=rectification.effective_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -285,7 +301,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de término de rectificación
-            if rectification.effective_end_date != None:
+            if rectification != None and rectification.effective_end_date != None:
                 cell = ws.cell(row=r, column=18, value=rectification.effective_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -297,7 +313,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de inicio de diseño
-            if design.original_initial_date != None:
+            if design != None and design.original_initial_date != None:
                 cell = ws.cell(row=r, column=19, value=design.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -309,7 +325,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de término de diseño
-            if design.original_end_date != None:
+            if design != None and design.original_end_date != None:
                 cell = ws.cell(row=r, column=20, value=design.original_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -321,7 +337,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de inicio de diseño
-            if design.effective_initial_date != None:
+            if design != None and design.effective_initial_date != None:
                 cell = ws.cell(row=r, column=21, value=design.effective_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -333,7 +349,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de término de diseño
-            if design.effective_end_date != None:
+            if design != None and design.effective_end_date != None:
                 cell = ws.cell(row=r, column=22, value=design.effective_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -345,7 +361,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de inicio de fabricación
-            if fabrication.original_initial_date != None:
+            if fabrication != None and fabrication.original_initial_date != None:
                 cell = ws.cell(row=r, column=23, value=fabrication.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -357,7 +373,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de término de fabricación
-            if fabrication.original_end_date != None:
+            if fabrication != None and fabrication.original_end_date != None:
                 cell = ws.cell(row=r, column=24, value=fabrication.original_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -369,7 +385,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de inicio de fabricación
-            if fabrication.effective_initial_date != None:
+            if fabrication != None and fabrication.effective_initial_date != None:
                 cell = ws.cell(row=r, column=25, value=fabrication.effective_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -381,7 +397,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de término de fabricación
-            if fabrication.effective_end_date != None:
+            if fabrication != None and fabrication.effective_end_date != None:
                 cell = ws.cell(row=r, column=26, value=fabrication.effective_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -393,7 +409,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de inicio de instalación
-            if installation.original_initial_date != None:
+            if installation!= None and installation.original_initial_date != None:
                 cell = ws.cell(row=r, column=27, value=installation.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -405,7 +421,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de término de instalación
-            if installation.original_end_date != None:
+            if installation!= None and installation.original_end_date != None:
                 cell = ws.cell(row=r, column=28, value=installation.original_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -417,7 +433,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de inicio de instalación
-            if installation.effective_initial_date != None:
+            if installation!= None and installation.effective_initial_date != None:
                 cell = ws.cell(row=r, column=29, value=installation.effective_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -429,7 +445,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de término de instalación
-            if installation.effective_end_date != None:
+            if installation!= None and installation.effective_end_date != None:
                 cell = ws.cell(row=r, column=30, value=installation.effective_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -441,7 +457,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe el atraso, en caso de haberlo
-            if p.deadline < installation.original_end_date :
+            if installation!= None and p.deadline < installation.original_end_date :
                 cell = ws.cell(row=r, column=31, value=("{} días".format((installation.original_end_date-p.deadline).days)))
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -781,7 +797,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe el atraso de la rectificación, en caso de haberlo
-            if rectification.original_end_date != None and rectification.effective_end_date != None and rectification.original_end_date < rectification.effective_end_date:
+            if rectification != None and rectification.original_end_date != None and rectification.effective_end_date != None and rectification.original_end_date < rectification.effective_end_date:
                 cell = ws.cell(row=r, column=56, value=(
                 "{} días".format((rectification.effective_end_date - rectification.original_end_date).days)))
                 cell.font = Font(bold=True)
@@ -794,7 +810,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe el atraso del diseño, en caso de haberlo
-            if design.original_end_date != None and design.effective_end_date != None and design.original_end_date < design.effective_end_date:
+            if design != None and design.original_end_date != None and design.effective_end_date != None and design.original_end_date < design.effective_end_date:
                 cell = ws.cell(row=r, column=57, value=(
                     "{} días".format((
                                          design.effective_end_date - design.original_end_date).days)))
@@ -808,7 +824,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe el atraso de la fabricación, en caso de haberlo
-            if fabrication.original_end_date != None and fabrication.effective_end_date != None and fabrication.original_end_date < fabrication.effective_end_date:
+            if fabrication!= None and fabrication.original_end_date != None and fabrication.effective_end_date != None and fabrication.original_end_date < fabrication.effective_end_date:
                 cell = ws.cell(row=r, column=58, value=(
                     "{} días".format((
                                          fabrication.effective_end_date - fabrication.original_end_date).days)))
@@ -822,7 +838,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
                 
             # Escribe el atraso de la fabricación, en caso de haberlo
-            if installation.original_end_date != None and installation.effective_end_date != None and installation.original_end_date < installation.effective_end_date:
+            if installation != None and installation.original_end_date != None and installation.effective_end_date != None and installation.original_end_date < installation.effective_end_date:
                 cell = ws.cell(row=r, column=59, value=(
                     "{} días".format((
                                          installation.effective_end_date - installation.original_end_date).days)))
