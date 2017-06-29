@@ -1,4 +1,4 @@
-from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases, editAllSkus
+from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases, editAllSkus, registerSKUFlux
 from Stock.reports import createStockReport
 import os
 from pony.orm import *
