@@ -64,25 +64,26 @@ def estimateCost(db, contract_number, file_name):
         except pony.orm.core.ObjectNotFound:
             print(warning)
     
-    # hacemos un query para el Projects_Costs que usaremos en adelante, si no existe, lo creamos
-    project_cost = db.Projects_Costs.get(project = db.Projects.get(contract_number = contract_number, finished = None))
+    # hacemos un query para el Projects_Costs y para el Project que usaremos en adelante, si no existe, lo creamos
+    project = db.Projects.get(contract_number = contract_number, finished = None)
+    project_cost = db.Projects_Costs.get(project = project)
     if project_cost == None:
-        project_cost = db.Projects_Costs(project = db.Projects.get(contract_number = contract_number, finished = None))
+        project_cost = db.Projects_Costs(project = project)
     
     parameters = viatic_cost, movilization_cost, num_installers, freight_cost, 1, file_name
-    return standardCostCalculation(db, project_cost, parameters)
+    return standardCostCalculation(db, project, project_cost, parameters)
     
 ###################################################################
 # Desde aqui los metodos auxiliares que calculan todos los costos #
 ###################################################################
 
-def standardCostCalculation(db, project_cost, parameters):
+def standardCostCalculation(db, project, project_cost, parameters):
     file_read = parameters[5] + ".xlsx"
 
     wb_read = load_workbook(file_read, data_only=True)
 
     #tercero, calculamos y escribimos los costos de instalacion
-    instalationCost.computation(db, wb_read, project_cost, parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
+    instalationCost.computation(db, wb_read, project, project_cost, parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
 
     #cuarto, calculamos y escribimos los costos de fabricacion
     fabricationCost.computation(db, wb_read, project_cost)
@@ -105,6 +106,8 @@ def standardCostCalculation(db, project_cost, parameters):
         installation_cost = project_cost.standard_cost_installation
         fabrication_cost = project_cost.standard_cost_fabrication
         project_cost.standard_cost_total = profiles_cost + fittings_cost + crystals_cost + additional_costs + installation_cost + fabrication_cost
+        
+        project.real_cost = int(project_cost.standard_cost_total)
         
         commit()
     #si el cálculo es exitoso

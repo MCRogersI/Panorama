@@ -31,7 +31,7 @@ def createProject(db, contract_number = None, version = None, client_address = N
     
 def printProjects(db):
     with db_session:
-        print('\n')
+        print('')
         pr = db.Projects.select()
         data = [p.to_dict() for p in pr]
         df = pandas.DataFrame(data, columns = ['contract_number','version','client_address','client_comuna','client_name','client_rut','linear_meters','square_meters','deadline','priority','real_linear_meters'\
@@ -199,13 +199,11 @@ def failedTask(db, contract_number, id_skill, fail_cost):
             if t.skill.id == db.Skills[id_skill].id:
                 task_responsible = t
         # por si no está definido antes y sigue siendo None
-        if task_responsible.fail_cost == None:
-            task_responsible.fail_cost = fail_cost
-        else:
-            task_responsible.fail_cost = task_responsible.fail_cost + fail_cost
+        task_responsible.fail_cost = noneInt(task_responsible.fail_cost)
+        task_responsible.fail_cost = task_responsible.fail_cost + fail_cost
         for t in tasks:
-            if t.fail_cost != None and t != task_responsible:
-                task_responsible.fail_cost = task_responsible.fail_cost + t.fail_cost
+            if t != task_responsible:
+                task_responsible.fail_cost = task_responsible.fail_cost + noneInt(t.fail_cost)
                 t.fail_cost = 0
         
         #después, marcamos que las Tasks, para ese Skill y los que lo siguen, falló en las versiones anteriores también

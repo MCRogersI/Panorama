@@ -2,7 +2,7 @@ from pony.orm import *
 from math import ceil
 from Planning.features import getAveragePerformance
 
-def computation(db, wb_read, project_cost, tarifa_viaticos, tarifa_movilizacion, numero_instaladores, costo_flete, tipo_instalador): #en este caso, 1 significa "interno", 0 significa "externo"
+def computation(db, wb_read, project, project_cost, tarifa_viaticos, tarifa_movilizacion, numero_instaladores, costo_flete, tipo_instalador): #en este caso, 1 significa "interno", 0 significa "externo"
     ws_read_measures = wb_read["Measures"]
     ws_read_manufacturing = wb_read["Manufacturing"]
     
@@ -26,6 +26,8 @@ def computation(db, wb_read, project_cost, tarifa_viaticos, tarifa_movilizacion,
     #parametros que deben obtenerse del archivo en cuestion, si el formato es suficientemente estandar
     comuna = ws_read_measures.cell(row = 7, column = 15).value
     metros_lineales = linearMeters(ws_read_manufacturing)
+    
+    project.real_linear_meters = metros_lineales
     
     #ahora terminamos de escribir en el archivo
     writeInfo(db, project_cost, metros_lineales, numero_instaladores, rendimiento_diario, factor_errores_instalacion, \
