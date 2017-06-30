@@ -103,10 +103,26 @@ def createGlobalReportModified(db):
             project_tasks = select(t for t in db.Tasks if t.project == p)
             project_tasks = list(project_tasks)
 
-            rectification = project_tasks[0]
-            design = project_tasks[1]
-            fabrication = project_tasks[2]
-            installation = project_tasks[3]
+            rectification = None
+            design = None
+            fabrication = None
+            installation = None
+
+            for project_task in project_tasks:
+                if project_task.skill.id == 1:
+                    rectification = project_task
+                if project_task.skill.id == 2:
+                    design = project_task
+                if project_task.skill.id == 3:
+                    fabrication = project_task
+                if project_task.skill.id == 4:
+                    installation = project_task
+
+            # print("proyecto {0}, version {1}".format(p.contract_number,p.version))
+            # print(rectification.skill.id)
+            # print(design.skill.id)
+            # print(fabrication.skill.id)
+            # print(installation.skill.id)
 
             num_of_versions = 1
             project_contract_number = p.contract_number
@@ -141,10 +157,16 @@ def createGlobalReportModified(db):
 
             # Escribe la prioridad del proyecto
             if p.priority != None:
-                cell = ws.cell(row=r, column=6, value=p.priority)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if p.priority >= 0:
+                    cell = ws.cell(row=r, column=6, value=p.priority)
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else:
+                    cell = ws.cell(row=r, column=6, value="---")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
             else:
                 cell = ws.cell(row=r, column=6, value="Dato no disponible")
                 cell.font = Font(bold=True)
@@ -249,208 +271,360 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de inicio de rectificación
-            if rectification.original_initial_date != None:
+            if rectification != None and rectification.original_initial_date != None:
                 cell = ws.cell(row=r, column=15, value=rectification.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=15, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if rectification != None:
+                    cell = ws.cell(row=r, column=15, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else:
+                    cell = ws.cell(row=r, column=15, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de término de rectificación
-            if rectification.original_end_date != None:
+            if rectification != None and rectification.original_end_date != None:
                 cell = ws.cell(row=r, column=16, value=rectification.original_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=16, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if rectification != None:
+                    cell = ws.cell(row=r, column=16, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else:
+                    cell = ws.cell(row=r, column=16, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva inicio de rectificación
-            if rectification.effective_initial_date != None:
+            if rectification != None and rectification.effective_initial_date != None:
                 cell = ws.cell(row=r, column=17, value=rectification.effective_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=17, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if rectification != None:
+                    cell = ws.cell(row=r, column=17, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else:
+                    cell = ws.cell(row=r, column=17, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de término de rectificación
-            if rectification.effective_end_date != None:
+            if rectification != None and rectification.effective_end_date != None:
                 cell = ws.cell(row=r, column=18, value=rectification.effective_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=18, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if rectification != None:
+                    cell = ws.cell(row=r, column=18, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else:
+                    cell = ws.cell(row=r, column=18, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de inicio de diseño
-            if design.original_initial_date != None:
+            if design != None and design.original_initial_date != None:
                 cell = ws.cell(row=r, column=19, value=design.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=19, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if design != None:
+                    cell = ws.cell(row=r, column=19, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification != None:
+                    cell = ws.cell(row=r, column=19, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif fabrication != None or installation != None:
+                    cell = ws.cell(row=r, column=19, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de término de diseño
-            if design.original_end_date != None:
+            if design != None and design.original_end_date != None:
                 cell = ws.cell(row=r, column=20, value=design.original_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=20, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if design != None:
+                    cell = ws.cell(row=r, column=20, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification != None:
+                    cell = ws.cell(row=r, column=20, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif fabrication != None or installation != None:
+                    cell = ws.cell(row=r, column=20, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de inicio de diseño
-            if design.effective_initial_date != None:
+            if design != None and design.effective_initial_date != None:
                 cell = ws.cell(row=r, column=21, value=design.effective_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=21, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if design != None:
+                    cell = ws.cell(row=r, column=21, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification != None:
+                    cell = ws.cell(row=r, column=21, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif fabrication != None or installation != None:
+                    cell = ws.cell(row=r, column=21, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de término de diseño
-            if design.effective_end_date != None:
+            if design != None and design.effective_end_date != None:
                 cell = ws.cell(row=r, column=22, value=design.effective_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=22, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if design != None:
+                    cell = ws.cell(row=r, column=22, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification != None:
+                    cell = ws.cell(row=r, column=22, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif fabrication != None or installation != None:
+                    cell = ws.cell(row=r, column=22, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de inicio de fabricación
-            if fabrication.original_initial_date != None:
+            if fabrication != None and fabrication.original_initial_date != None:
                 cell = ws.cell(row=r, column=23, value=fabrication.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=23, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if fabrication != None:
+                    cell = ws.cell(row=r, column=23, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification !=None or design != None:
+                    cell = ws.cell(row=r, column=23, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif installation != None:
+                    cell = ws.cell(row=r, column=23, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de término de fabricación
-            if fabrication.original_end_date != None:
+            if fabrication != None and fabrication.original_end_date != None:
                 cell = ws.cell(row=r, column=24, value=fabrication.original_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=24, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if fabrication != None:
+                    cell = ws.cell(row=r, column=24, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification !=None or design != None:
+                    cell = ws.cell(row=r, column=24, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif installation != None:
+                    cell = ws.cell(row=r, column=24, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de inicio de fabricación
-            if fabrication.effective_initial_date != None:
+            if fabrication != None and fabrication.effective_initial_date != None:
                 cell = ws.cell(row=r, column=25, value=fabrication.effective_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=25, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if fabrication != None:
+                    cell = ws.cell(row=r, column=25, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification !=None or design != None:
+                    cell = ws.cell(row=r, column=25, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif installation != None:
+                    cell = ws.cell(row=r, column=25, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha efectiva de término de fabricación
-            if fabrication.effective_end_date != None:
+            if fabrication != None and fabrication.effective_end_date != None:
                 cell = ws.cell(row=r, column=26, value=fabrication.effective_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=26, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if fabrication != None:
+                    cell = ws.cell(row=r, column=26, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification !=None or design != None:
+                    cell = ws.cell(row=r, column=26, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif installation != None:
+                    cell = ws.cell(row=r, column=26, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe la fecha de original de inicio de instalación
-            if installation.original_initial_date != None:
+            if installation!= None and installation.original_initial_date != None:
                 cell = ws.cell(row=r, column=27, value=installation.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=27, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if installation != None:
+                    cell = ws.cell(row=r, column=27, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification !=None or design != None or fabrication!=None:
+                    cell = ws.cell(row=r, column=27, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
 
             # Escribe la fecha de original de término de instalación
-            if installation.original_end_date != None:
+            if installation!= None and installation.original_end_date != None:
                 cell = ws.cell(row=r, column=28, value=installation.original_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=28, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if installation != None:
+                    cell = ws.cell(row=r, column=28, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification !=None or design != None or fabrication!=None:
+                    cell = ws.cell(row=r, column=28, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
 
             # Escribe la fecha efectiva de inicio de instalación
-            if installation.effective_initial_date != None:
+            if installation!= None and installation.effective_initial_date != None:
                 cell = ws.cell(row=r, column=29, value=installation.effective_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=29, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if installation != None:
+                    cell = ws.cell(row=r, column=29, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification !=None or design != None or fabrication!=None:
+                    cell = ws.cell(row=r, column=29, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
 
             # Escribe la fecha efectiva de término de instalación
-            if installation.effective_end_date != None:
+            if installation!= None and installation.effective_end_date != None:
                 cell = ws.cell(row=r, column=30, value=installation.effective_end_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=30, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if installation != None:
+                    cell = ws.cell(row=r, column=30, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification !=None or design != None or fabrication!=None:
+                    cell = ws.cell(row=r, column=30, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
 
             # Escribe el atraso, en caso de haberlo
-            if p.deadline < installation.original_end_date :
+            if installation!= None and p.deadline < installation.original_end_date :
                 cell = ws.cell(row=r, column=31, value=("{} días".format((installation.original_end_date-p.deadline).days)))
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=31, value="A tiempo")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if installation != None:
+                    cell = ws.cell(row=r, column=31, value="A tiempo")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification !=None or design != None or fabrication!=None:
+                    cell = ws.cell(row=r, column=31, value="Término en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
 
             #Obtenemos la fila de costos de la tabla de los costos del proyecto
             p_costs = db.Projects_Costs.get(project=p)
@@ -667,7 +841,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe los IDs de los instaladores, en caso de haberlos
-            if employees_tasks_inst != None:
+            if employees_tasks_inst != None and instalation_employees!="": #Esto podría realizarse de forma más eficiente
                 cell = ws.cell(row=r, column=47, value=instalation_employees[0:-2])
                 cell.font = Font(bold=True)
                 cell.border = thin_border
@@ -781,20 +955,26 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe el atraso de la rectificación, en caso de haberlo
-            if rectification.original_end_date != None and rectification.effective_end_date != None and rectification.original_end_date < rectification.effective_end_date:
+            if rectification != None and rectification.original_end_date != None and rectification.effective_end_date != None and rectification.original_end_date < rectification.effective_end_date:
                 cell = ws.cell(row=r, column=56, value=(
                 "{} días".format((rectification.effective_end_date - rectification.original_end_date).days)))
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=56, value="A tiempo")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if rectification != None:
+                    cell = ws.cell(row=r, column=56, value="A tiempo")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else:
+                    cell = ws.cell(row=r, column=56, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe el atraso del diseño, en caso de haberlo
-            if design.original_end_date != None and design.effective_end_date != None and design.original_end_date < design.effective_end_date:
+            if design != None and design.original_end_date != None and design.effective_end_date != None and design.original_end_date < design.effective_end_date:
                 cell = ws.cell(row=r, column=57, value=(
                     "{} días".format((
                                          design.effective_end_date - design.original_end_date).days)))
@@ -802,13 +982,24 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=57, value="A tiempo")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if design != None:
+                    cell = ws.cell(row=r, column=57, value="A tiempo")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification != None:
+                    cell = ws.cell(row=r, column=57, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif fabrication != None or installation != None:
+                    cell = ws.cell(row=r, column=57, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
 
             # Escribe el atraso de la fabricación, en caso de haberlo
-            if fabrication.original_end_date != None and fabrication.effective_end_date != None and fabrication.original_end_date < fabrication.effective_end_date:
+            if fabrication!= None and fabrication.original_end_date != None and fabrication.effective_end_date != None and fabrication.original_end_date < fabrication.effective_end_date:
                 cell = ws.cell(row=r, column=58, value=(
                     "{} días".format((
                                          fabrication.effective_end_date - fabrication.original_end_date).days)))
@@ -816,13 +1007,24 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=58, value="A tiempo")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if fabrication != None:
+                    cell = ws.cell(row=r, column=58, value="A tiempo")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification !=None or design != None:
+                    cell = ws.cell(row=r, column=58, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif installation != None:
+                    cell = ws.cell(row=r, column=58, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
                 
             # Escribe el atraso de la fabricación, en caso de haberlo
-            if installation.original_end_date != None and installation.effective_end_date != None and installation.original_end_date < installation.effective_end_date:
+            if installation != None and installation.original_end_date != None and installation.effective_end_date != None and installation.original_end_date < installation.effective_end_date:
                 cell = ws.cell(row=r, column=59, value=(
                     "{} días".format((
                                          installation.effective_end_date - installation.original_end_date).days)))
@@ -830,10 +1032,18 @@ def createGlobalReportModified(db):
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
             else:
-                cell = ws.cell(row=r, column=59, value="A tiempo")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
+                if installation != None:
+                    cell = ws.cell(row=r, column=59, value="A tiempo")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                elif rectification !=None or design != None or fabrication!=None:
+                    cell = ws.cell(row=r, column=59, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
 
             # Escribe el estado inicial del proyecto
             if num_of_versions > 1:#hay_un_fallo
@@ -877,13 +1087,18 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
 
             # Escribe en qué etapa se originó el fallo
-            id_tarea_origen_fallo = 0
+            id_tarea_origen_fallo = -1
             for tarea in project_tasks:
                 if tarea.fail_cost != None:
-                    id_tarea_origen_fallo = tarea.id
+                    id_tarea_origen_fallo = tarea.skill.id
+            nombres_tareas = {}
+            nombres_tareas[1] = "Rectificación"
+            nombres_tareas[2] = "Diseño"
+            nombres_tareas[3] = "Fabricación"
+            nombres_tareas[4] = "Instalación"
 
-            if False:#hay_un_fallo
-                cell = ws.cell(row=r, column=62, value=id_tarea_origen_fallo)
+            if id_tarea_origen_fallo >= 0:#hay_un_fallo
+                cell = ws.cell(row=r, column=62, value=nombres_tareas[id_tarea_origen_fallo])
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')

@@ -1,4 +1,4 @@
-from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases, editAllSkus
+from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases, editAllSkus, registerSKUFlux
 from Stock.reports import createStockReport
 import os
 from pony.orm import *
@@ -62,6 +62,7 @@ def stock_console(db, level):
         if (opt == '2'):
             opt2 = input('\n Marque una de las siguientes opciones:\n - 1: Edición manual de un SKU. \
                                                                    \n - 2: Cargar adiciones de un archivo. \
+                                                                   \n - 3: Ingresar flujo de SKU. \
                                                                    \n Ingrese la alternativa elegida: ')
             if(opt2 == '1'):
                 try:
@@ -129,6 +130,30 @@ def stock_console(db, level):
                         raise ValueError('\n Archivo no encontrado.')
                 except ValueError as ve:
                     print(ve)
+            if (opt2 == '3'):
+                try:
+                    id = input(' Ingrese el ID del SKU que desea registrar: ')
+                    try:
+                        id = int(id)
+                    except:
+                        raise ValueError(' El id debe ser un número entero. ')
+                    with db_session:
+                        sku = db.Stock.get(id = id)
+                        if sku == None:
+                            raise ValueError( ' SKU no encontrado. ')
+                    quantity = input( ' Ingrese la cantidad que entra al stock (si sale ingrese un número negativo): ')
+                    try:
+                        quantity = int(quantity)
+                    except:
+                        raise ValueError(' La cantidad de flujo debe ser un número entero. ')
+                    if sku.real_quantity + quantity < 0:
+                        raise ValueError(' El flujo saliente es mayor a la cantidad registrada actualmente. ingreso de flujo abortado. ' )
+                    registerSKUFlux(db, id, quantity)
+                    print(' Flujo registrado con éxito.')
+                    input(' Presione Enter para continuar.')
+                except ValueError as ve :
+                    print(ve)
+                    input(' Presione Enter para continuar. ')
         if (opt == '3'):
             try:
                 id = input("\n Ingrese el ID del producto que desea eliminar: ")
