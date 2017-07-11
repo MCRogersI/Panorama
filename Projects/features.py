@@ -208,7 +208,7 @@ def failedTask(db, contract_number, id_skill, fail_cost):
         for t in tasks:
             if t.skill.id == db.Skills[id_skill].id:
                 task_responsible = t
-        # por si no está definido antes y sigue siendo None
+        #por si no está definido antes y sigue siendo None
         task_responsible.fail_cost = noneInt(task_responsible.fail_cost)
         task_responsible.fail_cost = task_responsible.fail_cost + fail_cost
         for t in tasks:
@@ -225,14 +225,6 @@ def failedTask(db, contract_number, id_skill, fail_cost):
         tasks = select(t for t in db.Tasks if t.skill.id > id_skill and t.project == db.Projects.get(contract_number = contract_number, finished = None) and t.effective_end_date == None)
         for t in tasks:
             t.delete()
-            
-        #por último, asignamos los costos a la última versión del Skill que no aparece como fallada
-        tasks = select(t for t in db.Tasks if t.skill.id >= db.Skills[id_skill].id and t.project.contract_number == contract_number and t.project.version >= version)
-        task_responsible = db.Tasks.get(skill = db.Skills[id_skill], project = db.Projects.get(contract_number = contract_number, version = version))
-        task_responsible.fail_cost = noneInt(task_responsible.fail_cost) + fail_cost
-        for t in tasks:
-            task_responsible.fail_cost = noneInt(task_responsible.fail_cost) + t.fail_cost
-            t.fail_cost = 0
 
         #terminamos version anterior del proyecto
         last_version = db.Projects.get(contract_number = contract_number, finished = None)
