@@ -292,7 +292,7 @@ def projects_console(db, level):
                                 raise ValueError(' El número de contrato debe ser un número entero.')
                             p = db.Projects.get(contract_number = contract_number, finished = None)
                             if p == None:
-                                raise ValueError(' Proyecto no encontrado. ')
+                                raise ValueError(' Proyecto no encontrado.')
                         initial_year = input(" Ingrese el año en que comienza la actividad: ")
                         initial_month = input(" Ingrese el mes en que comienza la actividad: ")
                         initial_day = input(" Ingrese el día en que comienza la actividad: ")
@@ -320,7 +320,6 @@ def projects_console(db, level):
                         print('\n No existe esa indisponibilidad.')
                         input(' Presione Enter para continuar.')
                 elif opt_projects_activities == '3':
-                    print('\n')
                     printProjectsActivities(db)
             else:
                 print('\n Acceso denegado.')

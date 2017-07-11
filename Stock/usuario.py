@@ -1,7 +1,9 @@
 from Stock.features import createSku, editSku, deleteSku, printStockConsole , makePurchases, editAllSkus, registerSKUFlux
 from Stock.reports import createStockReport
+from Projects.features import createStockShortage, deleteStockShortage, printStockShortages
 import os
 from pony.orm import *
+from datetime import date
 
 
 #Entiéndase SKU como el producto en si mismo (aunque en realidad significa el código del producto)
@@ -13,7 +15,8 @@ def stock_console(db, level):
                                                               \n - 4: Ver el Inventario. \
                                                               \n - 5: Para agregar ordenes de compra. \
                                                               \n - 6: Generar reporte global de stock. \
-                                                              \n - 7: Para volver atrás.\
+                                                              \n - 7: Manejar fechas de quiebre de stock. \
+                                                              \n - 8: Para volver atrás.\
                                                               \n Ingrese la alternativa elegida: ")
         if (opt == '1'):
             try:
@@ -189,5 +192,47 @@ def stock_console(db, level):
         if opt =='6' and level ==1:
             createStockReport(db)
             input('\n Informe creado con éxito. Presione Enter para continuar.')
-        if (opt == '7'):
+        
+        if(opt == '7'):
+            if(level == 1):
+                opt_stock_shortages = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ingresar fechas de quiebre de stock. \
+                                                                                           \n - 2: Si desea eliminar fechas de quiebre de stock. \
+                                                                                           \n - 3: Si desea ver la lista actual de fechas de quiebre de stock. \
+                                                                                           \n Ingrese la alternativa elegida: ")
+
+                if opt_stock_shortages == '1':
+                    try:
+                        initial_year = input("\n Ingrese el año en que comienza el quiebre de stock: ")
+                        initial_month = input(" Ingrese el mes en que comienza el quiebre de stock: ")
+                        initial_day = input(" Ingrese el día en que comienza el quiebre de stock: ")
+                        try:
+                            date(int(initial_year),int(initial_month),int(initial_day))
+                        except:
+                            raise ValueError('\n Fecha de inicio inválida.')
+                        end_year = input(" Ingrese el año en que termina el quiebre de stock: ")
+                        end_month = input(" Ingrese el mes en que termina el quiebre de stock: ")
+                        end_day = input(" Ingrese el día en que termina el quiebre de stock: ")
+                        try:
+                            date(int(end_year),int(end_month),int(end_day))
+                        except:
+                            raise ValueError('\n Fecha de término inválida.')
+                        createStockShortage(db, 3, initial_year, initial_month, initial_day, end_year, end_month, end_day)
+                        input('\n Fechas de quiebre de stock ingresadas. Presione Enter para continuar.')
+                    except ValueError as ve:
+                        print(ve)
+                        input(' Precione Enter para continuar.')
+                elif opt_stock_shortages == '2':
+                    id_stock_shortage = input("\n Ingrese el ID del quiebre de stock que quiere eliminar: ")
+                    try:
+                        deleteStockShortage(db, id_stock_shortage)
+                    except:
+                        print('\n No existe ese quiebre de stock.')
+                        input(' Presione Enter para continuar.')
+                elif opt_stock_shortages == '3':
+                    printStockShortages(db)
+            else:
+                print('\n Acceso denegado.')
+                input(' Presione Enter para continuar.')
+        
+        if (opt == '8'):
             break

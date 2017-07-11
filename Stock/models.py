@@ -43,4 +43,12 @@ def define_models(db):
         factor = Required(float)
         def __repr__(self):
             return self.name
+    
+    #para especificar estado de "quiebre de stock" en los cuales no se puede realizar fabricación
+    class Stock_Shortages(db.Entity):
+        id = PrimaryKey(int, auto = True)
+        activity = Required('Activities')
+        initial_date = Optional(date)
+        end_date = Optional(date)
+        
 

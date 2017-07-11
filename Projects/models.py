@@ -41,6 +41,7 @@ def define_models(db):
         description = Required(str)
         projects = Set('Projects_Activities')
         employees = Set('Employees_Activities')
+        stock_shortages = Set('Stock_Shortages')
 
         def __repr__(self):
             return self.description
