@@ -98,8 +98,8 @@ def console(level, user):
 def signIn():
     while True:
         user = input(" Ingrese su usuario: ")
-        # password = input(" Ingrese su contrasena: ")
-        password = getpass.getpass(' Ingrese su contrasena: ')
+        password = input(" Ingrese su contrasena: ")
+        # password = getpass.getpass(' Ingrese su contrasena: ')
         if Uf.checkPassEntry(db, user, password):
             with db_session:
                 level=Uf.getUserLevel(db, user)
