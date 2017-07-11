@@ -302,7 +302,14 @@ def deleteEmployeeActivity(db, id_employee_activity):
         
 def printEmployeesActivities(db):
     with db_session:
-        db.Employees_Activities.select().show()
+        print('')
+        ea = db.Employees_Activities.select()
+        data = [e.to_dict() for e in ea]
+        df = pandas.DataFrame(data, columns = ['id','employee','activity','initial_date','end_date'])                    
+        df.columns = ['ID','Empleado','Actividad','Fecha de inicio','Fecha de finalización']
+        df.loc[df['Actividad'] == 1, 'Actividad'] = db.Activities[1].description
+        df.loc[df['Actividad'] == 2, 'Actividad'] = db.Activities[2].description
+        print( tabulate(df, headers='keys', tablefmt='psql'))
         
 def createProjectActivity(db, project, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
     import Planning.features as PLf
@@ -342,6 +349,7 @@ def printProjectsActivities(db):
         data = [p.to_dict() for p in pr]
         df = pandas.DataFrame(data, columns = ['id','project','activity','initial_date','end_date'])                    
         df.columns = ['ID','Numero de contrato','Actividad','Fecha de inicio','Fecha de finalización']
+        df.loc[df['Actividad'] == 3, 'Actividad'] = db.Activities[3].description
         print( tabulate(df, headers='keys', tablefmt='psql'))
         
         
@@ -383,8 +391,9 @@ def printStockShortages(db):
         print('')
         pr = db.Stock_Shortages.select()
         data = [p.to_dict() for p in pr]
-        df = pandas.DataFrame(data, columns = ['id','activity','initial_date','end_date'])                    
+        df = pandas.DataFrame(data, columns = ['id','activity','initial_date','end_date'])
         df.columns = ['ID','Actividad','Fecha de inicio','Fecha de finalización']
+        df.loc[df['Actividad'] == 4, 'Actividad'] = db.Activities[4].description
         print( tabulate(df, headers='keys', tablefmt='psql'))
         
         

@@ -216,7 +216,7 @@ def stock_console(db, level):
                             date(int(end_year),int(end_month),int(end_day))
                         except:
                             raise ValueError('\n Fecha de término inválida.')
-                        createStockShortage(db, 3, initial_year, initial_month, initial_day, end_year, end_month, end_day)
+                        createStockShortage(db, 4, initial_year, initial_month, initial_day, end_year, end_month, end_day)
                         input('\n Fechas de quiebre de stock ingresadas. Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
