@@ -268,12 +268,7 @@ def employees_console(db, level, user):
                         print('\n Actividad inexistente.')
                         input(' Presione Enter para continuar.')
                 elif opt_employees_activities == '3':
-                    print('')
-                    ea = db.Employees_Activities.select()
-                    data = [p.to_dict() for p in ea]
-                    df = pandas.DataFrame(data, columns = ['id','employee','activity','initial_date','end_date'])                    
-                    df.columns = ['ID','Empleado','Tipo Actividad', 'Fecha Inicio', 'Fecha Fin']
-                    print( tabulate(df, headers='keys', tablefmt='psql'))
+                    printEmployeesActivities(db)
                     input(' Presione Enter para continuar.')
             else:
                 print('\n Acceso denegado.')
