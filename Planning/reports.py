@@ -5,6 +5,7 @@ import numpy as np
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles.borders import Border, Side
 from openpyxl.styles import Font,Alignment
+from openpyxl.styles import PatternFill
 #para borrar archivo Excel
 import os
 #para crear nombres de archivo al azar
@@ -137,11 +138,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=4, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe el nombre del cliente
             if p.client_name != None:
@@ -149,11 +152,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=5, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la prioridad del proyecto
             if p.priority != None:
@@ -162,16 +167,19 @@ def createGlobalReportModified(db):
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 else:
                     cell = ws.cell(row=r, column=6, value="---")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=6, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe los metros lineales del proyecto
             if p.linear_meters != None:
@@ -179,12 +187,14 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             else:
                 cell = ws.cell(row=r, column=7, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha límite del proyecto
             if p.deadline != None:
@@ -192,11 +202,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=8, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la comuna del cliente
             if p.client_comuna != None:
@@ -204,11 +216,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=9, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la dirección del cliente
             if p.client_address != None:
@@ -216,11 +230,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=10, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe los metros lineales reales
             if p.real_linear_meters != None:
@@ -228,11 +244,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=11, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe el costo estimado del proyecto
             if p.estimated_cost != None:
@@ -240,11 +258,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=12, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe el precio de venta del proyecto
             if p.sale_price != None:
@@ -252,11 +272,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=13, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha de venta del proyecto
             if p.sale_date != None:
@@ -264,11 +286,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=14, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha de original de inicio de rectificación
             if rectification != None and rectification.original_initial_date != None:
@@ -276,17 +300,20 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if rectification != None:
                     cell = ws.cell(row=r, column=15, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 else:
                     cell = ws.cell(row=r, column=15, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha de original de término de rectificación
             if rectification != None and rectification.original_end_date != None:
@@ -294,17 +321,20 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if rectification != None:
                     cell = ws.cell(row=r, column=16, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 else:
                     cell = ws.cell(row=r, column=16, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha efectiva inicio de rectificación
             if rectification != None and rectification.effective_initial_date != None:
@@ -312,17 +342,20 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if rectification != None:
                     cell = ws.cell(row=r, column=17, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 else:
                     cell = ws.cell(row=r, column=17, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha efectiva de término de rectificación
             if rectification != None and rectification.effective_end_date != None:
@@ -330,17 +363,20 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if rectification != None:
                     cell = ws.cell(row=r, column=18, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 else:
                     cell = ws.cell(row=r, column=18, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha de original de inicio de diseño
             if design != None and design.original_initial_date != None:
@@ -348,22 +384,26 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if design != None:
                     cell = ws.cell(row=r, column=19, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification != None:
                     cell = ws.cell(row=r, column=19, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif fabrication != None or installation != None:
                     cell = ws.cell(row=r, column=19, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha de original de término de diseño
             if design != None and design.original_end_date != None:
@@ -371,22 +411,26 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if design != None:
                     cell = ws.cell(row=r, column=20, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification != None:
                     cell = ws.cell(row=r, column=20, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif fabrication != None or installation != None:
                     cell = ws.cell(row=r, column=20, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha efectiva de inicio de diseño
             if design != None and design.effective_initial_date != None:
@@ -394,22 +438,26 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if design != None:
                     cell = ws.cell(row=r, column=21, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification != None:
                     cell = ws.cell(row=r, column=21, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif fabrication != None or installation != None:
                     cell = ws.cell(row=r, column=21, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha efectiva de término de diseño
             if design != None and design.effective_end_date != None:
@@ -417,22 +465,26 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if design != None:
                     cell = ws.cell(row=r, column=22, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification != None:
                     cell = ws.cell(row=r, column=22, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif fabrication != None or installation != None:
                     cell = ws.cell(row=r, column=22, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha de original de inicio de fabricación
             if fabrication != None and fabrication.original_initial_date != None:
@@ -440,22 +492,26 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if fabrication != None:
                     cell = ws.cell(row=r, column=23, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification !=None or design != None:
                     cell = ws.cell(row=r, column=23, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif installation != None:
                     cell = ws.cell(row=r, column=23, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha de original de término de fabricación
             if fabrication != None and fabrication.original_end_date != None:
@@ -463,22 +519,26 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if fabrication != None:
                     cell = ws.cell(row=r, column=24, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification !=None or design != None:
                     cell = ws.cell(row=r, column=24, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif installation != None:
                     cell = ws.cell(row=r, column=24, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha efectiva de inicio de fabricación
             if fabrication != None and fabrication.effective_initial_date != None:
@@ -486,22 +546,26 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if fabrication != None:
                     cell = ws.cell(row=r, column=25, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification !=None or design != None:
                     cell = ws.cell(row=r, column=25, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif installation != None:
                     cell = ws.cell(row=r, column=25, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha efectiva de término de fabricación
             if fabrication != None and fabrication.effective_end_date != None:
@@ -509,22 +573,26 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if fabrication != None:
                     cell = ws.cell(row=r, column=26, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification !=None or design != None:
                     cell = ws.cell(row=r, column=26, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif installation != None:
                     cell = ws.cell(row=r, column=26, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe la fecha de original de inicio de instalación
             if installation!= None and installation.original_initial_date != None:
@@ -532,17 +600,20 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if installation != None:
                     cell = ws.cell(row=r, column=27, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification !=None or design != None or fabrication!=None:
                     cell = ws.cell(row=r, column=27, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 else: #Este caso no es posible dado que sería una versión sin ninguna tarea
                     pass
 
@@ -552,17 +623,20 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if installation != None:
                     cell = ws.cell(row=r, column=28, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification !=None or design != None or fabrication!=None:
                     cell = ws.cell(row=r, column=28, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 else: #Este caso no es posible dado que sería una versión sin ninguna tarea
                     pass
 
@@ -572,17 +646,20 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if installation != None:
                     cell = ws.cell(row=r, column=29, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification !=None or design != None or fabrication!=None:
                     cell = ws.cell(row=r, column=29, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 else: #Este caso no es posible dado que sería una versión sin ninguna tarea
                     pass
 
@@ -592,17 +669,20 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if installation != None:
                     cell = ws.cell(row=r, column=30, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification !=None or design != None or fabrication!=None:
                     cell = ws.cell(row=r, column=30, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 else: #Este caso no es posible dado que sería una versión sin ninguna tarea
                     pass
 
@@ -612,17 +692,20 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 if installation != None:
                     cell = ws.cell(row=r, column=31, value="A tiempo")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 elif rectification !=None or design != None or fabrication!=None:
                     cell = ws.cell(row=r, column=31, value="Término en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor="979797")
                 else: #Este caso no es posible dado que sería una versión sin ninguna tarea
                     pass
 
@@ -636,11 +719,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=32, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe el costo estandar de los herrajes, en caso de haberlo
             if p_costs!= None and p_costs.standard_cost_fittings != None:
@@ -648,11 +733,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=33, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe el costo estandar de los cristales, en caso de haberlo
             if p_costs!= None and p_costs.standard_cost_crystals != None:
@@ -660,11 +747,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=34, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe el costo estandar de las materias primas, en caso de haberlo
             if p_costs!= None and p_costs.standard_cost_material != None:
@@ -672,11 +761,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=35, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe el costo estandar de la fabricación, en caso de haberlo
             if p_costs!= None and p_costs.standard_cost_fabrication != None:
@@ -684,11 +775,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=36, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe el costo estandar de la instalación, en caso de haberlo
             if p_costs!= None and p_costs.standard_cost_installation != None:
@@ -696,11 +789,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=37, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe los constos estandar "adicionales", en caso de haberlos
             if p_costs!= None and p_costs.standard_cost_additionals != None:
@@ -708,11 +803,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=38, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe los costos estandar totales, en caso de haberlos
             if p_costs != None and p_costs.standard_cost_total != None:
@@ -720,11 +817,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=39, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe los costos efectivos de materias primas, en caso de haberlos
             if p_costs != None and p_costs.effective_cost_material != None:
@@ -732,11 +831,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=40, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe los costos efectivos de fabricación, en caso de haberlos
             if p_costs != None and p_costs.effective_cost_fabrication != None:
@@ -744,11 +845,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=41, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe los costos efectivos de instalación, en caso de haberlos
             if p_costs != None and p_costs.effective_cost_installation != None:
@@ -756,11 +859,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=42, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe los costos efectivos de complementos, en caso de haberlos
             if p_costs != None and p_costs.effective_cost_complements != None:
@@ -768,27 +873,22 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=43, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
 
             # Obtenemos información de los trabajadores para cada tarea
             # primero seleccionamos el Task asociado a este Project y a cada Skill, sabemos que es solo una con failed != True, así que tomamos first():
-            task_rect = select(t for t in db.Tasks if
-                               t.project == p and t.skill == db.Skills[1] and (
-                               t.failed == None or t.failed == False)).first()
-            task_des = select(t for t in db.Tasks if
-                              t.project == p and t.skill == db.Skills[2] and (
-                              t.failed == None or t.failed == False)).first()
-            task_fab = select(t for t in db.Tasks if
-                              t.project == p and t.skill == db.Skills[3] and (
-                              t.failed == None or t.failed == False)).first()
-            task_inst = select(t for t in db.Tasks if
-                               t.project == p and t.skill == db.Skills[4] and (
-                               t.failed == None or t.failed == False)).first()
+
+            task_rect = db.Tasks.get(project = p, skill = db.Skills[1])
+            task_des = db.Tasks.get(project = p, skill = db.Skills[2])
+            task_fab = db.Tasks.get(project = p, skill = db.Skills[3])
+            task_inst = db.Tasks.get(project = p, skill = db.Skills[4])
 
             # sabemos que para las Skills 1,2,3 solamente puede haber un empleado encargado, así que tomamos el primero. Para la Skill 4 es distinto:
             employees_tasks_rect = select(
@@ -810,11 +910,13 @@ def createGlobalReportModified(db):
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
             else:
                 cell = ws.cell(row=r, column=44, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor="979797")
 
             # Escribe el ID del diseñador, en caso de haberlos
             if employees_tasks_des != None:

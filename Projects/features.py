@@ -98,7 +98,7 @@ def deleteProject(db, contract_number):
     with db_session:
         new_priority = select(p for p in db.Projects if p.finished == None).count()
         changePriority(db, contract_number, new_priority)
-        select(p for p in db.Projects if contract_number == contract_number and finished == None).delete()
+        select(p for p in db.Projects if p.contract_number == contract_number and p.finished == None).delete()
         commit()
 
 def finishProject(db, contract_number):
@@ -114,7 +114,17 @@ def finishProject(db, contract_number):
         #eliminamos las Employees_Tasks asociadas al proyecto
         select(et for et in db.Employees_Tasks if et.task.project == db.Projects.get(contract_number = contract_number, finished = None) and et.task.effective_end_date == None).delete()
         commit()
-        
+
+def finishFailedProject(db, contract_number):
+    with db_session:
+        db.Projects.get(contract_number = contract_number, finished = None).priority = -1
+        #cambiamos el Project a finished = True
+        db.Projects.get(contract_number = contract_number, finished = None).finished = True
+        #eliminamos las Employees_Restrictions asociadas al proyecto
+        select(er for er in db.Employees_Restrictions if er.project.contract_number == contract_number).delete()
+        #eliminamos las Employees_Tasks asociadas al proyecto
+        select(et for et in db.Employees_Tasks if et.task.project == db.Projects.get(contract_number = contract_number, finished = None) and et.task.effective_end_date == None).delete()
+        commit()
 def getNumberConcurrentProjects(db, contract_number, date):
     ''' Método que entrega la cantidad de proyectos que son realizados en la misma comuna,
     en la misma fecha, para calcular los costos de transporte si es que hay más de uno en un lugar
@@ -227,7 +237,15 @@ def failedTask(db, contract_number, id_skill, fail_cost):
         #terminamos version anterior del proyecto
         last_version = db.Projects.get(contract_number = contract_number, finished = None)
         priority = last_version.priority
-        finishProject(db, contract_number)
+        last_version.priority = -1
+        # cambiamos el Project a finished = True
+        last_version.finished = True
+        # guardamos las Employees_Restrictions asociadas al proyecto
+        restrictions = select(er for er in db.Employees_Restrictions if
+               er.project == last_version)
+        # eliminamos las Employees_Tasks asociadas al proyecto
+        select(et for et in db.Employees_Tasks if
+               et.task.project == last_version and et.task.effective_end_date == None).delete()
         
         #creamos nueva version del proyecto
         new_version = db.Projects(contract_number = last_version.contract_number, version = last_version.version + 1, client_address = last_version.client_address,
@@ -235,7 +253,9 @@ def failedTask(db, contract_number, id_skill, fail_cost):
                         linear_meters = last_version.linear_meters, square_meters = last_version.square_meters, deadline = last_version.deadline, 
                         crystal_leadtime = last_version.crystal_leadtime, sale_date = last_version.sale_date, sale_price = last_version.sale_price)
         new_version.priority = priority
-        
+        for er in restrictions:
+            er.project = new_version
+
         commit()
         doPlanning(db)
 
@@ -311,7 +331,7 @@ def createProjectActivity(db, project, activity, initial_year, initial_month, in
     with db_session:
         db.Projects_Activities(project = project, activity = activity, initial_date = initial_date, end_date = end_date)
         commit()
-        p = db.Projects.get(contract_number = contract_number, finished = None)
+        p = db.Projects.get(contract_number = project.contract_number, finished = None)
     if activitiyProjectOverlap(db, p, initial_date, end_date):
         doPlanning(db)
 
@@ -325,7 +345,7 @@ def activitiyProjectOverlap(db, project, initial_date, end_date):
         for et in emp_tasks:
             if datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
                 # Se desfija el proyecto para que no haga planificaciones infactibles
-                tp.task.project.fixed_planning = False
+                et.task.project.fixed_planning = False
                 return True
         commit()
     return False
