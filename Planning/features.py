@@ -142,11 +142,18 @@ def fillCommitments(commitments, initial_date, end_date, planned_initial_date, p
 def employeesAvailable(db, ids_employees, initial_date, end_date, id_skill):
     with db_session:
         emp_acts = select(ea for ea in db.Employees_Activities if ea.employee.id in ids_employees)
+        stock_shortages = select(ss for ss in db.Stock_Shortages)
         
         # revisamos que la fecha no coincida con fechas de actividades como licencia o vacaciones
         for ea in emp_acts:
             if datesOverlap(initial_date, end_date, ea.initial_date, ea.end_date):
                 return False
+                
+        # revisamos que, en el caso de fabricadores, la fecha no coincida con fechas de quiebre de stock
+        if id_skill == 3:
+            for ss in stock_shortages:
+                if datesOverlap(initial_date, end_date, ss.initial_date, ss.end_date):
+                    return False
         
         # revisamos también si algún Tasks_Delays que tenga al empleado "congelado", funciona similar a un Employees_Activities
         emp_tasks = select(et for et in db.Employees_Tasks if et.employee.id in ids_employees)

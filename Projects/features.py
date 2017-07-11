@@ -337,14 +337,56 @@ def deleteProjectActivity(db, id_project_activity):
         
 def printProjectsActivities(db):
     with db_session:
-        db.Projects_Activities.select().show()
-        
-        print('\n')
+        print('')
         pr = db.Projects_Activities.select()
         data = [p.to_dict() for p in pr]
         df = pandas.DataFrame(data, columns = ['id','project','activity','initial_date','end_date'])                    
         df.columns = ['ID','Numero de contrato','Actividad','Fecha de inicio','Fecha de finalización']
         print( tabulate(df, headers='keys', tablefmt='psql'))
+        
+        
+        
+        
+#para especificar fechas de quiebre de stock
+def createStockShortage(db, activity, initial_year, initial_month, initial_day, end_year, end_month, end_day):
+    initial_date = date(int(initial_year), int(initial_month), int(initial_day))
+    end_date = date(int(end_year), int(end_month), int(end_day))
+    with db_session:
+        db.Stock_Shortages(activity = activity, initial_date = initial_date, end_date = end_date)
+        commit()
+    if stockShortageOverlap(db, initial_date, end_date):
+        doPlanning(db)
+        
+#para revisar si el quiebre de stock coincide con la planificación de fabricadores, en ese caso, se debe replanificar
+def stockShortageOverlap(db, initial_date, end_date):
+    '''
+    Este metodo revisa si un empleado tiene tareas asignadas durante las fechas impuestas y ,de ser cierto, deja móviles dichas actividades para una
+    futura replanificación. Es un método auxiliar, por lo que no es recomendable usarlo directamente.
+    '''
+    with db_session:
+        emp_tasks = select(et for et in db.Employees_Tasks if et.task.skill.id == 3)
+        for et in emp_tasks:
+            if datesOverlap(initial_date, end_date, et.planned_initial_date, et.planned_end_date):
+                return True
+        commit()
+    return False
+        
+#para eliminar fechas de quiebre de stock
+def deleteStockShortage(db, id_stock_shortage):
+    with db_session:
+        db.Stock_Shortages[id_stock_shortage].delete()
+        commit()
+
+#para mostrar las fechas de quiebre de stock ingresadas
+def printStockShortages(db):
+    with db_session:
+        print('')
+        pr = db.Stock_Shortages.select()
+        data = [p.to_dict() for p in pr]
+        df = pandas.DataFrame(data, columns = ['id','activity','initial_date','end_date'])                    
+        df.columns = ['ID','Actividad','Fecha de inicio','Fecha de finalización']
+        print( tabulate(df, headers='keys', tablefmt='psql'))
+        
         
 def getListProducts(db):
     with db_session:
