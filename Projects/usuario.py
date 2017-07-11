@@ -399,7 +399,7 @@ def tasks_console(db, level):
                                                                         \n Ingrese la alternativa elegida: ")
                 if (opt2 =='1'):
                     try:
-                        new_contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
+                        new_contract_number = input("\n Ingrese el número de contrato del proyecto asociado: ")
                         try:
                             new_contract_number = int(new_contract_number)
                         except:
@@ -497,7 +497,7 @@ def tasks_console(db, level):
                             if task != None:
                                 if task.effective_initial_date == None :
                                     raise ValueError('\n Esta tarea aun no ha comenzado.')
-                        fail_cost = input("\n Ingrese el costo estimado de la falla: ")
+                        fail_cost = input(" Ingrese el costo estimado de la falla: ")
                         try:
                             fail_cost = int(fail_cost)
                         except:
@@ -505,7 +505,7 @@ def tasks_console(db, level):
                         if fail_cost < 0 :
                                 raise ValueError('\n El costo debe ser un número no negativo.')
                         failedTask(db, contract_number_fail, id_skill_fail, fail_cost)
-                        input(' Fallo ingresado con éxito. Presione Enter para continuar.')
+                        input('\n Fallo ingresado con éxito. Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
                         input(' Presione Enter para continuar.')
