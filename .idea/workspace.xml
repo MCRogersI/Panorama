@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="91b820c1-0a4a-4fa8-8539-505bd0720a10" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Stock/features.py" afterPath="$PROJECT_DIR$/Stock/features.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Stock/reports.py" afterPath="$PROJECT_DIR$/Stock/reports.py" />
-    </list>
+    <list default="true" id="91b820c1-0a4a-4fa8-8539-505bd0720a10" name="Default" comment="" />
     <ignored path="Panorama.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -61,7 +58,7 @@
         <entry file="file://$PROJECT_DIR$/Projects/features.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="242">
-              <caret line="264" column="23" selection-start-line="264" selection-start-column="23" selection-end-line="264" selection-end-column="23" />
+              <caret line="256" column="23" selection-start-line="256" selection-start-column="23" selection-end-line="256" selection-end-column="23" />
               <folding>
                 <element signature="e#11404#11472#0" expanded="false" />
               </folding>
@@ -856,7 +853,7 @@
     <entry file="file://$PROJECT_DIR$/Projects/features.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
-          <caret line="264" column="23" selection-start-line="264" selection-start-column="23" selection-end-line="264" selection-end-column="23" />
+          <caret line="256" column="23" selection-start-line="256" selection-start-column="23" selection-end-line="256" selection-end-column="23" />
           <folding>
             <element signature="e#11404#11472#0" expanded="false" />
           </folding>
