@@ -22,7 +22,7 @@ def createStockReport(db):
                          bottom=Side(style='thin'))
     from Stock.features import displayStock, calculateStockForExcel
     with db_session:
-        skus = select(s for s in db.Stock)
+        skus = select(s for s in db.Stock).order_by(lambda s : s.id)
         skus_ids = [sku.id for sku in skus]
         skus_critical_levels = [sku.critical_level for sku in skus]
         skus_names = [sku.name for sku in skus]
