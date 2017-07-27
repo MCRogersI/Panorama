@@ -7,7 +7,6 @@ import Stock.features as Sf
 from Planning.features import sumDays, substractDays, doPlanning, changePriority, datesOverlap
 from Planning.reports import createReport
 import pandas
-from IPython.display import display
 from tabulate import tabulate
 
 def noneInt(x):
