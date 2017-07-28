@@ -80,16 +80,51 @@ def createGlobalReportModified(db):
              "COSTO ESTANDAR HERRAJES","COSTO ESTANDAR CRISTALES","COSTO ESTANDAR M PRIMAS","COSTO ESTANDAR FABRICACION",
              "COSTO ESTANDAR INTALACION","COSTO ESTANDAR ADICIONALES","COSTO ESTANDAR TOTAL","COSTO EFECTIVO M PRIMAS","COSTO EFECTIVO FABRICACION",
              "COSTO EFECTIVO INSTALACION","COSTO EFECTIVO COMPLEMENTOS","ID RECTIFICADOR","ID DISEÑADOR","ID FABRICADORES","IDs INSTALADORES",
-             "FECHA PLANIFICADA RECEPCION CRISTALES","FECHA EFECTIVA RECEPCION CRISTALES","FECHA PLANIFICADA LLEGADA CRISTALES",
+             "FECHA PLANIFICADA EMISION CRISTALES","FECHA EFECTIVA EMISION CRISTALES","FECHA PLANIFICADA LLEGADA CRISTALES",
              "FECHA EFECTIVA LLEGADA CRISTALES","ID EMISOR HC","ID PROVEEDOR CRISTALES","MAYOR PLAZO (ATRASO) EMISION HC",
              "MAYOR PLAZO (ATRASO) LLEGADA CRISTALES","MAYOR PLAZO (ATRASO) RECTIFICACION","MAYOR PLAZO (ATRASO) DISEÑO",
              "MAYOR PLAZO (ATRASO) FABRICACION","MAYOR PLAZO (ATRASO) INSTALACION","ESTADO INICIAL","ESTADO FINAL","ORIGEN FALLA"]
 
+    cellColorRect = "E5B8B7"
+    cellColorDis = "C6D9F0"
+    cellColorFab = "BFBFBF"
+    cellColorInst = "C4BD97"
+    cellColorOC = "FFC000"
     for i in range(4,len(num_columns)+1):
         cell = ws.cell(row=3, column=i, value=texts[i-1])
         cell.font = Font(bold=True,)
         cell.border = thin_border
         cell.alignment = Alignment(horizontal='center')
+        if(i>=15 and i<=18):
+            cell.fill = PatternFill("solid", fgColor=cellColorRect)
+        if (i >= 19 and i <= 23):
+            cell.fill = PatternFill("solid", fgColor=cellColorDis)
+        if (i >= 24 and i <= 28):
+            cell.fill = PatternFill("solid", fgColor=cellColorFab)
+        if (i >= 29 and i <= 33):
+            cell.fill = PatternFill("solid", fgColor=cellColorInst)
+        if (i == 44):
+            cell.fill = PatternFill("solid", fgColor=cellColorRect)
+        if (i == 45):
+            cell.fill = PatternFill("solid", fgColor=cellColorDis)
+        if (i == 46):
+            cell.fill = PatternFill("solid", fgColor=cellColorFab)
+        if (i == 47):
+            cell.fill = PatternFill("solid", fgColor=cellColorInst)
+        if (i >= 48 and i <= 51):
+            cell.fill = PatternFill("solid", fgColor=cellColorOC)
+        if (i == 53):
+            cell.fill = PatternFill("solid", fgColor=cellColorOC)
+        if (i == 55):
+            cell.fill = PatternFill("solid", fgColor=cellColorOC)
+        if (i == 56):
+            cell.fill = PatternFill("solid", fgColor=cellColorRect)
+        if (i == 57):
+            cell.fill = PatternFill("solid", fgColor=cellColorDis)
+        if (i == 58):
+            cell.fill = PatternFill("solid", fgColor=cellColorFab)
+        if (i == 59):
+            cell.fill = PatternFill("solid", fgColor=cellColorInst)
 
 
     # A continuación llenamos con los datos
@@ -132,7 +167,7 @@ def createGlobalReportModified(db):
             
             #Identificamos con color rojo las filas correspondientes a proyectos con reparos (con fallos).
             if p.version == num_of_versions:
-                rowColorvalue = "979797"
+                rowColorvalue = "E5DFEC"
             else:
                 rowColorvalue = "F00909"
                 
@@ -968,7 +1003,7 @@ def createGlobalReportModified(db):
             # Obtenemos la fila correspondiente de la tabla de la información de las hojas de corte
             p_hc = db.Crystals_Sales_Order.get(project=p)
 
-            # Escribe la fecha planificada de emisión de la hoja de corte, en caso de haberlos
+            # Escribe la fecha planificada de emisión de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
             if p_hc!= None and p_hc.original_issuing_date != None:
                 cell = ws.cell(row=r, column=48, value=p_hc.original_issuing_date)
                 cell.font = Font(bold=True)
@@ -982,7 +1017,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe la fecha efectiva de emisión de la hoja de corte, en caso de haberlos
+            # Escribe la fecha efectiva de emisión de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
             if p_hc!= None and p_hc.effective_issuing_date != None:
                 cell = ws.cell(row=r, column=49, value=p_hc.effective_issuing_date)
                 cell.font = Font(bold=True)
@@ -996,7 +1031,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe la fecha planificada de llegada de la hoja de corte, en caso de haberlos
+            # Escribe la fecha planificada de llegada de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
             if p_hc != None and p_hc.original_arrival_date != None:
                 cell = ws.cell(row=r, column=50, value=p_hc.original_arrival_date)
                 cell.font = Font(bold=True)
@@ -1010,7 +1045,7 @@ def createGlobalReportModified(db):
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe la fecha efectiva de llegada de la hoja de corte, en caso de haberlos
+            # Escribe la fecha efectiva de llegada de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
             if p_hc != None and p_hc.effective_arrival_date != None:
                 cell = ws.cell(row=r, column=51, value=p_hc.effective_arrival_date)
                 cell.font = Font(bold=True)
