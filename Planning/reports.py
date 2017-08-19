@@ -130,9 +130,23 @@ def createGlobalReportModified(db):
     # A continuación llenamos con los datos
 
     with db_session:
+        #El próximo bloque de código recupera los proyectos de la base de datos y los ordena por número de contrato y versión
         projects = select(p for p in db.Projects).order_by(lambda p: p.contract_number)
-        projects = list(projects)
+        aux_contract_numbers = []
+        for p in projects:
+            if p.contract_number not in aux_contract_numbers:
+                aux_contract_numbers.append(p.contract_number)
+        aux_projects_by_CN_group = []
+        for aux_CN in aux_contract_numbers:
+            aux_projects_by_CN_group.append(db.Projects.select(lambda p: p.contract_number == aux_CN).order_by(lambda p: p.version))
+        aux_ordered_projects_list = []
+        for CNgroup in aux_projects_by_CN_group:
+            aux_ordered_projects_list.extend(list(CNgroup))
+
+        projects = aux_ordered_projects_list
+
         r=4
+        #A continuación se encuentra el loop que llena cada fila de la tabla del reporte (cada fila corresponde a un proyecto)
         for p in projects:
 
 
