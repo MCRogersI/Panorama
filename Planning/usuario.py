@@ -16,7 +16,7 @@ def planning_console(db,level):
             doPlanning(db)
         if opt == '2':
             try:
-                contract_number = input(' Ingrese el numero de contrato del proyecto que desea cambiar: ')
+                contract_number = input('\n Ingrese el numero de contrato del proyecto que desea cambiar: ')
                 with db_session:
                     try:
                         db.Projects.get(contract_number = int(contract_number), finished = None).contract_number
