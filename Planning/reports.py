@@ -69,62 +69,46 @@ def createGlobalReportModified(db):
 
     # escribir los títulos de las columnas, en negrita
 
-    texts = ["","","","NUMERO DE CONTRATO", "NOMBRE CLIENTE", "PRIORIDAD", "METROS LINEALES",
-             "FECHA LÍMITE","COMUNA CLIENTE", "DIRECCIÓN CLIENTE", "METROS LINEALES REALES", "COSTO ESTIMADO",
-             "PRECIO DE VENTA", "FECHA DE VENTA","FECHA ORIGINAL INICIO RECTIFICACIÓN","FECHA ORIGINAL TÉRMINO RECTIFICACIÓN",
-             "FECHA EFECTIVA INICIO RECTIFICACIÓN","FECHA EFECTIVA TÉRMINO RECTIFICACIÓN","FECHA ORIGINAL INICIO DISEÑO"
-        ,"FECHA ORIGINAL TÉRMINO DISEÑO","FECHA EFECTIVA INICIO DISEÑO","FECHA EFECTIVA TÉRMINO DISEÑO",
+    texts = ["","","","NUMERO DE CONTRATO", "NOMBRE CLIENTE", "PRIORIDAD",
+             "FECHA LÍMITE","MAYOR PLAZO (ATRASO) TOTAL","ESTADO INICIAL","ESTADO FINAL","ORIGEN FALLA","COMUNA CLIENTE", "DIRECCIÓN CLIENTE","METROS LINEALES", "METROS LINEALES REALES", "COSTO ESTIMADO",
+             "PRECIO DE VENTA", "FECHA DE VENTA",
+             "FECHA ORIGINAL INICIO RECTIFICACIÓN","FECHA ORIGINAL TÉRMINO RECTIFICACIÓN",
+             "FECHA EFECTIVA INICIO RECTIFICACIÓN","FECHA EFECTIVA TÉRMINO RECTIFICACIÓN","ID RECTIFICADOR",
+             "MAYOR PLAZO (ATRASO) RECTIFICACION",
+             "FECHA ORIGINAL INICIO DISEÑO","FECHA ORIGINAL TÉRMINO DISEÑO","FECHA EFECTIVA INICIO DISEÑO",
+             "FECHA EFECTIVA TÉRMINO DISEÑO","ID DISEÑADOR","MAYOR PLAZO (ATRASO) DISEÑO",
              "FECHA ORIGINAL INICIO FABRICACIÓN","FECHA ORIGINAL TÉRMINO FABRICACIÓN","FECHA EFECTIVA INICIO FABRICACIÓN",
-             "FECHA EFECTIVA TÉRMINO FABRICACIÓN","FECHA ORIGINAL INICIO INSTALACIÓN","FECHA ORIGINAL TÉRMINO INSTALACIÓN",
-             "FECHA EFECTIVA INICIO INSTALACIÓN","FECHA EFECTIVA TÉRMINO INSTALACIÓN","MAYOR PLAZO (ATRASO) TOTAL","COSTO ESTANDAR PERFILES",
+             "FECHA EFECTIVA TÉRMINO FABRICACIÓN","ID FABRICADOR","MAYOR PLAZO (ATRASO) FABRICACION",
+             "FECHA ORIGINAL INICIO INSTALACIÓN","FECHA ORIGINAL TÉRMINO INSTALACIÓN",
+             "FECHA EFECTIVA INICIO INSTALACIÓN","FECHA EFECTIVA TÉRMINO INSTALACIÓN","IDs INSTALADORES","MAYOR PLAZO (ATRASO) INSTALACION",
+             "COSTO ESTANDAR PERFILES",
              "COSTO ESTANDAR HERRAJES","COSTO ESTANDAR CRISTALES","COSTO ESTANDAR M PRIMAS","COSTO ESTANDAR FABRICACION",
              "COSTO ESTANDAR INTALACION","COSTO ESTANDAR ADICIONALES","COSTO ESTANDAR TOTAL","COSTO EFECTIVO M PRIMAS","COSTO EFECTIVO FABRICACION",
-             "COSTO EFECTIVO INSTALACION","COSTO EFECTIVO COMPLEMENTOS","ID RECTIFICADOR","ID DISEÑADOR","ID FABRICADORES","IDs INSTALADORES",
+             "COSTO EFECTIVO INSTALACION","COSTO EFECTIVO COMPLEMENTOS",
              "FECHA PLANIFICADA EMISION CRISTALES","FECHA EFECTIVA EMISION CRISTALES","FECHA PLANIFICADA LLEGADA CRISTALES",
              "FECHA EFECTIVA LLEGADA CRISTALES","ID EMISOR HC","ID PROVEEDOR CRISTALES","MAYOR PLAZO (ATRASO) EMISION HC",
-             "MAYOR PLAZO (ATRASO) LLEGADA CRISTALES","MAYOR PLAZO (ATRASO) RECTIFICACION","MAYOR PLAZO (ATRASO) DISEÑO",
-             "MAYOR PLAZO (ATRASO) FABRICACION","MAYOR PLAZO (ATRASO) INSTALACION","ESTADO INICIAL","ESTADO FINAL","ORIGEN FALLA"]
+             "MAYOR PLAZO (ATRASO) LLEGADA CRISTALES"]
 
-    cellColorRect = "E5B8B7"
-    cellColorDis = "C6D9F0"
-    cellColorFab = "BFBFBF"
-    cellColorInst = "C4BD97"
-    cellColorOC = "FFC000"
+    cellColorRect = "FFA200"
+    cellColorDis = "2873FF"
+    cellColorFab = "FFFF00"
+    cellColorInst = "03FD24"
+    cellColorOC = "E208F1"
     for i in range(4,len(num_columns)+1):
         cell = ws.cell(row=3, column=i, value=texts[i-1])
         cell.font = Font(bold=True,)
         cell.border = thin_border
         cell.alignment = Alignment(horizontal='center')
-        if(i>=15 and i<=18):
+        if(i>=19 and i<=24):
             cell.fill = PatternFill("solid", fgColor=cellColorRect)
-        if (i >= 19 and i <= 23):
+        if (i >= 25 and i <= 30):
             cell.fill = PatternFill("solid", fgColor=cellColorDis)
-        if (i >= 24 and i <= 28):
+        if (i >= 31 and i <= 36):
             cell.fill = PatternFill("solid", fgColor=cellColorFab)
-        if (i >= 29 and i <= 33):
+        if (i >= 37 and i <= 42):
             cell.fill = PatternFill("solid", fgColor=cellColorInst)
-        if (i == 44):
-            cell.fill = PatternFill("solid", fgColor=cellColorRect)
-        if (i == 45):
-            cell.fill = PatternFill("solid", fgColor=cellColorDis)
-        if (i == 46):
-            cell.fill = PatternFill("solid", fgColor=cellColorFab)
-        if (i == 47):
-            cell.fill = PatternFill("solid", fgColor=cellColorInst)
-        if (i >= 48 and i <= 51):
+        if (i >= 55 and i <= 62):
             cell.fill = PatternFill("solid", fgColor=cellColorOC)
-        if (i == 53):
-            cell.fill = PatternFill("solid", fgColor=cellColorOC)
-        if (i == 55):
-            cell.fill = PatternFill("solid", fgColor=cellColorOC)
-        if (i == 56):
-            cell.fill = PatternFill("solid", fgColor=cellColorRect)
-        if (i == 57):
-            cell.fill = PatternFill("solid", fgColor=cellColorDis)
-        if (i == 58):
-            cell.fill = PatternFill("solid", fgColor=cellColorFab)
-        if (i == 59):
-            cell.fill = PatternFill("solid", fgColor=cellColorInst)
 
 
     # A continuación llenamos con los datos
@@ -184,757 +168,23 @@ def createGlobalReportModified(db):
                 rowColorvalue = "E5DFEC"
             else:
                 rowColorvalue = "F00909"
-                
-                
-            # Escribe el número de contrato
-            if p.contract_number != None:
-                cell = ws.cell(row=r, column=4, value=p.contract_number)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=4, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe el nombre del cliente
-            if p.client_name != None:
-                cell = ws.cell(row=r, column=5, value=p.client_name)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=5, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la prioridad del proyecto
-            if p.priority != None:
-                if p.priority >= 0:
-                    cell = ws.cell(row=r, column=6, value=p.priority)
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else:
-                    cell = ws.cell(row=r, column=6, value="---")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=6, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe los metros lineales del proyecto
-            if p.linear_meters != None:
-                cell = ws.cell(row=r, column=7, value=p.linear_meters)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            else:
-                cell = ws.cell(row=r, column=7, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha límite del proyecto
-            if p.deadline != None:
-                cell = ws.cell(row=r, column=8, value=p.deadline)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=8, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la comuna del cliente
-            if p.client_comuna != None:
-                cell = ws.cell(row=r, column=9, value=p.client_comuna)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=9, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la dirección del cliente
-            if p.client_address != None:
-                cell = ws.cell(row=r, column=10, value=p.client_address)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=10, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe los metros lineales reales
-            if p.real_linear_meters != None:
-                cell = ws.cell(row=r, column=11, value=p.real_linear_meters)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=11, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe el costo estimado del proyecto
-            if p.estimated_cost != None:
-                cell = ws.cell(row=r, column=12, value=p.estimated_cost)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=12, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe el precio de venta del proyecto
-            if p.sale_price != None:
-                cell = ws.cell(row=r, column=13, value=p.sale_price)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=13, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha de venta del proyecto
-            if p.sale_date != None:
-                cell = ws.cell(row=r, column=14, value=p.sale_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=14, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha de original de inicio de rectificación
-            if rectification != None and rectification.original_initial_date != None:
-                cell = ws.cell(row=r, column=15, value=rectification.original_initial_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if rectification != None:
-                    cell = ws.cell(row=r, column=15, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else:
-                    cell = ws.cell(row=r, column=15, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha de original de término de rectificación
-            if rectification != None and rectification.original_end_date != None:
-                cell = ws.cell(row=r, column=16, value=rectification.original_end_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if rectification != None:
-                    cell = ws.cell(row=r, column=16, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else:
-                    cell = ws.cell(row=r, column=16, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha efectiva inicio de rectificación
-            if rectification != None and rectification.effective_initial_date != None:
-                cell = ws.cell(row=r, column=17, value=rectification.effective_initial_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if rectification != None:
-                    cell = ws.cell(row=r, column=17, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else:
-                    cell = ws.cell(row=r, column=17, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha efectiva de término de rectificación
-            if rectification != None and rectification.effective_end_date != None:
-                cell = ws.cell(row=r, column=18, value=rectification.effective_end_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if rectification != None:
-                    cell = ws.cell(row=r, column=18, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else:
-                    cell = ws.cell(row=r, column=18, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha de original de inicio de diseño
-            if design != None and design.original_initial_date != None:
-                cell = ws.cell(row=r, column=19, value=design.original_initial_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if design != None:
-                    cell = ws.cell(row=r, column=19, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification != None:
-                    cell = ws.cell(row=r, column=19, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif fabrication != None or installation != None:
-                    cell = ws.cell(row=r, column=19, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha de original de término de diseño
-            if design != None and design.original_end_date != None:
-                cell = ws.cell(row=r, column=20, value=design.original_end_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if design != None:
-                    cell = ws.cell(row=r, column=20, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification != None:
-                    cell = ws.cell(row=r, column=20, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif fabrication != None or installation != None:
-                    cell = ws.cell(row=r, column=20, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha efectiva de inicio de diseño
-            if design != None and design.effective_initial_date != None:
-                cell = ws.cell(row=r, column=21, value=design.effective_initial_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if design != None:
-                    cell = ws.cell(row=r, column=21, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification != None:
-                    cell = ws.cell(row=r, column=21, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif fabrication != None or installation != None:
-                    cell = ws.cell(row=r, column=21, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha efectiva de término de diseño
-            if design != None and design.effective_end_date != None:
-                cell = ws.cell(row=r, column=22, value=design.effective_end_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if design != None:
-                    cell = ws.cell(row=r, column=22, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification != None:
-                    cell = ws.cell(row=r, column=22, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif fabrication != None or installation != None:
-                    cell = ws.cell(row=r, column=22, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha de original de inicio de fabricación
-            if fabrication != None and fabrication.original_initial_date != None:
-                cell = ws.cell(row=r, column=23, value=fabrication.original_initial_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if fabrication != None:
-                    cell = ws.cell(row=r, column=23, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification !=None or design != None:
-                    cell = ws.cell(row=r, column=23, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif installation != None:
-                    cell = ws.cell(row=r, column=23, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha de original de término de fabricación
-            if fabrication != None and fabrication.original_end_date != None:
-                cell = ws.cell(row=r, column=24, value=fabrication.original_end_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if fabrication != None:
-                    cell = ws.cell(row=r, column=24, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification !=None or design != None:
-                    cell = ws.cell(row=r, column=24, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif installation != None:
-                    cell = ws.cell(row=r, column=24, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha efectiva de inicio de fabricación
-            if fabrication != None and fabrication.effective_initial_date != None:
-                cell = ws.cell(row=r, column=25, value=fabrication.effective_initial_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if fabrication != None:
-                    cell = ws.cell(row=r, column=25, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification !=None or design != None:
-                    cell = ws.cell(row=r, column=25, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif installation != None:
-                    cell = ws.cell(row=r, column=25, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha efectiva de término de fabricación
-            if fabrication != None and fabrication.effective_end_date != None:
-                cell = ws.cell(row=r, column=26, value=fabrication.effective_end_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if fabrication != None:
-                    cell = ws.cell(row=r, column=26, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification !=None or design != None:
-                    cell = ws.cell(row=r, column=26, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif installation != None:
-                    cell = ws.cell(row=r, column=26, value="Realizada en versión anterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe la fecha de original de inicio de instalación
-            if installation!= None and installation.original_initial_date != None:
-                cell = ws.cell(row=r, column=27, value=installation.original_initial_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if installation != None:
-                    cell = ws.cell(row=r, column=27, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification !=None or design != None or fabrication!=None:
-                    cell = ws.cell(row=r, column=27, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
-                    pass
-
-            # Escribe la fecha de original de término de instalación
-            if installation!= None and installation.original_end_date != None:
-                cell = ws.cell(row=r, column=28, value=installation.original_end_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if installation != None:
-                    cell = ws.cell(row=r, column=28, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification !=None or design != None or fabrication!=None:
-                    cell = ws.cell(row=r, column=28, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
-                    pass
-
-            # Escribe la fecha efectiva de inicio de instalación
-            if installation!= None and installation.effective_initial_date != None:
-                cell = ws.cell(row=r, column=29, value=installation.effective_initial_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if installation != None:
-                    cell = ws.cell(row=r, column=29, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification !=None or design != None or fabrication!=None:
-                    cell = ws.cell(row=r, column=29, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
-                    pass
-
-            # Escribe la fecha efectiva de término de instalación
-            if installation!= None and installation.effective_end_date != None:
-                cell = ws.cell(row=r, column=30, value=installation.effective_end_date)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if installation != None:
-                    cell = ws.cell(row=r, column=30, value="Dato no disponible")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification !=None or design != None or fabrication!=None:
-                    cell = ws.cell(row=r, column=30, value="Realizada en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
-                    pass
-
-            # Escribe el atraso, en caso de haberlo
-            if installation!= None and p.deadline < installation.original_end_date :
-                cell = ws.cell(row=r, column=31, value=("{} días".format((installation.original_end_date-p.deadline).days)))
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                if installation != None:
-                    cell = ws.cell(row=r, column=31, value="A tiempo")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification !=None or design != None or fabrication!=None:
-                    cell = ws.cell(row=r, column=31, value="Término en versión posterior")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
-                    pass
-
-            #Obtenemos la fila de costos de la tabla de los costos del proyecto
+            # Obtenemos la fila de costos de la tabla de los costos del proyecto
             p_costs = db.Projects_Costs.get(project=p)
 
-            # Escribe el costo estandar de los perfiles, en caso de haberlo
-            # Sería más ordenado separar lo siguiente en un gran if en lugar de usar "and"
-            if p_costs!= None and p_costs.standard_cost_profiles != None:
-                cell = ws.cell(row=r, column=32, value=p.p_costs.standard_cost_profiles)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=32, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            # Obtenemos la fila correspondiente de la tabla de la información de las hojas de corte
+            p_hc = db.Crystals_Sales_Order.get(project=p)
 
-            # Escribe el costo estandar de los herrajes, en caso de haberlo
-            if p_costs!= None and p_costs.standard_cost_fittings != None:
-                cell = ws.cell(row=r, column=33, value=p.p_costs.standard_cost_fittings)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=33, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe el costo estandar de los cristales, en caso de haberlo
-            if p_costs!= None and p_costs.standard_cost_crystals != None:
-                cell = ws.cell(row=r, column=34, value=p.p_costs.standard_cost_crystals)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=34, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe el costo estandar de las materias primas, en caso de haberlo
-            if p_costs!= None and p_costs.standard_cost_material != None:
-                cell = ws.cell(row=r, column=35, value=p.p_costs.standard_cost_material)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=35, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe el costo estandar de la fabricación, en caso de haberlo
-            if p_costs!= None and p_costs.standard_cost_fabrication != None:
-                cell = ws.cell(row=r, column=36, value=p.p_costs.standard_cost_fabrication)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=36, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe el costo estandar de la instalación, en caso de haberlo
-            if p_costs!= None and p_costs.standard_cost_installation != None:
-                cell = ws.cell(row=r, column=37, value=p.p_costs.standard_cost_installation)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=37, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe los constos estandar "adicionales", en caso de haberlos
-            if p_costs!= None and p_costs.standard_cost_additionals != None:
-                cell = ws.cell(row=r, column=38, value=p.p_costs.standard_cost_additionals)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=38, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe los costos estandar totales, en caso de haberlos
-            if p_costs != None and p_costs.standard_cost_total != None:
-                cell = ws.cell(row=r, column=39, value=p.p_costs.standard_cost_total)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=39, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe los costos efectivos de materias primas, en caso de haberlos
-            if p_costs != None and p_costs.effective_cost_material != None:
-                cell = ws.cell(row=r, column=40, value=p.p_costs.effective_cost_material)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=40, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe los costos efectivos de fabricación, en caso de haberlos
-            if p_costs != None and p_costs.effective_cost_fabrication != None:
-                cell = ws.cell(row=r, column=41, value=p.p_costs.effective_cost_fabrication)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=41, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe los costos efectivos de instalación, en caso de haberlos
-            if p_costs != None and p_costs.effective_cost_installation != None:
-                cell = ws.cell(row=r, column=42, value=p.p_costs.effective_cost_installation)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=42, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
-            # Escribe los costos efectivos de complementos, en caso de haberlos
-            if p_costs != None and p_costs.effective_cost_complements != None:
-                cell = ws.cell(row=r, column=43, value=p.p_costs.effective_cost_complements)
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=43, value="Dato no disponible")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-
+            # Escribe en qué etapa se originó el fallo
+            id_tarea_origen_fallo = -1
+            for tarea in project_tasks:
+                if tarea.fail_cost != None:
+                    id_tarea_origen_fallo = tarea.skill.id
+            nombres_tareas = {}
+            nombres_tareas[1] = "Rectificación"
+            nombres_tareas[2] = "Diseño"
+            nombres_tareas[3] = "Fabricación"
+            nombres_tareas[4] = "Instalación"
 
             # Obtenemos información de los trabajadores para cada tarea
             # primero seleccionamos el Task asociado a este Project y a cada Skill, sabemos que es solo una con failed != True, así que tomamos first():
@@ -958,205 +208,552 @@ def createGlobalReportModified(db):
             for et in employees_tasks_inst:
                 instalation_employees = instalation_employees + str(et.employee) + " ;"
 
-            # Escribe el ID del rectificador, en caso de haberlos
-            if employees_tasks_rect != None:
-                cell = ws.cell(row=r, column=44, value=employees_tasks_rect.employee.id)
+            #Definimos una variable col_pos para ir desplazando con mayor facilidad las posiciones de los datos en las columnas
+            col_pos = 4
+
+            # Escribe el número de contrato
+            if p.contract_number != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.contract_number)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=44, value="Dato no disponible")
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            col_pos+=1
 
-            # Escribe el ID del diseñador, en caso de haberlos
-            if employees_tasks_des != None:
-                cell = ws.cell(row=r, column=45, value=employees_tasks_des.employee.id)
+            # Escribe el nombre del cliente
+            if p.client_name != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.client_name)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=45, value="Dato no disponible")
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            col_pos+=1
 
-            # Escribe el ID del fabricador, en caso de haberlos
-            if employees_tasks_fab != None:
-                cell = ws.cell(row=r, column=46, value=employees_tasks_fab.employee.id)
+            # Escribe la prioridad del proyecto
+            if p.priority != None:
+                if p.priority >= 0:
+                    cell = ws.cell(row=r, column=col_pos, value=p.priority)
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:
+                    cell = ws.cell(row=r, column=col_pos, value="---")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            col_pos+=1
+
+
+
+            # Escribe la fecha límite del proyecto
+            if p.deadline != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.deadline)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=46, value="Dato no disponible")
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            col_pos+=1
 
-            # Escribe los IDs de los instaladores, en caso de haberlos
-            if employees_tasks_inst != None and instalation_employees!="": #Esto podría realizarse de forma más eficiente
-                cell = ws.cell(row=r, column=47, value=instalation_employees[0:-2])
+            # Escribe el atraso, en caso de haberlo
+            if installation != None and p.deadline < installation.original_end_date:
+                cell = ws.cell(row=r, column=col_pos, value=(
+                "{} días".format((installation.original_end_date - p.deadline).days)))
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=47, value="Dato no disponible")
+                if installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="A tiempo")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None or design != None or fabrication != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Término en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:  # Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
+
+            col_pos += 1
+
+            # Escribe el estado inicial del proyecto
+            if num_of_versions > 1:  # hay_un_fallo
+                if p.version == 1:
+                    cell = ws.cell(row=r, column=col_pos, value="NUEVO")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif p.version < num_of_versions:
+                    cell = ws.cell(row=r, column=col_pos, value="CON REPAROS")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:  # última versión
+                    cell = ws.cell(row=r, column=col_pos, value="CON REPAROS")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="NUEVO")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Obtenemos la fila correspondiente de la tabla de la información de las hojas de corte
-            p_hc = db.Crystals_Sales_Order.get(project=p)
+            col_pos += 1
 
-            # Escribe la fecha planificada de emisión de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
-            if p_hc!= None and p_hc.original_issuing_date != None:
-                cell = ws.cell(row=r, column=48, value=p_hc.original_issuing_date)
+            # Escribe el estado final del proyecto
+            if num_of_versions > 1:  # hay_un_fallo
+                if p.version < num_of_versions:
+                    cell = ws.cell(row=r, column=col_pos, value="CON REPAROS")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:  # última versión
+                    cell = ws.cell(row=r, column=col_pos, value="OK")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="OK")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos += 1
+
+            # Escribe el origen de la falla
+            if id_tarea_origen_fallo >= 0:  # hay_un_fallo
+                cell = ws.cell(row=r, column=col_pos, value=nombres_tareas[id_tarea_origen_fallo])
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=48, value="Dato no disponible")
+                cell = ws.cell(row=r, column=col_pos, value="No aplica")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe la fecha efectiva de emisión de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
-            if p_hc!= None and p_hc.effective_issuing_date != None:
-                cell = ws.cell(row=r, column=49, value=p_hc.effective_issuing_date)
+            col_pos+=1
+
+            # Escribe la comuna del cliente
+            if p.client_comuna != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.client_comuna)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=49, value="Dato no disponible")
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            col_pos+=1
 
-            # Escribe la fecha planificada de llegada de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
-            if p_hc != None and p_hc.original_arrival_date != None:
-                cell = ws.cell(row=r, column=50, value=p_hc.original_arrival_date)
+
+            # Escribe la dirección del cliente
+            if p.client_address != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.client_address)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=50, value="Dato no disponible")
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe la fecha efectiva de llegada de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
-            if p_hc != None and p_hc.effective_arrival_date != None:
-                cell = ws.cell(row=r, column=51, value=p_hc.effective_arrival_date)
+            col_pos+=1
+
+            # Escribe los metros lineales del proyecto
+            if p.linear_meters != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.linear_meters)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            col_pos += 1
+
+            # Escribe los metros lineales reales
+            if p.real_linear_meters != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.real_linear_meters)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=51, value="Dato no disponible")
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe el ID del emisor de la HC, en caso de haberlos
-            if p_hc != None and p_hc.id_issuer_order != None and p_hc.id_issuer_order !="":
-                cell = ws.cell(row=r, column=52, value=p_hc.id_issuer_order)
+            col_pos+=1
+
+            # Escribe el costo estimado del proyecto
+            if p.estimated_cost != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.estimated_cost)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=52, value="Dato no disponible")
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe el ID del proveedor de cristales, en caso de haberlos
-            if p_hc != None and p_hc.id_crystal_provider != None and p_hc.id_crystal_provider != "":
-                cell = ws.cell(row=r, column=53, value=p_hc.id_crystal_provider)
+            col_pos+=1
+
+            # Escribe el precio de venta del proyecto
+            if p.sale_price != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.sale_price)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=53, value="Dato no disponible")
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe el atraso en la emisión de la HC, en caso de haberlo
-            if p_hc != None and p_hc.original_issuing_date!=None and p_hc.effective_issuing_date != None and p_hc.original_issuing_date < p_hc.effective_issuing_date:
-                cell = ws.cell(row=r, column=54, value=(
-                "{} días".format((p_hc.effective_issuing_date - p_hc.original_issuing_date).days)))
+            col_pos+=1
+
+            # Escribe la fecha de venta del proyecto
+            if p.sale_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.sale_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=54, value="A tiempo")
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe el atraso en la recepción de los cristales, en caso de haberlo
-            if p_hc != None and p_hc.original_arrival_date!=None and p_hc.effective_arrival_date!= None and p_hc.original_arrival_date < p_hc.effective_arrival_date:
-                cell = ws.cell(row=r, column=55, value=(
-                    "{} días".format(
-                        (p_hc.effective_arrival_date - p_hc.original_arrival_date).days)))
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=55, value="A tiempo")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            col_pos+=1
 
-            # Escribe el atraso de la rectificación, en caso de haberlo
-            if rectification != None and rectification.original_end_date != None and rectification.effective_end_date != None and rectification.original_end_date < rectification.effective_end_date:
-                cell = ws.cell(row=r, column=56, value=(
-                "{} días".format((rectification.effective_end_date - rectification.original_end_date).days)))
+            # Escribe la fecha de original de inicio de rectificación
+            if rectification != None and rectification.original_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=rectification.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
                 if rectification != None:
-                    cell = ws.cell(row=r, column=56, value="A tiempo")
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                     cell.fill = PatternFill("solid", fgColor=rowColorvalue)
                 else:
-                    cell = ws.cell(row=r, column=56, value="Realizada en versión anterior")
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                     cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
+            col_pos+=1
+
+            # Escribe la fecha de original de término de rectificación
+            if rectification != None and rectification.original_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=rectification.original_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe la fecha efectiva inicio de rectificación
+            if rectification != None and rectification.effective_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=rectification.effective_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe la fecha efectiva de término de rectificación
+            if rectification != None and rectification.effective_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=rectification.effective_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe el ID del rectificador, en caso de haberlos
+            if employees_tasks_rect != None:
+                cell = ws.cell(row=r, column=col_pos, value=employees_tasks_rect.employee.id)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe el atraso de la rectificación, en caso de haberlo
+            if rectification != None and rectification.original_end_date != None and rectification.effective_end_date != None and rectification.original_end_date < rectification.effective_end_date:
+                cell = ws.cell(row=r, column=col_pos, value=(
+                    "{} días".format((
+                                     rectification.effective_end_date - rectification.original_end_date).days)))
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="A tiempo")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe la fecha de original de inicio de diseño
+            if design != None and design.original_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=design.original_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif fabrication != None or installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe la fecha de original de término de diseño
+            if design != None and design.original_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=design.original_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif fabrication != None or installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe la fecha efectiva de inicio de diseño
+            if design != None and design.effective_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=design.effective_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif fabrication != None or installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe la fecha efectiva de término de diseño
+            if design != None and design.effective_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=design.effective_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif fabrication != None or installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe el ID del diseñador, en caso de haberlos
+            if employees_tasks_des != None:
+                cell = ws.cell(row=r, column=col_pos, value=employees_tasks_des.employee.id)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos += 1
+
             # Escribe el atraso del diseño, en caso de haberlo
             if design != None and design.original_end_date != None and design.effective_end_date != None and design.original_end_date < design.effective_end_date:
-                cell = ws.cell(row=r, column=57, value=(
+                cell = ws.cell(row=r, column=col_pos, value=(
                     "{} días".format((
                                          design.effective_end_date - design.original_end_date).days)))
                 cell.font = Font(bold=True)
@@ -1165,56 +762,307 @@ def createGlobalReportModified(db):
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
                 if design != None:
-                    cell = ws.cell(row=r, column=57, value="A tiempo")
+                    cell = ws.cell(row=r, column=col_pos, value="A tiempo")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                     cell.fill = PatternFill("solid", fgColor=rowColorvalue)
                 elif rectification != None:
-                    cell = ws.cell(row=r, column=57, value="Realizada en versión posterior")
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                     cell.fill = PatternFill("solid", fgColor=rowColorvalue)
                 elif fabrication != None or installation != None:
-                    cell = ws.cell(row=r, column=57, value="Realizada en versión anterior")
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                     cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe el atraso de la fabricación, en caso de haberlo
-            if fabrication!= None and fabrication.original_end_date != None and fabrication.effective_end_date != None and fabrication.original_end_date < fabrication.effective_end_date:
-                cell = ws.cell(row=r, column=58, value=(
-                    "{} días".format((
-                                         fabrication.effective_end_date - fabrication.original_end_date).days)))
+            col_pos += 1
+
+            # Escribe la fecha de original de inicio de fabricación
+            if fabrication != None and fabrication.original_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=fabrication.original_initial_date)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
                 if fabrication != None:
-                    cell = ws.cell(row=r, column=58, value="A tiempo")
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                     cell.fill = PatternFill("solid", fgColor=rowColorvalue)
                 elif rectification !=None or design != None:
-                    cell = ws.cell(row=r, column=58, value="Realizada en versión posterior")
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                     cell.fill = PatternFill("solid", fgColor=rowColorvalue)
                 elif installation != None:
-                    cell = ws.cell(row=r, column=58, value="Realizada en versión anterior")
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                     cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                
+
+            col_pos+=1
+
+            # Escribe la fecha de original de término de fabricación
+            if fabrication != None and fabrication.original_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=fabrication.original_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if fabrication != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification !=None or design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe la fecha efectiva de inicio de fabricación
+            if fabrication != None and fabrication.effective_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=fabrication.effective_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if fabrication != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification !=None or design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe la fecha efectiva de término de fabricación
+            if fabrication != None and fabrication.effective_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=fabrication.effective_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if fabrication != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification !=None or design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe el ID del fabricador, en caso de haberlo
+            if employees_tasks_fab != None:
+                cell = ws.cell(row=r, column=col_pos, value=employees_tasks_fab.employee.id)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos += 1
+
             # Escribe el atraso de la fabricación, en caso de haberlo
+            if fabrication != None and fabrication.original_end_date != None and fabrication.effective_end_date != None and fabrication.original_end_date < fabrication.effective_end_date:
+                cell = ws.cell(row=r, column=col_pos, value=("{} días".format(
+                    (fabrication.effective_end_date - fabrication.original_end_date).days)))
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if fabrication != None:
+                    cell = ws.cell(row=r, column=col_pos, value="A tiempo")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None or design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos += 1
+
+            # Escribe la fecha de original de inicio de instalación
+            if installation!= None and installation.original_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=installation.original_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification !=None or design != None or fabrication!=None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
+
+            col_pos+=1
+
+            # Escribe la fecha de original de término de instalación
+            if installation!= None and installation.original_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=installation.original_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification !=None or design != None or fabrication!=None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
+
+            col_pos+=1
+
+            # Escribe la fecha efectiva de inicio de instalación
+            if installation!= None and installation.effective_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=installation.effective_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification !=None or design != None or fabrication!=None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
+
+            col_pos+=1
+
+            # Escribe la fecha efectiva de término de instalación
+            if installation!= None and installation.effective_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=installation.effective_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification !=None or design != None or fabrication!=None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
+
+            col_pos+=1
+
+            # Escribe los IDs de los instaladores, en caso de haberlos
+            if employees_tasks_inst != None and instalation_employees != "":  # Esto podría realizarse de forma más eficiente
+                cell = ws.cell(row=r, column=col_pos, value=instalation_employees[0:-2])
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos += 1
+
+            # Escribe el atraso de la instalación, en caso de haberlo
             if installation != None and installation.original_end_date != None and installation.effective_end_date != None and installation.original_end_date < installation.effective_end_date:
-                cell = ws.cell(row=r, column=59, value=(
+                cell = ws.cell(row=r, column=col_pos, value=(
                     "{} días".format((
                                          installation.effective_end_date - installation.original_end_date).days)))
                 cell.font = Font(bold=True)
@@ -1223,91 +1071,357 @@ def createGlobalReportModified(db):
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
                 if installation != None:
-                    cell = ws.cell(row=r, column=59, value="A tiempo")
+                    cell = ws.cell(row=r, column=col_pos, value="A tiempo")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                     cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif rectification !=None or design != None or fabrication!=None:
-                    cell = ws.cell(row=r, column=59, value="Realizada en versión posterior")
+                elif rectification != None or design != None or fabrication != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
                     cell.font = Font(bold=True)
                     cell.border = thin_border
                     cell.alignment = Alignment(horizontal='center')
                     cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else: #Este caso no es posible dado que sería una versión sin ninguna tarea
+                else:  # Este caso no es posible dado que sería una versión sin ninguna tarea
                     pass
 
-            # Escribe el estado inicial del proyecto
-            if num_of_versions > 1:#hay_un_fallo
-                if p.version == 1:
-                    cell = ws.cell(row=r, column=60, value="NUEVO")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                elif p.version < num_of_versions:
-                    cell = ws.cell(row=r, column=60, value="CON REPAROS")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else: #última versión
-                    cell = ws.cell(row=r, column=60, value="CON REPAROS")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=60, value="NUEVO")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            col_pos += 1
 
-            # Escribe el estado final del proyecto
-            if num_of_versions > 1:  # hay_un_fallo
-                if p.version < num_of_versions:
-                    cell = ws.cell(row=r, column=61, value="CON REPAROS")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-                else:  # última versión
-                    cell = ws.cell(row=r, column=61, value="OK")
-                    cell.font = Font(bold=True)
-                    cell.border = thin_border
-                    cell.alignment = Alignment(horizontal='center')
-                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
-            else:
-                cell = ws.cell(row=r, column=61, value="OK")
-                cell.font = Font(bold=True)
-                cell.border = thin_border
-                cell.alignment = Alignment(horizontal='center')
-                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
-            # Escribe en qué etapa se originó el fallo
-            id_tarea_origen_fallo = -1
-            for tarea in project_tasks:
-                if tarea.fail_cost != None:
-                    id_tarea_origen_fallo = tarea.skill.id
-            nombres_tareas = {}
-            nombres_tareas[1] = "Rectificación"
-            nombres_tareas[2] = "Diseño"
-            nombres_tareas[3] = "Fabricación"
-            nombres_tareas[4] = "Instalación"
 
-            if id_tarea_origen_fallo >= 0:#hay_un_fallo
-                cell = ws.cell(row=r, column=62, value=nombres_tareas[id_tarea_origen_fallo])
+
+            # Escribe el costo estandar de los perfiles, en caso de haberlo
+            # Sería más ordenado separar lo siguiente en un gran if en lugar de usar "and"
+            if p_costs!= None and p_costs.standard_cost_profiles != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.standard_cost_profiles)
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
             else:
-                cell = ws.cell(row=r, column=62, value="No aplica")
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
                 cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe el costo estandar de los herrajes, en caso de haberlo
+            if p_costs!= None and p_costs.standard_cost_fittings != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.standard_cost_fittings)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe el costo estandar de los cristales, en caso de haberlo
+            if p_costs!= None and p_costs.standard_cost_crystals != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.standard_cost_crystals)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe el costo estandar de las materias primas, en caso de haberlo
+            if p_costs!= None and p_costs.standard_cost_material != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.standard_cost_material)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+
+            col_pos+=1
+
+            # Escribe el costo estandar de la fabricación, en caso de haberlo
+            if p_costs!= None and p_costs.standard_cost_fabrication != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.standard_cost_fabrication)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+
+            col_pos+=1
+
+            # Escribe el costo estandar de la instalación, en caso de haberlo
+            if p_costs!= None and p_costs.standard_cost_installation != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.standard_cost_installation)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+
+            # Escribe los constos estandar "adicionales", en caso de haberlos
+            if p_costs!= None and p_costs.standard_cost_additionals != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.standard_cost_additionals)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe los costos estandar totales, en caso de haberlos
+            if p_costs != None and p_costs.standard_cost_total != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.standard_cost_total)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe los costos efectivos de materias primas, en caso de haberlos
+            if p_costs != None and p_costs.effective_cost_material != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.effective_cost_material)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+
+            col_pos+=1
+
+            # Escribe los costos efectivos de fabricación, en caso de haberlos
+            if p_costs != None and p_costs.effective_cost_fabrication != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.effective_cost_fabrication)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+
+            col_pos+=1
+
+            # Escribe los costos efectivos de instalación, en caso de haberlos
+            if p_costs != None and p_costs.effective_cost_installation != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.effective_cost_installation)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+
+            # Escribe los costos efectivos de complementos, en caso de haberlos
+            if p_costs != None and p_costs.effective_cost_complements != None:
+                cell = ws.cell(row=r, column=col_pos, value=p.p_costs.effective_cost_complements)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+
+            # Escribe la fecha planificada de emisión de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
+            if p_hc!= None and p_hc.original_issuing_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=p_hc.original_issuing_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe la fecha efectiva de emisión de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
+            if p_hc!= None and p_hc.effective_issuing_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=p_hc.effective_issuing_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+
+            # Escribe la fecha planificada de llegada de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
+            if p_hc != None and p_hc.original_arrival_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=p_hc.original_arrival_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe la fecha efectiva de llegada de la hoja de corte, en caso de haberlos (De la O.C. de los cristales)
+            if p_hc != None and p_hc.effective_arrival_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=p_hc.effective_arrival_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe el ID del emisor de la HC, en caso de haberlos
+            if p_hc != None and p_hc.id_issuer_order != None and p_hc.id_issuer_order !="":
+                cell = ws.cell(row=r, column=col_pos, value=p_hc.id_issuer_order)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+
+            # Escribe el ID del proveedor de cristales, en caso de haberlos
+            if p_hc != None and p_hc.id_crystal_provider != None and p_hc.id_crystal_provider != "":
+                cell = ws.cell(row=r, column=col_pos, value=p_hc.id_crystal_provider)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos+=1
+
+            # Escribe el atraso en la emisión de la HC, en caso de haberlo
+            if p_hc != None and p_hc.original_issuing_date!=None and p_hc.effective_issuing_date != None and p_hc.original_issuing_date < p_hc.effective_issuing_date:
+                cell = ws.cell(row=r, column=col_pos, value=(
+                "{} días".format((p_hc.effective_issuing_date - p_hc.original_issuing_date).days)))
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="A tiempo")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+
+            col_pos+=1
+
+            # Escribe el atraso en la recepción de los cristales, en caso de haberlo
+            if p_hc != None and p_hc.original_arrival_date!=None and p_hc.effective_arrival_date!= None and p_hc.original_arrival_date < p_hc.effective_arrival_date:
+                cell = ws.cell(row=r, column=col_pos, value=(
+                    "{} días".format(
+                        (p_hc.effective_arrival_date - p_hc.original_arrival_date).days)))
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                cell = ws.cell(row=r, column=col_pos, value="A tiempo")
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
 
             project_counter = 1
             for pt in project_tasks:
@@ -1347,7 +1461,36 @@ def createGlobalReportModified(db):
 #--------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------
-
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
 
 
 
