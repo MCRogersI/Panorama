@@ -571,27 +571,27 @@ def tasks_console(db, level):
                 input(' Presione Enter para continuar.')
         elif(opt == '4'):
             try:
-                contract_number = input(" Ingrese el número de contrato del proyecto asociado: ")
+                contract_number = input("\n Ingrese el número de contrato del proyecto asociado: ")
                 try:
                     contract_number = int(contract_number)
                 except:
-                    raise ValueError(' El número de contrato debe ser un número entero.')
+                    raise ValueError('\n El número de contrato debe ser un número entero.')
                 with db_session:
                     if db.Projects.get(contract_number = contract_number, finished = None) == None:
-                        raise ValueError(' Número de contrato inexistente.')
+                        raise ValueError('\n Número de contrato inexistente.')
                 id_skill = input(" Ingrese el ID de la habilidad donde ocurrió el atraso (1: rect, 2: dis, 3: fab, 4: ins): ")
                 try:
                     id_skill = int(id_skill)
                 except:
-                    raise ValueError(' Ingreso de habilidad inválida.')
+                    raise ValueError('\n Ingreso de habilidad inválida.')
                 if int(id_skill) not in [1,2,3,4]:
-                    raise ValueError(' ID de habilidad no válida.')
+                    raise ValueError('\n ID de habilidad no válida.')
                 with db_session:
                     task = db.Tasks.get( project = db.Projects.get(contract_number = contract_number, finished = None), skill = db.Skills[id_skill], failed = None)
                     if task == None:
-                        raise ValueError(' Tarea no encontrada.')
+                        raise ValueError('\n Tarea no encontrada.')
                     if task.effective_initial_date == None :
-                        raise ValueError(' Esta tarea aun no ha comenzado.')
+                        raise ValueError('\n Esta tarea aun no ha comenzado.')
                     td = select( td for td in db.Tasks_Delays if td.task == task)
                     if len(td) >0 :
                         largo = str(len(td))
@@ -606,16 +606,16 @@ def tasks_console(db, level):
                         try:
                             int(agree)
                             if int(agree) not in [0,1]:
-                                exception = ' Ingreso incorrecto. Ingreso de atraso cancelado.'
+                                exception = '\n Ingreso incorrecto. Ingreso de atraso cancelado.'
                                 raise
                             elif int(agree) == 0:
-                                exception = ' Ingreso de atraso cancelado.' 
+                                exception = '\n Ingreso de atraso cancelado.' 
                                 raise 
                         except:
                             if exception:
                                 raise ValueError(exception)
                             else:
-                                raise ValueError(' Ingreso incorrecto de parámetros. Ingreso de atraso cancelado.')
+                                raise ValueError('\n Ingreso incorrecto de parámetros. Ingreso de atraso cancelado.')
                     delay = input(' Ingrese el número de días que se atrasó la tarea: ')
                     try:
                         delay = int(delay)
@@ -639,19 +639,19 @@ def tasks_console(db, level):
                 try:
                     id_issuer_order = input('\n Ingrese su ID: ')
                     if len(id_issuer_order.replace(' ','')) < 1:
-                        raise ValueError(' Debe ingresar su ID. ')
+                        raise ValueError('\n Debe ingresar su ID. ')
                     contract_number = input(' Ingrese el número de contrato del proyecto asociado a la orden de compra de cristales: ')
                     try:
                         contract_number = int(contract_number)
                     except:
-                        raise ValueError(' El número de contrato debe ser un número positivo.')
+                        raise ValueError('\n El número de contrato debe ser un número positivo.')
                     with db_session:
                         project = db.Projects.get(contract_number = contract_number, finished = None)
                         if project == None:
-                            raise ValueError(' No existe ese número de contrato. ')
+                            raise ValueError('\n No existe ese número de contrato. ')
                     id_crystal_provider = input(' Ingrese el ID del proveedor de cristales: ')
                     if len(id_crystal_provider.replace(' ','')) < 1:
-                        raise ValueError(' Debe ingresar el ID del proveedor. ')
+                        raise ValueError('\n Debe ingresar el ID del proveedor. ')
                     effective_issuing_date_year = input(' Ingrese el año en que se envío la orden de compra al proveedor (solo presione Enter si la fecha es hoy): ')
                     if effective_issuing_date_year == '':
                         effective_issuing_date = date.today()
@@ -670,7 +670,7 @@ def tasks_console(db, level):
                     except:
                         raise ValueError('\n No se ha ingresado una fecha válida.')
                     editCrystalSalesOrder(db, project, original_arrival_date, effective_issuing_date, id_issuer_order, id_crystal_provider)
-                    print(' Edición realizada exitosamente.')
+                    print('\n Edición realizada exitosamente.')
                     input(' Presione Enter para continuar.')
                 except ValueError as ve:
                     print(ve)
@@ -682,11 +682,11 @@ def tasks_console(db, level):
                     try:
                         contract_number = int(contract_number)
                     except:
-                        raise ValueError(' El número de contrato debe ser un número entero.')
+                        raise ValueError('\n El número de contrato debe ser un número entero.')
                     with db_session:
                         project = db.Projects.get(contract_number = contract_number, finished = None)
                         if project == None:
-                            raise ValueError(' No existe ese número de contrato. ')
+                            raise ValueError('\n No existe ese número de contrato. ')
                     effective_arrival_date_year = input(' Ingrese el año de llegada de los cristales (solo presione Enter si la fecha es hoy): ')
                     if effective_arrival_date_year == '':
                         effective_arrival_date = date.today()
@@ -698,7 +698,7 @@ def tasks_console(db, level):
                         except:
                             raise ValueError('\n No se ha ingresado una fecha válida.')
                     editCrystalArrival(db, project, effective_arrival_date)
-                    print(' Edición realizada exitosamente.')
+                    print('\n Edición realizada exitosamente.')
                     input(' Presione Enter para continuar.')
                     
                 except ValueError as ve:
