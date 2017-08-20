@@ -107,16 +107,7 @@ def stock_console(db, level):
                                 raise ValueError('\n La cantidad en bodega debe ser un número positivo.')
                         except:
                             raise ValueError('\n La cantidad en bodega debe ser un número positivo.')
-                    waste_factor = input(' Ingrese el nuevo factor de pérdida del producto, solo presione Enter si lo mantiene: ')
-                    if waste_factor == '':
-                        waste_factor = None
-                    else:
-                        try:
-                            if float(waste_factor) < 0:
-                                raise ValueError('\n El factor de pérdida debe ser un número positivo.')
-                        except:
-                            raise ValueError('\n El factor de pérdida debe ser un número positivo.')
-                    editSku(db,id = id, name=name, price=price, critical_level=critical_level, real_quantity=real_quantity, waste_factor = waste_factor)
+                    editSku(db,id = id, name=name, price=price, critical_level=critical_level, real_quantity=real_quantity)
                     input(' Presione Enter para continuar.')
                 except ValueError as ve:
                     print(ve)
@@ -127,36 +118,36 @@ def stock_console(db, level):
                     file_dir = file_name + ".xlsx"
                     if os.path.isfile(file_dir):
                         editAllSkus(db, file_name)
-                        print('\n Datos cargados exitosamente. ')
-                        input(' Presione Enter para continuar. ')
+                        print('\n Datos cargados exitosamente.')
+                        input(' Presione Enter para continuar.')
                     else:
                         raise ValueError('\n Archivo no encontrado.')
                 except ValueError as ve:
                     print(ve)
             if (opt2 == '3'):
                 try:
-                    id = input(' Ingrese el ID del SKU que desea registrar: ')
+                    id = input('\n Ingrese el ID del SKU que desea registrar: ')
                     try:
                         id = int(id)
                     except:
-                        raise ValueError(' El id debe ser un número entero. ')
+                        raise ValueError('\n El ID debe ser un número entero.')
                     with db_session:
                         sku = db.Stock.get(id = id)
                         if sku == None:
-                            raise ValueError( ' SKU no encontrado. ')
-                    quantity = input( ' Ingrese la cantidad que entra al stock (si sale ingrese un número negativo): ')
+                            raise ValueError('\n SKU no encontrado.')
+                    quantity = input(' Ingrese la cantidad que entra al stock (si sale ingrese un número negativo): ')
                     try:
                         quantity = int(quantity)
                     except:
-                        raise ValueError(' La cantidad de flujo debe ser un número entero. ')
+                        raise ValueError('\n La cantidad de flujo debe ser un número entero.')
                     if sku.real_quantity + quantity < 0:
-                        raise ValueError(' El flujo saliente es mayor a la cantidad registrada actualmente. ingreso de flujo abortado. ' )
+                        raise ValueError('\n El flujo saliente es mayor a la cantidad registrada actualmente. Ingreso de flujo abortado. ' )
                     registerSKUFlux(db, id, quantity)
-                    print(' Flujo registrado con éxito.')
+                    print('\n Flujo registrado con éxito.')
                     input(' Presione Enter para continuar.')
                 except ValueError as ve :
                     print(ve)
-                    input(' Presione Enter para continuar. ')
+                    input(' Presione Enter para continuar.')
         if (opt == '3'):
             try:
                 id = input("\n Ingrese el ID del producto que desea eliminar: ")
@@ -168,8 +159,8 @@ def stock_console(db, level):
                     if db.Stock.get(id = id) == None:
                         raise ValueError('\n Producto inexistente.')
                 deleteSku(db, id)
-                print(' Producto eliminado con éxito. ')
-                input( ' Presione Enter para continuar. ')
+                print('\n Producto eliminado con éxito.')
+                input(' Presione Enter para continuar.')
             except ValueError as ve:
                 print(ve)
                 input(' Presione Enter para continuar.')

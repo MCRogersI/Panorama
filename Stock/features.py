@@ -8,7 +8,7 @@ from threading import Thread
 import pandas
 from tabulate import tabulate
 
-def createSku(db,id, name, price, critical_level, real_quantity):
+def createSku(db, id, name, price, critical_level, real_quantity):
     ''' Este método crea una unidad nueva de stock, asigna automáticamente el ID de la misma.
         La cantidad estimada es la que se ve afectada por una planificación que podría cambiarse 
         en el futuro. Parte siendo igual a la cantidad real'''
@@ -24,8 +24,7 @@ def createSku(db,id, name, price, critical_level, real_quantity):
 
 
 
-def editSku(db, id, name=None, price=None, critical_level=None, real_quantity=None,
-            waste_factor = None):
+def editSku(db, id, name=None, price=None, critical_level=None, real_quantity=None):
     ''' Este método edita la unidad de stock, en cualquiera de sus características '''
     
     with db_session:
@@ -40,8 +39,6 @@ def editSku(db, id, name=None, price=None, critical_level=None, real_quantity=No
             if real_quantity != None:
                 s.real_quantity = real_quantity
                 s.estimated_quantity = real_quantity
-            if waste_factor != None:
-                s.waste_factor = waste_factor
         except ObjectNotFound as e:
             print('Object not found: {}'.format(e))
         except ValueError as e:
@@ -594,16 +591,15 @@ def makePurchases(db, file_name):
 def editAllSkus(db, file_name):
     file_read = file_name + ".xlsx"
     wb_read = load_workbook(file_read, data_only=True)
-    ws_read_skus = wb_read["Hoja2"]
+    ws_read_skus = wb_read["Hoja1"]
     
-    next_row = 13
+    next_row = 2
     id = ws_read_skus.cell(row = next_row, column = 2).value
     while(id != None):
-        name = ws_read_skus.cell(row = next_row, column = 4).value
-        price = ws_read_skus.cell(row = next_row, column = 5).value
-        critical_level = ws_read_skus.cell(row = next_row, column = 9).value
-        real_quantity = ws_read_skus.cell(row = next_row, column = 10).value
-        waste_factor = ws_read_skus.cell(row = next_row, column = 11).value
+        name = ws_read_skus.cell(row = next_row, column = 3).value
+        price = ws_read_skus.cell(row = next_row, column = 4).value
+        critical_level = ws_read_skus.cell(row = next_row, column = 5).value
+        real_quantity = ws_read_skus.cell(row = next_row, column = 6).value
         
         with db_session:
             stock = db.Stock.get(id = id)
@@ -611,7 +607,7 @@ def editAllSkus(db, file_name):
             if stock != None:
                 editSku(db, id, name, price, critical_level, real_quantity)
             else:
-                createSku(db, id, name, price, critical_level, real_quantity, waste_factor)
+                createSku(db, id, name, price, critical_level, real_quantity)
         
         next_row = next_row + 1
         id = ws_read_skus.cell(row = next_row, column = 2).value
