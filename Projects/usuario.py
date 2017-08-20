@@ -16,7 +16,7 @@ def projects_console(db, level):
         if (level in [1,2,3,4,5,6]):
             opt = input("\n Marque una de las siguientes opciones:\n - 1: Si desea crear un proyecto. \
                                                                   \n - 2: Si desea editar un proyecto. \
-                                                                  \n - 3: Eliminar un proyecto. \
+                                                                  \n - 3: Si desea eliminar un proyecto. \
                                                                   \n - 4: Si desea manejar datos sobre disponibilidad de un cliente. \
                                                                   \n - 5: Para ver proyectos. \
                                                                   \n - 6: Para estimar costos del proyecto. \

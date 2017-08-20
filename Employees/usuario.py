@@ -33,7 +33,7 @@ def employees_console(db, level, user):
                     name_empleado = input(" Ingrese el nombre del empleado: ")
                     if len(name_empleado.replace(' ','')) <1:
                         raise ValueError('\n El empleado debe tener un nombre.')
-                    zone_empleado = input(" Ingrese la comuna de residencia del empleado: ")
+                    zone_empleado = input(" Ingrese la comuna de trabajo del empleado: ")
                     if len( zone_empleado.replace(' ',''))<1:
                         raise ValueError('\n La comuna no puede estar vacía.')
                     try:
@@ -111,7 +111,7 @@ def employees_console(db, level, user):
                     except:
                         raise ValueError('\n Empleado inexistente.')
                     new_name = input(" Ingrese el nuevo nombre del empleado, solo presione Enter si lo mantiene: ")
-                    new_zone = input(" Ingrese el código de la nueva zona del empleado, solo presione Enter si la mantiene: ")
+                    new_zone = input(" Ingrese la nueva comuna de trabajo del empleado, solo presione Enter si la mantiene: ")
                     new_perf_rect = input(" Ingrese el rendimiento histórico en rectificación del empleado, solo presione Enter si mantiene la información actual: ")
                     new_perf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione Enter mantiene la información actual: ")
                     new_perf_fab = input(" Ingrese el rendimiento histórico en fabricación del empleado, solo presione Enter si mantiene la información actual: ")
