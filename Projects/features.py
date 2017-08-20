@@ -7,7 +7,6 @@ import Stock.features as Sf
 from Planning.features import sumDays, substractDays, doPlanning, changePriority, datesOverlap
 from Planning.reports import createReport
 import pandas
-from IPython.display import display
 from tabulate import tabulate
 
 def noneInt(x):
@@ -38,8 +37,9 @@ def printProjects(db):
         ,'estimated_cost','real_cost','sale_price','fixed_planning','fixed_priority','crystal_leadtime','sale_date','finished'])                    
         df.columns = ['Número de Contrato','Versión','Dirección','Comuna','Nombre','RUT','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
         ,'Costo Estimado','Costo Real','Precio de Venta','Planificación Fija','Prioridad Fijada','Tiempo Entrega Cristales','Fecha de Venta','Proyecto Finalizado']
-        print( tabulate(df.drop(df.columns[[9,10,11,12,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
-        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[7,8,9,10,11,12,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8,9,10,11,12]], axis = 1), headers='keys', tablefmt='psql'))
 
 def printCurrentProjects(db):
     with db_session:
@@ -50,8 +50,9 @@ def printCurrentProjects(db):
         ,'estimated_cost','real_cost','sale_price','fixed_planning','fixed_priority','crystal_leadtime','sale_date','finished'])                    
         df.columns = ['Número de Contrato','Versión','Dirección','Comuna','Nombre','Rut','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
         ,'Costo Estimado','Costo Real','Precio de Venta','Planificación Fija','Prioridad Fijada','Tiempo Entrega Cristales','Fecha de Venta','Proyecto Finalizado']
-        print( tabulate(df.drop(df.columns[[9,10,11,12,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
-        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8,18]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[7,8,9,10,11,12,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,12,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8,9,10,11,18]], axis = 1), headers='keys', tablefmt='psql'))
         
 def printFinishedProjects(db):
     with db_session:
@@ -62,11 +63,12 @@ def printFinishedProjects(db):
         ,'estimated_cost','real_cost','sale_price','fixed_planning','fixed_priority','crystal_leadtime','sale_date','finished'])                    
         df.columns = ['Número de Contrato','Versión','Dirección','Comuna','Nombre','Rut','Metros Lineales','Metros Cuadrados','Plazo Pactado Proyecto','Prioridad','Metros Lineales Reales'\
         ,'Costo Estimado','Costo Real','Precio de Venta','Planificación Fija','Prioridad Fijada','Tiempo Entrega Cristales','Fecha de Venta','Proyecto Finalizado']
-        print( tabulate(df.drop(df.columns[[8,9,10,11,12,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
-        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8,18]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[7,8,9,10,11,12,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,9,13,14,15,16,17,18]], axis = 1), headers='keys', tablefmt='psql'))
+        print( tabulate(df.drop(df.columns[[0,1,2,3,4,5,6,7,8,9,10,11,12,18]], axis = 1), headers='keys', tablefmt='psql'))
         
         
-def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None,new_square_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None):
+def editProject(db, contract_number, new_client_address = None, new_client_comuna = None, new_client_name = None, new_client_rut = None , new_linear_meters = None,new_square_meters = None, new_real_linear_meters = None, new_deadline = None, new_estimated_cost = None, new_real_cost = None, new_crystal_leadtime = None ,new_sale_price = None):
     with db_session:
         projects = select(p for p in db.Projects if contract_number == contract_number)
         for p in projects:
@@ -92,6 +94,8 @@ def editProject(db, contract_number, new_client_address = None, new_client_comun
                 p.real_cost = new_real_cost
             if new_crystal_leadtime != None:
                 p.crystal_leadtime = new_crystal_leadtime
+            if new_sale_price != None:
+                p.sale_price = new_sale_price
         commit()
 
 def deleteProject(db, contract_number):
@@ -178,7 +182,11 @@ def deleteTask(db, id_task):
 def printTasks(db):
     with db_session:
         print('')
-        ts = db.Tasks.select()
+        ts_aux = db.Tasks.select()
+        ts = []
+        for t in ts_aux:
+            if t.project.finished == None or t.project.finished == False:
+                ts.append(t)
         data = [t.to_dict() for t in ts]
         project =pandas.Series([t.project.contract_number for t in ts], name = 'Proyecto')
         version =pandas.Series([t.project.version for t in ts], name = 'Versión')

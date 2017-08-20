@@ -74,8 +74,8 @@ def printStockConsole(db):
         print('')
         st = db.Stock.select()
         data = [s.to_dict() for s in st]
-        df = pandas.DataFrame(data, columns = ['id','name','price','critical_level','real_quantity','waste_factor','estimated_quantity'])
-        df.columns = ['ID','Nombre','Precio','Punto Crítico','Cantidad Real en Bodega','Factor de Pérdida','Cantidad Estimada en Bodega']
+        df = pandas.DataFrame(data, columns = ['id','name','price','critical_level','real_quantity','estimated_quantity'])
+        df.columns = ['ID','Nombre','Precio','Punto Crítico','Cantidad Real en Bodega','Cantidad Estimada en Bodega']
         print( tabulate(df, headers='keys', tablefmt='psql'))
 
 

@@ -1,6 +1,5 @@
 from pony.orm import *
 import pandas
-from IPython.display import display
 from tabulate import tabulate
 from Planning.features import doPlanning
 

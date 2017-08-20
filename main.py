@@ -42,7 +42,7 @@ except:
 
 def console(level, user):
     while True:
-        if (level in [1,2,3,4,5]):
+        if (level == 1):
             opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados.\
                                                                   \n - 2: Proyectos. \
                                                                   \n - 3: Tareas. \
@@ -51,7 +51,14 @@ def console(level, user):
                                                                   \n - 6: Usuarios de consola.\
                                                                   \n - 7: Para salir. \
                                                                   \n Ingrese la alternativa elegida: ")
-        else:
+        elif (level in [2,3,4,5,6]):
+            opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados.\
+                                                                  \n - 2: Proyectos. \
+                                                                  \n - 3: Tareas. \
+                                                                  \n - 4: Stock. \
+                                                                  \n - 5: Para salir. \
+                                                                  \n Ingrese la alternativa elegida: ")
+        elif level == 7:
             opt2 = input("\n Marque una de las siguientes opciones:\n - 1: Obtener mi calendario de trabajo.\
                                                                   \n - 2: Ingresar hoja de corte. \
                                                                   \n - 3: Para salir. \
@@ -64,18 +71,29 @@ def console(level, user):
                 opt = '7'
             else:
                 opt =''
+        else:
+            opt2 = input("\n Marque una de las siguientes opciones:\n - 1: Obtener mi calendario de trabajo.\
+                                                                   \n - 2: Para salir. \
+                                                                   \n Ingrese la alternativa elegida: ")
+            if(opt2 == '1'):
+                opt = '1'
+            elif(opt2 == '2'):
+                opt = '7'
+            else:
+                opt =''
+            opt = '1'
         if(opt == '1'):
             Eu.employees_console(db, level, user)
         if(opt == '2'):
             Pu.projects_console(db, level)
         if( opt== '3'):
-            if (level in [1,2,3,4,5]):
+            if (level in [1,2,3,4,5,6]):
                 Pu.tasks_console(db, level)
             else:
-                print('\n Acceso denegado.')
-                input(' Presione Enter para continuar.')
+                print("\n Has salido del programa.")
+                break
         if (opt == '4'):
-            if (level == 1):
+            if (level in [1,2,5]):
                 Su.stock_console(db, level)
             else:
                 print('\n Acceso denegado.')
@@ -83,31 +101,38 @@ def console(level, user):
         if (opt =='5'):
             if (level == 1):
                 PlanU.planning_console(db,level)
-            else:
-                print('\n Acceso denegado.')
-                input(' Presione Enter para continuar.')
+            elif level in [2,3,4,5,6]:
+                print("\n Has salido del programa.")
+                break
         if(opt=='6'):
-            if(level ==1):
+            if(level == 1):
                 Uu.users_console(db)
             else:
-                print('\n Acceso denegado.')
+                print('\n Ingreso incorrecto.')
                 input(' Presione Enter para continuar.')
         if(opt == '7'):
-            print("\n Has salido del programa.")
-            break
+            if (level in [1,7,8]) :
+                print("\n Has salido del programa.")
+                break
+            else:
+                print('\n Ingreso incorrecto.')
+                input(' Presione Enter para continuar.')
 def signIn():
     while True:
         user = input(" Ingrese su usuario: ")
-        password = input(" Ingrese su contrasena: ")
-        # password = getpass.getpass(' Ingrese su contrasena: ')
-        if Uf.checkPassEntry(db, user, password):
-            with db_session:
-                level=Uf.getUserLevel(db, user)
-                console(level, user)
-                
+        if user == '':
+            print("Debe ingresar un usuario.")
         else:
-            print(" Usuario y/o Contrasena incorrecto(s).")
-        break
+            # password = getpass.getpass(' Ingrese su contrasena: ')
+            password = input(" Ingrese su contrasena: ")
+            if Uf.checkPassEntry(db, user, password):
+                with db_session:
+                    level=Uf.getUserLevel(db, user)
+                    console(level, user)
+                break
+            else:
+                print(" Usuario y/o Contrasena incorrecto(s).")
+
 
 signIn()
 

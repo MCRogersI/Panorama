@@ -3,7 +3,6 @@ from pony.orm import *
 from Planning.features import changePriority, addDelayed, doPlanning, checkVeto, createEmployeesRestrictions
 from Planning.reports import createGlobalReportModified
 import pandas
-from IPython.display import display
 from tabulate import tabulate
 def planning_console(db,level):
     while True:
@@ -17,7 +16,7 @@ def planning_console(db,level):
             doPlanning(db)
         if opt == '2':
             try:
-                contract_number = input(' Ingrese el numero de contrato del proyecto que desea cambiar: ')
+                contract_number = input('\n Ingrese el numero de contrato del proyecto que desea cambiar: ')
                 with db_session:
                     try:
                         db.Projects.get(contract_number = int(contract_number), finished = None).contract_number
