@@ -121,7 +121,7 @@ def signIn():
     while True:
         user = input(" Ingrese su usuario: ")
         if user == '':
-            print("Debe ingresar un usuario.")
+            print("\n Debe ingresar un usuario.")
         else:
             # password = getpass.getpass(' Ingrese su contrasena: ')
             password = input(" Ingrese su contrasena: ")
@@ -131,7 +131,7 @@ def signIn():
                     console(level, user)
                 break
             else:
-                print(" Usuario y/o Contrasena incorrecto(s).")
+                print("\n Usuario y/o Contrasena incorrecto(s).")
 
 
 signIn()
