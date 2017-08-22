@@ -123,8 +123,8 @@ def signIn():
         if user == '':
             print("\n Debe ingresar un usuario.")
         else:
-            # password = getpass.getpass(' Ingrese su contrasena: ')
-            password = input(" Ingrese su contrasena: ")
+            password = getpass.getpass(' Ingrese su contrasena: ')
+            # password = input(" Ingrese su contrasena: ")
             if Uf.checkPassEntry(db, user, password):
                 with db_session:
                     level=Uf.getUserLevel(db, user)

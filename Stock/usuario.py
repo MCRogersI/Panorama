@@ -21,10 +21,8 @@ def stock_console(db, level):
         if (opt == '1'):
             try:
                 id = input("\n Ingrese el ID del producto: ")
-                try:
-                    id = int(id)
-                except:
-                    raise ValueError('\n El ID del producto debe ser un número entero positivo.')
+                if len(id.replace(' ','')) <1:
+                    raise ValueError('\n El ID del producto no debe ser vacío.')
                 with db_session:
                     if db.Stock.get(id = id) != None:
                         raise ValueError('\n El ID del producto ya existe.')
@@ -70,10 +68,8 @@ def stock_console(db, level):
             if(opt2 == '1'):
                 try:
                     id = input("\n Ingrese el ID del producto: ")
-                    try:
-                        id = int(id)
-                    except:
-                        raise ValueError('\n El ID del producto debe ser un número entero positivo.')
+                    if len(id.replace(' ','')) <1:
+                        raise ValueError('\n El ID del producto no debe ser vacío.')
                     with db_session:
                         if db.Stock.get(id = id) == None:
                             raise ValueError('\n El ID del producto ya existe.')
@@ -127,10 +123,8 @@ def stock_console(db, level):
             if (opt2 == '3'):
                 try:
                     id = input('\n Ingrese el ID del SKU que desea registrar: ')
-                    try:
-                        id = int(id)
-                    except:
-                        raise ValueError('\n El ID debe ser un número entero.')
+                    if len(id.replace(' ','')) <1:
+                        raise ValueError('\n El ID del producto no debe ser vacío.')
                     with db_session:
                         sku = db.Stock.get(id = id)
                         if sku == None:
@@ -151,10 +145,8 @@ def stock_console(db, level):
         if (opt == '3'):
             try:
                 id = input("\n Ingrese el ID del producto que desea eliminar: ")
-                try:
-                    int(id)
-                except:
-                    raise ValueError('\n No es un ID válido.')
+                if len(id.replace(' ','')) <1:
+                    raise ValueError('\n El ID del producto no debe ser vacío.')
                 with db_session:
                     if db.Stock.get(id = id) == None:
                         raise ValueError('\n Producto inexistente.')

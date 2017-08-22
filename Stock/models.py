@@ -3,7 +3,7 @@ from datetime import date
 
 def define_models(db):
     class Stock(db.Entity):
-        id = PrimaryKey(int, auto = False)
+        id = PrimaryKey(str, auto = False)
         name = Required(str)
         # type = Optional(str)#crystal, profile, components, etc. Según el formato de los excel, no sería necesario
         price = Required(float)
