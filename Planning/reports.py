@@ -26,15 +26,15 @@ def createGlobalReportModified(db):
     ws = wb.create_sheet(
         "Reporte",index=0)
 
-    widths = {"A": 5, "B": 35, "C": 5,"D": 35, "E": 35, "F": 35,
-              "G": 35, "H": 35, "I": 35,"J": 35, "K": 35, "L": 35,
-              "M": 35, "N": 35, "O": 45,"P": 45, "Q": 45, "R": 45,
-              "S": 45, "T": 45, "U": 45,"V": 45, "W": 45, "X": 45,
-              "Y": 45, "Z": 45, "AA": 45, "AB": 45, "AC": 45,"AD":45,
-              "AE": 45, "AF":45, "AG":45, "AH":45, "AI":45, "AJ":45, "AK":45, "AL":45,
-              "AM":45,"AN":45,"AO":45,"AP":45,"AQ":45,"AR":45,"AS":45,"AT":45,"AU":45,
-              "AV":45,"AW":45,"AX":45,"AY":45,"AZ":45,"BA":45,"BB":45,"BC":45,"BD":45,"BE":45,"BF":45,"BG":45,
-              "BH":45,"BI":45,"BJ":45}
+    widths = {"A": 5, "B": 5, "C": 5,"D": 30, "E": 30, "F": 30,
+              "G": 30, "H": 30, "I": 30,"J": 30, "K": 30, "L": 30,
+              "M": 30, "N": 30, "O": 30,"P": 30, "Q": 30, "R": 30,
+              "S": 50, "T": 50, "U": 50,"V": 50, "W": 50, "X": 50,
+              "Y": 50, "Z": 50, "AA": 50, "AB": 50, "AC": 50,"AD":50,
+              "AE": 50, "AF":50, "AG":50, "AH":50, "AI":50, "AJ":50, "AK":50, "AL":50,
+              "AM":50,"AN":50,"AO":50,"AP":50,"AQ":50,"AR":50,"AS":50,"AT":50,"AU":50,
+              "AV":50,"AW":50,"AX":50,"AY":50,"AZ":50,"BA":50,"BB":50,"BC":50,"BD":50,"BE":50,"BF":50,"BG":50,
+              "BH":50,"BI":50,"BJ":50,"BK":50,"BL":50,"BM":50,"BN":50,"BO":50,"BP":50,"BQ":50,"BR":50}
 
     heights = {"A": 10, "B": 10, "C": 10, "D": 10, "E": 10, "F": 10,
               "G": 10, "H": 10, "I": 10, "J": 10, "K": 10, "L": 10,
@@ -44,7 +44,7 @@ def createGlobalReportModified(db):
                "AE":10, "AF":10, "AG":10, "AH":10, "AI":10, "AJ":10, "AK":10, "AL":10,
                "AM": 10, "AN": 10, "AO": 10, "AP": 10, "AQ": 10,"AR":10,"AS":10,"AT":10,"AU":10,
                "AV":10,"AW":10,"AX":10,"AY":10,"AZ":10,"BA":10,"BB":10,"BC":10,"BD":10,"BE":10,"BF":10,"BG":10,
-               "BH":10,"BI":10,"BJ":10}
+               "BH":10,"BI":10,"BJ":10,"BK":10,"BL":10,"BM":10,"BN":10,"BO":10,"BP":10,"BQ":10,"BR":10}
 
 
     thin_border = Border(left=Side(style='thin'),
@@ -55,7 +55,7 @@ def createGlobalReportModified(db):
 
     columns = ["A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB",
                "AC","AD","AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ",
-               "BA","BB","BC","BD","BE","BF","BG","BH","BI","BJ"]
+               "BA","BB","BC","BD","BE","BF","BG","BH","BI","BJ","BK","BL","BM","BN","BO","BP","BQ","BR"]
 
     for c in columns:
         ws.column_dimensions[c].width = widths[c]
@@ -72,14 +72,18 @@ def createGlobalReportModified(db):
     texts = ["","","","NUMERO DE CONTRATO", "NOMBRE CLIENTE", "PRIORIDAD",
              "FECHA LÍMITE","MAYOR PLAZO (ATRASO) TOTAL","ESTADO INICIAL","ESTADO FINAL","ORIGEN FALLA","COMUNA CLIENTE", "DIRECCIÓN CLIENTE","METROS LINEALES", "METROS LINEALES REALES", "COSTO ESTIMADO",
              "PRECIO DE VENTA", "FECHA DE VENTA",
-             "FECHA ORIGINAL INICIO RECTIFICACIÓN","FECHA ORIGINAL TÉRMINO RECTIFICACIÓN",
+             "FECHA ORIGINAL PLANIFICADA INICIO RECTIFICACIÓN","FECHA ORIGINAL PLANIFICADA TÉRMINO RECTIFICACIÓN",
+             "FECHA PLANIFICADA INICIO RECTIFICACIÓN","FECHA PLANIFICADA TÉRMINO RECTIFICACIÓN",
              "FECHA EFECTIVA INICIO RECTIFICACIÓN","FECHA EFECTIVA TÉRMINO RECTIFICACIÓN","ID RECTIFICADOR",
              "MAYOR PLAZO (ATRASO) RECTIFICACION",
-             "FECHA ORIGINAL INICIO DISEÑO","FECHA ORIGINAL TÉRMINO DISEÑO","FECHA EFECTIVA INICIO DISEÑO",
+             "FECHA ORIGINAL PLANIFICADA INICIO DISEÑO","FECHA ORIGINAL PLANIFICADA TÉRMINO DISEÑO","FECHA PLANIFICADA INICIO DISEÑO",
+             "FECHA PLANIFICADA TÉRMINO DISEÑO","FECHA EFECTIVA INICIO DISEÑO",
              "FECHA EFECTIVA TÉRMINO DISEÑO","ID DISEÑADOR","MAYOR PLAZO (ATRASO) DISEÑO",
-             "FECHA ORIGINAL INICIO FABRICACIÓN","FECHA ORIGINAL TÉRMINO FABRICACIÓN","FECHA EFECTIVA INICIO FABRICACIÓN",
+             "FECHA ORIGINAL PLANIFICADA INICIO FABRICACIÓN","FECHA ORIGINAL PLANIFICADA TÉRMINO FABRICACIÓN",
+             "FECHA PLANIFICADA INICIO FABRICACIÓN","FECHA PLANIFICADA TÉRMINO FABRICACIÓN","FECHA EFECTIVA INICIO FABRICACIÓN",
              "FECHA EFECTIVA TÉRMINO FABRICACIÓN","ID FABRICADOR","MAYOR PLAZO (ATRASO) FABRICACION",
-             "FECHA ORIGINAL INICIO INSTALACIÓN","FECHA ORIGINAL TÉRMINO INSTALACIÓN",
+             "FECHA ORIGINAL PLANIFICADA INICIO INSTALACIÓN","FECHA ORIGINAL PLANIFICADA TÉRMINO INSTALACIÓN","FECHA PLANIFICADA INICIO INSTALACIÓN",
+             "FECHA PLANIFICADA TÉRMINO INSTALACIÓN",
              "FECHA EFECTIVA INICIO INSTALACIÓN","FECHA EFECTIVA TÉRMINO INSTALACIÓN","IDs INSTALADORES","MAYOR PLAZO (ATRASO) INSTALACION",
              "COSTO ESTANDAR PERFILES",
              "COSTO ESTANDAR HERRAJES","COSTO ESTANDAR CRISTALES","COSTO ESTANDAR M PRIMAS","COSTO ESTANDAR FABRICACION",
@@ -99,15 +103,15 @@ def createGlobalReportModified(db):
         cell.font = Font(bold=True,)
         cell.border = thin_border
         cell.alignment = Alignment(horizontal='center')
-        if(i>=19 and i<=24):
+        if(i>=19 and i<=26):
             cell.fill = PatternFill("solid", fgColor=cellColorRect)
-        if (i >= 25 and i <= 30):
+        if (i >= 27 and i <= 34):
             cell.fill = PatternFill("solid", fgColor=cellColorDis)
-        if (i >= 31 and i <= 36):
+        if (i >= 35 and i <= 42):
             cell.fill = PatternFill("solid", fgColor=cellColorFab)
-        if (i >= 37 and i <= 42):
+        if (i >= 43 and i <= 50):
             cell.fill = PatternFill("solid", fgColor=cellColorInst)
-        if (i >= 55 and i <= 62):
+        if (i >= 63 and i <= 70):
             cell.fill = PatternFill("solid", fgColor=cellColorOC)
 
 
@@ -138,19 +142,29 @@ def createGlobalReportModified(db):
             project_tasks = list(project_tasks)
 
             rectification = None
+            rectification_et = None
             design = None
+            design_et = None
             fabrication = None
+            fabrication_et = None
             installation = None
+            installation_et_first = None
+            installation_et_last = None
 
             for project_task in project_tasks:
                 if project_task.skill.id == 1:
                     rectification = project_task
+                    rectification_et = db.Employees_Tasks.get(task=rectification)
                 if project_task.skill.id == 2:
                     design = project_task
+                    design_et = db.Employees_Tasks.get(task=design)
                 if project_task.skill.id == 3:
                     fabrication = project_task
+                    fabrication_et = db.Employees_Tasks.get(task=fabrication)
                 if project_task.skill.id == 4:
                     installation = project_task
+                    installation_et_first = list(select(et for et in db.Employees_Tasks if et.task == installation).order_by(lambda et: et.planned_initial_date))[0]
+                    installation_et_last = list(select(et for et in db.Employees_Tasks if et.task == installation).order_by(lambda et: et.planned_end_date))[-1]
 
             # print("proyecto {0}, version {1}".format(p.contract_number,p.version))
             # print(rectification.skill.id)
@@ -281,9 +295,9 @@ def createGlobalReportModified(db):
             col_pos+=1
 
             # Escribe el atraso, en caso de haberlo
-            if installation != None and p.deadline < installation.original_end_date:
+            if installation_et_last != None and p.deadline < installation.original_end_date:
                 cell = ws.cell(row=r, column=col_pos, value=(
-                "{} días".format((installation.original_end_date - p.deadline).days)))
+                "{} días".format((installation_et_last.planned_end_date - p.deadline).days)))
                 cell.font = Font(bold=True)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
@@ -532,6 +546,53 @@ def createGlobalReportModified(db):
 
             col_pos+=1
 
+            # Escribe la fecha panificada de inicio de rectificación
+            if rectification_et != None and rectification_et.planned_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=rectification_et.planned_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos += 1
+
+            # Escribe la fecha panificada de término de rectificación
+            if rectification_et != None and rectification_et.planned_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=rectification_et.planned_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos += 1
+
+
             # Escribe la fecha efectiva inicio de rectificación
             if rectification != None and rectification.effective_initial_date != None:
                 cell = ws.cell(row=r, column=col_pos, value=rectification.effective_initial_date)
@@ -676,6 +737,66 @@ def createGlobalReportModified(db):
                     cell.fill = PatternFill("solid", fgColor=rowColorvalue)
 
             col_pos+=1
+
+            # Escribe la fecha planificada de inicio de diseño
+            if design_et != None and design_et.planned_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=design_et.planned_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif fabrication != None or installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos += 1
+
+            # Escribe la fecha planificada de término de diseño
+            if design_et != None and design_et.planned_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=design_et.planned_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif fabrication != None or installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos += 1
+
+
 
             # Escribe la fecha efectiva de inicio de diseño
             if design != None and design.effective_initial_date != None:
@@ -840,6 +961,66 @@ def createGlobalReportModified(db):
 
             col_pos+=1
 
+            # Escribe la fecha planificada de inicio de fabricación
+            if fabrication_et != None and fabrication_et.planned_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=fabrication_et.planned_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if fabrication != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None or design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos += 1
+
+            # Escribe la fecha planificada de término de fabricación
+            if fabrication_et != None and fabrication_et.planned_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=fabrication.original_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if fabrication != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None or design != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión anterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+
+            col_pos += 1
+
+
+
             # Escribe la fecha efectiva de inicio de fabricación
             if fabrication != None and fabrication.effective_initial_date != None:
                 cell = ws.cell(row=r, column=col_pos, value=fabrication.effective_initial_date)
@@ -993,6 +1174,56 @@ def createGlobalReportModified(db):
                     pass
 
             col_pos+=1
+
+            # Escribe la fecha planificada de inicio de instalación
+            if installation_et_first != None and installation_et_first.planned_initial_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=installation_et_first.planned_initial_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None or design != None or fabrication != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:  # Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
+
+            col_pos += 1
+
+            # Escribe la fecha de original de término de instalación
+            if installation_et_last != None and installation_et_last.planned_end_date != None:
+                cell = ws.cell(row=r, column=col_pos, value=installation_et_last.planned_end_date)
+                cell.font = Font(bold=True)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+            else:
+                if installation != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Dato no disponible")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                elif rectification != None or design != None or fabrication != None:
+                    cell = ws.cell(row=r, column=col_pos, value="Realizada en versión posterior")
+                    cell.font = Font(bold=True)
+                    cell.border = thin_border
+                    cell.alignment = Alignment(horizontal='center')
+                    cell.fill = PatternFill("solid", fgColor=rowColorvalue)
+                else:  # Este caso no es posible dado que sería una versión sin ninguna tarea
+                    pass
+
+            col_pos += 1
 
             # Escribe la fecha efectiva de inicio de instalación
             if installation!= None and installation.effective_initial_date != None:
