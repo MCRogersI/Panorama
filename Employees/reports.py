@@ -260,34 +260,72 @@ def createPersonalEmployeeReport(db,id_employee):
             for task_date_block in tasks_dates_blocks:
                 for d in task_date_block:
                     if (dates[i] <= d < dates[i + 1]):
-                        # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
-                        cell = ws.cell(row=r + 10 + i, column=4 + d.weekday(),
-                                       value="Proyecto {0}\n{1}".format(tasks[task_counter].project,tasks[task_counter].project.client_address))
-                        cell.font = Font(bold=True)
-                        cell.border = thin_border
-                        cell.alignment = Alignment(horizontal='center')
-                        # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
-                        # create alignment style
-                        wrap_alignment = Alignment(wrap_text=True, horizontal="center",
-                                                   vertical="center")
-                        # assign
-                        cell.alignment = wrap_alignment
-                        cell.fill = PatternFill("solid", fgColor="ffff00")
+                        cell_aux_check = ws.cell(row=r + 10 + i, column=4 + d.weekday()) ###Cambios en curso
+                        if cell_aux_check.value == None:
+                            # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                            cell = ws.cell(row=r + 10 + i, column=4 + d.weekday(),
+                                           value="Proyecto {0}\n{1}".format(tasks[task_counter].project,tasks[task_counter].project.client_address))
+                            cell.font = Font(bold=True)
+                            cell.border = thin_border
+                            cell.alignment = Alignment(horizontal='center')
+                            # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                            # create alignment style
+                            wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                                                       vertical="center")
+                            # assign
+                            cell.alignment = wrap_alignment
+                            cell.fill = PatternFill("solid", fgColor="ffff00")
+                        else:
+                            existing_value = cell_aux_check.value
+                            # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                            cell = ws.cell(row=r + 10 + i, column=4 + d.weekday(),
+                                           value="{0} / Proyecto {1}\n{2}".format(existing_value,
+                                               tasks[task_counter].project,
+                                               tasks[task_counter].project.client_address))
+                            cell.font = Font(bold=True)
+                            cell.border = thin_border
+                            cell.alignment = Alignment(horizontal='center')
+                            # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                            # create alignment style
+                            wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                                                       vertical="center")
+                            # assign
+                            cell.alignment = wrap_alignment
+                            cell.fill = PatternFill("solid", fgColor="ffff00")
                     elif (dates[len(dates) - 1] <= d):
-                        # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
-                        cell = ws.cell(row=r + 10 + i + 1, column=4 + d.weekday(),
-                                       value="Proyecto {0}\n{1}".format(tasks[task_counter].project,
-                                                                        tasks[task_counter].project.client_address))
-                        cell.font = Font(bold=True)
-                        cell.border = thin_border
-                        cell.alignment = Alignment(horizontal='center')
-                        # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
-                        # create alignment style
-                        wrap_alignment = Alignment(wrap_text=True, horizontal="center",
-                                                   vertical="center")
-                        # assign
-                        cell.alignment = wrap_alignment
-                        cell.fill = PatternFill("solid", fgColor="ffff00")
+                        cell_aux_check = ws.cell(row=r + 10 + i + 1, column=4 + d.weekday())  ###Cambios en curso
+                        if cell_aux_check.value == None:
+                            # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                            cell = ws.cell(row=r + 10 + i + 1, column=4 + d.weekday(),
+                                           value="Proyecto {0}\n{1}".format(tasks[task_counter].project,
+                                                                            tasks[task_counter].project.client_address))
+                            cell.font = Font(bold=True)
+                            cell.border = thin_border
+                            cell.alignment = Alignment(horizontal='center')
+                            # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                            # create alignment style
+                            wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                                                       vertical="center")
+                            # assign
+                            cell.alignment = wrap_alignment
+                            cell.fill = PatternFill("solid", fgColor="ffff00")
+                        else:
+                            existing_value = cell_aux_check.value
+                            # cell = ws.cell(row=r +10 + i, column=4+task_initial_d.weekday(), value="{0} \n Proyecto: {1}".format(task_initial_d, task.project))
+                            cell = ws.cell(row=r + 10 + i + 1, column=4 + d.weekday(),
+                                           value="{0} / Proyecto {1}\n{2}".format(existing_value,
+                                               tasks[task_counter].project,
+                                               tasks[task_counter].project.client_address))
+                            cell.font = Font(bold=True)
+                            cell.border = thin_border
+                            cell.alignment = Alignment(horizontal='center')
+                            # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
+                            # create alignment style
+                            wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                                                       vertical="center")
+                            # assign
+                            cell.alignment = wrap_alignment
+                            cell.fill = PatternFill("solid", fgColor="ffff00")
                 task_counter+=1
 
             # Funcionalidad para el display de las vacaciones y licencias
@@ -651,8 +689,8 @@ def createRectificatorsReport(db):
                             cell.alignment = wrap_alignment
                             # cell.style.alignment.wrap_text = True #Para autoajustar el tamaño de la celca. Revisar su correcto funcionamiento
                             # create alignment style
-                            wrap_alignment = Alignment(wrap_text=True, horizontal="center",
-                                                       vertical="center")
+                            # wrap_alignment = Alignment(wrap_text=True, horizontal="center",
+                            #                            vertical="center")
                             if activities[activity_counter].id == 1:
                                 cell.fill = PatternFill("solid", fgColor="E60404")
                             elif activities[activity_counter].id == 2:
