@@ -40,52 +40,66 @@ def employees_console(db, level, user):
                         zone_empleado_parsed = convert.get_fuzzy(zone_empleado)
                     except:
                         raise ValueError('\n La comuna ingresada es inválida.')
-                    perf_rect = input(" Ingrese el rendimiento histórico en rectificación del empleado, solo presione Enter si no realiza esta labor: ")
-                    if(perf_rect == ''):
-                        perf_rect=None
-                    else:
-                        try:
-                            if float(perf_rect) <= 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo.')
-                        except:
-                            raise ValueError('\n El rendimiento debe ser un número.')
-                    perf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione Enter si no realiza esta labor: ")
-                    if(perf_des == ''):
-                        perf_des=None
-                    else:
-                        try:
-                            if float(perf_des) <= 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo.')
-                        except:
-                            raise ValueError('\n El rendimiento debe ser un número.')                    
-                    perf_fab = input(" Ingrese el rendimiento histórico en fabricación del empleado, solo presione Enter si no realiza esta labor: ")
-                    if(perf_fab == ''):
-                        perf_fab=None
-                    else:
-                        try:
-                            if float(perf_fab) <= 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo.')
-                        except:
-                            raise ValueError('\n El rendimiento debe ser un número.')
-                    perf_ins = input(" Ingrese el rendimiento histórico en instalación del empleado, solo presione Enter si no realiza esta labor: ")
-                    if(perf_ins == ''):
-                        perf_ins=None
-                    else:
-                        try:
-                            if float(perf_ins) <= 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo.')
-                        except:
-                            raise ValueError('\n El rendimiento debe ser un número.')
+                    jobless = True
+                    perf_rect=None
+                    perf_des = None
+                    perf_fab=None
+                    perf_ins=None
                     senior = None
-                    if(perf_ins != None):
-                        senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
-                        if senior == '1':
-                            senior = True
-                        elif senior == '0':
-                            senior = False
+                    if jobless:
+                        perf_rect = input(" Ingrese el rendimiento histórico en rectificación del empleado, solo presione Enter si no realiza esta labor: ")
+                        if(perf_rect == ''):
+                            perf_rect=None
                         else:
-                            raise ValueError('\n Se debe ingresar 0 o 1.')
-                    if perf_rect == None and perf_des ==None and perf_fab == None and perf_ins == None:
+                            try:
+                                if float(perf_rect) <= 0:
+                                    raise ValueError('\n El rendimiento no puede ser negativo.')
+                                jobless = False
+                            except:
+                                raise ValueError('\n El rendimiento debe ser un número.')
+                    if jobless:
+                        perf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione Enter si no realiza esta labor: ")
+                        if(perf_des == ''):
+                            perf_des=None
+                        else:
+                            try:
+                                if float(perf_des) <= 0:
+                                    raise ValueError('\n El rendimiento no puede ser negativo.')
+                                jobless = False
+                            except:
+                                raise ValueError('\n El rendimiento debe ser un número.')
+                    if jobless:
+                        perf_fab = input(" Ingrese el rendimiento histórico en fabricación del empleado, solo presione Enter si no realiza esta labor: ")
+                        if(perf_fab == ''):
+                            perf_fab=None
+                        else:
+                            try:
+                                if float(perf_fab) <= 0:
+                                    raise ValueError('\n El rendimiento no puede ser negativo.')
+                                jobless = False
+                            except:
+                                raise ValueError('\n El rendimiento debe ser un número.')
+                    if jobless:
+                        perf_ins = input(" Ingrese el rendimiento histórico en instalación del empleado, solo presione Enter si no realiza esta labor: ")
+                        if(perf_ins == ''):
+                            perf_ins=None
+                        else:
+                            try:
+                                if float(perf_ins) <= 0:
+                                    raise ValueError('\n El rendimiento no puede ser negativo.')
+                                jobless = False
+                            except:
+                                raise ValueError('\n El rendimiento debe ser un número.')
+                        
+                        if(perf_ins != None):
+                            senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
+                            if senior == '1':
+                                senior = True
+                            elif senior == '0':
+                                senior = False
+                            else:
+                                raise ValueError('\n Se debe ingresar 0 o 1.')
+                    if jobless:
                         raise ValueError('\n El empleado debe ejercer alguna función.')
                     createEmployee(db,id, name_empleado, zone_empleado_parsed, perf_rect, perf_des, perf_fab, perf_ins, senior)
                     input('\n Empleado creado con éxito. Presione Enter para continuar.')
@@ -103,6 +117,7 @@ def employees_console(db, level, user):
                 try:
                     skills = [1,2,3,4]
                     skill_added = False
+                    new_senior = None
                     id_empleado = input("\n Ingrese el RUT del empleado a editar sin puntos ni número identificador: ")
                     try:
                         id_empleado = int(id_empleado)
@@ -111,14 +126,9 @@ def employees_console(db, level, user):
                     except:
                         raise ValueError('\n Empleado inexistente.')
                     new_name = input(" Ingrese el nuevo nombre del empleado, solo presione Enter si lo mantiene: ")
-                    new_zone = input(" Ingrese la nueva comuna de trabajo del empleado, solo presione Enter si la mantiene: ")
-                    new_perf_rect = input(" Ingrese el rendimiento histórico en rectificación del empleado, solo presione Enter si mantiene la información actual: ")
-                    new_perf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione Enter mantiene la información actual: ")
-                    new_perf_fab = input(" Ingrese el rendimiento histórico en fabricación del empleado, solo presione Enter si mantiene la información actual: ")
-                    new_perf_ins = input(" Ingrese el rendimiento histórico en instalación del empleado, solo presione Enter si mantiene la información actual: ")
-                    new_senior = None
                     if new_name == '':
                         new_name = None
+                    new_zone = input(" Ingrese la nueva comuna de trabajo del empleado, solo presione Enter si la mantiene: ")
                     if len(new_zone.replace(' ',''))<1:
                         new_zone_parsed = None
                     else:
@@ -126,69 +136,88 @@ def employees_console(db, level, user):
                             new_zone_parsed = convert.get_fuzzy(new_zone)
                         except:
                             raise ValueError('\n La comuna ingresada es inválida.')
-                    if new_perf_rect == '':
-                        new_perf_rect=None
-                    else:
-                        try:
-                            new_perf_rect = float(new_perf_rect)
-                            if new_perf_rect < 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo.')
-                            elif new_perf_rect == 0:
-                                skills.remove(1)
-                            else:
-                                skill_added = True
-                        except:
-                            raise ValueError('\n El rendimiento debe ser un número.')
-                    if new_perf_des == '':
-                        new_perf_des = None
-                    else:
-                        try:
-                            new_perf_des = float(new_perf_des)
-                            if new_perf_des < 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo.')
-                            elif new_perf_des == 0:
-                                skills.remove(2)
-                            else:
-                                skill_added = True
-                        except:
-                            raise ValueError('\n El rendimiento debe ser un número.')
-                       
-                    if new_perf_fab == '':
-                        new_perf_fab = None
-                    else:
-                        try:
-                            new_perf_fab = float(new_perf_fab)
-                            if new_perf_fab < 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo.')
-                            elif new_perf_fab == 0:
-                                skills.remove(3)
-                            else:
-                                skill_added = True
-                        except:
-                            raise ValueError('\n El rendimiento debe ser un número.')
-                    if new_perf_ins == '':
-                        new_perf_ins = None
-                    else:
-                        try:
-                            new_perf_ins = float(new_perf_ins)
-                            if new_perf_ins < 0:
-                                raise ValueError('\n El rendimiento no puede ser negativo.')
-                            elif new_perf_ins == 0:
-                                skills.remove(4)
-                            else:
-                                skill_added = True
-                        except:
-                            raise ValueError('\n El rendimiento debe ser un número.')
-                        new_senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
-                        try:
-                            if int(new_senior) == 0:
-                                new_senior = False
-                            elif int(new_senior) == 1:
-                                new_senior = True
-                            else:
+                    if not skill_added:
+                        new_perf_rect = input(" Ingrese el rendimiento histórico en rectificación del empleado, solo presione Enter si mantiene la información actual: ")
+                        if new_perf_rect == '':
+                            new_perf_rect=None
+                        else:
+                            try:
+                                new_perf_rect = float(new_perf_rect)
+                                if new_perf_rect < 0:
+                                    raise ValueError('\n El rendimiento no puede ser negativo.')
+                                elif new_perf_rect == 0:
+                                    skills.remove(1)
+                                else:
+                                    skill_added = True
+                                    new_perf_des = 0
+                                    new_perf_fab = 0
+                                    new_perf_ins = 0
+                            except:
+                                raise ValueError('\n El rendimiento debe ser un número.')
+                    if not skill_added:
+                        new_perf_des = input(" Ingrese el rendimiento histórico en diseño del empleado, solo presione Enter mantiene la información actual: ")
+                        if new_perf_des == '':
+                            new_perf_des = None
+                        else:
+                            try:
+                                new_perf_des = float(new_perf_des)
+                                if new_perf_des < 0:
+                                    raise ValueError('\n El rendimiento no puede ser negativo.')
+                                elif new_perf_des == 0:
+                                    skills.remove(2)
+                                else:
+                                    skill_added = True
+                                    new_perf_rect = 0
+                                    new_perf_fab = 0
+                                    new_perf_ins = 0
+                            except:
+                                raise ValueError('\n El rendimiento debe ser un número.')
+                    if not skill_added:
+                        new_perf_fab = input(" Ingrese el rendimiento histórico en fabricación del empleado, solo presione Enter si mantiene la información actual: ")
+                        if new_perf_fab == '':
+                            new_perf_fab = None
+                        else:
+                            try:
+                                new_perf_fab = float(new_perf_fab)
+                                if new_perf_fab < 0:
+                                    raise ValueError('\n El rendimiento no puede ser negativo.')
+                                elif new_perf_fab == 0:
+                                    skills.remove(3)
+                                else:
+                                    skill_added = True
+                                    new_perf_rect = 0
+                                    new_perf_des = 0
+                                    new_perf_ins = 0
+                            except:
+                                raise ValueError('\n El rendimiento debe ser un número.')
+                    if not skill_added:
+                        new_perf_ins = input(" Ingrese el rendimiento histórico en instalación del empleado, solo presione Enter si mantiene la información actual: ")
+                        if new_perf_ins == '':
+                            new_perf_ins = None
+                        else:
+                            try:
+                                new_perf_ins = float(new_perf_ins)
+                                if new_perf_ins < 0:
+                                    raise ValueError('\n El rendimiento no puede ser negativo.')
+                                elif new_perf_ins == 0:
+                                    skills.remove(4)
+                                else:
+                                    skill_added = True
+                                    new_perf_rect = 0
+                                    new_perf_des = 0
+                                    new_perf_fab = 0
+                            except:
+                                raise ValueError('\n El rendimiento debe ser un número.')
+                            new_senior = input(" Ingrese 1 si el empleado es instalador senior, y 0 si es instalador junior: ")
+                            try:
+                                if int(new_senior) == 0:
+                                    new_senior = False
+                                elif int(new_senior) == 1:
+                                    new_senior = True
+                                else:
+                                    raise ValueError('\n Debe ingresar 0 ó 1.')
+                            except:
                                 raise ValueError('\n Debe ingresar 0 ó 1.')
-                        except:
-                            raise ValueError('\n Debe ingresar 0 ó 1.')
                     with db_session:
                         es = select(es for es in db.Employees_Skills if es.employee == db.Employees[id_empleado] and es.skill.id in skills)
                         if len(es) == 0 and not skill_added:
