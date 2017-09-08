@@ -51,6 +51,8 @@ def console(level, user):
                                                                   \n - 6: Usuarios de consola.\
                                                                   \n - 7: Para salir. \
                                                                   \n Ingrese la alternativa elegida: ")
+                                                                  
+            
         elif (level in [2,3,4,5,6]):
             opt = input("\n Marque una de las siguientes opciones:\n - 1: Empleados.\
                                                                   \n - 2: Proyectos. \
@@ -71,7 +73,7 @@ def console(level, user):
                 opt = '7'
             else:
                 opt =''
-        else:
+        elif level == 8:
             opt2 = input("\n Marque una de las siguientes opciones:\n - 1: Obtener mi calendario de trabajo.\
                                                                    \n - 2: Para salir. \
                                                                    \n Ingrese la alternativa elegida: ")
@@ -81,7 +83,17 @@ def console(level, user):
                 opt = '7'
             else:
                 opt =''
-            opt = '1'
+        elif level == 9:
+            opt2 = input("\n Marque una de las siguientes opciones:\n - 1: Para ingresar a la consola de stock.\
+                                                                   \n - 2: Para salir. \
+                                                                   \n Ingrese la alternativa elegida: ")
+            if(opt2 == '1'):
+                opt = '4'
+            elif(opt2 == '2'):
+                opt = '7'
+            else:
+                opt =''
+        
         if(opt == '1'):
             Eu.employees_console(db, level, user)
         if(opt == '2'):
@@ -93,7 +105,7 @@ def console(level, user):
                 print("\n Has salido del programa.")
                 break
         if (opt == '4'):
-            if (level in [1,2,5]):
+            if (level in [1,2,5,8]):
                 Su.stock_console(db, level)
             else:
                 print('\n Acceso denegado.')
@@ -111,7 +123,7 @@ def console(level, user):
                 print('\n Ingreso incorrecto.')
                 input(' Presione Enter para continuar.')
         if(opt == '7'):
-            if (level in [1,7,8]) :
+            if (level in [1,7,8,9]) :
                 print("\n Has salido del programa.")
                 break
             else:

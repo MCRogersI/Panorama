@@ -194,7 +194,7 @@ def printTasks(db):
         df.columns = ['ID','Tarea','Proyecto-Versión','Fecha de Inicio Original','Fecha de Finalización Original','Fecha de Inicio Efectiva','Fecha de Finalización Efectiva','Falló','Costo de Falla']
         df2 = pandas.concat([df,project,version], axis = 1)
         cols = df2.columns.tolist()
-        cols = cols[0:3] + cols[-2:] + cols[4:-3]
+        cols = cols[0:3] + cols[-2:] + cols[3:-3]
         df2 = df2[cols]
         print( tabulate(df2.drop(df2.columns[2], axis = 1), headers='keys', tablefmt='psql'))
 
