@@ -27,19 +27,21 @@ def planning_console(db,level):
                     current_projects = len(select(p for p in db.Projects if p.finished == None))
                     old_priority = db.Projects.get(contract_number = int(contract_number), finished = None).priority
                 print(' La prioridad actual de este proyecto es de ' + str(old_priority) + ' de ' + str(current_projects))
-                new_priority = input(' Ingrese la nueva prioridad que desea asignarle al proyecto. Presione Enter si no quiere cambiar la prioridad ')
+                new_priority = input(' Ingrese la nueva prioridad que desea asignarle al proyecto. Presione Enter si no quiere cambiar la prioridad: ')
                 if new_priority != '':
                     try:
                         changePriority(db, int(contract_number), int(new_priority))
-                        input('\n Cambio de prioridad realizado exitosamente. Presione Enter para continuar: ')
+                        print('\n Cambio de prioridad realizado exitosamente.')
+                        input(' Presione Enter para continuar.')
                     except:
-                        print(' Ingreso de variables inválidas')
-                        input(' Presione Enter para continuar. ')
+                        print('\n Ingreso de variables inválidas.')
+                        input(' Presione Enter para continuar.')
                 else:
-                    input('\n No se realizó ningún cambio. Presione Enter para continuar: ')
+                    print('\n No se realizó ningún cambio.')
+                    input(' Presione Enter para continuar.')
             except ValueError as ve:
                 print(ve)
-                input('Precione cualquier tecla para volver \n')
+                input(' Presione Enter para volver.')
         if opt == '3':
             opt2 = input('\n Marque una de las siguientes opciones: \n - 1: Agregar una restricción de asignación.\
                                                                     \n - 2: Eliminar una restricción de asignación.\
@@ -53,7 +55,7 @@ def planning_console(db,level):
                     try:
                         contract_number = int(contract_number)
                     except:
-                        raise ValueError(' El número de contrato debe ser un número.')
+                        raise ValueError('\n El número de contrato debe ser un número.')
                     with db_session:
                         if db.Projects.get(contract_number = contract_number, finished = None) == None:
                             raise ValueError('\n El proyecto no existe.')
@@ -71,7 +73,7 @@ def planning_console(db,level):
                             e = db.Employees.get(id = employee_id)
                         er = db.Employees_Restrictions.get(employee = db.Employees[employee_id], project = db.Projects.get(contract_number = int(contract_number), finished = None))
                         if er != None:
-                            raise ValueError(' Ya existe una restricción asociada a este empleado con este proyecto.')
+                            raise ValueError('\n Ya existe una restricción asociada a este empleado con este proyecto.')
                     like = input(' Marque una de las siguientes opciones: \n - 1: Si quiere asociar al empleado con el proyecto. \n - 0: Si quiere vetar a este empleado del proyecto. \n Ingrese la alternativa elegida: ')
                     if like == '1':
                         like = True
@@ -84,7 +86,7 @@ def planning_console(db,level):
                             raise ValueError('\n La planificación se hace infactible al vetar a todos los empleados con esa habilidad.')
                         else:
                             r = createEmployeesRestrictions(db,e,p,like)
-                            print(' Restricción agregada con éxito.')
+                            print('\n Restricción agregada con éxito.')
                             input(' Presione Enter para continuar: ')
                     else:
                         r = createEmployeesRestrictions(db, e, p, like)
@@ -106,7 +108,7 @@ def planning_console(db,level):
                         with db_session:
                             e = db.Employees[employee_id]
                     except:
-                        raise ValueError('\n Número de contraro no existente.')
+                        raise ValueError('\n Número de contrato no existente.')
                     
                     with db_session:
                         if db.Employees_Restrictions.get(employee = e, project = p) == None:
@@ -127,25 +129,25 @@ def planning_console(db,level):
                         with db_session:
                             p = db.Projects.get(contract_number = int(contract_number), finished = None)
                     except:
-                        raise ValueError(' Número de contraro no existente.')
+                        raise ValueError('\n Número de contraro no existente.')
                     skill_id = input(' Marque la tarea que se quiere restringir: \n - 1: Rectificación . \n - 2: Diseño. \n - 3: Fabricación. \n - 4: Instalación. \n Ingrese la alternativa elegida: ')
                     try:
                         skill_id = int(skill_id)
                     except:
-                        raise ValueError(' Ingreso de habilidad inválida. ')
+                        raise ValueError('\n Ingreso de habilidad inválida. ')
                     if skill_id not in [1,2,3,4]:
-                        raise ValueError(' Ingreso de habilidad inválida. ')
+                        raise ValueError('\n Ingreso de habilidad inválida. ')
                     year = input(' Ingrese el año de la fecha límite: ')
                     month = input(' Ingrese el mes de la fecha límite: ')
                     day = input(' Ingrese el dia de la fecha límite: ')
                     try:
                         deadline = date(int(year),int(month),int(day))
                     except:
-                        raise ValueError('\n No es una fecha válida. ')
+                        raise ValueError('\n No es una fecha válida.')
                     with db_session:
                         r = db.Deadlines_Restrictions( project = p, skill = db.Skills[int(skill_id)], deadline = deadline)
                         commit()
-                    print(' Restricción creada con éxito.')
+                    print('\n Restricción creada con éxito.')
                     input(' Presione Enter para continuar.')
                 except ValueError as ve:
                     print(ve)

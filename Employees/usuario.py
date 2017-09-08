@@ -98,7 +98,7 @@ def employees_console(db, level, user):
                             elif senior == '0':
                                 senior = False
                             else:
-                                raise ValueError('\n Se debe ingresar 0 o 1.')
+                                raise ValueError('\n Se debe ingresar 0 ó 1.')
                     if jobless:
                         raise ValueError('\n El empleado debe ejercer alguna función.')
                     createEmployee(db,id, name_empleado, zone_empleado_parsed, perf_rect, perf_des, perf_fab, perf_ins, senior)
@@ -129,7 +129,7 @@ def employees_console(db, level, user):
                     if new_name == '':
                         new_name = None
                     new_zone = input(" Ingrese la nueva comuna de trabajo del empleado, solo presione Enter si la mantiene: ")
-                    if len(new_zone.replace(' ',''))<1:
+                    if len(new_zone.replace(' ','')) < 1:
                         new_zone_parsed = None
                     else:
                         try:
@@ -245,7 +245,7 @@ def employees_console(db, level, user):
                     input('\n Empleado eliminado. Presione Enter para continuar. ')
                 except ValueError as ve:
                     print(ve)
-                    input('\n Presione Enter para continuar.')
+                    input(' Presione Enter para continuar.')
             else:
                 print('\n Acceso denegado.')
                 input(' Presione Enter para continuar. ')
@@ -327,7 +327,7 @@ def employees_console(db, level, user):
                 opt_ver_empleados = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver empleados. \
                                                                                      \n - 2: Si desea ver la lista de instaladores. \
                                                                                      \n Ingrese la alternativa elegida: ")
-            if ( level in [7,8]):
+            if (level in [7,8]):
                 opt_ver_empleados = '1'
             if(opt_ver_empleados == '1' and level in [1,2]):
                 opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones: \n - 1: Si desea ver lista de empleados. \
@@ -359,23 +359,23 @@ def employees_console(db, level, user):
                 if (opt_ver_empleados_2 == '3'):
                     createWorkersReportWide(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
-                            \n Presione Enter para continuar.')
+                           \n Presione Enter para continuar.')
                 if (opt_ver_empleados_2 == '4'):
                     createRectificatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
-                            \n Presione Enter para continuar.')
+                           \n Presione Enter para continuar.')
                 if (opt_ver_empleados_2 == '5'):
                     createDesignersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
-                            \n Presione Enter para continuar.')
+                           \n Presione Enter para continuar.')
                 if (opt_ver_empleados_2 == '6'):
                     createFabricatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
-                            \n Presione Enter para continuar.')
+                           \n Presione Enter para continuar.')
                 if (opt_ver_empleados_2 == '7'):
                     createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
-                            \n Presione Enter para continuar.')
+                           \n Presione Enter para continuar.')
             elif(opt_ver_empleados == '1' and level == 3):
                 opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
                                                                                       \n - 2: Si desea ver el calendario de trabajo de todos los instaladores\
@@ -389,7 +389,7 @@ def employees_console(db, level, user):
                             raise ValueError('\n El RUT debe ser un número entero.')
                         with db_session:
                             if db.Employees.get( id = int(id_employee)) == None:
-                                raise ValueError('\n Empleado inexistente. \n')
+                                raise ValueError('\n Empleado inexistente.')
                             if db.Employees_Skills.get(employee = db.Employees[id_employee]).skill.id != 1:
                                 raise ValueError('\n Empleado no es un rectificador. Acceso restringido.')
                         createPersonalEmployeeReport(db,id_employee)
@@ -401,7 +401,7 @@ def employees_console(db, level, user):
                 if (opt_ver_empleados_2 == '2'):
                     createRectificatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
-                            \n Presione Enter para continuar.')
+                           \n Presione Enter para continuar.')
             elif(opt_ver_empleados == '1' and level == 4):
                 opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
                                                                                       \n - 2: Si desea ver el calendario de trabajo de todos los diseñadores\
@@ -428,11 +428,11 @@ def employees_console(db, level, user):
                 if (opt_ver_empleados_2 == '2'):
                     createDesignersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
-                            \n Presione Enter para continuar.')
+                           \n Presione Enter para continuar.')
                 if (opt_ver_empleados_2 == '3'):
                     createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
-                            \n Presione Enter para continuar.')
+                           \n Presione Enter para continuar.')
             elif(opt_ver_empleados == '1' and level == 5):
                 opt_ver_empleados_2 = input("\n Marque una de las siguientes opciones:\n - 1: Si desea ver el calendario de trabajo de un empleado. \
                                                                                       \n - 2: Si desea ver el calendario de trabajo de todos los fabricadores\
@@ -454,7 +454,7 @@ def employees_console(db, level, user):
                         input(' Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
-                        input('\n Presione Enter para continuar.')
+                        input(' Presione Enter para continuar.')
                 if (opt_ver_empleados_2 == '2'):
                     createFabricatorsReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
@@ -480,7 +480,7 @@ def employees_console(db, level, user):
                         input(' Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
-                        input('\n Presione Enter para continuar.')
+                        input(' Presione Enter para continuar.')
                 if (opt_ver_empleados_2 == '2'):
                     createInstallersReport(db)
                     input('\n Reporte creado con éxito. Puede revisarlo en la carpeta Reportes. \
