@@ -593,21 +593,46 @@ def editAllSkus(db, file_name):
     wb_read = load_workbook(file_read, data_only=True)
     ws_read_skus = wb_read["Hoja1"]
     
-    next_row = 2
+    next_row = 3
     id = ws_read_skus.cell(row = next_row, column = 2).value
     while(id != None):
-        name = ws_read_skus.cell(row = next_row, column = 3).value
-        price = ws_read_skus.cell(row = next_row, column = 4).value
-        critical_level = ws_read_skus.cell(row = next_row, column = 5).value
-        real_quantity = ws_read_skus.cell(row = next_row, column = 6).value
-        
-        with db_session:
-            stock = db.Stock.get(id = id)
-            #revisamos si el codigo leido esta ya en la base de datos. Si esta, actualizamos la informacion, si no esta, creamos el nuevo SKU con la informacion entregada
-            if stock != None:
-                editSku(db, id, name, price, critical_level, real_quantity)
-            else:
-                createSku(db, id, name, price, critical_level, real_quantity)
+        try:
+            try:
+                id = str(id)
+                # Si el name está vacío en la celda, reclamamos también, tiene que tener algún nombre
+                name = ws_read_skus.cell(row = next_row, column = 3).value
+                if name == None:
+                    raise ValueError
+                else:
+                    name = str(name)
+                # Los siguientes datos, que son floats, los consideramos como 0 si la celda en el Excel está vacía
+                price = ws_read_skus.cell(row = next_row, column = 4).value
+                if price == None:
+                    price = 0
+                else:
+                    price = float(price)
+                critical_level = ws_read_skus.cell(row = next_row, column = 5).value
+                if critical_level == None:
+                    critical_level = 0
+                else:
+                    critical_level = float(critical_level)
+                real_quantity = ws_read_skus.cell(row = next_row, column = 6).value
+                if real_quantity == None:
+                    real_quantity = 0
+                else:
+                    real_quantity = float(real_quantity)
+                with db_session:
+                    stock = db.Stock.get(id = id)
+                    #revisamos si el codigo leido esta ya en la base de datos. Si esta, actualizamos la informacion, si no esta, creamos el nuevo SKU con la informacion entregada
+                    if stock != None:
+                        editSku(db, id, name, price, critical_level, real_quantity)
+                    else:
+                        createSku(db, id, name, price, critical_level, real_quantity)
+            except:
+                raise ValueError('\n Datos mal ingresados en la fila ' + str(next_row) + ' del archivo.')
+        except ValueError as ve:
+            print(ve)
+            print(' Se seguirá con la siguiente fila.')  
         
         next_row = next_row + 1
         id = ws_read_skus.cell(row = next_row, column = 2).value

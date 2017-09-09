@@ -107,7 +107,7 @@ def standardCostCalculation(db, project, project_cost, parameters):
         fabrication_cost = project_cost.standard_cost_fabrication
         project_cost.standard_cost_total = profiles_cost + fittings_cost + crystals_cost + additional_costs + installation_cost + fabrication_cost
         
-        project.real_cost = int(project_cost.standard_cost_total)
+        project.estimated_cost = int(project_cost.standard_cost_total)
         
         commit()
     #si el cálculo es exitoso
