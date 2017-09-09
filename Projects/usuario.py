@@ -27,11 +27,14 @@ def projects_console(db, level):
         if(opt == '1'):
             if(level == 1):
                 try:
-                    contract_number = input("\n Ingrese el número de contrato: ")
-                    try:
-                        int(contract_number)
-                    except:
-                        raise ValueError('No es un número válido')
+                    bool1 = True:
+                    while bool1
+                        contract_number = input("\n Ingrese el número de contrato: ")
+                        try:
+                            int(contract_number)
+                            
+                        except:
+                            raise ValueError('No es un número válido')
                     with db_session:
                         if len(select( p for p in db.Projects if p.contract_number == int(contract_number))) > 0:
                             raise ValueError('\n Este número de contrato ya existe.')
@@ -238,7 +241,7 @@ def projects_console(db, level):
                             new_real_cost = None
                         if new_real_cost != None:
                             try:
-                                new_real_cost = float(new_real_cost)
+                                new_real_cost = int(new_real_cost)
                                 if float(new_real_cost) < 0:
                                     raise ValueError('\n Los costos deben ser un número positivo.')
                             except:
