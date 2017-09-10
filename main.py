@@ -47,7 +47,7 @@ def console(level, user):
                                                                   \n - 2: Proyectos. \
                                                                   \n - 3: Tareas. \
                                                                   \n - 4: Stock. \
-                                                                  \n - 5: Planificacion. \
+                                                                  \n - 5: Planificación. \
                                                                   \n - 6: Usuarios de consola.\
                                                                   \n - 7: Para salir. \
                                                                   \n Ingrese la alternativa elegida: ")
@@ -84,7 +84,7 @@ def console(level, user):
             else:
                 opt =''
         elif level == 9:
-            opt2 = input("\n Marque una de las siguientes opciones:\n - 1: Para ingresar a la consola de stock.\
+            opt2 = input("\n Marque una de las siguientes opciones:\n - 1: Para ingresar a la consola de Stock.\
                                                                    \n - 2: Para salir. \
                                                                    \n Ingrese la alternativa elegida: ")
             if(opt2 == '1'):
@@ -92,7 +92,7 @@ def console(level, user):
             elif(opt2 == '2'):
                 opt = '7'
             else:
-                opt =''
+                opt = ''
         
         if(opt == '1'):
             Eu.employees_console(db, level, user)
@@ -135,7 +135,7 @@ def signIn():
         if user == '':
             print("\n Debe ingresar un usuario.")
         else:
-            password = getpass.getpass(' Ingrese su contrasena: ')
+            password = getpass.getpass(' Ingrese su contraseña: ')
             # password = input(" Ingrese su contrasena: ")
             if Uf.checkPassEntry(db, user, password):
                 with db_session:

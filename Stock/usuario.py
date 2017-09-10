@@ -35,7 +35,7 @@ def stock_console(db, level):
                     if float(price) < 0:
                         raise ValueError('\n El precio unitario del producto debe ser un número positivo.')
                 except:
-                    raise ValueError('\n El precio unitario del producto debe ser un número positivo.')
+                    raise ValueError('\n El precio unitario del producto debe ser un número.')
                 critical_level = input(" Ingrese el nivel crítico del producto: ")
                 try:
                     if float(critical_level) < 0:
@@ -47,7 +47,7 @@ def stock_console(db, level):
                     if float(real_quantity) < 0:
                         raise ValueError('\n La cantidad en bodega debe ser un número positivo.')
                 except:
-                    raise ValueError('\n La cantidad en bodega debe ser un número positivo \n')
+                    raise ValueError('\n La cantidad en bodega debe ser un número positivo.')
                 # waste_factor = input(' Ingrese el factor de pérdida del SKU: ')
                 # if waste_factor !='':
                     # try:
@@ -56,7 +56,8 @@ def stock_console(db, level):
                     # except:
                         # raise ValueError('\n El factor de pérdida debe ser un número positivo.')
                 createSku(db,id, name, price, critical_level, real_quantity)
-                input('\n SKU creado con éxito. Presione una tecla para continuar.')
+                print('\n SKU creado con éxito.')
+                input(' Presione Enter para continuar.')
             except ValueError as ve:
                 print(ve)
                 input(' Presione Enter para continuar.')
@@ -104,6 +105,7 @@ def stock_console(db, level):
                         except:
                             raise ValueError('\n La cantidad en bodega debe ser un número positivo.')
                     editSku(db,id = id, name=name, price=price, critical_level=critical_level, real_quantity=real_quantity)
+                    print('\n Edición realizada con éxito.')
                     input(' Presione Enter para continuar.')
                 except ValueError as ve:
                     print(ve)
@@ -120,6 +122,7 @@ def stock_console(db, level):
                         raise ValueError('\n Archivo no encontrado.')
                 except ValueError as ve:
                     print(ve)
+                    input(' Presione Enter para continuar.')
             if (opt2 == '3'):
                 try:
                     id = input('\n Ingrese el ID del SKU que desea registrar: ')
@@ -166,15 +169,16 @@ def stock_console(db, level):
                 if os.path.isfile(file_dir):
                     makePurchases(db, file_name)
                     print('\n Orden de compra ingresada exitosamente. ')
-                    input(' Presione Enter para continuar: ')
+                    input(' Presione Enter para continuar.')
                 else:
                     raise ValueError('\n Archivo no encontrado.')
             except ValueError as ve:
                 print(ve)
-                input(' Presione Enter para continuar: ')
+                input(' Presione Enter para continuar.')
         if opt =='6' and level ==1:
             createStockReport(db)
-            input('\n Informe creado con éxito. Presione Enter para continuar.')
+            print('\n Informe creado con éxito.')
+            input(' Presione Enter para continuar.')
         
         if(opt == '7'):
             if(level == 1):
@@ -200,10 +204,11 @@ def stock_console(db, level):
                         except:
                             raise ValueError('\n Fecha de término inválida.')
                         createStockShortage(db, 4, initial_year, initial_month, initial_day, end_year, end_month, end_day)
-                        input('\n Fechas de quiebre de stock ingresadas. Presione Enter para continuar.')
+                        print('\n Fechas de quiebre de stock ingresadas.')
+                        input(' Presione Enter para continuar.')
                     except ValueError as ve:
                         print(ve)
-                        input(' Precione Enter para continuar.')
+                        input(' Presione Enter para continuar.')
                 elif opt_stock_shortages == '2':
                     id_stock_shortage = input("\n Ingrese el ID del quiebre de stock que quiere eliminar: ")
                     try:

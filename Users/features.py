@@ -16,9 +16,9 @@ def createUser(db,name, level,password):
         u = db.Users(user_name = name, user_level = level,salt = salt, hashed_password = hashed_password)
 
 #falta un editUser o no?
-def editUserLevel(db,name,new_level, password):
+def editUserLevel(db, name, new_level, password):
     with db_session:
-        if checkPassEntry(db,name, password):
+        if checkPassEntry(db, name, password):
             u = db.Users.get(user_name = name)
             u.level = new_level
             print('\n Usuario editado con éxito.')
@@ -31,11 +31,11 @@ def deleteUser(db,name):
         
 def printUsers(db):
     with db_session:
-        print('\n')
+        print('')
         Users = db.Users.select()
         data = [u.to_dict() for u in Users]
         df = pandas.DataFrame(data, columns = ['user_name','user_level'])
-        df.columns = ['Rut de usuario', 'Nivel de usuario']
+        df.columns = ['RUT de usuario', 'Nivel de usuario']
         print( tabulate(df, headers='keys', tablefmt='psql'))
 
 def checkPassEntry(db,name_request, password):
