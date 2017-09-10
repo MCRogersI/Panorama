@@ -46,8 +46,13 @@ def users_console(db):
         if (opt == '2'):
             name = input('\n Ingrese el nombre de usuario: ')
             new_level = input(' Ingrese el nuevo nivel de usuario: ')
-            password = getpass.getpass(' Ingrese la contraseña del usuario: ')
-            editUserLevel(db, name, new_level, password)
+            with db_session:
+                u = db.Employees.get(id = name)
+            if u == None and new_level in [7,8]:
+                print('\n Usuario no existe como trabajador. cambio de nivel anulado.')
+            else:
+                password = getpass.getpass(' Ingrese la contraseña del usuario: ')
+                editUserLevel(db, name, new_level, password)
             print('\n Usuario editado con éxito.')
             input(' Presione Enter para continuar.')
         if (opt == '3'):
