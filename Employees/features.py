@@ -29,8 +29,14 @@ def printEmployees(db):
         data2 = [p.to_dict() for p in es]
         df1 = pandas.DataFrame(data1, columns = ['id','name','zone','senior'])                    
         df1.columns = ['RUT','Nombre','Comuna', '¿Es Senior?']
+        df1['¿Es Senior?'].replace(to_replace= [True],value = 'Si', inplace = True)
+        df1['¿Es Senior?'].replace(to_replace= [False],value = 'No', inplace = True)
         df2 = pandas.DataFrame(data2, columns = ['employee','skill','performance'])
         df2.columns = ['RUT','Tipo Empleado', 'Rendimiento']
+        df2['Tipo Empleado'].replace(to_replace=[1],value ='Rectificador',inplace = True)
+        df2['Tipo Empleado'].replace(to_replace=[2],value ='Diseñador',inplace = True)
+        df2['Tipo Empleado'].replace(to_replace=[3],value ='Fabricador',inplace = True)
+        df2['Tipo Empleado'].replace(to_replace=[4],value ='Instalador',inplace = True)
         df = pandas.merge(df1,df2,on = 'RUT')
         print()
         print(tabulate(df, headers='keys', tablefmt='psql'))
@@ -130,6 +136,8 @@ def printSelectSkill(db, id_skill):
         if id_skill == 4:
             df1 = pandas.DataFrame(data1, columns = ['id','name','zone','senior'])                    
             df1.columns = ['RUT','Nombre','Comuna', '¿Es Senior?']
+            df1['¿Es Senior?'].replace(to_replace= [True],value = 'Si', inplace = True)
+            df1['¿Es Senior?'].replace(to_replace= [False],value = 'No', inplace = True)
         else:
             df1 = pandas.DataFrame(data1, columns = ['id','name','zone'])                    
             df1.columns = ['RUT','Nombre','Comuna']
