@@ -24,9 +24,14 @@ def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_
 def printEmployees(db):
     with db_session:
         e = db.Employees.select()
-        data = [p.to_dict() for p in e]
-        df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
-        df.columns = ['RUT','Nombre','Comuna', '¿Es Senior?']
+        es = db.Employees_Skills.select()
+        data1 = [p.to_dict() for p in e]
+        data2 = [p.to_dict() for p in es]
+        df1 = pandas.DataFrame(data1, columns = ['id','name','zone','senior'])                    
+        df1.columns = ['RUT','Nombre','Comuna', '¿Es Senior?']
+        df2 = pandas.DataFrame(data2, columns = ['employee','skill','performance'])
+        df2.columns = ['RUT','Tipo Empleado', 'Rendimiento']
+        df = pandas.merge(df1,df2,on = 'RUT')
         print()
         print(tabulate(df, headers='keys', tablefmt='psql'))
         input(' Presione Enter para continuar. ')
@@ -119,7 +124,16 @@ def printSelectSkill(db, id_skill):
             if es != None and es.performance > 0:
                 ids.append(e.id)
         e = select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id)
-        data = [p.to_dict() for p in e]
-        df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
-        df.columns = ['Rut','Nombre','Comuna','¿Es Senior?']
+        es = db.Employees_Skills.select()
+        data1 = [p.to_dict() for p in e]
+        data2 = [p.to_dict() for p in es]
+        if id_skill == 4:
+            df1 = pandas.DataFrame(data1, columns = ['id','name','zone','senior'])                    
+            df1.columns = ['RUT','Nombre','Comuna', '¿Es Senior?']
+        else:
+            df1 = pandas.DataFrame(data1, columns = ['id','name','zone'])                    
+            df1.columns = ['RUT','Nombre','Comuna']
+        df2 = pandas.DataFrame(data2, columns = ['employee','performance'])
+        df2.columns = ['RUT', 'Rendimiento']
+        df = pandas.merge(df1,df2,on = 'RUT')
         print( tabulate(df, headers='keys', tablefmt='psql'))
