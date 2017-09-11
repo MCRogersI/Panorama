@@ -93,6 +93,9 @@ def console(level, user):
                 opt = '7'
             else:
                 opt = ''
+        else:
+            input('Su nivel de usuario no es reconocido. Se  cerrará el programa.')
+            break
         
         if(opt == '1'):
             Eu.employees_console(db, level, user)
