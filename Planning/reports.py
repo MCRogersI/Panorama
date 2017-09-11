@@ -2119,7 +2119,7 @@ def implementChanges(db, wb):
                 #recuperamos el Task, sabiendo que solo puede haber uno para un par Project, Skill que no tenga failed = True, usamos el .first()
                 contract_number = ws.cell(row = next_row, column = 1).value
                 skill = skills[i]
-                task = select(t for t in db.Tasks if t.project == db.Projects[contract_number] and t.skill == db.Skills[skill] and \
+                task = select(t for t in db.Tasks if t.project == db.Projects.get(contract_number = contract_number, finished = None) and t.skill == db.Skills[skill] and \
                                     (t.failed == None or t.failed == False)).first()
                 #luego recuperamos el Employee_Tasks, para cambiar el empleado asociado
                 c = columns[i]
@@ -2137,7 +2137,7 @@ def implementChanges(db, wb):
             #recuperamos el Task, sabiendo que solo puede haber uno para un par Project, Skill que no tenga failed = True, usamos el .first()
             contract_number = ws.cell(row = next_row, column = 1).value
             skill = 4
-            task = select(t for t in db.Tasks if t.project == db.Projects[contract_number] and t.skill == db.Skills[skill] and \
+            task = select(t for t in db.Tasks if t.project == db.Projects.get(contract_number = contract_number, finished = None) and t.skill == db.Skills[skill] and \
                                     (t.failed == None or t.failed == False)).first()
             #luego recuperamos los Employee_Tasks, para cambiar el empleado asociado
             c = 13

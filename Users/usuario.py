@@ -48,7 +48,6 @@ def users_console(db):
             new_level = input(' Ingrese el nuevo nivel de usuario: ')
             password = getpass.getpass(' Ingrese la contraseña del usuario: ')
             editUserLevel(db, name, new_level, password)
-            print('\n Usuario editado con éxito.')
             input(' Presione Enter para continuar.')
         if (opt == '3'):
             name = input('\n Ingrese nombre de usuario que desea eliminar: ')
