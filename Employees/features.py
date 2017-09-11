@@ -24,9 +24,20 @@ def createEmployee(db, id, name, zone, perf_rect = None , perf_des = None, perf_
 def printEmployees(db):
     with db_session:
         e = db.Employees.select()
-        data = [p.to_dict() for p in e]
-        df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
-        df.columns = ['RUT','Nombre','Comuna', '¿Es Senior?']
+        es = db.Employees_Skills.select()
+        data1 = [p.to_dict() for p in e]
+        data2 = [p.to_dict() for p in es]
+        df1 = pandas.DataFrame(data1, columns = ['id','name','zone','senior'])                    
+        df1.columns = ['RUT','Nombre','Comuna', '¿Es Senior?']
+        df1['¿Es Senior?'].replace(to_replace= [True],value = 'Si', inplace = True)
+        df1['¿Es Senior?'].replace(to_replace= [False],value = 'No', inplace = True)
+        df2 = pandas.DataFrame(data2, columns = ['employee','skill','performance'])
+        df2.columns = ['RUT','Tipo Empleado', 'Rendimiento']
+        df2['Tipo Empleado'].replace(to_replace=[1],value ='Rectificador',inplace = True)
+        df2['Tipo Empleado'].replace(to_replace=[2],value ='Diseñador',inplace = True)
+        df2['Tipo Empleado'].replace(to_replace=[3],value ='Fabricador',inplace = True)
+        df2['Tipo Empleado'].replace(to_replace=[4],value ='Instalador',inplace = True)
+        df = pandas.merge(df1,df2,on = 'RUT')
         print()
         print(tabulate(df, headers='keys', tablefmt='psql'))
         input(' Presione Enter para continuar. ')
@@ -119,7 +130,18 @@ def printSelectSkill(db, id_skill):
             if es != None and es.performance > 0:
                 ids.append(e.id)
         e = select(e for e in db.Employees if e.id in ids).order_by(lambda e: e.id)
-        data = [p.to_dict() for p in e]
-        df = pandas.DataFrame(data, columns = ['id','name','zone','senior'])                    
-        df.columns = ['Rut','Nombre','Comuna','¿Es Senior?']
+        es = db.Employees_Skills.select()
+        data1 = [p.to_dict() for p in e]
+        data2 = [p.to_dict() for p in es]
+        if id_skill == 4:
+            df1 = pandas.DataFrame(data1, columns = ['id','name','zone','senior'])                    
+            df1.columns = ['RUT','Nombre','Comuna', '¿Es Senior?']
+            df1['¿Es Senior?'].replace(to_replace= [True],value = 'Si', inplace = True)
+            df1['¿Es Senior?'].replace(to_replace= [False],value = 'No', inplace = True)
+        else:
+            df1 = pandas.DataFrame(data1, columns = ['id','name','zone'])                    
+            df1.columns = ['RUT','Nombre','Comuna']
+        df2 = pandas.DataFrame(data2, columns = ['employee','performance'])
+        df2.columns = ['RUT', 'Rendimiento']
+        df = pandas.merge(df1,df2,on = 'RUT')
         print( tabulate(df, headers='keys', tablefmt='psql'))
