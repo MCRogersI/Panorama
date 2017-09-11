@@ -44,16 +44,22 @@ def users_console(db):
                 print(ve)
                 input(' Presione Enter para continuar.')
         if (opt == '2'):
-            name = input('\n Ingrese el nombre de usuario: ')
-            new_level = input(' Ingrese el nuevo nivel de usuario: ')
-            with db_session:
-                u = db.Employees.get(id = name)
-            print(u)
-            if u == None and new_level in [7,8]:
-                print('\n Usuario no existe como trabajador. cambio de nivel anulado.')
-            else:
-                password = getpass.getpass(' Ingrese la contraseña del usuario: ')
-                editUserLevel(db, name, new_level, password)
+            try:
+                name = input('\n Ingrese el nombre de usuario: ')
+                new_level = input(' Ingrese el nuevo nivel de usuario: ')
+                try:
+                    new_level = int(new_level)
+                except:
+                    raise ValueError('El nivel debe ser un número entero.')
+                with db_session:
+                    u = db.Employees.get(id = name)
+                if u == None and new_level in [7,8]:
+                    print('\n Usuario no existe como trabajador. cambio de nivel anulado.')
+                else:
+                    password = getpass.getpass(' Ingrese la contraseña del usuario: ')
+                    editUserLevel(db, name, new_level, password)
+            except ValueError as ve:
+                print(ve)
             input(' Presione Enter para continuar.')
         if (opt == '3'):
             name = input('\n Ingrese nombre de usuario que desea eliminar: ')

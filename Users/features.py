@@ -21,8 +21,7 @@ def editUserLevel(db, name, new_level, password):
     with db_session:
         if checkPassEntry(db, name, password):
             u = db.Users.get(user_name = name)
-            u.level = new_level
-            print(new_level)
+            u.user_level = new_level
             print('\n Usuario editado con éxito.')
         else:
             print('\n Usuario o contraseña incorrectos.')
